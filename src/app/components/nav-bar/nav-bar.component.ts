@@ -17,6 +17,7 @@ import {GroupMemberService} from '../../services/group-member.service';
 import {GroupInviteTO} from '../../models/GroupInviteTO.model';
 import {Util} from '../../views/shared/Utils/util';
 import {PublicProfileService} from '../../services/public-profile.service';
+import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 
 @Component({
     selector: 'app-nav-bar',
@@ -33,6 +34,7 @@ export class NavBarComponent implements OnInit {
     publicProfileId = '';
     timer;
     constructor(
+        private getBookByIdUseCase: GetBookByIdUseCase,
         public auth: AuthService,
         private router: Router,
         public translate: TranslateService,

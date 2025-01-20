@@ -5,6 +5,7 @@
 export const environment = {
     production: false,
     api: 'http://localhost:8080/',
+    googleBooksApi: 'https://www.googleapis.com/',
     gauth: '',
     fbauth: '',
     apicep: '',
