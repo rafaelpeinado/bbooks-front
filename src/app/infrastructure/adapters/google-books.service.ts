@@ -30,7 +30,7 @@ export class GoogleBooksApiService implements BookRepository {
         throw new Error("Method not implemented.");
     }
 
-    getBookById(id: number): Observable<Book> {
+    getBookById(id: string): Observable<Book> {
         return this.http.get<GoogleBooksOutputDto>(this.api + id).pipe(
             map((response) => new BookBuilder()
                 .setId(response.id)
@@ -41,7 +41,7 @@ export class GoogleBooksApiService implements BookRepository {
                 .setNumberPage(response.volumeInfo.pageCount)
                 .setLanguage(response.volumeInfo.language)
                 .setPublisher(response.volumeInfo.publisher)
-                .setPublishedDate(this.convertDateToTimestamp(response))
+                .setPublishedDate(response.volumeInfo.publishedDate)
                 // .setAverageRating(response.volumeInfo.a)
                 .setImage(this.getImage(response))
                 .setDescription(response.volumeInfo.description)
@@ -64,17 +64,14 @@ export class GoogleBooksApiService implements BookRepository {
     }
 
     private getImage(response: GoogleBooksOutputDto): string {
-        if (response.volumeInfo.imageLinks) {
-            // b.image = book.volumeInfo.imageLinks.thumbnail;
-            // b.image = b.image.slice(0, b.image.indexOf('zoom=1') + 'zoom=1'.length);
-            // b.image = b.image + '&source=gbs_api';
-            // b.image = 'https' + b.image.substr(4, b.image.length);
-            return '';
+        const links = response.volumeInfo.imageLinks;
+        if (links) {
+            const thumbnail = links.thumbnail;
+            return thumbnail
+                .slice(0, thumbnail.indexOf('zoom=1') + 'zoom=1'.length)
+                .concat('&source=gbs_api')
+                .replace('http', 'https');
         }
         return '';
-    }
-
-    private convertDateToTimestamp(response: GoogleBooksOutputDto): number {
-        return new Date(response.volumeInfo.publishedDate).getTime();
     }
 }

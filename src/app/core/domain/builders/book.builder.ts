@@ -4,24 +4,24 @@ import { Tag } from "../entities/tag.entity";
 import { BookStatus } from "../enums/book-status.enum";
 
 export class BookBuilder {
-    private _id!: string;
-    private _isbn10!: string;
-    private _isbn13!: string;
-    private _title!: string;
-    private _authors!: Author[];
-    private _numberPage!: number;
-    private _language: string;
-    private _publisher: string;
+    public id!: string;
+    public isbn10!: string;
+    public isbn13!: string;
+    public title!: string;
+    public authors!: Author[];
+    public numberPage!: number;
+    public language: string;
+    public publisher: string;
     // country: number;
-    private _publishedDate: number;
-    private _averageRating: number;
-    private _image?: string;
-    private _description: string;
-    private _status: BookStatus;
-    private _idUserBook: number;
-    private _tags: Tag[];
-    private _api: string;
-    private _finishDate: Date;
+    public publishedDate: string;
+    public averageRating: number;
+    public image?: string;
+    public description: string;
+    public status: BookStatus;
+    public idUserBook: number;
+    public tags: Tag[];
+    public api: string;
+    public finishDate: Date;
 
     constructor(init?: Partial<BookBuilder>) {
         if (init) {
@@ -29,15 +29,11 @@ export class BookBuilder {
         }
     }
 
-    get id(): string {
-        return this._id!;
-    }
-
     setId(id: string): BookBuilder {
         if (!id || id.trim() === "") {
             throw new Error("ID is required.");
         }
-        this._id = id;
+        this.id = id;
         return this;
     }
 
@@ -45,7 +41,7 @@ export class BookBuilder {
         if (isbn10 && isbn10.length !== 10) {
             throw new Error("ISBN-10 must be exactly 10 characters.");
         }
-        this._isbn10 = isbn10;
+        this.isbn10 = isbn10;
         return this;
     }
 
@@ -53,7 +49,7 @@ export class BookBuilder {
         if (isbn13 && isbn13.length !== 13) {
             throw new Error("ISBN-13 must be exactly 13 characters.");
         }
-        this._isbn13 = isbn13;
+        this.isbn13 = isbn13;
         return this;
     }
 
@@ -61,7 +57,7 @@ export class BookBuilder {
         if (!title || title.trim() === "") {
             throw new Error("Title is required.");
         }
-        this._title = title;
+        this.title = title;
         return this;
     }
 
@@ -69,73 +65,79 @@ export class BookBuilder {
         if (!authors || authors.length === 0) {
             throw new Error("Author is required.");
         }
-        this._authors = authors;
+        this.authors = authors;
         return this;
     }
 
     setNumberPage(numberPage: number): BookBuilder {
-        this._numberPage = numberPage;
+        this.numberPage = numberPage;
         return this;
     }
 
     setLanguage(language: string): BookBuilder {
-        this._language = language;
+        this.language = language;
         return this;
     }
 
     setPublisher(publisher: string): BookBuilder {
-        this._publisher = publisher;
+        this.publisher = publisher;
         return this;
     }
 
-    setPublishedDate(publishedDate: number): BookBuilder {
-        this._publishedDate = publishedDate;
+    setPublishedDate(publishedDate: string): BookBuilder {
+        this.publishedDate = publishedDate;
         return this;
     }
 
     setAverageRating(averageRating: number): BookBuilder {
-        this._averageRating = averageRating;
+        this.averageRating = averageRating;
         return this;
     }
 
     setImage(image: string): BookBuilder {
-        this._image = image;
+        this.image = image;
         return this;
     }
 
     setDescription(description: string): BookBuilder {
-        this._description = description;
+        this.description = description;
         return this;
     }
 
     setStatus(status: BookStatus): BookBuilder {
-        this._status = status;
+        this.status = status;
         return this;
     }
 
     setIdUserBook(idUserBook: number): BookBuilder {
-        this._idUserBook = idUserBook;
+        this.idUserBook = idUserBook;
         return this;
     }
 
     setTags(tags: Tag[]): BookBuilder {
-        this._tags = tags;
+        this.tags = tags;
         return this;
     }
 
     setApi(api: string): BookBuilder {
-        this._api = api;
+        this.api = api;
         return this;
     }
 
     setFinishDate(finishDate: Date): BookBuilder {
-        this._finishDate = finishDate;
+        this.finishDate = finishDate;
         return this;
     }
 
     copy(): BookBuilder {
         return new BookBuilder(this);
     }
+
+    copyFrom(book: Book): BookBuilder {
+        Object.assign(this, book);
+        return this;
+    }
+
 
     build(): Book {
         return new Book(this);

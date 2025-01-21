@@ -1,4 +1,5 @@
 import { BookBuilder } from "../builders/book.builder";
+import { ApiType } from "../enums/api-type.enum";
 import { BookStatus } from "../enums/book-status.enum";
 import { Author } from "./author.entity";
 import { Tag } from "./tag.entity";
@@ -13,14 +14,14 @@ export class Book {
     public readonly language: string;
     public readonly publisher: string;
     // country: number;
-    public readonly publishedDate: number;
+    public readonly publishedDate: string;
     public readonly averageRating: number;
     public readonly image: string;
     public readonly description: string;
     public readonly status: BookStatus;
     public readonly idUserBook: number;
     public readonly tags: Tag[];
-    public readonly api: string;
+    public readonly api: ApiType;
     public readonly finishDate: Date;
 
 

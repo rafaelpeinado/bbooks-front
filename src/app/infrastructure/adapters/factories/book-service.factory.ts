@@ -8,24 +8,23 @@ import { ApiType } from "src/app/core/domain/enums/api-type.enum";
     providedIn: 'root'
 })
 export class BookServiceFactory {
-    private serviceMap: Map<ApiType, BookRepository>;
+    // private serviceMap: Map<ApiType, BookRepository>;
 
 
     constructor(
         private googleBooksApiService: GoogleBooksApiService,
         private bookApiService: BookApiService,
     ) {
-        this.serviceMap = new Map<ApiType, BookRepository>([
-            [ApiType.GOOGLE, this.googleBooksApiService],
-            [ApiType.BBOOKS, this.bookApiService]
-        ]);
+        // this.serviceMap = new Map<ApiType, BookRepository>([
+        //     [ApiType.GOOGLE, this.googleBooksApiService],
+        //     [ApiType.BBOOKS, this.bookApiService]
+        // ]);
     }
 
     public getService(apiType: ApiType): BookRepository {
-        const service = this.serviceMap.get(apiType);
-        if (!service) {
-            throw new Error(`Unknown API type: ${apiType}`);
+        if (apiType === ApiType.GOOGLE) {
+            return this.googleBooksApiService;
         }
-        return service;
+        return this.bookApiService;
     }
 }

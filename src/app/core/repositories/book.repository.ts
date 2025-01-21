@@ -6,5 +6,5 @@ import { PaginationInterface } from "../domain/interfaces/pagination.interface";
 export abstract class BookRepository {
     abstract addBook(book: Book): Observable<Book>;
     abstract searchBooks(filter: FilterSearch): Observable<PaginationInterface<Book>>;
-    abstract getBookById(id: number): Observable<Book>;
+    abstract getBookById(id: string): Observable<Book>;
 }

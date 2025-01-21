@@ -28,7 +28,7 @@ export class BookApiService implements BookRepository {
         return this.http.get<PaginationInterface<Book>>(this.api + 'search', { params });
     }
 
-    getBookById(id: number): Observable<Book> {
+    getBookById(id: string): Observable<Book> {
         return this.http.get<Book>(this.api + id);
     }
 }

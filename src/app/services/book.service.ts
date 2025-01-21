@@ -15,6 +15,7 @@ import {BookPagination} from '../models/pagination/book.pagination';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import {Tag} from '../models/tag';
 import {BookSearchTO} from '../models/bookSearchTO.model';
+import { ApiType } from '../core/domain/enums/api-type.enum';
 
 @Injectable({
     providedIn: 'root'
@@ -133,7 +134,7 @@ export class BookService {
         const b = new Book();
         b.authors = [];
         b.id = book.id;
-        b.api = 'google';
+        b.api = ApiType.GOOGLE;
         if (book.volumeInfo) {
             if (book.volumeInfo.industryIdentifiers) {
                 b.isbn10 = book.volumeInfo.industryIdentifiers[0]?.identifier;
