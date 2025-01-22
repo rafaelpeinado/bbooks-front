@@ -1,6 +1,12 @@
 import { ISBNGoogleEnum } from "../enums/isbn-google.enum"
 
-export interface GoogleBooksOutputDto {
+export interface ListItemsGoogleBooks {
+    kind: string
+    totalItems: number
+    items: ItemGoogleBooks[]
+  }
+
+export interface ItemGoogleBooks {
     kind: string
     id: string
     etag: string

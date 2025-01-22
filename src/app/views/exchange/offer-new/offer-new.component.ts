@@ -11,7 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BookAdTO } from '../../../models/BookAdTO.model';
 import { BookService } from '../../../services/book.service';
-import { GoogleBooksService } from '../../../services/google-books.service';
 import { BookAdsService } from '../../../services/book-ads.service';
 import { CDNService } from '../../../services/cdn.service';
 import { flatMap } from 'rxjs/internal/operators';
@@ -22,7 +21,6 @@ import { Country } from '../../../models/country.model';
 import { State } from '../../../models/state.model';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
-import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 import { Book } from 'src/app/core/domain/entities/book.entity';
 
 @Component({
@@ -52,7 +50,6 @@ export class OfferNewComponent implements OnInit {
         public bookAdsService: BookAdsService,
         public router: Router,
         public bookService: BookService,
-        public gBookService: GoogleBooksService,
         private translate: TranslateService,
         private route: ActivatedRoute,
         public cdnService: CDNService,

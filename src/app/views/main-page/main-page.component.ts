@@ -1,16 +1,15 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from 'src/app/services/user.service';
-import {FormBuilder} from '@angular/forms';
-import {GoogleBooksService} from 'src/app/services/google-books.service';
-import {AuthService} from '../../services/auth.service';
-import {Book} from '../../models/book.model';
-import {BookService} from '../../services/book.service';
-import {MediaChange, MediaObserver} from '@angular/flex-layout';
-import {Subscription} from 'rxjs';
-import {PageEvent} from '@angular/material/paginator';
-import {BookSearchTO} from '../../models/bookSearchTO.model';
-import {map, take} from 'rxjs/operators';
-import {UserTO} from '../../models/userTO.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
+import { FormBuilder } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { Book } from '../../models/book.model';
+import { BookService } from '../../services/book.service';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { Subscription } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
+import { BookSearchTO } from '../../models/bookSearchTO.model';
+import { map, take } from 'rxjs/operators';
+import { UserTO } from '../../models/userTO.model';
 
 @Component({
     selector: 'app-main-page',
@@ -32,7 +31,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
         public auth: AuthService,
         private userService: UserService,
         private fb: FormBuilder,
-        private gBooksService: GoogleBooksService,
         private bookService: BookService,
         public mediaObserver: MediaObserver,
 
@@ -59,12 +57,12 @@ export class MainPageComponent implements OnInit, OnDestroy {
         const searchBook = new BookSearchTO();
         searchBook.search = this.searchControl.value.book.split(' ').join('+');
         searchBook.page = this.pageEvent.pageIndex;
-        this.bookService.searchMergeBooks(searchBook,  this.pageEvent.pageSize)
+        this.bookService.searchMergeBooks(searchBook, this.pageEvent.pageSize)
             .pipe(
                 map(sb => {
                     sb.googleBooks.items ?
-                    sb.googleBooks.items = sb.googleBooks.items.map( i => this.bookService.convertBookToModel(i)) :
-                    sb.googleBooks.items = [];
+                        sb.googleBooks.items = sb.googleBooks.items.map(i => this.bookService.convertBookToModel(i)) :
+                        sb.googleBooks.items = [];
                     return sb;
                 }),
                 take(1)
@@ -74,10 +72,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
                 let booksConvert = [];
                 booksConvert = res.books.content.concat(res.googleBooks.items);
                 booksConvert?.length > 0 ?
-                this.resulSearch(booksConvert) :
-                this.resetBooks();
+                    this.resulSearch(booksConvert) :
+                    this.resetBooks();
             },
-            error => console.log(error));
+                error => console.log(error));
     }
     changePage(event: PageEvent) {
         this.pageEvent = event;
@@ -85,7 +83,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
 
     resulSearch(booksConvert): void {
-       const result =  booksConvert.map(book => {
+        const result = booksConvert.map(book => {
             if (this.user) {
                 this.bookService.getAllUserBooks().subscribe((userbooks) => {
                     userbooks.books.forEach(userbook => {
@@ -100,9 +98,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
             }
             return book;
         });
-       this.longPromise(500).then(() => {
-           this.books = result;
-       });
+        this.longPromise(500).then(() => {
+            this.books = result;
+        });
     }
     longPromise(delay: number) {
         return new Promise<string>((resolve) => {

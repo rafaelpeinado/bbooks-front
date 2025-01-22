@@ -1,9 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BookCase} from '../../../models/bookCase.model';
-import {GoogleBooksService} from '../../../services/google-books.service';
-import {BookService} from '../../../services/book.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BehaviorSubject, Subscription} from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { BookCase } from '../../../models/bookCase.model';
+import { BookService } from '../../../services/book.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-books',
@@ -15,7 +14,6 @@ export class BooksComponent implements OnInit, OnDestroy {
     inscricao: Subscription;
 
     constructor(
-        private gBookService: GoogleBooksService,
         private route: ActivatedRoute,
         private bookService: BookService,
         private router: Router

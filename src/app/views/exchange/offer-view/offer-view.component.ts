@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Util } from '../../shared/Utils/util';
 import { map, take } from 'rxjs/operators';
 import { BookService } from '../../../services/book.service';
-import { GoogleBooksService } from '../../../services/google-books.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookAdsService } from '../../../services/book-ads.service';
@@ -29,7 +28,6 @@ export class OfferViewComponent implements OnInit {
     userOffer: UserTO;
     constructor(
         public bookService: BookService,
-        public gBookService: GoogleBooksService,
         private translate: TranslateService,
         private route: ActivatedRoute,
         private getBookByIdUseCase: GetBookByIdUseCase,

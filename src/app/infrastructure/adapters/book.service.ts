@@ -18,6 +18,14 @@ export class BookApiService implements BookRepository {
     api: string = environment.api + 'books/';
 
     constructor(private http: HttpClient) { }
+    
+    searchBookByNamePagination(FilterSearch: FilterSearch): Observable<PaginationInterface<Book>> {
+        throw new Error("Method not implemented.");
+    }
+    
+    searchBookByName(bookName: string): Observable<Book[]> {
+        throw new Error("Method not implemented.");
+    }
 
     addBook(book: Book): Observable<Book> {
         return this.http.post<Book>(this.api, book);

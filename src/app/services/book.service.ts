@@ -1,7 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { BookCase } from '../models/bookCase.model';
 import { Book } from '../models/book.model';
-import { GoogleBooksService } from './google-books.service';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError, zip } from 'rxjs';
@@ -17,6 +16,7 @@ import { BookSearchTO } from '../models/bookSearchTO.model';
 import { ApiType } from '../core/domain/enums/api-type.enum';
 import { GetBookByIdUseCase } from '../core/use-cases/book/get-book-by-id.use-case';
 import { BookBuilder } from '../core/domain/builders/book.builder';
+import { SearchBookByNameUseCase } from '../core/use-cases/book/search-book-by-name.use-case';
 
 @Injectable({
     providedIn: 'root'
@@ -30,12 +30,12 @@ export class BookService {
     api = environment.api + 'books/';
 
     constructor(
-        private gBooksService: GoogleBooksService,
         private http: HttpClient,
         private userbookService: UserbookService,
         private authGuard: AuthService,
         private tagService: TagService,
         private getBookByIdUseCase: GetBookByIdUseCase,
+        private searchBookByNameUseCase: SearchBookByNameUseCase,
     ) {
     }
 
@@ -165,9 +165,6 @@ export class BookService {
         return books.map(value => this.convertBookToModel(value));
     }
 
-    save(book: Book): Observable<Book> {
-        return this.http.post<Book>(this.api, book);
-    }
     update(book: Book): Observable<Book> {
         return this.http.put<Book>(this.api + book.id, book);
     }
@@ -193,23 +190,20 @@ export class BookService {
             bc.books = [];
             bc.description = genre;
             bc.id = genre;
-            this.gBooksService.searchByName(genre).subscribe(response => {
-                let books = [];
-                // @ts-ignore
-                books = response.items;
-
-                bc.books = books.map(value => {
-                    const b = this.convertBookToModel(value);
+            this.searchBookByNameUseCase.execute(genre).subscribe((books) => {
+                bc.books = books.map((book) => {
+                    const bookBuilder = new BookBuilder().copyFrom(book);
                     this.getAllUserBooks().subscribe((userbooks) => {
                         userbooks.books.forEach(userbook => {
-                            if (userbook.idBookGoogle === b.id) {
-                                b.status = userbook.status;
-                                b.idUserBook = userbook.id;
-                                b.finishDate = userbook.finishDate;
+                            if (userbook.idBookGoogle === book.id) {
+                                bookBuilder.copy()
+                                    .setStatus(userbook.status)
+                                    .setIdUserBook(userbook.id)
+                                    .setFinishDate(userbook.finishDate);
                             }
                         });
                     });
-                    return b;
+                    return bookBuilder.build();
                 });
                 result.push(bc);
             });
