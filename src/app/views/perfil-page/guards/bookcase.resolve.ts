@@ -1,15 +1,18 @@
-import {Injectable} from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
-import {Observable} from 'rxjs';
-import {UserService} from '../../../services/user.service';
-import {UserTO} from '../../../models/userTO.model';
-import {map, take} from 'rxjs/operators';
-import {BookCase} from '../../../models/bookCase.model';
-import {BookService} from '../../../services/book.service';
-import {UserbookService} from '../../../services/userbook.service';
-import {GoogleBooksService} from '../../../services/google-books.service';
-import {Profile} from '../../../models/profileTO.model';
-import {AuthService} from '../../../services/auth.service';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
+import { UserService } from '../../../services/user.service';
+import { UserTO } from '../../../models/userTO.model';
+import { take } from 'rxjs/operators';
+import { BookCase } from '../../../models/bookCase.model';
+import { BookService } from '../../../services/book.service';
+import { UserbookService } from '../../../services/userbook.service';
+import { GoogleBooksService } from '../../../services/google-books.service';
+import { Profile } from '../../../models/profileTO.model';
+import { AuthService } from '../../../services/auth.service';
+import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
+import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 
 
 @Injectable()
@@ -19,11 +22,10 @@ export class BookcaseResolve implements Resolve<any> {
 
 
     constructor(
-        private bookService: BookService,
         private userService: UserService,
         private userBookService: UserbookService,
-        private gBooksService: GoogleBooksService,
-        private authservice: AuthService
+        private authservice: AuthService,
+        private getBookByIdUseCase: GetBookByIdUseCase,
     ) {
         this.bookCase.books = [];
         this.user.profile = new Profile();
@@ -40,28 +42,28 @@ export class BookcaseResolve implements Resolve<any> {
             this.userBookService.getAllByProfile(user.profile.id)
                 .pipe(take(1))
                 .subscribe(userBook => {
-                userBook.books.forEach(realation => {
-                    if (realation.idBookGoogle) {
-                        this.gBooksService.getById(realation.idBookGoogle).subscribe(book => {
-                            const b = this.bookService.convertBookToModel(book);
-                            b.idUserBook = realation.id;
-                            b.status = realation.status;
-                            b.finishDate = realation.finishDate;
-                            this.bookCase.books.push(b);
+                    userBook.books.forEach(realation => {
+                        let apiType: ApiType;
+                        let id;
 
+                        if (realation.idBookGoogle) {
+                            id = realation.idBookGoogle;
+                            apiType = ApiType.GOOGLE;
+                        } else {
+                            id = realation.idBook ? realation.idBook : realation.book.id;
+                            apiType = ApiType.BBOOKS;
+                        }
+
+                        this.getBookByIdUseCase.execute(id, apiType).subscribe((book) => {
+                            const bookBuilder = new BookBuilder().copyFrom(book)
+                                .setIdUserBook(realation.id)
+                                .setStatus(realation.status)
+                                .setFinishDate(realation.finishDate)
+                                .build();
+                            this.bookCase.books.push(bookBuilder);
                         });
-                    } else {
-                        const id = realation.idBook ? realation.idBook :  realation.book.id;
-                        this.bookService.getById(id)
-                            .subscribe(b => {
-                            b.idUserBook = realation.id;
-                            b.status = realation.status;
-                            b.finishDate = realation.finishDate;
-                            this.bookCase.books.push(b);
-                        });
-                    }
+                    });
                 });
-            });
             this.user.id = user.id;
             this.user.idSocial = user.idSocial;
             this.user.email = user.email;

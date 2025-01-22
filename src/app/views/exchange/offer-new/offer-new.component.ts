@@ -1,26 +1,29 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {UploadComponent} from '../../upload/upload.component';
-import {MatDialog} from '@angular/material/dialog';
-import {AuthService} from '../../../services/auth.service';
-import {Book} from '../../../models/book.model';
-import {SearchBookComponent} from '../../shared/search-book/search-book.component';
-import {BookCondition} from '../../../models/enums/BookCondition.enum';
-import {map, startWith, take} from 'rxjs/operators';
-import {Util} from '../../shared/Utils/util';
-import {ActivatedRoute, Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {BookAdTO} from '../../../models/BookAdTO.model';
-import {BookService} from '../../../services/book.service';
-import {GoogleBooksService} from '../../../services/google-books.service';
-import {BookAdsService} from '../../../services/book-ads.service';
-import {CDNService} from '../../../services/cdn.service';
-import {flatMap} from 'rxjs/internal/operators';
-import {Observable, of} from 'rxjs';
-import {ConsultaCepService} from '../../../services/consulta-cep.service';
-import {City} from '../../../models/city.model';
-import {Country} from '../../../models/country.model';
-import {State} from '../../../models/state.model';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UploadComponent } from '../../upload/upload.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../../../services/auth.service';
+import { SearchBookComponent } from '../../shared/search-book/search-book.component';
+import { BookCondition } from '../../../models/enums/BookCondition.enum';
+import { map, startWith, take } from 'rxjs/operators';
+import { Util } from '../../shared/Utils/util';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { BookAdTO } from '../../../models/BookAdTO.model';
+import { BookService } from '../../../services/book.service';
+import { GoogleBooksService } from '../../../services/google-books.service';
+import { BookAdsService } from '../../../services/book-ads.service';
+import { CDNService } from '../../../services/cdn.service';
+import { flatMap } from 'rxjs/internal/operators';
+import { Observable, of } from 'rxjs';
+import { ConsultaCepService } from '../../../services/consulta-cep.service';
+import { City } from '../../../models/city.model';
+import { Country } from '../../../models/country.model';
+import { State } from '../../../models/state.model';
+import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
+import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
+import { Book } from 'src/app/core/domain/entities/book.entity';
 
 @Component({
     selector: 'app-offer-new',
@@ -31,7 +34,7 @@ export class OfferNewComponent implements OnInit {
     isLinear = false;
     formNewOffer: FormGroup;
     files = [];
-    book: Book = new Book();
+    book: Book;
     bookCondition = BookCondition;
     bookAdTO: BookAdTO;
     filesSend = [];
@@ -54,6 +57,7 @@ export class OfferNewComponent implements OnInit {
         private route: ActivatedRoute,
         public cdnService: CDNService,
         private consultaCepService: ConsultaCepService,
+        private getBookByIdUseCase: GetBookByIdUseCase,
     ) {
     }
 
@@ -151,19 +155,21 @@ export class OfferNewComponent implements OnInit {
 
     getBook(): void {
         Util.loadingScreen();
+        let apiType: ApiType;
+        let id;
+
         if (this.bookAdTO.idBookGoogle) {
-            this.gBookService.getById(this.bookAdTO.idBookGoogle).subscribe(b => {
-                const book = this.bookService.convertBookToModel(b);
-                this.book = book;
-                Util.stopLoading();
-            });
+            id = this.bookAdTO.idBookGoogle;
+            apiType = ApiType.GOOGLE;
         } else {
-            // tslint:disable-next-line:radix
-            this.bookService.getById(Number.parseInt(this.bookAdTO.bookId)).subscribe(b => {
-                this.book = b;
-                Util.stopLoading();
-            });
+            id = this.bookAdTO.bookId;
+            apiType = ApiType.BBOOKS;
         }
+
+        this.getBookByIdUseCase.execute(id, apiType).subscribe((book) => {
+            this.book = book;
+            Util.stopLoading();
+        })
     }
 
     private createForm(): void {
@@ -311,8 +317,8 @@ export class OfferNewComponent implements OnInit {
 
     uploadFile(positionFile: number, id: string): Observable<any> {
         return this.cdnService.uploadFeedApi(
-            {file: this.filesSend[positionFile], type: 'image'},
-            {objectType: 'book_ad_id', bookAdId: id}
+            { file: this.filesSend[positionFile], type: 'image' },
+            { objectType: 'book_ad_id', bookAdId: id }
         );
     }
 
@@ -322,9 +328,9 @@ export class OfferNewComponent implements OnInit {
             Util.loadingScreen();
             upload.pipe(take(1))
                 .subscribe(r => {
-                        Util.stopLoading();
-                        this.router.navigateByUrl('/exchange/my-offers');
-                    },
+                    Util.stopLoading();
+                    this.router.navigateByUrl('/exchange/my-offers');
+                },
                     error => {
                         Util.stopLoading();
                         this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
+import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
+import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { ReadingTargetTO } from 'src/app/models/readingTargetTO.model';
 import { UserBookTO } from 'src/app/models/userBookTO';
 import { AuthService } from 'src/app/services/auth.service';
-import { BookService } from 'src/app/services/book.service';
-import { GoogleBooksService } from 'src/app/services/google-books.service';
 import { ReadingTargetService } from 'src/app/services/reading-target.service';
 
 @Component({
@@ -22,11 +23,10 @@ export class ReadingTargetProgressComponent implements OnInit {
 
   constructor(
     private readingTargetService: ReadingTargetService,
-    private bookService: BookService,
-    private gBooksService: GoogleBooksService,
+    private getBookByIdUseCase: GetBookByIdUseCase,
     public authService: AuthService
   ) {
-   }
+  }
 
   ngOnInit(): void {
     this.getPreviousGoals();
@@ -34,51 +34,42 @@ export class ReadingTargetProgressComponent implements OnInit {
 
   getPreviousGoals() {
     this.readingTargetService.getAllByProfileId(this.authService.getUser().profile.id)
-    .subscribe(
-      (res) => {
-        this.previousGoals = res;
-        this.currentReadingTarget = this.previousGoals[0];
-        if (this.currentReadingTarget?.targets?.length > 0) {
+      .subscribe(
+        (res) => {
+          this.previousGoals = res;
+          this.currentReadingTarget = this.previousGoals[0];
+          if (this.currentReadingTarget?.targets?.length > 0) {
             this.getBookToUserBook(this.currentReadingTarget?.targets);
-        }
-      },
-      error => {
+          }
+        },
+        error => {
           console.log('PreviousGoals Error', error);
-      }
-    );
+        }
+      );
   }
 
   getBookToUserBook(userBooks: UserBookTO[]) {
     userBooks.forEach((realation, i) => {
+      let apiType: ApiType;
+      let id;
+
       if (realation.idBookGoogle) {
-        return this.gBooksService.getById(realation.idBookGoogle).pipe(
-            map(book => {
-                const b = this.bookService.convertBookToModel(book);
-                b.idUserBook = realation.id;
-                b.status = realation.status;
-                b.finishDate = realation.finishDate;
-                return b;
-            })
-        ).subscribe(
-          (resBook) => {
-            userBooks[i].book = resBook;
-          }
-        );
-    } else {
-        const id = realation.idBook ? realation.idBook : realation.book.id;
-        return this.bookService.getById(id as number).pipe(
-            map(b => {
-                b.idUserBook = realation.id;
-                b.status = realation.status;
-                b.finishDate = realation.finishDate;
-                return b;
-            })
-        ).subscribe(
-          (resBook) => {
-            userBooks[i].book = resBook;
-          }
-        );
-    }
+        id = realation.idBookGoogle;
+        apiType = ApiType.GOOGLE;
+      } else {
+        id = realation.idBook ? realation.idBook : realation.book.id;
+        apiType = ApiType.BBOOKS;
+      }
+
+      return this.getBookByIdUseCase.execute(id, apiType).pipe(
+        map((book) => new BookBuilder()
+          .copyFrom(book)
+          .setIdUserBook(realation.id)
+          .setStatus(realation.status)
+          .setFinishDate(realation.finishDate)
+          .build()
+        )
+      ).subscribe((resBook) => userBooks[i].book = resBook);
     });
   }
 }

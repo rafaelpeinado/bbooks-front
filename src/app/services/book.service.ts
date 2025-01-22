@@ -1,21 +1,22 @@
-import {EventEmitter, Injectable, Output} from '@angular/core';
-import {BookCase} from '../models/bookCase.model';
-import {Book} from '../models/book.model';
-import {GoogleBooksService} from './google-books.service';
-import {environment} from '../../environments/environment';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable, throwError, zip} from 'rxjs';
-import {Author} from '../models/author.model';
-import {UserbookService} from './userbook.service';
-import {of} from 'rxjs';
-import {AuthService} from './auth.service';
-import {TagService} from './tag.service';
-import {UserBookTO} from '../models/userBookTO';
-import {BookPagination} from '../models/pagination/book.pagination';
-import {catchError, map, mergeMap} from 'rxjs/operators';
-import {Tag} from '../models/tag';
-import {BookSearchTO} from '../models/bookSearchTO.model';
+import { EventEmitter, Injectable, Output } from '@angular/core';
+import { BookCase } from '../models/bookCase.model';
+import { Book } from '../models/book.model';
+import { GoogleBooksService } from './google-books.service';
+import { environment } from '../../environments/environment';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, throwError, zip } from 'rxjs';
+import { Author } from '../models/author.model';
+import { UserbookService } from './userbook.service';
+import { of } from 'rxjs';
+import { AuthService } from './auth.service';
+import { TagService } from './tag.service';
+import { UserBookTO } from '../models/userBookTO';
+import { BookPagination } from '../models/pagination/book.pagination';
+import { catchError, map, mergeMap } from 'rxjs/operators';
+import { BookSearchTO } from '../models/bookSearchTO.model';
 import { ApiType } from '../core/domain/enums/api-type.enum';
+import { GetBookByIdUseCase } from '../core/use-cases/book/get-book-by-id.use-case';
+import { BookBuilder } from '../core/domain/builders/book.builder';
 
 @Injectable({
     providedIn: 'root'
@@ -33,7 +34,8 @@ export class BookService {
         private http: HttpClient,
         private userbookService: UserbookService,
         private authGuard: AuthService,
-        private tagService: TagService
+        private tagService: TagService,
+        private getBookByIdUseCase: GetBookByIdUseCase,
     ) {
     }
 
@@ -67,7 +69,7 @@ export class BookService {
     }
 
     getAllBooks(): Observable<any> {
-       return this.getAllUserBooks()
+        return this.getAllUserBooks()
             .pipe(
                 mergeMap(userBook => {
                     return zip(
@@ -100,34 +102,34 @@ export class BookService {
                     return of(result);
                 }),
                 catchError((err => {
-                        console.log('BookService - error, getBookCaseByTag', err);
-                        return throwError(err);
-                    })
+                    console.log('BookService - error, getBookCaseByTag', err);
+                    return throwError(err);
+                })
                 ));
     }
 
     getBooksByUserBooks(userBook: UserBookTO[]): any[] {
-            return userBook.map(realation => {
-                if (realation.idBookGoogle) {
-                    return this.gBooksService.getById(realation.idBookGoogle).pipe(
-                        map(book => {
-                            const b = this.convertBookToModel(book);
-                            b.idUserBook = realation.id;
-                            b.status = realation.status;
-                            return b;
-                        })
-                    );
-                } else {
-                    const id = realation.idBook ? realation.idBook : realation.book.id;
-                    return this.getById(id as number).pipe(
-                        map(b => {
-                            b.idUserBook = realation.id;
-                            b.status = realation.status;
-                            return b;
-                        })
-                    );
-                }
-            });
+        return userBook.map(realation => {
+            let apiType: ApiType;
+            let id;
+
+            if (realation.idBookGoogle) {
+                id = realation.idBookGoogle;
+                apiType = ApiType.GOOGLE;
+            } else {
+                id = realation.idBook ? realation.idBook : realation.book.id;
+                apiType = ApiType.BBOOKS;
+            }
+
+            return this.getBookByIdUseCase.execute(id, apiType).pipe(
+                map((book) => new BookBuilder()
+                    .copyFrom(book)
+                    .setIdUserBook(realation.id)
+                    .setStatus(realation.status)
+                    .build()
+                )
+            )
+        });
     }
 
     convertBookToModel(book: any): Book {
@@ -220,16 +222,12 @@ export class BookService {
             .set('search', search)
             .set('page', page.toString())
             .set('size', size.toString());
-        return this.http.get<BookPagination>(this.api + 'search', {params});
+        return this.http.get<BookPagination>(this.api + 'search', { params });
     }
 
     searchMergeBooks(bookSearch: BookSearchTO, size: number): Observable<BookSearchTO> {
         const params = new HttpParams()
             .set('size', size.toString());
-        return this.http.post<BookSearchTO>(this.api + 'searchByString', bookSearch, {params});
-    }
-
-    getById(id: number): Observable<Book> {
-        return this.http.get<Book>(this.api + id);
+        return this.http.post<BookSearchTO>(this.api + 'searchByString', bookSearch, { params });
     }
 }

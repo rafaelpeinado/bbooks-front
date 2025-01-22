@@ -4,17 +4,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { map, switchMap, take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { ReadingTrackingTO } from '../../../models/ReadingTrackingTO.model';
 import { TrackingDialogComponent } from '../tracking-dialog/tracking-dialog.component';
-import { ReadingTrackingService } from '../../../services/reading-tracking.service';
 import {
     BookStatus,
     BookStatusEnglish,
     mapBookStatusEnglish
 } from '../../../models/enums/BookStatus.enum';
 import { BookAddDialogComponent } from '../../shared/book-add-dialog/book-add-dialog.component';
-import { GoogleBooksService } from '../../../services/google-books.service';
 import { BookService } from '../../../services/book.service';
 import { TrackingViewComponent } from '../tracking-view/tracking-view.component';
 import { TrackingTO } from '../../../models/TrackingTO.model';
@@ -23,7 +21,6 @@ import { ReviewTO } from '../../../models/ReviewTO.model';
 import { AuthService } from '../../../services/auth.service';
 import { ReviewDialogComponent } from '../review-dialog/review-dialog.component';
 import { ReviewService } from '../../../services/review.service';
-import { ProfileService } from '../../../services/profile.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ReferBookDialogComponent } from '../../shared/refer-book-dialog/refer-book-dialog.component';
 import { PageEvent } from '@angular/material/paginator';

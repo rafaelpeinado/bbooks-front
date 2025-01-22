@@ -1,23 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {TranslateService} from '@ngx-translate/core';
-import {UserTO} from '../../models/userTO.model';
-import {UserService} from '../../services/user.service';
-import {map, take} from 'rxjs/operators';
-import {FriendsService} from '../../services/friends.service';
-import {FriendRequest} from '../../models/friendRequest.model';
-import {Friend} from '../../models/friend.model';
-import {BookRecommendationService} from 'src/app/services/book-recommendation.service';
-import {BookRecommendationTO} from 'src/app/models/bookRecommendationTO.model';
-import {ProfileService} from 'src/app/services/profile.service';
-import {BookService} from 'src/app/services/book.service';
-import {GoogleBooksService} from 'src/app/services/google-books.service';
-import {GroupMemberService} from '../../services/group-member.service';
-import {GroupInviteTO} from '../../models/GroupInviteTO.model';
-import {Util} from '../../views/shared/Utils/util';
-import {PublicProfileService} from '../../services/public-profile.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { TranslateService } from '@ngx-translate/core';
+import { UserTO } from '../../models/userTO.model';
+import { UserService } from '../../services/user.service';
+import { map, take } from 'rxjs/operators';
+import { FriendsService } from '../../services/friends.service';
+import { FriendRequest } from '../../models/friendRequest.model';
+import { Friend } from '../../models/friend.model';
+import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
+import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
+import { ProfileService } from 'src/app/services/profile.service';
+import { GroupMemberService } from '../../services/group-member.service';
+import { GroupInviteTO } from '../../models/GroupInviteTO.model';
+import { Util } from '../../views/shared/Utils/util';
+import { PublicProfileService } from '../../services/public-profile.service';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 
 @Component({
     selector: 'app-nav-bar',
@@ -42,8 +41,6 @@ export class NavBarComponent implements OnInit {
         private friendService: FriendsService,
         private bookRecommendation: BookRecommendationService,
         private profileService: ProfileService,
-        private bookService: BookService,
-        private gBookService: GoogleBooksService,
         public groupMembersService: GroupMemberService,
         private publicProfileService: PublicProfileService
     ) {
@@ -75,8 +72,8 @@ export class NavBarComponent implements OnInit {
     getRequests() {
         if (this.isLogged) {
             this.friendService.getRequests().subscribe(requests => {
-                    this.requests = requests;
-                },
+                this.requests = requests;
+            },
                 error => {
                     this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
                         Util.showErrorDialog(message);
@@ -167,9 +164,18 @@ export class NavBarComponent implements OnInit {
                 map((recommendations: BookRecommendationTO[]) => {
                     return recommendations.map(r => {
                         r.profileTO = this.profileService.getById(r.profileSubmitter);
-                        r.book = r.idBook ?
-                            this.bookService.getById(r.idBook) :
-                            this.gBookService.getById(r.idBookGoogle).pipe(map(b => this.bookService.convertBookToModel(b)));
+
+                        let apiType: ApiType;
+                        let id;
+
+                        if (r.idBook) {
+                            id = r.idBook;
+                            apiType = ApiType.BBOOKS;
+                        } else {
+                            id = r.idBookGoogle;
+                            apiType = ApiType.GOOGLE;
+                        }
+                        r.book = this.getBookByIdUseCase.execute(id, apiType);
                         return r;
                     });
                 })
@@ -182,7 +188,7 @@ export class NavBarComponent implements OnInit {
     }
 
     routerRecommendation(idGoogleBook: string): any {
-        return idGoogleBook ? {api: 'google'} : {};
+        return idGoogleBook ? { api: 'google' } : {};
     }
 
     getInvitesGroup(): void {
@@ -197,7 +203,7 @@ export class NavBarComponent implements OnInit {
                 })
             ).subscribe(result => {
                 this.invitesGroup = result;
-        });
+            });
 
     }
 

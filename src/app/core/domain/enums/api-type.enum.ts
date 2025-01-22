@@ -1,4 +1,4 @@
 export enum ApiType {
-    BBOOKS = 'books',
+    BBOOKS = 'bbooks',
     GOOGLE = 'google',
 }
