@@ -27,10 +27,10 @@ export class BookViewResolve implements Resolve<Book> {
         const id = route.params.id;
 
 
-        this.getBookByIdUseCase.execute(id, api).pipe(
+        return this.getBookByIdUseCase.execute(id, api).pipe(
             map((response) => {
                 const bookBuilder = new BookBuilder().copyFrom(response).setApi(api);
-                this.userbooks.books.array.forEach(userbook => {
+                this.userbooks.books.forEach(userbook => {
                     bookBuilder.copy()
                         .setIdUserBook(userbook.id)
                         .setStatus(userbook.status)
