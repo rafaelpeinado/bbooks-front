@@ -1,8 +1,7 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Book} from '../../../models/book.model';
-import {BookService} from '../../../services/book.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Book } from '../../../models/book.model';
 import {
     BookStatus,
     BookStatusEnglish,
@@ -10,15 +9,15 @@ import {
     mapBookStatus,
     mapBookStatusEnglish
 } from '../../../models/enums/BookStatus.enum';
-import {UserbookService} from '../../../services/userbook.service';
-import {UserBookTO} from '../../../models/userBookTO';
-import {AuthService} from '../../../services/auth.service';
-import {Tag} from '../../../models/tag';
-import {TagService} from '../../../services/tag.service';
-import {TranslateService} from '@ngx-translate/core';
-import {zip} from 'rxjs';
-import {Util} from '../Utils/util';
-import {DateAdapter} from '@angular/material/core';
+import { UserbookService } from '../../../services/userbook.service';
+import { UserBookTO } from '../../../models/userBookTO';
+import { AuthService } from '../../../services/auth.service';
+import { Tag } from '../../../models/tag';
+import { TagService } from '../../../services/tag.service';
+import { TranslateService } from '@ngx-translate/core';
+import { zip } from 'rxjs';
+import { Util } from '../Utils/util';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
     selector: 'app-book-add-dialog',
@@ -46,7 +45,6 @@ export class BookAddDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: { book: Book },
         public dialogRef: MatDialogRef<BookAddDialogComponent>,
         private formBuilder: FormBuilder,
-        private bookService: BookService,
         private userbookService: UserbookService,
         private authService: AuthService,
         private tagService: TagService,

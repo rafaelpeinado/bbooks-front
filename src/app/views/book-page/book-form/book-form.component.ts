@@ -1,18 +1,19 @@
-import {Component, Inject, OnChanges, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Book} from '../../../models/book.model';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {BookService} from '../../../services/book.service';
-import {Author} from '../../../models/author.model';
-import {AuthorService} from '../../../services/author.service';
-import {CDNService} from '../../../services/cdn.service';
-import {UploadComponent} from '../../upload/upload.component';
-import {MatDialog} from '@angular/material/dialog';
-import {TranslateService} from '@ngx-translate/core';
-import {Util} from '../../shared/Utils/util';
-import {Router} from '@angular/router';
-import {BarCodeScannerComponent} from '../../shared/bar-code-scanner/bar-code-scanner.component';
+import { Component, Inject, OnChanges, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Book } from '../../../models/book.model';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { BookService } from '../../../services/book.service';
+import { Author } from '../../../models/author.model';
+import { AuthorService } from '../../../services/author.service';
+import { CDNService } from '../../../services/cdn.service';
+import { UploadComponent } from '../../upload/upload.component';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { Util } from '../../shared/Utils/util';
+import { Router } from '@angular/router';
+import { BarCodeScannerComponent } from '../../shared/bar-code-scanner/bar-code-scanner.component';
+import { AddBookUseCase } from 'src/app/core/use-cases/book/add-book.use-case';
 
 
 @Component({
@@ -35,11 +36,12 @@ export class BookFormComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private bookService: BookService,
+        private addBookUseCase: AddBookUseCase,
         private authorService: AuthorService,
         private cdnService: CDNService,
         public dialog: MatDialog,
         public translate: TranslateService,
-        public router: Router
+        public router: Router,
     ) {
         this.book.authors = [];
     }
@@ -51,7 +53,7 @@ export class BookFormComponent implements OnInit {
 
     private createForm(): void {
         this.formBook = this.formBuilder.group({
-            image: new FormControl({value: null, disabled: true}, Validators.required),
+            image: new FormControl({ value: null, disabled: true }, Validators.required),
             isbn10: new FormControl(null, Validators.required),
             title: new FormControl(null, Validators.required),
             publisher: new FormControl(null, Validators.required),
@@ -69,9 +71,9 @@ export class BookFormComponent implements OnInit {
 
     private createAuthorsForm(id: number, name: string): FormGroup {
         return new FormGroup({
-                id: new FormControl(id),
-                name: new FormControl(name, Validators.required),
-            }
+            id: new FormControl(id),
+            name: new FormControl(name, Validators.required),
+        }
         );
     }
 
@@ -165,16 +167,16 @@ export class BookFormComponent implements OnInit {
     }
     saveBook() {
         Util.loadingScreen();
-        this.bookService.save(this.formBook.value)
+        this.addBookUseCase.execute(this.formBook.value)
             .subscribe(book => {
                 Util.loadingScreen();
                 this.cdnService.upload(
-                    {file: this.file, type: 'image'},
-                    {objectType: 'book_image', bookId: book.id}
+                    { file: this.file, type: 'image' },
+                    { objectType: 'book_image', bookId: book.id }
                 ).subscribe(() => {
-                        Util.stopLoading();
-                        this.router.navigateByUrl('/book/' + book.id);
-                    },
+                    Util.stopLoading();
+                    this.router.navigateByUrl('/book/' + book.id);
+                },
                     error => {
                         Util.stopLoading();
                         this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
@@ -183,21 +185,22 @@ export class BookFormComponent implements OnInit {
                         console.log('error upload', error);
                     });
             },
-        error => {
-                let codMessage = '';
-                if (error.error.message.includes('BK001')) {
-                    codMessage = 'BK001';
-                }
-                if (codMessage) {
-                    this.translate.get('MESSAGE_ERROR.' + codMessage).subscribe(message => {
-                         Util.showErrorDialog(message);
-                    });
-                } else {
-                    this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {
-                        Util.showErrorDialog(msg);
-                    });
-                    console.log('error book form', error);
-                }});
+                error => {
+                    let codMessage = '';
+                    if (error.error.message.includes('BK001')) {
+                        codMessage = 'BK001';
+                    }
+                    if (codMessage) {
+                        this.translate.get('MESSAGE_ERROR.' + codMessage).subscribe(message => {
+                            Util.showErrorDialog(message);
+                        });
+                    } else {
+                        this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {
+                            Util.showErrorDialog(msg);
+                        });
+                        console.log('error book form', error);
+                    }
+                });
     }
 
     readCodeBar(): void {

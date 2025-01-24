@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Book} from '../../../models/book.model';
-import {BookStatus, mapBookStatus} from '../../../models/enums/BookStatus.enum';
-import {Router} from '@angular/router';
-import {UserbookService} from '../../../services/userbook.service';
-import {BookAddDialogComponent} from '../book-add-dialog/book-add-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
-import {BookService} from '../../../services/book.service';
-import {switchMap} from 'rxjs/operators';
-import {GoogleBooksService} from '../../../services/google-books.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Book } from '../../../models/book.model';
+import { BookStatus, mapBookStatus } from '../../../models/enums/BookStatus.enum';
+import { Router } from '@angular/router';
+import { UserbookService } from '../../../services/userbook.service';
+import { BookAddDialogComponent } from '../book-add-dialog/book-add-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { BookService } from '../../../services/book.service';
+import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 
 @Component({
     selector: 'app-book-card',
@@ -18,7 +18,7 @@ export class BookCardComponent implements OnInit {
 
     @Output() bookReturn = new EventEmitter<any>();
 
-    @Input() book: Book;
+    @Input() book: any;
 
     @Input() deviceXs: boolean;
 
@@ -39,7 +39,7 @@ export class BookCardComponent implements OnInit {
         private userbookService: UserbookService,
         public dialog: MatDialog,
         private bookService: BookService,
-        private gbookService: GoogleBooksService
+        private getBookByIdUseCase: GetBookByIdUseCase,
     ) {
     }
 
@@ -67,9 +67,9 @@ export class BookCardComponent implements OnInit {
             status: mapBookStatus.get(bookStatus)
         };
         this.userbookService.changeStatus(userBookUpdateStatusTO).subscribe(value => {
-                this.book.status = value.status;
-                this.bookReturn.emit({status: value.status, book});
-            },
+            this.book.status = value.status;
+            this.bookReturn.emit({ status: value.status, book });
+        },
             error => {
                 console.log('Error', error);
             });
@@ -90,41 +90,22 @@ export class BookCardComponent implements OnInit {
     }
 
     getBook(): void {
-        if (this.book.api === 'google') {
-            this.bookService.getAllUserBooks().subscribe((userbooks) => {
-                this.gbookService.getById(this.book.id).subscribe(b => {
-                    const book = this.bookService.convertBookToModel(b);
-                    userbooks.books.forEach(userbook => {
-                        if (userbook.idBookGoogle === book.id) {
-                            book.status = userbook.status;
-                            book.idUserBook = userbook.id;
-                            book.finishDate = userbook.finishDate;
-                            book.finishDate = userbook.finishDate;
-                        }
-                    });
-                    this.book = book;
-                    this.userBook = this.book.idUserBook ? true : false;
-                });
-            });
-        } else {
-            this.bookService.getAllUserBooks().subscribe((userbooks) => {
-                // tslint:disable-next-line:radix
-                this.bookService.getById(Number.parseInt(this.book.id)).subscribe(b => {
-                    userbooks.books.forEach(userbook => {
-                        if (userbook?.idBook === b.id) {
-                            b.status = userbook.status;
-                            b.idUserBook = userbook.id;
-                            b.finishDate = userbook.finishDate;
-                            console.log(userbook);
 
-                        }
-                    });
-                    this.book = b;
-                    this.userBook = this.book.idUserBook ? true : false;
-                });
+        this.bookService.getAllUserBooks().subscribe((userbooks) => {
+            this.getBookByIdUseCase.execute(this.book.id, this.book.api).subscribe((book) => {
+                const bookBuilder = new BookBuilder().copyFrom(book);
+                userbooks.forEach((userbook) => {
+                    if (userbook.book.id === book.id) {
+                        bookBuilder.copy()
+                        .setStatus(userbook.status)
+                        .setIdUserBook(+userbook.id)
+                        .setFinishDate(userbook.finishDate);
+                    }
+                })
+                this.book = bookBuilder.build();
+                this.userBook = this.book.idUserBook ? true : false;
             });
-        }
-
+        });
     }
 
     verifyrouter(): boolean {

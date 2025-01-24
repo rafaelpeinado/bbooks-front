@@ -1,18 +1,19 @@
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {BookService} from '../../../services/book.service';
-import {Book} from '../../../models/book.model';
-import {Observable} from 'rxjs';
-import {GoogleBooksService} from '../../../services/google-books.service';
-import {of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { BookService } from '../../../services/book.service';
+import { Book } from '../../../models/book.model';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
+import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 
 @Injectable()
 export class BookViewResolve implements Resolve<Book> {
     userbooks;
     constructor(
         private bookService: BookService,
-        private gBookService: GoogleBooksService
+        private getBookByIdUseCase: GetBookByIdUseCase,
     ) {
         this.bookService.getAllUserBooks().subscribe((userbooks) => {
             this.userbooks = userbooks;
@@ -26,35 +27,21 @@ export class BookViewResolve implements Resolve<Book> {
         const api = route.queryParams.api;
         const id = route.params.id;
 
-        if (api === 'google') {
-            return this.gBookService.getById(id).pipe(map(b => {
-                const book = this.bookService.convertBookToModel(b);
-                this.userbooks.books.forEach(userbook => {
-                    if (userbook.idBookGoogle === book.id) {
-                        book.idUserBook = userbook.id;
-                        book.status = userbook.status;
-                        book.finishDate = userbook.finishDate;
+
+        return this.getBookByIdUseCase.execute(id, api).pipe(
+            map((response) => {
+                const bookBuilder = new BookBuilder().copyFrom(response).setApi(api);
+                const userBooks: UserBook[] = this.userbooks;
+                userBooks.forEach((userbook) => {
+                    if (userbook.book.id === response.id) {
+                        bookBuilder.copy()
+                            .setIdUserBook(+userbook.id)
+                            .setStatus(userbook.status)
+                            .setFinishDate(userbook.finishDate);
                     }
                 });
-                book.api = 'google';
-                return book;
-            }));
-        } else {
-            return this.bookService.getById(id)
-                .pipe(
-                    map(b => {
-                        this.userbooks.books.forEach(userbook => {
-                            if (userbook?.idBook === b.id) {
-                                b.idUserBook = userbook.id;
-                                b.status = userbook.status;
-                                b.finishDate = userbook.finishDate;
-                            }
-                        });
-                        b.api = 'bbooks';
-                        return b;
-                    })
-                );
-        }
-
+                return bookBuilder.build();
+            }),
+        );
     }
 }

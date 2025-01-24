@@ -1,18 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {Util} from '../../shared/Utils/util';
-import {map, take} from 'rxjs/operators';
-import {BookService} from '../../../services/book.service';
-import {GoogleBooksService} from '../../../services/google-books.service';
-import {TranslateService} from '@ngx-translate/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BookAdsService} from '../../../services/book-ads.service';
-import {BookAdTO} from '../../../models/BookAdTO.model';
-import {Book} from '../../../models/book.model';
-import {AuthService} from '../../../services/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { Util } from '../../shared/Utils/util';
+import { map, take } from 'rxjs/operators';
+import { BookService } from '../../../services/book.service';
+import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BookAdsService } from '../../../services/book-ads.service';
+import { BookAdTO } from '../../../models/BookAdTO.model';
+import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
-import {UserService} from '../../../services/user.service';
-import {UserTO} from '../../../models/userTO.model';
-import {zip} from 'rxjs';
+import { UserService } from '../../../services/user.service';
+import { UserTO } from '../../../models/userTO.model';
+import { zip } from 'rxjs';
+import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
+import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
+import { Book } from 'src/app/core/domain/entities/book.entity';
 
 @Component({
     selector: 'app-offer-view',
@@ -22,13 +24,13 @@ import {zip} from 'rxjs';
 export class OfferViewComponent implements OnInit {
     slideIndex = 0;
     bookAdTO: BookAdTO;
-    book: Book = new Book();
+    book: Book;
     userOffer: UserTO;
     constructor(
         public bookService: BookService,
-        public gBookService: GoogleBooksService,
         private translate: TranslateService,
         private route: ActivatedRoute,
+        private getBookByIdUseCase: GetBookByIdUseCase,
         public bookAdsService: BookAdsService,
         public authService: AuthService,
         public router: Router,
@@ -72,25 +74,28 @@ export class OfferViewComponent implements OnInit {
     }
     getBook() {
         Util.loadingScreen();
+        let apiType: ApiType;
+        let id;
+
         if (this.bookAdTO.idBookGoogle) {
-            this.gBookService.getById(this.bookAdTO.idBookGoogle)
-                .pipe(take(1))
-                .subscribe(b => {
-                const book = this.bookService.convertBookToModel(b);
-                this.book = book;
-                this.bookAdTO.images.push(this.book.image);
-                this.currentSlide(0);
-                Util.stopLoading();
-            });
+            id = this.bookAdTO.idBookGoogle;
+            apiType = ApiType.GOOGLE;
         } else {
-            // tslint:disable-next-line:radix
-            this.bookService.getById(Number.parseInt(this.bookAdTO.bookId))
-                .pipe(take(1))
-                .subscribe(b => {
-                this.book = b;
+            id = this.bookAdTO.bookId;
+            apiType = ApiType.BBOOKS;
+        }
+
+        this.getBookByIdUseCase.execute(id, apiType)
+            .subscribe((book) => {
+                this.book = new BookBuilder()
+                    .copyFrom(book)
+                    .build();
+                if (apiType === ApiType.GOOGLE) {
+                    this.bookAdTO.images.push(this.book.image);
+                    this.currentSlide(0);
+                }
                 Util.stopLoading();
             });
-        }
     }
 
     showSlides(n) {
@@ -120,7 +125,7 @@ export class OfferViewComponent implements OnInit {
         if (dots?.length > 0) {
             dots[this.slideIndex].className += ' active';
         }
-//    captionText.innerHTML = dots[this.slideIndex - 1 ]['alt'];
+        //    captionText.innerHTML = dots[this.slideIndex - 1 ]['alt'];
     }
 
     currentSlide(n) {
@@ -139,7 +144,7 @@ export class OfferViewComponent implements OnInit {
             // @ts-ignore
             Swal.fire({
                 icon: 'warning',
-                text: messages[0] ,
+                text: messages[0],
                 showConfirmButton: true,
                 confirmButtonText: messages[2],
                 showCancelButton: true,
@@ -157,12 +162,12 @@ export class OfferViewComponent implements OnInit {
         this.bookAdsService.delete(id)
             .pipe(take(1))
             .subscribe(() => {
-                    Util.stopLoading();
-                    this.translate.get('EXCHANGE.OFFER_EXCLUIDA').subscribe(msg => {
-                        Util.showSuccessDialog(msg);
-                    });
-                    this.router.navigate(['/exchange/my-offers/']);
-                },
+                Util.stopLoading();
+                this.translate.get('EXCHANGE.OFFER_EXCLUIDA').subscribe(msg => {
+                    Util.showSuccessDialog(msg);
+                });
+                this.router.navigate(['/exchange/my-offers/']);
+            },
                 error => {
                     Util.stopLoading();
                     this.verifyErrorOfferView(error, 'error delete offer on offer view');
@@ -183,7 +188,7 @@ export class OfferViewComponent implements OnInit {
             this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {
                 Util.showErrorDialog(msg);
             });
-            console.log(locationError + ': ' , error);
+            console.log(locationError + ': ', error);
         }
     }
     isMobile() {

@@ -10,5 +10,5 @@ export class BookRecommendationTO {
     idBook: number;
     comentario: string;
     profileTO: Observable<Profile>;
-    book: Observable<Book>;
+    book: Observable<any>;
 }

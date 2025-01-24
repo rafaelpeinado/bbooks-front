@@ -1,21 +1,20 @@
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {BookService} from '../../../services/book.service';
-import {Book} from '../../../models/book.model';
-import {Observable} from 'rxjs';
-import {GoogleBooksService} from '../../../services/google-books.service';
-import {BookCase} from '../../../models/bookCase.model';
-import {of} from 'rxjs';
-import {TagService} from '../../../services/tag.service';
-import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { BookService } from '../../../services/book.service';
+import { Book } from '../../../models/book.model';
+import { Observable } from 'rxjs';
+import { BookCase } from '../../../models/bookCase.model';
+import { of } from 'rxjs';
+import { SearchBookByNameUseCase } from 'src/app/core/use-cases/book/search-book-by-name.use-case';
+import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
+
 
 @Injectable()
 export class BookEstanteResolve implements Resolve<Book[]> {
 
     constructor(
         private bookService: BookService,
-        private gBooksService: GoogleBooksService,
-        private tagService: TagService
+        private searchBookByNameUseCase: SearchBookByNameUseCase,
     ) {
     }
 
@@ -36,24 +35,25 @@ export class BookEstanteResolve implements Resolve<Book[]> {
                 this.bookService.getAllBooks().subscribe(books => {
                     bookCase.books = books;
                 },
-                error => console.log('errro', error));
+                    error => console.log('errro', error));
             }
         } else {
-            this.gBooksService.searchByName(tag).subscribe(books => {
-                bookCase.books = this.bookService.convertBookToBookList(books.items).map(book => {
+            this.searchBookByNameUseCase.execute(tag).subscribe((books) => {
+                bookCase.books = books.map((book) => {
+                    const bookBuilder = new BookBuilder().copyFrom(book);
                     this.bookService.getAllUserBooks().subscribe((userbooks) => {
-                        userbooks.books.forEach(userbook => {
-                            if (userbook.idBookGoogle === book.id) {
-                                book.status = userbook.status;
-                                book.idUserBook = userbook.id;
-                                book.finishDate = userbook.finishDate;
+                        userbooks.forEach((userbook) => {
+                            if (userbook.book.id === book.id) {
+                                bookBuilder.copy()
+                                .setStatus(userbook.status)
+                                .setIdUserBook(+userbook.id)
+                                .setFinishDate(userbook.finishDate);
                             }
-                        });
+                        })
                     });
-                    return book;
-                });
-
-            });
+                    return bookBuilder.build();
+                })
+            })
         }
         return of(bookCase);
     }

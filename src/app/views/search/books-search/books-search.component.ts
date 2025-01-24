@@ -1,16 +1,14 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Book} from '../../../models/book.model';
-import {Subscription} from 'rxjs';
-import {PageEvent} from '@angular/material/paginator';
-import {AuthService} from '../../../services/auth.service';
-import {UserService} from '../../../services/user.service';
-import {FormBuilder} from '@angular/forms';
-import {GoogleBooksService} from '../../../services/google-books.service';
-import {BookService} from '../../../services/book.service';
-import {MediaChange, MediaObserver} from '@angular/flex-layout';
-import {BookSearchTO} from '../../../models/bookSearchTO.model';
-import {map, take} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Book } from '../../../models/book.model';
+import { Subscription } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
+import { AuthService } from '../../../services/auth.service';
+import { FormBuilder } from '@angular/forms';
+import { BookService } from '../../../services/book.service';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { BookSearchTO } from '../../../models/bookSearchTO.model';
+import { map, take } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-books-search',
@@ -30,9 +28,7 @@ export class BooksSearchComponent implements OnInit, OnDestroy {
 
     constructor(
         public auth: AuthService,
-        private userService: UserService,
         private fb: FormBuilder,
-        private gBooksService: GoogleBooksService,
         private bookService: BookService,
         public mediaObserver: MediaObserver,
         private route: ActivatedRoute
@@ -74,13 +70,13 @@ export class BooksSearchComponent implements OnInit, OnDestroy {
                     take(1)
                 )
                 .subscribe(res => {
-                        this.totalBooks = res.googleBooks.totalItems + res.books.totalElements;
-                        let booksConvert = [];
-                        booksConvert = res.books.content.concat(res.googleBooks.items);
-                        booksConvert?.length > 0 ?
-                            this.resulSearch(booksConvert) :
-                            this.resetBooks();
-                    },
+                    this.totalBooks = res.googleBooks.totalItems + res.books.totalElements;
+                    let booksConvert = [];
+                    booksConvert = res.books.content.concat(res.googleBooks.items);
+                    booksConvert?.length > 0 ?
+                        this.resulSearch(booksConvert) :
+                        this.resetBooks();
+                },
                     error => console.log(error));
         }
     }
@@ -94,9 +90,8 @@ export class BooksSearchComponent implements OnInit, OnDestroy {
         const result = booksConvert.map(book => {
             if (this.user) {
                 this.bookService.getAllUserBooks().subscribe((userbooks) => {
-                    userbooks.books.forEach(userbook => {
-                        if (book?.id === userbook.idBookGoogle ||
-                            book?.id === userbook?.idBook) {
+                    userbooks.forEach((userbook) => {
+                        if (userbook.book.id === book.id) {
                             book.status = userbook.status;
                             book.idUserBook = userbook.id;
                             book.finishDate = userbook.finishDate;

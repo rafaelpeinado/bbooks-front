@@ -1,12 +1,13 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {BookService} from '../../services/book.service';
-import {UserbookService} from '../../services/userbook.service';
-import {GoogleBooksService} from '../../services/google-books.service';
-import {AuthService} from '../../services/auth.service';
-import {map, take} from 'rxjs/operators';
-import {Util} from '../shared/Utils/util';
-import {Book} from '../../models/book.model';
-import {of, zip} from 'rxjs';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { UserbookService } from '../../services/userbook.service';
+import { AuthService } from '../../services/auth.service';
+import { map, take } from 'rxjs/operators';
+import { Util } from '../shared/Utils/util';
+import { Book } from '../../models/book.model';
+import { of, zip } from 'rxjs';
+import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
+import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 
 @Component({
     selector: 'app-time-line',
@@ -29,9 +30,8 @@ export class TimeLineComponent implements OnInit, AfterViewInit {
     books = [];
     loading = true;
     constructor(
-        private bookService: BookService,
         private userBookService: UserbookService,
-        private gBooksService: GoogleBooksService,
+        private getBookByIdUseCase: GetBookByIdUseCase,
         private authservice: AuthService
     ) {
     }
@@ -50,33 +50,27 @@ export class TimeLineComponent implements OnInit, AfterViewInit {
                 map(userBook => {
                     const bookObservable = [];
                     userBook.books.forEach((realation) => {
+                        let apiType: ApiType;
                         let id;
-                        let getById;
-                        if (!realation.idBookGoogle) {
-                            id = realation.idBook ? realation.idBook : realation.book.id;
-                            getById = this.bookService.getById(id)
-                                .pipe(
-                                    take(1),
-                                    map(b => {
-                                        b.idUserBook = realation.id;
-                                        b.status = realation.status;
-                                        b.finishDate = realation.finishDate;
-                                        return b;
-                                    })
-                                );
+
+                        if (realation.idBookGoogle) {
+                            id = realation.idBookGoogle;
+                            apiType = ApiType.GOOGLE;
                         } else {
-                            getById = this.gBooksService.getById(realation.idBookGoogle)
-                                .pipe(
-                                    take(1),
-                                    map(book => {
-                                        const b = this.bookService.convertBookToModel(book);
-                                        b.idUserBook = realation.id;
-                                        b.status = realation.status;
-                                        b.finishDate = realation.finishDate;
-                                        return b;
-                                    })
-                                );
+                            id = realation.idBook ? realation.idBook : realation.book.id;
+                            apiType = ApiType.BBOOKS;
                         }
+
+                        const getById = this.getBookByIdUseCase.execute(id, apiType).pipe(
+                            map((book) => new BookBuilder()
+                                .copyFrom(book)
+                                .setIdUserBook(realation.id)
+                                .setStatus(realation.status)
+                                .setFinishDate(realation.finishDate)
+                                .build()
+                            )
+
+                        )
                         bookObservable.push(getById);
                     });
                     return bookObservable.length > 0 ? bookObservable : [of('')];
