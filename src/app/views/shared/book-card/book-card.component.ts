@@ -94,13 +94,14 @@ export class BookCardComponent implements OnInit {
         this.bookService.getAllUserBooks().subscribe((userbooks) => {
             this.getBookByIdUseCase.execute(this.book.id, this.book.api).subscribe((book) => {
                 const bookBuilder = new BookBuilder().copyFrom(book);
-                userbooks.books.forEach(userbook => {
-                    bookBuilder.copy()
+                userbooks.forEach((userbook) => {
+                    if (userbook.book.id === book.id) {
+                        bookBuilder.copy()
                         .setStatus(userbook.status)
-                        .setIdUserBook(userbook.id)
+                        .setIdUserBook(+userbook.id)
                         .setFinishDate(userbook.finishDate);
-
-                });
+                    }
+                })
                 this.book = bookBuilder.build();
                 this.userBook = this.book.idUserBook ? true : false;
             });

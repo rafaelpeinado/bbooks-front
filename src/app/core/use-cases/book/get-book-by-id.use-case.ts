@@ -11,8 +11,8 @@ import { ApiType } from "../../domain/enums/api-type.enum";
 export class GetBookByIdUseCase implements UseCaseApiInterface {
     constructor(private bookServiceFactory: BookServiceFactory) { }
 
-    execute(id: string, api: ApiType): Observable<Book> {
+    execute(bookId: string, api: ApiType): Observable<Book> {
         const bookRepository = this.bookServiceFactory.getService(api);
-        return bookRepository.getBookById(id);
+        return bookRepository.getBookById(bookId);
     }
 }

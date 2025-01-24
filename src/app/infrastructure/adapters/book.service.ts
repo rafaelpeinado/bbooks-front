@@ -15,7 +15,7 @@ import { environment } from "src/environments/environment";
 })
 export class BookApiService implements BookRepository {
 
-    api: string = environment.api + 'books/';
+    private api: string = environment.api + 'books/';
 
     constructor(private http: HttpClient) { }
     

@@ -24,8 +24,24 @@ export class Book {
     public readonly api: ApiType;
     public readonly finishDate: Date;
 
-
     constructor(builder: BookBuilder) {
-        Object.assign(this, builder);
+        this.id = builder.id;
+        this.isbn10 = builder.isbn10;
+        this.isbn13 = builder.isbn13;
+        this.title = builder.title;
+        this.authors = builder.authors;
+        this.numberPage = builder.numberPage;
+        this.language = builder.language;
+        this.publisher = builder.publisher;
+        this.publishedDate = builder.publishedDate;
+        this.averageRating = builder.averageRating;
+        this.image = builder.image;
+        this.description = builder.description;
+        this.status = builder.status;
+        this.idUserBook = builder.idUserBook;
+        this.tags = builder.tags;
+        this.api = builder.api;
+        this.finishDate = builder.finishDate;
+        // Object.assign(this, builder);
     }
 }

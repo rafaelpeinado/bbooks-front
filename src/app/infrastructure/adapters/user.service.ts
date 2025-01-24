@@ -13,8 +13,7 @@ import { environment } from "src/environments/environment";
 
 export class UserService extends UserRepository {
 
-
-    api: string = environment.api + 'users/';
+    private api: string = environment.api + 'users/';
 
     constructor(private http: HttpClient) {
         super();

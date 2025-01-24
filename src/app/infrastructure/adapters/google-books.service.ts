@@ -18,7 +18,7 @@ import { ItemGoogleBooks, ListItemsGoogleBooks } from "../dtos/google-books.dto"
 })
 export class GoogleBooksApiService implements BookRepository {
 
-    api: string = environment.googleBooksApi + 'books/v1/volumes/';
+    private api: string = environment.googleBooksApi + 'books/v1/volumes/';
 
     constructor(private http: HttpClient) { }
 

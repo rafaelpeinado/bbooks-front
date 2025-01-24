@@ -5,18 +5,18 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError, zip } from 'rxjs';
 import { Author } from '../models/author.model';
-import { UserbookService } from './userbook.service';
 import { of } from 'rxjs';
 import { AuthService } from './auth.service';
 import { TagService } from './tag.service';
-import { UserBookTO } from '../models/userBookTO';
 import { BookPagination } from '../models/pagination/book.pagination';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { BookSearchTO } from '../models/bookSearchTO.model';
 import { ApiType } from '../core/domain/enums/api-type.enum';
 import { GetBookByIdUseCase } from '../core/use-cases/book/get-book-by-id.use-case';
 import { BookBuilder } from '../core/domain/builders/book.builder';
 import { SearchBookByNameUseCase } from '../core/use-cases/book/search-book-by-name.use-case';
+import { GetAllUserBookByProfileIdUseCase } from '../core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
+import { UserBook } from '../core/domain/entities/user-book.entity';
 
 @Injectable({
     providedIn: 'root'
@@ -31,11 +31,11 @@ export class BookService {
 
     constructor(
         private http: HttpClient,
-        private userbookService: UserbookService,
         private authGuard: AuthService,
         private tagService: TagService,
         private getBookByIdUseCase: GetBookByIdUseCase,
         private searchBookByNameUseCase: SearchBookByNameUseCase,
+        private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
     ) {
     }
 
@@ -64,16 +64,16 @@ export class BookService {
         return of(result);
     }
 
-    getAllUserBooks(): Observable<any> {
-        return this.userbookService.getAllByProfile(this.authGuard.getUser().profile.id);
+    getAllUserBooks(): Observable<UserBook[]> {
+        return this.getAllUserBookByProfileIdUseCase.execute(this.authGuard.getUser().profile.id);
     }
 
     getAllBooks(): Observable<any> {
         return this.getAllUserBooks()
             .pipe(
-                mergeMap(userBook => {
+                mergeMap(userBooks => {
                     return zip(
-                        ...this.getBooksByUserBooks(userBook.books)
+                        ...this.getBooksByUserBooks(userBooks)
                     );
                 })
             );
@@ -108,28 +108,30 @@ export class BookService {
                 ));
     }
 
-    getBooksByUserBooks(userBook: UserBookTO[]): any[] {
-        return userBook.map(realation => {
-            let apiType: ApiType;
-            let id;
-
-            if (realation.idBookGoogle) {
-                id = realation.idBookGoogle;
-                apiType = ApiType.GOOGLE;
-            } else {
-                id = realation.idBook ? realation.idBook : realation.book.id;
-                apiType = ApiType.BBOOKS;
-            }
-
-            return this.getBookByIdUseCase.execute(id, apiType).pipe(
-                map((book) => new BookBuilder()
-                    .copyFrom(book)
-                    .setIdUserBook(realation.id)
-                    .setStatus(realation.status)
-                    .build()
+    getBooksByUserBooks(userBook: any): any[] {
+        if (userBook.length > 0) {
+            const userBooks: UserBook[] = userBook;
+            return userBooks.map((userbook) => {
+                return this.getBookByIdUseCase.execute(userbook.book.id, userbook.book.api).pipe(
+                    map((book) => new BookBuilder()
+                        .copyFrom(book)
+                        .setIdUserBook(+userbook.id)
+                        .setStatus(userbook.status)
+                        .build()
+                    )
                 )
-            )
-        });
+            });
+        }
+        // return userBook.map(realation => {
+        //     return this.getBookByIdUseCase.execute(userBook.book.id, userBook.book.apiType).pipe(
+        //         map((book) => new BookBuilder()
+        //             .copyFrom(book)
+        //             .setIdUserBook(realation.id)
+        //             .setStatus(realation.status)
+        //             .build()
+        //         )
+        //     )
+        // });
     }
 
     convertBookToModel(book: any): Book {
@@ -194,14 +196,14 @@ export class BookService {
                 bc.books = books.map((book) => {
                     const bookBuilder = new BookBuilder().copyFrom(book);
                     this.getAllUserBooks().subscribe((userbooks) => {
-                        userbooks.books.forEach(userbook => {
-                            if (userbook.idBookGoogle === book.id) {
+                        userbooks.forEach((userBook) => {
+                            if (userBook.book.id === book.id) {
                                 bookBuilder.copy()
-                                    .setStatus(userbook.status)
-                                    .setIdUserBook(userbook.id)
-                                    .setFinishDate(userbook.finishDate);
+                                    .setStatus(userBook.book.status)
+                                    .setIdUserBook(+userBook.id)
+                                    .setFinishDate(userBook.finishDate);
                             }
-                        });
+                        })
                     });
                     return bookBuilder.build();
                 });

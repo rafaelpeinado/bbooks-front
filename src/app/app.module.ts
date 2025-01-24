@@ -143,8 +143,6 @@ export function HttpLoaderFactory(http: HttpClient) {
                 ],
             } as SocialAuthServiceConfig
         },
-        BookApiService,
-        GoogleBooksApiService,
         { provide: BookRepository, useClass: BookServiceFactory },
     ],
     exports: [],

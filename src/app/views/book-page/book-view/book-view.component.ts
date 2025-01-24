@@ -138,11 +138,11 @@ export class BookViewComponent implements OnInit, OnDestroy {
                     this.verifyReadingTarget();
                 } else {
                     this.bookService.getAllUserBooks().subscribe((userbooks) => {
-                        userbooks.books.forEach(userbook => {
-                            if (userbook.idBookGoogle === book.id) {
+                        userbooks.forEach((userbook) => {
+                            if (userbook.book.id === book.id) {
                                 this.book = book.copy()
                                     .setStatus(userbook.status)
-                                    .setIdUserBook(userbook.id)
+                                    .setIdUserBook(+userbook.id)
                                     .setFinishDate(userbook.finishDate)
                                     .build();
                             }

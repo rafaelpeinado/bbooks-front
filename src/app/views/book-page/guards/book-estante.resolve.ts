@@ -42,14 +42,14 @@ export class BookEstanteResolve implements Resolve<Book[]> {
                 bookCase.books = books.map((book) => {
                     const bookBuilder = new BookBuilder().copyFrom(book);
                     this.bookService.getAllUserBooks().subscribe((userbooks) => {
-                        userbooks.books.forEach(userbook => {
-                            if (userbook.idBookGoogle === book.id) {
+                        userbooks.forEach((userbook) => {
+                            if (userbook.book.id === book.id) {
                                 bookBuilder.copy()
-                                    .setStatus(userbook.status)
-                                    .setIdUserBook(userbook.id)
-                                    .setFinishDate(userbook.finishDate);
+                                .setStatus(userbook.status)
+                                .setIdUserBook(+userbook.id)
+                                .setFinishDate(userbook.finishDate);
                             }
-                        });
+                        })
                     });
                     return bookBuilder.build();
                 })

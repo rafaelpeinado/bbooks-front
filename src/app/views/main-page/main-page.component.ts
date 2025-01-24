@@ -86,14 +86,13 @@ export class MainPageComponent implements OnInit, OnDestroy {
         const result = booksConvert.map(book => {
             if (this.user) {
                 this.bookService.getAllUserBooks().subscribe((userbooks) => {
-                    userbooks.books.forEach(userbook => {
-                        if (book?.id === userbook.idBookGoogle ||
-                            book?.id === userbook?.idBook) {
+                    userbooks.forEach((userbook) => {
+                        if (userbook.book.id === book.id) {
                             book.status = userbook.status;
                             book.idUserBook = userbook.id;
                             book.finishDate = userbook.finishDate;
                         }
-                    });
+                    })
                 });
             }
             return book;

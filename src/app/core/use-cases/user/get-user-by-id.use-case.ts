@@ -11,8 +11,8 @@ import { UseCaseInterface } from "../use-case.interface";
 export class GetUserByIdUseCase implements UseCaseInterface {
     constructor(private userRepository: UserRepository) { }
 
-    execute(id: string): Observable<User> {
-        return this.userRepository.getUserById(id);
+    execute(userId: string): Observable<User> {
+        return this.userRepository.getUserById(userId);
     }
 }
 
