@@ -18,11 +18,7 @@ export class Book {
     public readonly averageRating: number;
     public readonly image: string;
     public readonly description: string;
-    public readonly status: BookStatus;
-    public readonly idUserBook: number;
-    public readonly tags: Tag[];
     public readonly api: ApiType;
-    public readonly finishDate: Date;
 
     constructor(builder: BookBuilder) {
         this.id = builder.id;
@@ -37,11 +33,7 @@ export class Book {
         this.averageRating = builder.averageRating;
         this.image = builder.image;
         this.description = builder.description;
-        this.status = builder.status;
-        this.idUserBook = builder.idUserBook;
-        this.tags = builder.tags;
         this.api = builder.api;
-        this.finishDate = builder.finishDate;
         // Object.assign(this, builder);
     }
 }

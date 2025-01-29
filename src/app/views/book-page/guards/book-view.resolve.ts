@@ -1,24 +1,22 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { BookService } from '../../../services/book.service';
-import { Book } from '../../../models/book.model';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
-import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
+import { AuthService } from 'src/app/services/auth.service';
+import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
+import { UserBookDetails } from 'src/app/core/domain/interfaces/user-book-details.interface';
+import { Book } from 'src/app/core/domain/entities/book.entity';
 
 @Injectable()
-export class BookViewResolve implements Resolve<Book> {
+export class BookViewResolve implements Resolve<UserBookDetails> {
     userbooks;
     constructor(
-        private bookService: BookService,
         private getBookByIdUseCase: GetBookByIdUseCase,
-    ) {
-        this.bookService.getAllUserBooks().subscribe((userbooks) => {
-            this.userbooks = userbooks;
-        });
-    }
+        private authGuard: AuthService,
+        private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
+    ) { }
 
     resolve(
         route: ActivatedRouteSnapshot,
@@ -27,21 +25,21 @@ export class BookViewResolve implements Resolve<Book> {
         const api = route.queryParams.api;
         const id = route.params.id;
 
+        return combineLatest([
+            this.getAllUserBookByProfileIdUseCase.execute(this.authGuard.getUser().profile.id),
+            this.getBookByIdUseCase.execute(id, api)
+        ]).pipe(
+            map((value) => {
+                const userBooks: UserBook[] = value[0];
+                const book: Book = value[1];
+                const userBook: UserBook = userBooks.find((userBook) => userBook.book.id === book.id);
 
-        return this.getBookByIdUseCase.execute(id, api).pipe(
-            map((response) => {
-                const bookBuilder = new BookBuilder().copyFrom(response).setApi(api);
-                const userBooks: UserBook[] = this.userbooks;
-                userBooks.forEach((userbook) => {
-                    if (userbook.book.id === response.id) {
-                        bookBuilder.copy()
-                            .setIdUserBook(+userbook.id)
-                            .setStatus(userbook.status)
-                            .setFinishDate(userbook.finishDate);
-                    }
-                });
-                return bookBuilder.build();
-            }),
-        );
+                const userBookDetails: UserBookDetails = {
+                    userBook: userBook,
+                    book: book,
+                }
+
+                return userBookDetails;
+            }));
     }
 }

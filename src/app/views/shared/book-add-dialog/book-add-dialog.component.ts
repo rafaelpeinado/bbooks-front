@@ -9,15 +9,16 @@ import {
     mapBookStatus,
     mapBookStatusEnglish
 } from '../../../models/enums/BookStatus.enum';
-import { UserbookService } from '../../../services/userbook.service';
-import { UserBookTO } from '../../../models/userBookTO';
 import { AuthService } from '../../../services/auth.service';
 import { Tag } from '../../../models/tag';
 import { TagService } from '../../../services/tag.service';
 import { TranslateService } from '@ngx-translate/core';
-import { zip } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 import { Util } from '../Utils/util';
 import { DateAdapter } from '@angular/material/core';
+import { CreateUserBookUseCase } from 'src/app/core/use-cases/user-book/create-user-book.use-case';
+import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
+import { UpdateUserBookUseCase } from 'src/app/core/use-cases/user-book/update-user-book.use-case';
 
 @Component({
     selector: 'app-book-add-dialog',
@@ -39,17 +40,18 @@ export class BookAddDialogComponent implements OnInit {
     public Book: Book;
     public title: string;
     public buttonText: string;
-    public userBookTo = new UserBookTO();
+    public userBookTo: any;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: { book: Book },
         public dialogRef: MatDialogRef<BookAddDialogComponent>,
         private formBuilder: FormBuilder,
-        private userbookService: UserbookService,
         private authService: AuthService,
         private tagService: TagService,
         private adapter: DateAdapter<any>,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private createUserBookUseCase: CreateUserBookUseCase,
+        private updateUserBookUseCase: UpdateUserBookUseCase,
     ) {
         this.Book = data.book;
         this.tagsBook = [];
@@ -147,46 +149,44 @@ export class BookAddDialogComponent implements OnInit {
     }
 
     saveBook() {
-        this.userBookTo.id = this.Book.idUserBook;
-        this.userBookTo.profileId = this.authService.getUser().profile.id;
-        this.userBookTo.status = this.getStatusToUserBook();
-        this.userBookTo.tags = this.getSelectedTags();
-        this.userBookTo.page = this.Book.numberPage;
+        this.userBookTo = {
+            id: this.Book.idUserBook,
+            profileId: this.authService.getUser().profile.id,
+            status: this.getStatusToUserBook(),
+            tags: this.getSelectedTags(),
+            page: this.Book.numberPage,
+            book: this.Book,
+        }
         if (
             this.formBook.get('statusBook').value.toUpperCase() === this.status.LIDO ||
             this.formBook.get('statusBook').value === this.statusEnglish.LIDO
         ) {
             this.userBookTo.finishDate = this.formBook.get('finishDate').value;
         }
-        this.Book.api === 'google' ?
-            this.userBookTo.idBookGoogle = this.Book.id :
-            // tslint:disable-next-line:radix
-            this.userBookTo.idBook = Number.parseInt(this.Book.id);
-        if (this.tagsBook.length > 0 || this.userBookTo.id) {
-            Util.loadingScreen();
-            this.userbookService.update(this.userBookTo).subscribe(
-                value => {
-                    Util.stopLoading();
-                    this.dialogRef.close(value);
-                },
-                error => {
-                    Util.stopLoading();
-                    console.log('TagDialog Error', error);
-                }
-            );
+
+        if (this.Book.api === 'google') {
+            this.userBookTo.idBookGoogle = this.Book.id
         } else {
-            Util.loadingScreen();
-            this.userbookService.save(this.userBookTo).subscribe(
-                value => {
-                    Util.stopLoading();
-                    this.dialogRef.close(value);
-                },
-                error => {
-                    Util.stopLoading();
-                    console.log('TagDialog Error', error);
-                }
-            );
+            this.userBookTo.idBook = Number.parseInt(this.Book.id);
         }
+
+        let userBook$: Observable<UserBook>;
+        if (this.tagsBook.length > 0 || this.userBookTo.id) {
+            userBook$ = this.updateUserBookUseCase.execute(this.userBookTo);
+        } else {
+            userBook$ = this.createUserBookUseCase.execute(this.userBookTo);
+        }
+        Util.loadingScreen();
+        userBook$.subscribe(
+            value => {
+                Util.stopLoading();
+                this.dialogRef.close(value);
+            },
+            error => {
+                Util.stopLoading();
+                console.log('TagDialog Error', error);
+            }
+        );
 
     }
 

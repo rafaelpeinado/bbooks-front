@@ -61,16 +61,7 @@ export class TimeLineComponent implements OnInit, AfterViewInit {
                             apiType = ApiType.BBOOKS;
                         }
 
-                        const getById = this.getBookByIdUseCase.execute(id, apiType).pipe(
-                            map((book) => new BookBuilder()
-                                .copyFrom(book)
-                                .setIdUserBook(realation.id)
-                                .setStatus(realation.status)
-                                .setFinishDate(realation.finishDate)
-                                .build()
-                            )
-
-                        )
+                        const getById = this.getBookByIdUseCase.execute(id, apiType);
                         bookObservable.push(getById);
                     });
                     return bookObservable.length > 0 ? bookObservable : [of('')];

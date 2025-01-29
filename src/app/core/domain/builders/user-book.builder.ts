@@ -10,8 +10,8 @@ export class UserBookBuilder {
     private _status: BookStatus;
     private _addDate: Date;
     private _finishDate: Date | null;
-    // private _tags: Tag[];
-    // private _page: number;
+    private _tags: Tag[];
+    private _page: number;
 
     constructor(init?: Partial<UserBookBuilder>) {
         if (init) {
@@ -43,13 +43,13 @@ export class UserBookBuilder {
         return this._finishDate;
     }
 
-    // get tags(): Tag[] {
-    //     return this._tags;
-    // }
+    get tags(): Tag[] {
+        return this._tags;
+    }
 
-    // get page(): number {
-    //     return this._page;
-    // }
+    get page(): number {
+        return this._page;
+    }
 
     setId(id: string): UserBookBuilder {
         this._id = id;
@@ -81,15 +81,15 @@ export class UserBookBuilder {
         return this;
     }
 
-    // setTags(tags: Tag[]): UserBookBuilder {
-    //     this._tags = tags;
-    //     return this;
-    // }
+    setTags(tags: Tag[]): UserBookBuilder {
+        this._tags = tags;
+        return this;
+    }
 
-    // setPage(page: number): UserBookBuilder {
-    //     this._page = page;
-    //     return this;
-    // }
+    setPage(page: number): UserBookBuilder {
+        this._page = page;
+        return this;
+    }
 
     copy(): UserBookBuilder {
         return new UserBookBuilder(this);
@@ -102,8 +102,8 @@ export class UserBookBuilder {
         this._status = userBook.status;
         this._addDate = userBook.addDate;
         this._finishDate = userBook.finishDate;
-        // this._tags = userBook.tags;
-        // this._page = userBook.page;
+        this._tags = userBook.tags;
+        this._page = userBook.page;
 
         return this;
     }

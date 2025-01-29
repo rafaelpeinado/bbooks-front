@@ -38,22 +38,7 @@ export class BookEstanteResolve implements Resolve<Book[]> {
                     error => console.log('errro', error));
             }
         } else {
-            this.searchBookByNameUseCase.execute(tag).subscribe((books) => {
-                bookCase.books = books.map((book) => {
-                    const bookBuilder = new BookBuilder().copyFrom(book);
-                    this.bookService.getAllUserBooks().subscribe((userbooks) => {
-                        userbooks.forEach((userbook) => {
-                            if (userbook.book.id === book.id) {
-                                bookBuilder.copy()
-                                .setStatus(userbook.status)
-                                .setIdUserBook(+userbook.id)
-                                .setFinishDate(userbook.finishDate);
-                            }
-                        })
-                    });
-                    return bookBuilder.build();
-                })
-            })
+            this.searchBookByNameUseCase.execute(tag).subscribe((books) => bookCase.books = books);
         }
         return of(bookCase);
     }

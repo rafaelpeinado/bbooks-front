@@ -23,24 +23,4 @@ export class UserbookService {
     changeStatus(userBookUpdateStatusTO): Observable<any> {
         return this.http.put(this.api + 'status', userBookUpdateStatusTO);
     }
-
-    save(userBookTo): Observable<any> {
-        return this.http.post(this.api, userBookTo);
-    }
-
-    update(userBookTo: UserBookTO): Observable<any> {
-        return this.http.put(this.api + userBookTo.id, userBookTo);
-    }
-
-    getDataStatusByBooksBookId(bookId: string): Observable<UserBooksDataStatusTO> {
-        const params = new HttpParams()
-            .set('bookId', bookId);
-        return this.http.get<UserBooksDataStatusTO>(this.api + 'status-data', { params });
-    }
-    getDataStatusByBooksGoogleBook(googleBook: string): Observable<UserBooksDataStatusTO> {
-        const params = new HttpParams()
-            .set('googleBook', googleBook);
-        return this.http.get<UserBooksDataStatusTO>(this.api + 'status-data', { params });
-    }
-
 }

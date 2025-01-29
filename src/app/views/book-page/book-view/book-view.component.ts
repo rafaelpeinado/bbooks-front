@@ -1,7 +1,7 @@
 import { ReadingTargetService } from './../../../services/reading-target.service';
 import { ReadingTargetTO } from './../../../models/readingTargetTO.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { switchMap, take } from 'rxjs/operators';
@@ -13,7 +13,6 @@ import {
     mapBookStatusEnglish
 } from '../../../models/enums/BookStatus.enum';
 import { BookAddDialogComponent } from '../../shared/book-add-dialog/book-add-dialog.component';
-import { BookService } from '../../../services/book.service';
 import { TrackingViewComponent } from '../tracking-view/tracking-view.component';
 import { TrackingTO } from '../../../models/TrackingTO.model';
 import { TrackingService } from '../../../services/tracking.service';
@@ -25,12 +24,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { ReferBookDialogComponent } from '../../shared/refer-book-dialog/refer-book-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
 import { ReviewsPagination } from '../../../models/pagination/reviews.pagination';
-import { UserbookService } from '../../../services/userbook.service';
-import { UserBooksDataStatusTO } from '../../../models/UserBooksDataStatusTO.model';
 import { Util } from '../../shared/Utils/util';
-import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { Book } from 'src/app/core/domain/entities/book.entity';
+import { UserBookDetails } from 'src/app/core/domain/interfaces/user-book-details.interface';
+import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
+import { GetGeneralStatusBooksUseCase } from 'src/app/core/use-cases/user-book/get-general-status-books.use-case';
+import { GeneralStatus } from 'src/app/core/domain/entities/general-status.entity';
 
 @Component({
     selector: 'app-book-view',
@@ -41,7 +41,8 @@ export class BookViewComponent implements OnInit, OnDestroy {
 
     inscricao: Subscription;
     book: Book;
-    userBooksDataStatusTO: UserBooksDataStatusTO;
+    userBook: UserBook;
+    generalStatus: GeneralStatus;
     stars: number[] = [1, 2, 3, 4, 5];
     rating = 1;
     stringAuthors: string[];
@@ -67,21 +68,21 @@ export class BookViewComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         public dialog: MatDialog,
-        private bookService: BookService,
         private trackingService: TrackingService,
         public authService: AuthService,
         private reviewService: ReviewService,
         private readingTargetService: ReadingTargetService,
         private translate: TranslateService,
-        private userBookService: UserbookService,
         private getBookByIdUseCase: GetBookByIdUseCase,
+        private getGeneralStatusBooksUseCase: GetGeneralStatusBooksUseCase,
     ) {
         Util.loadingScreen();
-        this.inscricao = this.route.data.subscribe((data: { book: Book }) => {
+        this.inscricao = this.route.data.subscribe((data: { userBookDetails: UserBookDetails }) => {
             Util.stopLoading();
-            this.book = data.book;
+            this.userBook = data.userBookDetails.userBook;
+            this.book = data.userBookDetails.book;
             this.stringAuthors = this.convertAuthorsToString();
-            if (this.book?.idUserBook > 0) {
+            if (+this.userBook?.id > 0) {
                 this.getAllTracking();
             }
         });
@@ -94,72 +95,30 @@ export class BookViewComponent implements OnInit, OnDestroy {
         this.getAllReviews();
     }
 
-    getDataStatusByGoogleBook(): void {
-        Util.loadingScreen();
-        this.userBookService.getDataStatusByBooksGoogleBook(this.book.id)
-            .pipe(take(1))
-            .subscribe(result => {
-                Util.stopLoading();
-                this.userBooksDataStatusTO = result;
-            },
-                error => {
-                    console.log('Error: getDataStatusByBooksGoogleBook', error);
-                });
-    }
-
-    getDataStatusByBookId(): void {
-        Util.loadingScreen();
-        this.userBookService.getDataStatusByBooksBookId(this.book.id)
-            .pipe(take(1))
-            .subscribe(result => {
-                Util.stopLoading();
-                this.userBooksDataStatusTO = result;
-            },
-                error => {
-                    console.log('Error: getDataStatusByBooksGoogleBook', error);
-                });
+    ngOnDestroy(): void {
+        this.inscricao.unsubscribe();
+        this.reviewPagination = new ReviewsPagination();
     }
 
     getBook(userbookResult?): void {
         Util.loadingScreen();
-        this.getBookByIdUseCase.execute(this.book.id, this.book.api)
-            .subscribe((getBookByIdUseCaseResponse) => {
-                Util.stopLoading();
-                const book = new BookBuilder()
-                    .copyFrom(getBookByIdUseCaseResponse);
-                if (userbookResult) {
-                    this.book = book.copy()
-                        .setStatus(userbookResult.status)
-                        .setIdUserBook(userbookResult.status)
-                        .setFinishDate(userbookResult.finishDate)
-                        .build();
-
-                    this.getDataStatusByGoogleBook();
-                    this.verifyReadingTarget();
-                } else {
-                    this.bookService.getAllUserBooks().subscribe((userbooks) => {
-                        userbooks.forEach((userbook) => {
-                            if (userbook.book.id === book.id) {
-                                this.book = book.copy()
-                                    .setStatus(userbook.status)
-                                    .setIdUserBook(+userbook.id)
-                                    .setFinishDate(userbook.finishDate)
-                                    .build();
-                            }
-                        });
-                        Util.stopLoading();
-                        this.book = book.copy().build();
-                        this.getDataStatusByGoogleBook();
-                        this.verifyReadingTarget();
-                    });
-                }
-            });
+        combineLatest([
+            this.getBookByIdUseCase.execute(this.book.id, this.book.api),
+            this.getGeneralStatusBooksUseCase.execute(this.book.id, this.book.api)
+        ]).subscribe((value) => {
+            Util.stopLoading();
+            this.generalStatus = value[1];
+            this.book = value[0];
+            if (userbookResult) {
+                this.verifyReadingTarget();
+            }
+        });
     }
 
     getAllTracking() {
-        if (this.book?.idUserBook) {
+        if (this.userBook?.id) {
             Util.loadingScreen();
-            this.trackingService.getAllByUserBook(this.book.idUserBook).pipe(take(1)).subscribe(trackings => {
+            this.trackingService.getAllByUserBook(+this.userBook.id).pipe(take(1)).subscribe(trackings => {
                 this.trackings = trackings
                     .slice()
                     .sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime());
@@ -197,12 +156,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
     }
 
     verifystatusBook(): boolean {
-        return this.book.status === this.status.EMPRESTADO || !this.book.idUserBook;
-    }
-
-    ngOnDestroy(): void {
-        this.inscricao.unsubscribe();
-        this.reviewPagination = new ReviewsPagination();
+        return this.userBook.status === this.status.EMPRESTADO || !this.userBook.id;
     }
 
     verifyPercentageIsLess100() {
@@ -273,7 +227,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
 
     addToReadingTarget(): void {
         Util.loadingScreen();
-        this.readingTargetService.addTarget(this.authService.getUser().profile.id, this.book.idUserBook).subscribe(
+        this.readingTargetService.addTarget(this.authService.getUser().profile.id, +this.userBook.id).subscribe(
             () => {
                 Util.stopLoading();
                 this.translate.get('BOOK.BOOK_ADDED_TARGET').subscribe(message => {
@@ -292,7 +246,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
 
     removeFromReadingTarget(): void {
         Util.loadingScreen();
-        this.readingTargetService.removeTarget(this.authService.getUser().profile.id, this.book.idUserBook).subscribe(
+        this.readingTargetService.removeTarget(this.authService.getUser().profile.id, +this.userBook.id).subscribe(
             () => {
                 Util.stopLoading();
                 this.translate.get('BOOK.BOOK_REMOVED_TARGET').subscribe(message => {
@@ -311,7 +265,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
     }
 
     verifyReadingTarget(): void {
-        this.readingTargetService.getByUserBookId(this.authService.getUser().profile.id, this.book.idUserBook).subscribe(
+        this.readingTargetService.getByUserBookId(this.authService.getUser().profile.id, +this.userBook.id).subscribe(
             (res) => {
                 res?.id ? this.hasReadingTarget = true : this.hasReadingTarget = false;
             },
@@ -335,7 +289,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
             width: '400px',
             data: {
                 tracking,
-                idUserbook: this.book.idUserBook,
+                idUserbook: this.userBook.id,
                 canEditPag: editPag,
                 trackingUpId
             }
@@ -368,7 +322,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
             width: '400px',
             data: {
                 tracking,
-                idUserbook: this.book.idUserBook,
+                idUserbook: this.userBook.id,
             }
         });
         dialogRef.afterClosed().pipe(switchMap(async res => {
@@ -460,7 +414,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
 
     getAllByGoogleBook(): void {
         this.reviewService.getAllByGoogleBook(
-            this.book.id,
+            this.userBook?.id,
             this.pageEvent.pageSize,
             this.pageEvent.pageIndex
         )

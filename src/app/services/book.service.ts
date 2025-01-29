@@ -111,16 +111,7 @@ export class BookService {
     getBooksByUserBooks(userBook: any): any[] {
         if (userBook.length > 0) {
             const userBooks: UserBook[] = userBook;
-            return userBooks.map((userbook) => {
-                return this.getBookByIdUseCase.execute(userbook.book.id, userbook.book.api).pipe(
-                    map((book) => new BookBuilder()
-                        .copyFrom(book)
-                        .setIdUserBook(+userbook.id)
-                        .setStatus(userbook.status)
-                        .build()
-                    )
-                )
-            });
+            return userBooks.map((userbook) => this.getBookByIdUseCase.execute(userbook.book.id, userbook.book.api));
         }
         // return userBook.map(realation => {
         //     return this.getBookByIdUseCase.execute(userBook.book.id, userBook.book.apiType).pipe(
@@ -193,20 +184,10 @@ export class BookService {
             bc.description = genre;
             bc.id = genre;
             this.searchBookByNameUseCase.execute(genre).subscribe((books) => {
-                bc.books = books.map((book) => {
-                    const bookBuilder = new BookBuilder().copyFrom(book);
-                    this.getAllUserBooks().subscribe((userbooks) => {
-                        userbooks.forEach((userBook) => {
-                            if (userBook.book.id === book.id) {
-                                bookBuilder.copy()
-                                    .setStatus(userBook.book.status)
-                                    .setIdUserBook(+userBook.id)
-                                    .setFinishDate(userBook.finishDate);
-                            }
-                        })
-                    });
-                    return bookBuilder.build();
-                });
+                bc.books = books.map((book) => new BookBuilder()
+                    .copyFrom(book)
+                    .build()
+                );
                 result.push(bc);
             });
         });

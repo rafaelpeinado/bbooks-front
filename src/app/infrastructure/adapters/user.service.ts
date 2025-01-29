@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { first, map } from "rxjs/operators";
 import { User } from "src/app/core/domain/entities/user.entity";
 import { UserRepository } from "src/app/core/repositories/user.repository";
 import { RegisterUserOutputDto } from "src/app/core/use-cases/dtos/register-user.dto";
@@ -25,6 +25,7 @@ export class UserService extends UserRepository {
 
     getUserById(id: string): Observable<User> {
         return this.http.get<RegisterUserOutputDto>(`${this.api}${id}`).pipe(
+            first(),
             map((response) => new User(
                 response.id,
                 response.profile.name,

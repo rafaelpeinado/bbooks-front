@@ -18,11 +18,7 @@ export class BookBuilder {
     private _averageRating: number;
     private _image?: string;
     private _description: string;
-    private _status: BookStatus;
-    private _idUserBook: number;
-    private _tags: Tag[];
     private _api!: ApiType;
-    private _finishDate: Date;
 
     constructor(init?: Partial<BookBuilder>) {
         if (init) {
@@ -78,30 +74,14 @@ export class BookBuilder {
         return this._description;
     }
 
-    get status(): BookStatus {
-        return this._status;
-    }
-
-    get idUserBook(): number {
-        return this._idUserBook;
-    }
-
-    get tags(): Tag[] {
-        return this._tags;
-    }
-
     get api(): ApiType {
         return this._api;
     }
 
-    get finishDate(): Date {
-        return this._finishDate;
-    }
-
     setId(id: string): BookBuilder {
-        if (!id || id.trim() === "") {
-            throw new Error("ID is required.");
-        }
+        // if (!id || id.trim() === "") {
+        //     throw new Error("ID is required.");
+        // }
         this._id = id;
         return this;
     }
@@ -161,31 +141,11 @@ export class BookBuilder {
         return this;
     }
 
-    setStatus(status: BookStatus): BookBuilder {
-        this._status = status;
-        return this;
-    }
-
-    setIdUserBook(idUserBook: number): BookBuilder {
-        this._idUserBook = idUserBook;
-        return this;
-    }
-
-    setTags(tags: Tag[]): BookBuilder {
-        this._tags = tags;
-        return this;
-    }
-
     setApi(api: ApiType): BookBuilder {
-        if (!api || api.trim() === "") {
-            throw new Error("Api type is required.");
-        }
+        // if (!api || api.trim() === "") {
+        //     throw new Error("Api type is required.");
+        // }
         this._api = api;
-        return this;
-    }
-
-    setFinishDate(finishDate: Date): BookBuilder {
-        this._finishDate = finishDate;
         return this;
     }
 
@@ -194,23 +154,21 @@ export class BookBuilder {
     }
 
     copyFrom(book: Book): BookBuilder {
-        this._id = book.id;
-        this._isbn10 = book.isbn10;
-        this._isbn13 = book.isbn13;
-        this._title = book.title;
-        this._authors = book.authors;
-        this._numberPage = book.numberPage;
-        this._language = book.language;
-        this._publisher = book.publisher;
-        this._publishedDate = book.publishedDate;
-        this._averageRating = book.averageRating;
-        this._image = book.image;
-        this._description = book.description;
-        this._status = book.status;
-        this._idUserBook = book.idUserBook;
-        this._tags = book.tags;
-        this._api = book.api;
-        this._finishDate = book.finishDate;
+        if (book) {
+            this._id = book.id;
+            this._isbn10 = book.isbn10;
+            this._isbn13 = book.isbn13;
+            this._title = book.title;
+            this._authors = book.authors;
+            this._numberPage = book.numberPage;
+            this._language = book.language;
+            this._publisher = book.publisher;
+            this._publishedDate = book.publishedDate;
+            this._averageRating = book.averageRating;
+            this._image = book.image;
+            this._description = book.description;
+            this._api = book.api;
+        }
         // Object.assign(this, book);
         return this;
     }

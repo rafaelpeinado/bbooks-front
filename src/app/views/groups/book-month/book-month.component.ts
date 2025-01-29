@@ -69,7 +69,7 @@ export class BookMonthComponent implements OnInit {
             apiType = ApiType.BBOOKS;
         }
         this.getBookByIdUseCase.execute(id, apiType).subscribe((book) => {
-            this.book = new BookBuilder().copyFrom(book).build();
+            this.book = book;
         });
     }
 

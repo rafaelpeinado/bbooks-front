@@ -59,15 +59,8 @@ export class PreviousGoalsComponent implements OnInit {
         apiType = ApiType.BBOOKS;
       }
 
-      return this.getBookByIdUseCase.execute(id, apiType).pipe(
-        map((book) => new BookBuilder()
-          .copyFrom(book)
-          .setIdUserBook(realation.id)
-          .setStatus(realation.status)
-          .setFinishDate(realation.finishDate)
-          .build()
-        )
-      ).subscribe((resBook) => userBooks[i].book = resBook);
+      return this.getBookByIdUseCase.execute(id, apiType)
+        .subscribe((book) => userBooks[i].book = book);
     });
   }
 }

@@ -10,8 +10,8 @@ export class UserBook {
     public readonly status: BookStatus;
     public readonly addDate: Date;
     public readonly finishDate: Date | null;
-    // public readonly tags: Tag[];
-    // public readonly page: number;
+    public readonly tags: Tag[];
+    public readonly page: number;
 
     constructor(builder: UserBookBuilder) {
         this.id = builder.id;
@@ -20,7 +20,7 @@ export class UserBook {
         this.status = builder.status;
         this.addDate = builder.addDate;
         this.finishDate = builder.finishDate;
-        // this.tags = builder.tags;
-        // this.page = builder.page;
+        this.tags = builder.tags;
+        this.page = builder.page;
     }
 }

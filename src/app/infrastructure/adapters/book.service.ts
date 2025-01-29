@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { first, map } from "rxjs/operators";
 import { BookBuilder } from "src/app/core/domain/builders/book.builder";
 import { Book } from "src/app/core/domain/entities/book.entity";
 import { ApiType } from "src/app/core/domain/enums/api-type.enum";
@@ -28,7 +28,7 @@ export class BookApiService implements BookRepository {
     }
 
     addBook(book: Book): Observable<Book> {
-        return this.http.post<Book>(this.api, book);
+        return this.http.post<Book>(this.api, book).pipe(first());
     }
 
     searchBooks(filter: FilterSearch): Observable<PaginationInterface<Book>> {
@@ -36,7 +36,7 @@ export class BookApiService implements BookRepository {
             .set('search', filter.input)
             .set('page', filter.page.toString())
             .set('size', filter.size.toString());
-        return this.http.get<PaginationInterface<Book>>(this.api + 'search', { params });
+        return this.http.get<PaginationInterface<Book>>(this.api + 'search', { params }).pipe(first());
     }
 
     getBookById(id: string): Observable<Book> {

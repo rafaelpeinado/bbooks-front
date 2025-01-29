@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { map, tap } from "rxjs/operators";
+import { first, map, tap } from "rxjs/operators";
 import { BookBuilder } from "src/app/core/domain/builders/book.builder";
 import { Author } from "src/app/core/domain/entities/author.entity";
 import { Book } from "src/app/core/domain/entities/book.entity";
@@ -29,6 +29,7 @@ export class GoogleBooksApiService implements BookRepository {
             .set('startIndex', filter.page.toString());
 
         return this.http.get<ListItemsGoogleBooks>(this.api, { params }).pipe(
+            first(),
             map((response) => {
                 const books: Book[] = response.items.map((item) => new BookBuilder()
                     .setId(item.id)
@@ -69,6 +70,7 @@ export class GoogleBooksApiService implements BookRepository {
         const params = new HttpParams()
             .set('q', bookName);
         return this.http.get<ListItemsGoogleBooks>(this.api, { params }).pipe(
+            first(),
             map((response) => {
                 return response.items.map((item) => new BookBuilder()
                     .setId(item.id)
@@ -104,6 +106,7 @@ export class GoogleBooksApiService implements BookRepository {
 
     getBookById(id: string): Observable<Book> {
         return this.http.get<ItemGoogleBooks>(this.api + id).pipe(
+            first(),
             map((response) => new BookBuilder()
                 .setId(response.id)
                 .setIsbn10(this.getIsbn(response, ISBNGoogleEnum.ISBN_10))

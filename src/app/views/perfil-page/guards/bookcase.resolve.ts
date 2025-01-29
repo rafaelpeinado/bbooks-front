@@ -41,10 +41,8 @@ export class BookcaseResolve implements Resolve<any> {
                 .subscribe(userBooks => {
                     userBooks.forEach((userBook) => {
                         this.getBookByIdUseCase.execute(userBook.book.id, userBook.book.api).subscribe((book) => {
-                            const bookBuilder = new BookBuilder()
-                                .copyFrom(userBook.book)
-                                .build();
-                            this.bookCase.books.push(bookBuilder);
+                            // TODO ajustar para retornar book
+                            this.bookCase.books.push(userBook.book);
                         });
                     })
                 });
