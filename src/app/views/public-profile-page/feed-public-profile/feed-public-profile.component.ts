@@ -1,20 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {TypePostControler} from '../../../models/enums/TypePost.enum';
-import {Observable} from 'rxjs';
-import {IPublicProfilePageState} from '../store/state/feed-public-profile.state';
-import {AuthService} from '../../../services/auth.service';
-import {UserTO} from '../../../models/userTO.model';
-import {TranslateService} from '@ngx-translate/core';
-import {FeedService} from '../../../services/feed.service';
-import {PostService} from '../../../services/post.service';
-import {FeedGenericService} from '../../../services/feed-generic.service';
-import {FeedPublicProfilePageManagerService} from '../store/feed-public-profile-manager.service';
-import {map, take} from 'rxjs/operators';
-import {PostTO} from '../../../models/PostTO.model';
-import {ActivatedRoute} from '@angular/router';
-import {PostPagination} from '../../../models/pagination/post.pagination';
-import {PublicProfileService} from '../../../services/public-profile.service';
-import {UserPublicProfileTO} from '../../../models/UserPublicProfileTO.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { TypePostControler } from '../../../models/enums/TypePost.enum';
+import { Observable } from 'rxjs';
+import { IPublicProfilePageState } from '../store/state/feed-public-profile.state';
+import { AuthService } from '../../../services/auth.service';
+import { UserTO } from '../../../models/userTO.model';
+import { FeedService } from '../../../services/feed.service';
+import { PostService } from '../../../services/post.service';
+import { FeedGenericService } from '../../../services/feed-generic.service';
+import { FeedPublicProfilePageManagerService } from '../store/feed-public-profile-manager.service';
+import { map, take } from 'rxjs/operators';
+import { PostTO } from '../../../models/PostTO.model';
+import { ActivatedRoute } from '@angular/router';
+import { PostPagination } from '../../../models/pagination/post.pagination';
+import { PublicProfileService } from '../../../services/public-profile.service';
+import { UserPublicProfileTO } from '../../../models/UserPublicProfileTO.model';
 
 @Component({
     selector: 'app-feed-public-profile',
@@ -33,7 +32,6 @@ export class FeedPublicProfileComponent implements OnInit, OnDestroy {
 
     constructor(
         public authService: AuthService,
-        private translate: TranslateService,
         public feedService: FeedService,
         public postService: PostService,
         public feedGenericService: FeedGenericService,
@@ -50,11 +48,11 @@ export class FeedPublicProfileComponent implements OnInit, OnDestroy {
                 map(params => params.id)
             )
             .subscribe(result => {
-                    this.publicProfileId = result;
-                    localStorage.setItem('pageId', result);
-                    this.getPosts();
-                    this.getPublicProfileById(result);
-                }
+                this.publicProfileId = result;
+                localStorage.setItem('pageId', result);
+                this.getPosts();
+                this.getPublicProfileById(result);
+            }
             );
         this.user = this.authService.getUser();
         this.feedRedux$ = this.feedPublicProfilePageManagerService.getFeed();
@@ -66,7 +64,7 @@ export class FeedPublicProfileComponent implements OnInit, OnDestroy {
 
     getPosts(): void {
         this.loading = true;
-        this.postService.getPageFeed(this.publicProfileId, 5 , this.page)
+        this.postService.getPageFeed(this.publicProfileId, 5, this.page)
             .pipe(take(1))
             .subscribe(result => {
                 this.loading = false;

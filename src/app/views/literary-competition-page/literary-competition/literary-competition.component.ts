@@ -1,19 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {map, take} from 'rxjs/operators';
-import {CompetitionService} from '../../../services/competition.service';
-import {CompetitionTO} from '../../../models/competitionTO.model';
-import {CompetitionMemberService} from '../../../services/competition-member.service';
-import {ProfileService} from '../../../services/profile.service';
-import {CompetitionMemberTO} from '../../../models/competitionMemberTO.model';
-import {Role} from '../../../models/enums/Role.enum';
-import {Util} from '../../shared/Utils/util';
-import {AuthService} from '../../../services/auth.service';
-import {Profile} from '../../../models/profileTO.model';
-import {CompetitionMemberSaveTO} from '../../../models/competitionMemberSaveTO.model';
-import {LiteraryMemberStatus} from '../../../models/enums/LiteraryMemberStatus.enum';
-import {StoryLiteraryCompetitionComponent} from '../story-literary-competition/story-literary-competition.component';
-import {MatDialog} from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { map, take } from 'rxjs/operators';
+import { CompetitionService } from '../../../services/competition.service';
+import { CompetitionTO } from '../../../models/competitionTO.model';
+import { CompetitionMemberService } from '../../../services/competition-member.service';
+import { ProfileService } from '../../../services/profile.service';
+import { CompetitionMemberTO } from '../../../models/competitionMemberTO.model';
+import { Role } from '../../../models/enums/Role.enum';
+import { Util } from '../../shared/Utils/util';
+import { AuthService } from '../../../services/auth.service';
+import { Profile } from '../../../models/profileTO.model';
+import { CompetitionMemberSaveTO } from '../../../models/competitionMemberSaveTO.model';
+import { LiteraryMemberStatus } from '../../../models/enums/LiteraryMemberStatus.enum';
+import { StoryLiteraryCompetitionComponent } from '../story-literary-competition/story-literary-competition.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-literary-competition',
@@ -39,7 +39,6 @@ export class LiteraryCompetitionComponent implements OnInit {
         private competitionMemberService: CompetitionMemberService,
         private profileService: ProfileService,
         private authService: AuthService,
-        private router: Router,
         private dialog: MatDialog
     ) {
     }
@@ -50,9 +49,9 @@ export class LiteraryCompetitionComponent implements OnInit {
                 map(params => params.id)
             )
             .subscribe(result => {
-                    this.getById(result);
-                    this.literaryCompetitionId = result;
-                }
+                this.getById(result);
+                this.literaryCompetitionId = result;
+            }
             );
         this.isUserAdministrator();
         this.getProfile();

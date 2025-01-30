@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from 'src/app/services/auth.service';
-import {ProfileService} from 'src/app/services/profile.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {UserTO} from '../../models/userTO.model';
-import {MyErrorStateMatcher} from '../cadastro/cadastro.component';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserTO } from '../../models/userTO.model';
+import { MyErrorStateMatcher } from '../cadastro/cadastro.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Util } from '../shared/Utils/util';
 
@@ -23,7 +22,6 @@ export class NovaSenhaComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private profileService: ProfileService,
         private authService: AuthService,
         private route: ActivatedRoute,
         private router: Router,
@@ -58,14 +56,14 @@ export class NovaSenhaComponent implements OnInit {
                 Validators.pattern('^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\\d]){1,})(?=(.*[\\W]){1,})(?!.*\\s).{8,}$')
             ])],
             confirmPassword: [''],
-        }, {validator: this.checkPasswords});
+        }, { validator: this.checkPasswords });
     }
 
     checkPasswords(group: FormGroup) { // here we have the 'passwords' group
         const pass = group.controls.password.value;
         const confirmPass = group.controls.confirmPassword.value;
 
-        return pass === confirmPass ? null : {notSame: true};
+        return pass === confirmPass ? null : { notSame: true };
     }
 
     resetPassword() {

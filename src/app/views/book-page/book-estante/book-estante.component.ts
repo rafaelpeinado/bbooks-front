@@ -1,18 +1,18 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Observable, Subscription, zip} from 'rxjs';
-import {BookService} from '../../../services/book.service';
-import {BookCase} from '../../../models/bookCase.model';
-import {Book} from '../../../models/book.model';
-import {MatDialog} from '@angular/material/dialog';
-import {MediaChange, MediaObserver} from '@angular/flex-layout';
-import {BookStatus, getArrayStatus, mapBookStatus} from '../../../models/enums/BookStatus.enum';
-import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {map, take} from 'rxjs/operators';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subscription, zip } from 'rxjs';
+import { BookService } from '../../../services/book.service';
+import { BookCase } from '../../../models/bookCase.model';
+import { Book } from '../../../models/book.model';
+import { MatDialog } from '@angular/material/dialog';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { BookStatus, getArrayStatus, mapBookStatus } from '../../../models/enums/BookStatus.enum';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { map, take } from 'rxjs/operators';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -42,14 +42,13 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
     @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
     constructor(
-        private fb: FormBuilder,
         private route: ActivatedRoute,
         private bookService: BookService,
         public dialog: MatDialog,
         public mediaObserver: MediaObserver,
         private router: Router,
         private translate: TranslateService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
@@ -66,21 +65,21 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
                 if (myBook) {
                     if (this.bookCase.id) {
                         this.bookService.getBookCaseByTag(this.bookCase.id)
-                        .pipe(take(1))
-                        .subscribe(
-                        bcs => {
-                            this.bookCase = bcs;
-                        }, error => console.log('error booksComponent', error));
+                            .pipe(take(1))
+                            .subscribe(
+                                bcs => {
+                                    this.bookCase = bcs;
+                                }, error => console.log('error booksComponent', error));
 
                     } else {
                         this.bookService.getAllBooks()
-                        .pipe(
-                            take(1)
-                        )
-                        .subscribe(books => {
-                            this.bookCase.books = books;
-                        },
-                        error => console.log('error booksComponent get all', error));
+                            .pipe(
+                                take(1)
+                            )
+                            .subscribe(books => {
+                                this.bookCase.books = books;
+                            },
+                                error => console.log('error booksComponent get all', error));
                     }
                 }
             }
@@ -163,24 +162,6 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
 
     _filter(value: string): BookStatus[] {
         return this.allStatus.filter(status => status.toLowerCase().indexOf(value.toLowerCase()) === 0);
-    }
-
-    private statusFilter(): BookStatus[] {
-        if (this.filter.length <= 0) {
-            return this.allStatus;
-        }
-        let result = [];
-        for (const s of this.filter) {
-            result = this.allStatus.filter((status) => {
-                if (status === s) {
-                    return false;
-                } else {
-                    return true;
-                }
-            });
-        }
-
-        return result;
     }
 
     filterBooks(): Book[] {

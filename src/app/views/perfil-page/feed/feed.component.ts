@@ -1,19 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {take} from 'rxjs/operators';
-import {UserTO} from '../../../models/userTO.model';
-import {MatDialog} from '@angular/material/dialog';
-import {AuthService} from '../../../services/auth.service';
-import {PostService} from '../../../services/post.service';
-import {PostTO} from '../../../models/PostTO.model';
-import {TranslateService} from '@ngx-translate/core';
-import {FeedService} from '../../../services/feed.service';
-import {FeedPerfilManageService} from '../store/feed-perfil-manage.service';
-import {IFeedState} from '../store/state/feed.state.interface';
-import {Observable} from 'rxjs';
-import {TypePostControler} from '../../../models/enums/TypePost.enum';
-import {FeedGenericService} from '../../../services/feed-generic.service';
-import {PostPagination} from '../../../models/pagination/post.pagination';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { UserTO } from '../../../models/userTO.model';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../../../services/auth.service';
+import { PostService } from '../../../services/post.service';
+import { PostTO } from '../../../models/PostTO.model';
+import { TranslateService } from '@ngx-translate/core';
+import { FeedService } from '../../../services/feed.service';
+import { FeedPerfilManageService } from '../store/feed-perfil-manage.service';
+import { IFeedState } from '../store/state/feed.state.interface';
+import { Observable } from 'rxjs';
+import { TypePostControler } from '../../../models/enums/TypePost.enum';
+import { FeedGenericService } from '../../../services/feed-generic.service';
+import { PostPagination } from '../../../models/pagination/post.pagination';
 
 @Component({
     selector: 'app-feed',
@@ -30,7 +30,6 @@ export class FeedComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         public dialog: MatDialog,
-        private router: Router,
         public authService: AuthService,
         public postService: PostService,
         public translate: TranslateService,

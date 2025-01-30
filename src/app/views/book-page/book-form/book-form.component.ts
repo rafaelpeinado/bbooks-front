@@ -3,7 +3,6 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { Book } from '../../../models/book.model';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { BookService } from '../../../services/book.service';
 import { Author } from '../../../models/author.model';
 import { AuthorService } from '../../../services/author.service';
 import { CDNService } from '../../../services/cdn.service';
@@ -35,7 +34,6 @@ export class BookFormComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private bookService: BookService,
         private addBookUseCase: AddBookUseCase,
         private authorService: AuthorService,
         private cdnService: CDNService,

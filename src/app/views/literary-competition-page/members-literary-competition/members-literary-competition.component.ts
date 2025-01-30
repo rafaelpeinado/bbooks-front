@@ -1,18 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {CompetitionMemberTO} from '../../../models/competitionMemberTO.model';
-import {map, take} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
-import {CompetitionMemberService} from '../../../services/competition-member.service';
-import {ProfileService} from '../../../services/profile.service';
-import {Role} from '../../../models/enums/Role.enum';
-import {Util} from '../../shared/Utils/util';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {LiteraryMemberStatus} from '../../../models/enums/LiteraryMemberStatus.enum';
-import {StoryLiteraryCompetitionComponent} from '../story-literary-competition/story-literary-competition.component';
-import {MatDialog} from '@angular/material/dialog';
-import {CompetitionVoteService} from '../../../services/competition-vote.service';
-import {AuthService} from '../../../services/auth.service';
-import {VoteComponent} from '../vote/vote.component';
+import { Component, OnInit } from '@angular/core';
+import { CompetitionMemberTO } from '../../../models/competitionMemberTO.model';
+import { map, take } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { CompetitionMemberService } from '../../../services/competition-member.service';
+import { ProfileService } from '../../../services/profile.service';
+import { Role } from '../../../models/enums/Role.enum';
+import { Util } from '../../shared/Utils/util';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { LiteraryMemberStatus } from '../../../models/enums/LiteraryMemberStatus.enum';
+import { StoryLiteraryCompetitionComponent } from '../story-literary-competition/story-literary-competition.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../../../services/auth.service';
+import { VoteComponent } from '../vote/vote.component';
 
 @Component({
     selector: 'app-members-literary-competition',
@@ -38,7 +37,6 @@ export class MembersLiteraryCompetitionComponent implements OnInit {
         private fb: FormBuilder,
         private dialog: MatDialog,
         private authService: AuthService,
-        private competitionVoteService: CompetitionVoteService
     ) {
     }
 
@@ -48,13 +46,13 @@ export class MembersLiteraryCompetitionComponent implements OnInit {
                 map(params => params.id)
             )
             .subscribe(result => {
-                    this.literaryCompetitionId = result;
-                }
+                this.literaryCompetitionId = result;
+            }
             );
         this.getMembers();
         this.searchMembers = this.fb.group({
-                nameMembers: ['']
-            }
+            nameMembers: ['']
+        }
         );
     }
 

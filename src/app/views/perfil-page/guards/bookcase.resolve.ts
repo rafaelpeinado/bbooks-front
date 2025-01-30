@@ -41,7 +41,7 @@ export class BookcaseResolve implements Resolve<any> {
                     userBooks.forEach((userBook) => {
                         this.getBookByIdUseCase.execute(userBook.book.id, userBook.book.api).subscribe((book) => {
                             // TODO ajustar para retornar book
-                            this.bookCase.books.push(userBook.book);
+                            this.bookCase.books.push(book);
                         });
                     });
                 });

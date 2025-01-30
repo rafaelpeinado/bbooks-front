@@ -1,9 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {take} from 'rxjs/operators';
-import {CompetitionMemberService} from '../../../services/competition-member.service';
-import {ActivatedRoute} from '@angular/router';
-import {CompetitionTO} from '../../../models/competitionTO.model';
-import {AuthService} from '../../../services/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { CompetitionMemberService } from '../../../services/competition-member.service';
+import { CompetitionTO } from '../../../models/competitionTO.model';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
     selector: 'app-list-literary-competition',
@@ -18,7 +17,6 @@ export class ListLiteraryCompetitionComponent implements OnInit {
 
     constructor(
         private competitionMemberService: CompetitionMemberService,
-        private route: ActivatedRoute,
         private authService: AuthService
     ) {
     }

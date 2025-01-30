@@ -1,11 +1,10 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {take} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
-import {CompetitionMemberService} from '../../../services/competition-member.service';
-import {ProfileService} from '../../../services/profile.service';
-import {CompetitionMemberTO} from '../../../models/competitionMemberTO.model';
-import {Util} from '../../shared/Utils/util';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { CompetitionMemberService } from '../../../services/competition-member.service';
+import { ProfileService } from '../../../services/profile.service';
+import { CompetitionMemberTO } from '../../../models/competitionMemberTO.model';
+import { Util } from '../../shared/Utils/util';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-story-literary-competition',
@@ -19,7 +18,6 @@ export class StoryLiteraryCompetitionComponent implements OnInit {
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public member: CompetitionMemberTO,
-        private route: ActivatedRoute,
         private competitionMemberService: CompetitionMemberService,
         private profileService: ProfileService,
         public dialogRef: MatDialogRef<StoryLiteraryCompetitionComponent>,

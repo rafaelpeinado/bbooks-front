@@ -1,10 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
-import {UserTO} from 'src/app/models/userTO.model';
-import {ProfileService} from 'src/app/services/profile.service';
-import {UserService} from 'src/app/services/user.service';
-import {ActivatedRoute} from '@angular/router';
-import {map, take} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { UserTO } from 'src/app/models/userTO.model';
+import { UserService } from 'src/app/services/user.service';
+import { ActivatedRoute } from '@angular/router';
+import { map, take } from 'rxjs/operators';
 
 @Component({
     selector: 'app-pesquisar-amigos',
@@ -17,9 +15,7 @@ export class PesquisarAmigosComponent implements OnInit {
     filterUsers: UserTO[] = [];
 
     constructor(
-        private fb: FormBuilder,
         private userService: UserService,
-        private profileService: ProfileService,
         private route: ActivatedRoute
     ) {
     }
@@ -40,8 +36,8 @@ export class PesquisarAmigosComponent implements OnInit {
                                         .includes(params.toLocaleLowerCase().replace(' ', '')));
                             })
                         ).subscribe(users => {
-                        this.filterUsers = users;
-                    });
+                            this.filterUsers = users;
+                        });
                 } else {
                     this.filterUsers = [];
                 }

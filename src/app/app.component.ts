@@ -1,8 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from './services/auth.service';
-import {BnNgIdleService} from 'bn-ng-idle';
-import {Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +10,7 @@ export class AppComponent implements OnInit {
   title = 'bbooks';
 
   constructor(
-      public auth: AuthService,
-      private idleService: BnNgIdleService,
-      private router: Router,
-      private translate: TranslateService
+    public auth: AuthService,
 
   ) {
   }

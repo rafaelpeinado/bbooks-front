@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {UserService} from '../../../services/user.service';
-import {map, take} from 'rxjs/operators';
-import {UserTO} from '../../../models/userTO.model';
-import {ActivatedRoute} from '@angular/router';
-import {CompetitionMemberService} from '../../../services/competition-member.service';
-import {LiteraryMemberStatus} from '../../../models/enums/LiteraryMemberStatus.enum';
-import {Role} from '../../../models/enums/Role.enum';
-import {CompetitionMemberSaveTO} from '../../../models/competitionMemberSaveTO.model';
-import {Util} from '../../shared/Utils/util';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { UserService } from '../../../services/user.service';
+import { map, take } from 'rxjs/operators';
+import { UserTO } from '../../../models/userTO.model';
+import { ActivatedRoute } from '@angular/router';
+import { CompetitionMemberService } from '../../../services/competition-member.service';
+import { LiteraryMemberStatus } from '../../../models/enums/LiteraryMemberStatus.enum';
+import { Role } from '../../../models/enums/Role.enum';
+import { CompetitionMemberSaveTO } from '../../../models/competitionMemberSaveTO.model';
+import { Util } from '../../shared/Utils/util';
 
 @Component({
     selector: 'app-add-administrator',
@@ -24,12 +24,12 @@ export class AddAdministratorComponent implements OnInit {
     isAdmin: boolean;
 
     constructor(
-        private formBuilder: FormBuilder,
         private userService: UserService,
         private route: ActivatedRoute,
-        private competitionMemberService: CompetitionMemberService
+        private competitionMemberService: CompetitionMemberService,
+        private formBuilder: FormBuilder,
     ) {
-        this.formSearch = formBuilder.group({
+        this.formSearch = this.formBuilder.group({
             search: ['']
         });
     }
@@ -40,9 +40,9 @@ export class AddAdministratorComponent implements OnInit {
                 map(params => params.id)
             )
             .subscribe(result => {
-                    this.literaryCompetitionId = result;
-                    this.getAllUsers();
-                }
+                this.literaryCompetitionId = result;
+                this.getAllUsers();
+            }
             );
         this.getAllUsers();
 
