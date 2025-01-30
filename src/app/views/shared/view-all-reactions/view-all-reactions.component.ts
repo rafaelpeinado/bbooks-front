@@ -3,7 +3,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {ReactionsTO} from '../../../models/ReactionsTO';
 import {ReactionType} from '../../../models/enums/ReactionType.enum';
 import {Router} from '@angular/router';
-import {ReadingTrackingTO} from '../../../models/ReadingTrackingTO.model';
 
 
 @Component({

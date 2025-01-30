@@ -105,7 +105,7 @@ export class BookCardComponent implements OnInit {
 
             this.book = book;
             this.userBook = userBook.id ? true : false;
-        })
+        });
 
     }
 

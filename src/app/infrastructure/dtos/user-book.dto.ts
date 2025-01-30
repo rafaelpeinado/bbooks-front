@@ -1,6 +1,6 @@
-import { Book } from "src/app/core/domain/entities/book.entity";
-import { Tag } from "src/app/core/domain/entities/tag.entity";
-import { BookStatus } from "src/app/core/domain/enums/book-status.enum";
+import { Book } from 'src/app/core/domain/entities/book.entity';
+import { Tag } from 'src/app/core/domain/entities/tag.entity';
+import { BookStatus } from 'src/app/core/domain/enums/book-status.enum';
 
 export class UserBookTO {
     id: string;
@@ -17,8 +17,8 @@ export class UserBookTO {
 
 
 export interface AllUserBookByProfileIdTO {
-    profileId: number
-    books: UserBookTO[]
+    profileId: number;
+    books: UserBookTO[];
 }
 
 

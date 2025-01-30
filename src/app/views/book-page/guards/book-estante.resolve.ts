@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { BookCase } from '../../../models/bookCase.model';
 import { of } from 'rxjs';
 import { SearchBookByNameUseCase } from 'src/app/core/use-cases/book/search-book-by-name.use-case';
-import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 
 
 @Injectable()

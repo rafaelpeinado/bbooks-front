@@ -5,7 +5,6 @@ import {map, take} from 'rxjs/operators';
 import {UserTO} from '../../../models/userTO.model';
 import {ActivatedRoute} from '@angular/router';
 import {CompetitionMemberService} from '../../../services/competition-member.service';
-import {CompetitionMemberTO} from '../../../models/competitionMemberTO.model';
 import {LiteraryMemberStatus} from '../../../models/enums/LiteraryMemberStatus.enum';
 import {Role} from '../../../models/enums/Role.enum';
 import {CompetitionMemberSaveTO} from '../../../models/competitionMemberSaveTO.model';

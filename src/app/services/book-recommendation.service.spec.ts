@@ -8,7 +8,6 @@ import {AuthService} from './auth.service';
 import {BookRecommendationService} from './book-recommendation.service';
 import {GoogleBooksService} from './google-books.service';
 import {UserbookService} from './userbook.service';
-import {friendMock} from '../mocks/friend.model.mock';
 import {bookRecomendationMock} from '../mocks/book-recomendation.model.mock';
 
 describe('BookRecommendationService', () => {

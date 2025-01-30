@@ -39,7 +39,7 @@ export class SearchBookComponent implements OnInit {
             input: this.formSearch.value.book.split(' ').join('+'),
             page: this.pageEvent.pageIndex,
             size: 10,
-        }
+        };
 
         Util.loadingScreen();
         this.searchMergedBookUseCase.execute(filter)

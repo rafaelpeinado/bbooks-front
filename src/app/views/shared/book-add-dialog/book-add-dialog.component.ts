@@ -160,7 +160,7 @@ export class BookAddDialogComponent implements OnInit {
             tags: this.getSelectedTags(),
             page: this.Book.numberPage,
             book: this.Book,
-        }
+        };
         if (
             this.formBook.get('statusBook').value.toUpperCase() === this.status.LIDO ||
             this.formBook.get('statusBook').value === this.statusEnglish.LIDO
@@ -169,7 +169,7 @@ export class BookAddDialogComponent implements OnInit {
         }
 
         if (this.Book.api === 'google') {
-            this.userBookTo.idBookGoogle = this.Book.id
+            this.userBookTo.idBookGoogle = this.Book.id;
         } else {
             this.userBookTo.idBook = Number.parseInt(this.Book.id);
         }

@@ -48,8 +48,6 @@ import { LiteraryCompetitionModule } from './views/literary-competition-page/lit
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { TimeLineComponent } from './views/time-line/time-line.component';
 import { MglTimelineModule } from 'angular-mgl-timeline';
-import { BookApiService } from './infrastructure/adapters/book.service';
-import { GoogleBooksApiService } from './infrastructure/adapters/google-books.service';
 import { BookRepository } from './core/repositories/book.repository';
 import { BookServiceFactory } from './infrastructure/adapters/factories/book-service.factory';
 

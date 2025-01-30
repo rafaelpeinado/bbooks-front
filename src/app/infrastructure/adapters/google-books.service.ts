@@ -1,14 +1,14 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { first, map } from "rxjs/operators";
-import { Book } from "src/app/core/domain/entities/book.entity";
-import { FilterSearch } from "src/app/core/domain/interfaces/filter-search.interface";
-import { PaginationInterface } from "src/app/core/domain/interfaces/pagination.interface";
-import { BookRepository } from "src/app/core/repositories/book.repository";
-import { environment } from "src/environments/environment";
-import { ItemGoogleBooks, ListItemsGoogleBooks } from "../dtos/google-books.dto";
-import { GoogleBooksMapper } from "../mappers/google-books.mapper";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
+import { Book } from 'src/app/core/domain/entities/book.entity';
+import { FilterSearch } from 'src/app/core/domain/interfaces/filter-search.interface';
+import { PaginationInterface } from 'src/app/core/domain/interfaces/pagination.interface';
+import { BookRepository } from 'src/app/core/repositories/book.repository';
+import { environment } from 'src/environments/environment';
+import { ItemGoogleBooks, ListItemsGoogleBooks } from '../dtos/google-books.dto';
+import { GoogleBooksMapper } from '../mappers/google-books.mapper';
 
 @Injectable({
     providedIn: 'root'
@@ -29,15 +29,15 @@ export class GoogleBooksApiService implements BookRepository {
             first(),
             map((response) => {
                 const books: Book[] = response.items.map((item) => GoogleBooksMapper.toBook(item));
-                
+
                 const size = filter.size;
                 const totalItems = response.totalItems;
                 const totalPages = Math.ceil(totalItems / size);
                 return {
                     content: books,
                     totalElements: totalItems,
-                    size: size,
-                    totalPages: totalPages,
+                    size,
+                    totalPages,
                     last: totalPages === filter.page,
                     pageable: undefined,
                 };
@@ -62,18 +62,18 @@ export class GoogleBooksApiService implements BookRepository {
     }
 
     searchMergedBook(filterSearch: FilterSearch): Observable<PaginationInterface<Book>> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     addBook(book: Book): Observable<Book> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     searchBooks(filter: FilterSearch): Observable<PaginationInterface<Book>> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     updateBook(book: Book): Observable<Book> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 }

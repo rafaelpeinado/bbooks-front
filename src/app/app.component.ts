@@ -3,7 +3,6 @@ import {AuthService} from './services/auth.service';
 import {BnNgIdleService} from 'bn-ng-idle';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
-import { Util } from './views/shared/Utils/util';
 
 @Component({
   selector: 'app-root',

@@ -7,7 +7,6 @@ import { Book } from '../../models/book.model';
 import { of, zip } from 'rxjs';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
-import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 
 @Component({
     selector: 'app-time-line',

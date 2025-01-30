@@ -1,9 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {map, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {CompetitionMemberService} from '../../../services/competition-member.service';
 import {ProfileService} from '../../../services/profile.service';
-import {CompetitionTO} from '../../../models/competitionTO.model';
 import {CompetitionMemberTO} from '../../../models/competitionMemberTO.model';
 import {Util} from '../../shared/Utils/util';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';

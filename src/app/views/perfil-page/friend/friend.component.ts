@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {map, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 import {UserTO} from '../../../models/userTO.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Friendship} from '../../../models/Friendship.model';

@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {GroupTO} from '../../../models/GroupTO.model';
-import {GroupService} from '../../../services/group.service';
 import {AuthService} from '../../../services/auth.service';
-import {GroupMembers} from '../../../models/GroupMembers.model';
 import {GroupMemberService} from '../../../services/group-member.service';
 import {take} from 'rxjs/operators';
 import {TranslateService} from '@ngx-translate/core';

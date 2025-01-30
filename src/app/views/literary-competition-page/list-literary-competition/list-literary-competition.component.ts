@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {map, take} from 'rxjs/operators';
-import {CompetitionService} from '../../../services/competition.service';
+import {take} from 'rxjs/operators';
 import {CompetitionMemberService} from '../../../services/competition-member.service';
 import {ActivatedRoute} from '@angular/router';
 import {CompetitionTO} from '../../../models/competitionTO.model';

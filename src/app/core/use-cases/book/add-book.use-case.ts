@@ -1,9 +1,9 @@
-import { Observable } from "rxjs";
-import { Book } from "../../domain/entities/book.entity";
-import { UseCaseInterface } from "../use-case.interface";
-import { Injectable } from "@angular/core";
-import { BookServiceFactory } from "src/app/infrastructure/adapters/factories/book-service.factory";
-import { ApiType } from "../../domain/enums/api-type.enum";
+import { Observable } from 'rxjs';
+import { Book } from '../../domain/entities/book.entity';
+import { UseCaseInterface } from '../use-case.interface';
+import { Injectable } from '@angular/core';
+import { BookServiceFactory } from 'src/app/infrastructure/adapters/factories/book-service.factory';
+import { ApiType } from '../../domain/enums/api-type.enum';
 
 @Injectable({
     providedIn: 'root'

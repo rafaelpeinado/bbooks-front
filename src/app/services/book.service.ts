@@ -1,12 +1,10 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { BookCase } from '../models/bookCase.model';
 import { Book } from '../models/book.model';
-import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
 import { Observable, throwError, zip } from 'rxjs';
 import { of } from 'rxjs';
 import { AuthService } from './auth.service';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { GetBookByIdUseCase } from '../core/use-cases/book/get-book-by-id.use-case';
 import { BookBuilder } from '../core/domain/builders/book.builder';
 import { SearchBookByNameUseCase } from '../core/use-cases/book/search-book-by-name.use-case';

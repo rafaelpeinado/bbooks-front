@@ -3,10 +3,8 @@ import { ReadingTargetTO } from './../../models/readingTargetTO.model';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ReadingTargetService } from 'src/app/services/reading-target.service';
-import { map } from 'rxjs/operators';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
-import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 
 @Component({
   selector: 'app-previous-goals',

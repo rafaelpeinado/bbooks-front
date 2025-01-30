@@ -1,6 +1,6 @@
-import { Profile } from "../entities/profile.entity";
-import { Tag } from "../entities/tag.entity";
-import { UserBook } from "../entities/user-book.entity";
+import { Profile } from '../entities/profile.entity';
+import { Tag } from '../entities/tag.entity';
+import { UserBook } from '../entities/user-book.entity';
 
 export class TagBuilder {
     private _tag: Partial<Tag> = {};
@@ -35,7 +35,7 @@ export class TagBuilder {
     copyFrom(tag: Tag): TagBuilder {
         if (tag) {
             Object.keys(tag)
-                .forEach((key) => this._tag[key] = tag[key])
+                .forEach((key) => this._tag[key] = tag[key]);
         }
         return this;
     }

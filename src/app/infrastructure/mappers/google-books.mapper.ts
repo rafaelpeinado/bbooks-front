@@ -1,9 +1,9 @@
-import { BookBuilder } from "src/app/core/domain/builders/book.builder";
-import { ItemGoogleBooks } from "../dtos/google-books.dto";
-import { ApiType } from "src/app/core/domain/enums/api-type.enum";
-import { ISBNGoogleEnum } from "../enums/isbn-google.enum";
-import { Author } from "src/app/core/domain/entities/author.entity";
-import { Book } from "src/app/core/domain/entities/book.entity";
+import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
+import { ItemGoogleBooks } from '../dtos/google-books.dto';
+import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
+import { ISBNGoogleEnum } from '../enums/isbn-google.enum';
+import { Author } from 'src/app/core/domain/entities/author.entity';
+import { Book } from 'src/app/core/domain/entities/book.entity';
 
 export class GoogleBooksMapper {
     static toBook(googleBooks: ItemGoogleBooks): Book {
@@ -21,7 +21,7 @@ export class GoogleBooksMapper {
             .setImage(GoogleBooksMapper.getImage(googleBooks))
             .setDescription(googleBooks.volumeInfo.description)
             .setApi(ApiType.GOOGLE)
-            .build()
+            .build();
     }
 
     private static getIsbn(response: ItemGoogleBooks, isbnGoogleEnum: ISBNGoogleEnum): string {

@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/ro
 import {Observable} from 'rxjs';
 import {UserService} from '../../../services/user.service';
 import {UserTO} from '../../../models/userTO.model';
-import {map, take} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {AuthService} from '../../../services/auth.service';
 
 

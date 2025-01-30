@@ -1,6 +1,6 @@
-import { BookStatus } from "../enums/book-status.enum";
-import { Book } from "./book.entity";
-import { Tag } from "./tag.entity";
+import { BookStatus } from '../enums/book-status.enum';
+import { Book } from './book.entity';
+import { Tag } from './tag.entity';
 
 export interface UserBook {
     id: string;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Util } from '../../shared/Utils/util';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { BookService } from '../../../services/book.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';

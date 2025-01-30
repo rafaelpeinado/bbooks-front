@@ -57,7 +57,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
             input: this.searchControl.value.book.split(' ').join('+'),
             page: this.pageEvent.pageIndex,
             size: 10,
-        }
+        };
         this.searchMergedBookUseCase.execute(filter)
             .subscribe((response) => {
                 this.totalBooks = response.totalElements;
@@ -78,7 +78,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.mediaSub.unsubscribe();
     }
-    
+
     resetBooks(): void {
         this.books = [];
         this.totalBooks = 0;

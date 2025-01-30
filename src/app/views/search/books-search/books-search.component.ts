@@ -58,7 +58,7 @@ export class BooksSearchComponent implements OnInit, OnDestroy {
                 input: this.search.split(' ').join('+'),
                 page: this.pageEvent.pageIndex,
                 size: 10,
-            }
+            };
             this.searchMergedBookUseCase.execute(filter)
                 .subscribe((response) => {
                     this.totalBooks = response.totalElements;

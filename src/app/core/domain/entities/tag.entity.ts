@@ -1,5 +1,5 @@
-import { Profile } from "./profile.entity";
-import { UserBook } from "./user-book.entity";
+import { Profile } from './profile.entity';
+import { UserBook } from './user-book.entity';
 
 export interface Tag {
     id: string;

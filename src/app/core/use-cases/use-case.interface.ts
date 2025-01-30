@@ -1,4 +1,4 @@
-import { ApiType } from "../domain/enums/api-type.enum";
+import { ApiType } from '../domain/enums/api-type.enum';
 
 export abstract class UseCaseInterface {
     abstract execute(input: any): any;

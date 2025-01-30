@@ -1,7 +1,6 @@
 import {TypePost} from './enums/TypePost.enum';
 import {PostPrivacy} from './enums/PostPrivacy.enum';
 import {UserTO} from './userTO.model';
-import {postsMock} from '../mocks/post.model.mock';
 import {GroupTO} from './GroupTO.model';
 import {ReactionsTO} from './ReactionsTO';
 import {SurveyTO} from './surveyTO.model';

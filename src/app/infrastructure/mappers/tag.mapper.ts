@@ -1,7 +1,7 @@
-import { Tag } from "src/app/core/domain/entities/tag.entity";
-import { TagTO } from "../dtos/tag.dto";
-import { TagBuilder } from "src/app/core/domain/builders/tag.builder";
-import { UserBookMapper } from "./user-book.mapper";
+import { Tag } from 'src/app/core/domain/entities/tag.entity';
+import { TagTO } from '../dtos/tag.dto';
+import { TagBuilder } from 'src/app/core/domain/builders/tag.builder';
+import { UserBookMapper } from './user-book.mapper';
 
 export class TagMapper {
     static toEntity(tagTO: TagTO): Tag {
@@ -11,7 +11,7 @@ export class TagMapper {
             .setColor(tagTO.color)
             .setProfile(tagTO.profile)
             .setUserBooks(tagTO.books.map((book) => UserBookMapper.toEntity(book)))
-            .build()
+            .build();
     }
 
     static toDTO(tag: Tag): TagTO {
@@ -21,7 +21,7 @@ export class TagMapper {
             name: tag.name,
             profile: tag.profile,
             books: tag.userBooks.map((userBook) => UserBookMapper.toDTO(userBook)),
-        }
+        };
         return tagTO;
     }
 }

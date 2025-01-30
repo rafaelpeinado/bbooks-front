@@ -1,5 +1,5 @@
-import { Observable } from "rxjs";
-import { Tag } from "../domain/entities/tag.entity";
+import { Observable } from 'rxjs';
+import { Tag } from '../domain/entities/tag.entity';
 
 export abstract class TagRepository {
     abstract addTag(tag: Tag): Observable<Tag>;

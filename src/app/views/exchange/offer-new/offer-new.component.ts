@@ -14,7 +14,7 @@ import { BookService } from '../../../services/book.service';
 import { BookAdsService } from '../../../services/book-ads.service';
 import { CDNService } from '../../../services/cdn.service';
 import { flatMap } from 'rxjs/internal/operators';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ConsultaCepService } from '../../../services/consulta-cep.service';
 import { City } from '../../../models/city.model';
 import { Country } from '../../../models/country.model';
@@ -166,7 +166,7 @@ export class OfferNewComponent implements OnInit {
         this.getBookByIdUseCase.execute(id, apiType).subscribe((book) => {
             this.book = book;
             Util.stopLoading();
-        })
+        });
     }
 
     private createForm(): void {

@@ -1,9 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {GroupTO} from '../../../models/GroupTO.model';
 import {Util} from '../../shared/Utils/util';
 import {take} from 'rxjs/operators';
-import {mapPostPrivacyStrinView, PostPrivacy} from '../../../models/enums/PostPrivacy.enum';
+import {mapPostPrivacyStrinView} from '../../../models/enums/PostPrivacy.enum';
 import {GroupMemberService} from '../../../services/group-member.service';
 import {GroupMembers} from '../../../models/GroupMembers.model';
 import {AuthService} from '../../../services/auth.service';

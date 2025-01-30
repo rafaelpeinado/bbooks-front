@@ -1,6 +1,6 @@
-import { Author } from "../entities/author.entity";
-import { Book } from "../entities/book.entity";
-import { ApiType } from "../enums/api-type.enum";
+import { Author } from '../entities/author.entity';
+import { Book } from '../entities/book.entity';
+import { ApiType } from '../enums/api-type.enum';
 
 export class BookBuilder {
     private _book: Partial<Book> = {};
@@ -81,7 +81,7 @@ export class BookBuilder {
     copyFrom(book: Book): BookBuilder {
         if (book) {
             Object.keys(book)
-                .forEach((key) => this._book[key] = book[key])
+                .forEach((key) => this._book[key] = book[key]);
         }
         // Object.assign(this, book);
         return this;

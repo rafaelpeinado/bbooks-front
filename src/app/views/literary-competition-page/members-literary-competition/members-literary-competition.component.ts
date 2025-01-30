@@ -11,7 +11,6 @@ import {LiteraryMemberStatus} from '../../../models/enums/LiteraryMemberStatus.e
 import {StoryLiteraryCompetitionComponent} from '../story-literary-competition/story-literary-competition.component';
 import {MatDialog} from '@angular/material/dialog';
 import {CompetitionVoteService} from '../../../services/competition-vote.service';
-import {CompetitionVotesSaveTO} from '../../../models/competitionVotesSaveTO.model';
 import {AuthService} from '../../../services/auth.service';
 import {VoteComponent} from '../vote/vote.component';
 

@@ -1,8 +1,8 @@
-import { GoogleBooksApiService } from "../google-books.service";
-import { BookApiService } from "../book.service";
-import { BookRepository } from "src/app/core/repositories/book.repository";
-import { Injectable } from "@angular/core";
-import { ApiType } from "src/app/core/domain/enums/api-type.enum";
+import { GoogleBooksApiService } from '../google-books.service';
+import { BookApiService } from '../book.service';
+import { BookRepository } from 'src/app/core/repositories/book.repository';
+import { Injectable } from '@angular/core';
+import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 
 @Injectable({
     providedIn: 'root'

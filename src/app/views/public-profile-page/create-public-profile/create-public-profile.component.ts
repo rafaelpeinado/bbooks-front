@@ -1,11 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PublicProfileService} from '../../../services/public-profile.service';
-import {UserPublicProfileTO} from '../../../models/UserPublicProfileTO.model';
 import {map, take} from 'rxjs/operators';
-import {UserService} from '../../../services/user.service';
-import {AuthService} from '../../../services/auth.service';
-import {UserTO} from '../../../models/userTO.model';
 import {UserPublicProfileCreateTO} from '../../../models/UserPublicProfileCreateTO.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserPublicProfileUpdateTO} from '../../../models/UserPublicProfileUpdateTO.model';

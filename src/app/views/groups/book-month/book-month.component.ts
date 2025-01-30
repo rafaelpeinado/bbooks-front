@@ -9,7 +9,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Util } from '../../shared/Utils/util';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
-import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 
 @Component({
     selector: 'app-book-month',

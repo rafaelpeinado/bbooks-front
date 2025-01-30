@@ -1,4 +1,4 @@
-import { Pageable } from "./pageable.interface";
+import { Pageable } from './pageable.interface';
 
 export interface PaginationInterface<T> {
     content: T[];

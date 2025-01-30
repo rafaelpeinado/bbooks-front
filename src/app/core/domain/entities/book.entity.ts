@@ -1,5 +1,5 @@
-import { ApiType } from "../enums/api-type.enum";
-import { Author } from "./author.entity";
+import { ApiType } from '../enums/api-type.enum';
+import { Author } from './author.entity';
 
 export interface Book {
     id: string;

@@ -1,7 +1,6 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserTO} from '../../../models/userTO.model';
-import {map, take} from 'rxjs/operators';
 import {AuthService} from '../../../services/auth.service';
 import {FriendsService} from '../../../services/friends.service';
 import {Friend} from '../../../models/friend.model';

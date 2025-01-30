@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Route, Router} from '@angular/router';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {BookAddDialogComponent} from '../../shared/book-add-dialog/book-add-dialog.component';
 import {BarCodeScannerComponent} from '../../shared/bar-code-scanner/bar-code-scanner.component';
 
 @Component({

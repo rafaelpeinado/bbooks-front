@@ -8,7 +8,6 @@ import { BookCase } from '../../../models/bookCase.model';
 import { Profile } from '../../../models/profileTO.model';
 import { AuthService } from '../../../services/auth.service';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
-import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
 
 
@@ -44,7 +43,7 @@ export class BookcaseResolve implements Resolve<any> {
                             // TODO ajustar para retornar book
                             this.bookCase.books.push(userBook.book);
                         });
-                    })
+                    });
                 });
             this.user.id = user.id;
             this.user.idSocial = user.idSocial;

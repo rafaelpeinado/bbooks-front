@@ -35,9 +35,9 @@ export class BookViewResolve implements Resolve<UserBookDetails> {
                 const userBook: UserBook = userBooks.find((userBook) => userBook.book.id === book.id);
 
                 const userBookDetails: UserBookDetails = {
-                    userBook: userBook,
-                    book: book,
-                }
+                    userBook,
+                    book,
+                };
 
                 return userBookDetails;
             }));

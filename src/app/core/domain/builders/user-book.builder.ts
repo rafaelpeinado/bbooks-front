@@ -1,7 +1,7 @@
-import { Book } from "../entities/book.entity";
-import { Tag } from "../entities/tag.entity";
-import { UserBook } from "../entities/user-book.entity";
-import { BookStatus } from "../enums/book-status.enum";
+import { Book } from '../entities/book.entity';
+import { Tag } from '../entities/tag.entity';
+import { UserBook } from '../entities/user-book.entity';
+import { BookStatus } from '../enums/book-status.enum';
 
 export class UserBookBuilder {
     private _userBook: Partial<UserBook> = {};
@@ -51,7 +51,7 @@ export class UserBookBuilder {
     copyFrom(userBook: UserBook): UserBookBuilder {
         if (userBook) {
             Object.keys(userBook)
-                .forEach((key) => this._userBook[key] = userBook[key])
+                .forEach((key) => this._userBook[key] = userBook[key]);
         }
 
         return this;

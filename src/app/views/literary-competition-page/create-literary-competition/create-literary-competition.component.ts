@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CompetitionTO} from '../../../models/competitionTO.model';
-import {CompetitionMemberTO} from '../../../models/competitionMemberTO.model';
 import {AuthService} from '../../../services/auth.service';
 import {CompetitionService} from '../../../services/competition.service';
 import {map, take} from 'rxjs/operators';

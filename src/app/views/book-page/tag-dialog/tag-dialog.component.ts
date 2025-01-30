@@ -55,17 +55,17 @@ export class TagDialogComponent implements OnInit {
     save(): void {
         const tag = this.buildTag(this.tag);
         const useCase = this.tag ? this.editTagUseCase : this.createTagUseCase;
-        
+
         useCase.execute(tag).subscribe((response) => this.dialogRef.close(response));
     }
-    
+
     private buildTag(tag: any): Tag {
         const builder = new TagBuilder().copyFrom(tag).setName(this.formTag.get('name')?.value).setUserBooks([]);
-    
+
         if (!this.tag) {
             builder.setProfile(this.authService.getUser().profile);
         }
-    
+
         return builder.build();
     }
 

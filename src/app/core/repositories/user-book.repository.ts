@@ -1,7 +1,7 @@
-import { Observable } from "rxjs";
-import { UserBook } from "../domain/entities/user-book.entity";
-import { ApiType } from "../domain/enums/api-type.enum";
-import { GeneralStatus } from "../domain/entities/general-status.entity";
+import { Observable } from 'rxjs';
+import { UserBook } from '../domain/entities/user-book.entity';
+import { ApiType } from '../domain/enums/api-type.enum';
+import { GeneralStatus } from '../domain/entities/general-status.entity';
 
 
 export abstract class UserBookRepository {

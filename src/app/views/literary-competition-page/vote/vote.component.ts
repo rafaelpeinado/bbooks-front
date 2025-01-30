@@ -4,7 +4,7 @@ import {CompetitionMemberTO} from '../../../models/competitionMemberTO.model';
 import {CompetitionVotesSaveTO} from '../../../models/competitionVotesSaveTO.model';
 import {AuthService} from '../../../services/auth.service';
 import {CompetitionVoteService} from '../../../services/competition-vote.service';
-import {max, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 import {Util} from '../../shared/Utils/util';
 import {CompetitionMemberService} from '../../../services/competition-member.service';
 import {ProfileService} from '../../../services/profile.service';
