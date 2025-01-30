@@ -4,111 +4,60 @@ import { UserBook } from "../entities/user-book.entity";
 import { BookStatus } from "../enums/book-status.enum";
 
 export class UserBookBuilder {
-    private _id: string;
-    private _profileId: number;
-    private _book: Book;
-    private _status: BookStatus;
-    private _addDate: Date;
-    private _finishDate: Date | null;
-    private _tags: Tag[];
-    private _page: number;
+    private _userBook: Partial<UserBook> = {};
 
-    constructor(init?: Partial<UserBookBuilder>) {
-        if (init) {
-            Object.assign(this, init);
-        }
-    }
-
-    get id(): string {
-        return this._id;
-    }
-
-    get profileId(): number {
-        return this._profileId;
-    }
-
-    get book(): Book {
-        return this._book;
-    }
-
-    get status(): BookStatus {
-        return this._status;
-    }
-
-    get addDate(): Date {
-        return this._addDate;
-    }
-
-    get finishDate(): Date | null {
-        return this._finishDate;
-    }
-
-    get tags(): Tag[] {
-        return this._tags;
-    }
-
-    get page(): number {
-        return this._page;
-    }
+    constructor() { }
 
     setId(id: string): UserBookBuilder {
-        this._id = id;
+        this._userBook.id = id;
         return this;
     }
 
     setProfileId(profileId: number): UserBookBuilder {
-        this._profileId = profileId;
+        this._userBook.profileId = profileId;
         return this;
     }
 
     setBook(book: Book): UserBookBuilder {
-        this._book = book;
+        this._userBook.book = book;
         return this;
     }
 
     setStatus(status: BookStatus): UserBookBuilder {
-        this._status = status;
+        this._userBook.status = status;
         return this;
     }
 
     setAddDate(addDate: Date): UserBookBuilder {
-        this._addDate = addDate;
+        this._userBook.addDate = addDate;
         return this;
     }
 
     setFinishDate(finishDate: Date | null): UserBookBuilder {
-        this._finishDate = finishDate;
+        this._userBook.finishDate = finishDate;
         return this;
     }
 
     setTags(tags: Tag[]): UserBookBuilder {
-        this._tags = tags;
+        this._userBook.tags = tags;
         return this;
     }
 
     setPage(page: number): UserBookBuilder {
-        this._page = page;
+        this._userBook.page = page;
         return this;
     }
 
-    copy(): UserBookBuilder {
-        return new UserBookBuilder(this);
-    }
-
     copyFrom(userBook: UserBook): UserBookBuilder {
-        this._id = userBook.id;
-        this._profileId = userBook.profileId;
-        this._book = userBook.book;
-        this._status = userBook.status;
-        this._addDate = userBook.addDate;
-        this._finishDate = userBook.finishDate;
-        this._tags = userBook.tags;
-        this._page = userBook.page;
+        if (userBook) {
+            Object.keys(userBook)
+                .forEach((key) => this._userBook[key] = userBook[key])
+        }
 
         return this;
     }
 
     build(): UserBook {
-        return new UserBook(this);
+        return this._userBook as UserBook;
     }
 }

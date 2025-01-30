@@ -10,9 +10,7 @@ import { PaginationInterface } from "src/app/core/domain/interfaces/pagination.i
 import { BookRepository } from "src/app/core/repositories/book.repository";
 import { environment } from "src/environments/environment";
 import { SearchMergedBookTO } from "../dtos/search-book.dto";
-import { ItemGoogleBooks } from "../dtos/google-books.dto";
-import { ISBNGoogleEnum } from "../enums/isbn-google.enum";
-import { Author } from "src/app/core/domain/entities/author.entity";
+import { GoogleBooksMapper } from "../mappers/google-books.mapper";
 
 @Injectable({
     providedIn: 'root'
@@ -43,7 +41,7 @@ export class BookApiService implements BookRepository {
                 const totalPages = Math.ceil(totalItems / size);
 
                 const books: Book[] = response.books.content;
-                const booksGoogle: Book[] = response.googleBooks.items.map((item) => this.convertItemGoogleBooksToBook(item));
+                const booksGoogle: Book[] = response.googleBooks.items.map((item) => GoogleBooksMapper.toBook(item));
 
                 return {
                     content: books.concat(booksGoogle),
@@ -85,44 +83,6 @@ export class BookApiService implements BookRepository {
 
     searchBookByName(bookName: string): Observable<Book[]> {
         throw new Error("Method not implemented.");
-    }
-
-    private convertItemGoogleBooksToBook(response: ItemGoogleBooks): Book {
-        return new BookBuilder()
-            .setId(response.id)
-            .setIsbn10(this.getIsbn(response, ISBNGoogleEnum.ISBN_10))
-            .setIsbn13(this.getIsbn(response, ISBNGoogleEnum.ISBN_13))
-            .setTitle(response.volumeInfo.title)
-            .setAuthors(this.getAuthors(response))
-            .setNumberPage(response.volumeInfo.pageCount)
-            .setLanguage(response.volumeInfo.language)
-            .setPublisher(response.volumeInfo.publisher)
-            .setPublishedDate(response.volumeInfo.publishedDate)
-            // .setAverageRating(response.volumeInfo.a)
-            .setImage(this.getImage(response))
-            .setDescription(response.volumeInfo.description)
-            .setApi(ApiType.GOOGLE)
-            .build()
-    }
-
-    private getIsbn(response: ItemGoogleBooks, isbnGoogleEnum: ISBNGoogleEnum): string {
-        return response.volumeInfo.industryIdentifiers.find((item) => item.type === isbnGoogleEnum)?.identifier;
-    }
-
-    private getAuthors(response: ItemGoogleBooks): Author[] {
-        return response.volumeInfo.authors.map((author) => new Author(undefined, author));
-    }
-
-    private getImage(response: ItemGoogleBooks): string {
-        const links = response.volumeInfo.imageLinks;
-        if (links) {
-            const thumbnail = links.thumbnail;
-            return thumbnail
-                .slice(0, thumbnail.indexOf('zoom=1') + 'zoom=1'.length)
-                .concat('&source=gbs_api')
-                .replace('http', 'https');
-        }
-        return '';
     }
 
     // TODO O book de update book era 

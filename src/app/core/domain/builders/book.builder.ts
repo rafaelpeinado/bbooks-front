@@ -3,139 +3,70 @@ import { Book } from "../entities/book.entity";
 import { ApiType } from "../enums/api-type.enum";
 
 export class BookBuilder {
-    private _id!: string;
-    private _isbn10: string;
-    private _isbn13: string;
-    private _title: string;
-    private _authors: Author[];
-    private _numberPage: number;
-    private _language: string;
-    private _publisher: string;
-    // country: number;
-    private _publishedDate: string;
-    private _averageRating: number;
-    private _image?: string;
-    private _description: string;
-    private _api!: ApiType;
+    private _book: Partial<Book> = {};
 
-    constructor(init?: Partial<BookBuilder>) {
-        if (init) {
-            Object.assign(this, init);
-        }
-    }
-
-    get id(): string {
-        return this._id;
-    }
-
-    get isbn10(): string {
-        return this._isbn10;
-    }
-
-    get isbn13(): string {
-        return this._isbn13;
-    }
-
-    get title(): string {
-        return this._title;
-    }
-
-    get authors(): Author[] {
-        return this._authors;
-    }
-
-    get numberPage(): number {
-        return this._numberPage;
-    }
-
-    get language(): string {
-        return this._language;
-    }
-
-    get publisher(): string {
-        return this._publisher;
-    }
-
-    get publishedDate(): string {
-        return this._publishedDate;
-    }
-
-    get averageRating(): number {
-        return this._averageRating;
-    }
-
-    get image(): string | undefined {
-        return this._image;
-    }
-
-    get description(): string {
-        return this._description;
-    }
-
-    get api(): ApiType {
-        return this._api;
-    }
+    constructor() { }
 
     setId(id: string): BookBuilder {
         // if (!id || id.trim() === "") {
         //     throw new Error("ID is required.");
         // }
-        this._id = id;
+        this._book.id = id;
         return this;
     }
 
     setIsbn10(isbn10: string): BookBuilder {
-        this._isbn10 = isbn10;
+        this._book.isbn10 = isbn10;
         return this;
     }
 
     setIsbn13(isbn13: string): BookBuilder {
-        this._isbn13 = isbn13;
+        this._book.isbn13 = isbn13;
         return this;
     }
 
     setTitle(title: string): BookBuilder {
-        this._title = title;
+        this._book.title = title;
         return this;
     }
 
     setAuthors(authors: Author[]): BookBuilder {
-        this._authors = authors;
+        this._book.authors = authors;
         return this;
     }
 
     setNumberPage(numberPage: number): BookBuilder {
-        this._numberPage = numberPage;
+        this._book.numberPage = numberPage;
         return this;
     }
 
     setLanguage(language: string): BookBuilder {
-        this._language = language;
+        this._book.language = language;
         return this;
     }
 
     setPublisher(publisher: string): BookBuilder {
-        this._publisher = publisher;
+        this._book.publisher = publisher;
         return this;
     }
 
     setPublishedDate(publishedDate: string): BookBuilder {
-        this._publishedDate = publishedDate;
+        this._book.publishedDate = publishedDate;
         return this;
     }
 
     setAverageRating(averageRating: number): BookBuilder {
-        this._averageRating = averageRating;
+        this._book.averageRating = averageRating;
         return this;
     }
 
     setImage(image: string): BookBuilder {
-        this._image = image;
+        this._book.image = image;
         return this;
     }
 
     setDescription(description: string): BookBuilder {
-        this._description = description;
+        this._book.description = description;
         return this;
     }
 
@@ -143,29 +74,14 @@ export class BookBuilder {
         // if (!api || api.trim() === "") {
         //     throw new Error("Api type is required.");
         // }
-        this._api = api;
+        this._book.api = api;
         return this;
-    }
-
-    copy(): BookBuilder {
-        return new BookBuilder(this);
     }
 
     copyFrom(book: Book): BookBuilder {
         if (book) {
-            this._id = book.id;
-            this._isbn10 = book.isbn10;
-            this._isbn13 = book.isbn13;
-            this._title = book.title;
-            this._authors = book.authors;
-            this._numberPage = book.numberPage;
-            this._language = book.language;
-            this._publisher = book.publisher;
-            this._publishedDate = book.publishedDate;
-            this._averageRating = book.averageRating;
-            this._image = book.image;
-            this._description = book.description;
-            this._api = book.api;
+            Object.keys(book)
+                .forEach((key) => this._book[key] = book[key])
         }
         // Object.assign(this, book);
         return this;
@@ -173,6 +89,6 @@ export class BookBuilder {
 
 
     build(): Book {
-        return new Book(this);
+        return this._book as Book;
     }
 }
