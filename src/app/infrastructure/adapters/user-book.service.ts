@@ -6,24 +6,25 @@ import { UserBookRepository } from "src/app/core/repositories/user-book.reposito
 import { environment } from "src/environments/environment";
 import { AllUserBookByProfileIdTO, UserBookTO } from "../dtos/user-book.dto";
 import { first, map } from "rxjs/operators";
-import { UserBookBuilder } from "src/app/core/domain/builders/user-book.builder";
-import { BookBuilder } from "src/app/core/domain/builders/book.builder";
 import { ApiType } from "src/app/core/domain/enums/api-type.enum";
 import { GeneralStatus } from "src/app/core/domain/entities/general-status.entity";
 import { GeneralStatusTO } from "../dtos/general-status.dto";
+import { UserBookMapper } from "../mappers/user-book.mapper";
+import { BaseApiService } from "./base-service.service";
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class UserBookApiService implements UserBookRepository {
+export class UserBookApiService extends BaseApiService<UserBook, UserBookTO> implements UserBookRepository {
 
     private api: string = environment.api + 'bookcases/';
     private apiProfile: string = this.api + 'profile/';
     private apiStatusData: string = this.api + 'status-data';
 
-    constructor(private http: HttpClient) { }
-
+    constructor(protected http: HttpClient) {
+        super(http);
+    }
 
     getGeneralStatusBooks(id: string, apiType: ApiType): Observable<GeneralStatus> {
         const params = new HttpParams();
@@ -36,68 +37,27 @@ export class UserBookApiService implements UserBookRepository {
     }
 
     updateUserBook(userBook: UserBook): Observable<UserBook> {
-        const userBookTO: UserBookTO = this.convertUserBookToUserBookTO(userBook);
-        return this.http.put<UserBookTO>(this.api + userBookTO.id, userBookTO).pipe(
-            first(),
-            map((userBookTO) => this.convertUserBookTOToUserBook(userBookTO)),
-        );
+        const userBookTO: UserBookTO = UserBookMapper.toDTO(userBook);
+        const service = this.http.put<UserBookTO>(this.api + userBookTO.id, userBookTO);
+        return this.handleRequestDTOToEntity(service, UserBookMapper.toEntity)
     }
 
     createUserBook(userBook: UserBook): Observable<UserBook> {
-        const userBookTO: UserBookTO = this.convertUserBookToUserBookTO(userBook);
-        return this.http.post<UserBookTO>(this.api, userBookTO).pipe(
-            first(),
-            map((userBookTO) => this.convertUserBookTOToUserBook(userBookTO)),
-        );
+        const userBookTO: UserBookTO = UserBookMapper.toDTO(userBook);
+        const service = this.http.post<UserBookTO>(this.api, userBookTO);
+        return this.handleRequestDTOToEntity(service, UserBookMapper.toEntity)
     }
 
     getAllUserBooksByProfileId(profileId: string): Observable<UserBook[]> {
         return this.http.get<AllUserBookByProfileIdTO>(this.apiProfile + profileId).pipe(
             first(),
-            map((response) => response.books.map((userBookTO) => this.convertUserBookTOToUserBook(userBookTO)))
+            map((response) => response.books.map((userBookTO) => UserBookMapper.toEntity(userBookTO)))
         );
     }
 
     getUserBookById(id: string): Observable<UserBook> {
-        return this.http.get<UserBookTO>(this.api + id).pipe(
-            first(),
-            map((response) => this.convertUserBookTOToUserBook(response)),
-        );
-    }
-
-    private convertUserBookToUserBookTO(userBook: UserBook): UserBookTO {
-        const userBookTO: UserBookTO = {
-            profileId: userBook.profileId,
-            status: userBook.status,
-            tags: userBook.tags,
-            page: userBook.page,
-            idBookGoogle: userBook.book.api === ApiType.GOOGLE ? userBook.book.id : null,
-            idBook: userBook.book.api !== ApiType.GOOGLE ? userBook.book.id : null,
-            addDate: null,
-            book: null,
-            finishDate: null,
-            id: null
-        }
-        return userBookTO;
-    }
-
-    private convertUserBookTOToUserBook(userBookTO: UserBookTO): UserBook {
-        return new UserBookBuilder()
-            .setId(userBookTO.id)
-            .setBook(
-                new BookBuilder().copyFrom(userBookTO.book)
-                    .setId(userBookTO.idBookGoogle ? userBookTO.idBookGoogle : userBookTO.idBook)
-                    .setApi(userBookTO.idBookGoogle ? ApiType.GOOGLE : ApiType.BBOOKS)
-                    .setNumberPage(userBookTO.page)
-                    .build()
-            )
-            .setStatus(userBookTO.status)
-            .setTags(userBookTO.tags)
-            .setProfileId(userBookTO.profileId)
-            .setAddDate(userBookTO.addDate)
-            .setPage(userBookTO.page)
-            .setFinishDate(userBookTO.finishDate)
-            .build()
+        const service = this.http.get<UserBookTO>(this.api + id);
+        return this.handleRequestDTOToEntity(service, UserBookMapper.toEntity)
     }
 
     private getParamGeneralStatus(apiType: ApiType): string {

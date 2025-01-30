@@ -1,8 +1,6 @@
 import { BookBuilder } from "../builders/book.builder";
 import { ApiType } from "../enums/api-type.enum";
-import { BookStatus } from "../enums/book-status.enum";
 import { Author } from "./author.entity";
-import { Tag } from "./tag.entity";
 
 export class Book {
     public readonly id: string;

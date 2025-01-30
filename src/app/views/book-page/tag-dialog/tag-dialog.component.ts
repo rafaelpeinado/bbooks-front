@@ -1,12 +1,12 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {BookService} from '../../../services/book.service';
-import {BookCase} from '../../../models/bookCase.model';
-import {Tag} from '../../../models/tag';
-import {AuthService} from '../../../services/auth.service';
-import {TagService} from '../../../services/tag.service';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../../services/auth.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { CreateTagUseCase } from 'src/app/core/use-cases/tag/create-tag.use-case';
+import { Tag } from 'src/app/core/domain/entities/tag.entity';
+import { TagBuilder } from 'src/app/core/domain/builders/tag.builder';
+import { EditTagUseCase } from 'src/app/core/use-cases/tag/edit-tag.use-case';
 
 @Component({
     selector: 'app-tag-dialog',
@@ -20,12 +20,13 @@ export class TagDialogComponent implements OnInit {
     public textForm: string;
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public tag: Tag,
+        @Inject(MAT_DIALOG_DATA) public tag: any,
         private formBuilder: FormBuilder,
         private authService: AuthService,
-        private tagService: TagService,
         public dialogRef: MatDialogRef<Tag>,
-        public translate: TranslateService
+        public translate: TranslateService,
+        private createTagUseCase: CreateTagUseCase,
+        private editTagUseCase: EditTagUseCase,
     ) {
     }
 
@@ -51,21 +52,21 @@ export class TagDialogComponent implements OnInit {
         });
     }
 
-    save() {
-        if (this.tag) {
-            this.tag.name = this.formTag.get('name').value;
-            this.tagService.update(this.tag).subscribe(response => {
-                this.dialogRef.close(response);
-            });
-        } else {
-            const tag = new Tag();
-            tag.name = this.formTag.get('name').value;
-            tag.profile = this.authService.getUser().profile;
-            tag.books = [];
-            this.tagService.save(tag).subscribe(response => {
-                this.dialogRef.close(response);
-            });
+    save(): void {
+        const tag = this.buildTag(this.tag);
+        const useCase = this.tag ? this.editTagUseCase : this.createTagUseCase;
+        
+        useCase.execute(tag).subscribe((response) => this.dialogRef.close(response));
+    }
+    
+    private buildTag(tag: any): Tag {
+        const builder = new TagBuilder().copyFrom(tag).setName(this.formTag.get('name')?.value).setUserBooks([]);
+    
+        if (!this.tag) {
+            builder.setProfile(this.authService.getUser().profile);
         }
+    
+        return builder.build();
     }
 
 }

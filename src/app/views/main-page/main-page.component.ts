@@ -2,14 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { FormBuilder } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { Book } from '../../models/book.model';
-import { BookService } from '../../services/book.service';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { Subscription } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
-import { BookSearchTO } from '../../models/bookSearchTO.model';
-import { map, take } from 'rxjs/operators';
 import { UserTO } from '../../models/userTO.model';
+import { SearchMergedBookUseCase } from 'src/app/core/use-cases/book/search-merged-books.use-case';
+import { FilterSearch } from 'src/app/core/domain/interfaces/filter-search.interface';
+import { Book } from 'src/app/core/domain/entities/book.entity';
 
 @Component({
     selector: 'app-main-page',
@@ -31,7 +30,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
         public auth: AuthService,
         private userService: UserService,
         private fb: FormBuilder,
-        private bookService: BookService,
+        private searchMergedBookUseCase: SearchMergedBookUseCase,
         public mediaObserver: MediaObserver,
 
     ) {
@@ -54,64 +53,32 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
 
     searchBook(): void {
-        const searchBook = new BookSearchTO();
-        searchBook.search = this.searchControl.value.book.split(' ').join('+');
-        searchBook.page = this.pageEvent.pageIndex;
-        this.bookService.searchMergeBooks(searchBook, this.pageEvent.pageSize)
-            .pipe(
-                map(sb => {
-                    sb.googleBooks.items ?
-                        sb.googleBooks.items = sb.googleBooks.items.map(i => this.bookService.convertBookToModel(i)) :
-                        sb.googleBooks.items = [];
-                    return sb;
-                }),
-                take(1)
-            )
-            .subscribe(res => {
-                this.totalBooks = res.googleBooks.totalItems + res.books.totalElements;
-                let booksConvert = [];
-                booksConvert = res.books.content.concat(res.googleBooks.items);
-                booksConvert?.length > 0 ?
-                    this.resulSearch(booksConvert) :
+        const filter: FilterSearch = {
+            input: this.searchControl.value.book.split(' ').join('+'),
+            page: this.pageEvent.pageIndex,
+            size: 10,
+        }
+        this.searchMergedBookUseCase.execute(filter)
+            .subscribe((response) => {
+                this.totalBooks = response.totalElements;
+                const books: Book[] = response.content;
+                if (books.length > 0) {
+                    this.books = books;
+                } else {
                     this.resetBooks();
-            },
-                error => console.log(error));
+                }
+            }, error => console.log(error));
     }
+
     changePage(event: PageEvent) {
         this.pageEvent = event;
         this.searchBook();
     }
 
-    resulSearch(booksConvert): void {
-        const result = booksConvert.map(book => {
-            if (this.user) {
-                this.bookService.getAllUserBooks().subscribe((userbooks) => {
-                    userbooks.forEach((userbook) => {
-                        if (userbook.book.id === book.id) {
-                            book.status = userbook.status;
-                            book.idUserBook = userbook.id;
-                            book.finishDate = userbook.finishDate;
-                        }
-                    })
-                });
-            }
-            return book;
-        });
-        this.longPromise(500).then(() => {
-            this.books = result;
-        });
-    }
-    longPromise(delay: number) {
-        return new Promise<string>((resolve) => {
-            setTimeout(() => {
-                resolve('Done');
-            }, delay);
-        });
-    }
-
     ngOnDestroy(): void {
         this.mediaSub.unsubscribe();
     }
+    
     resetBooks(): void {
         this.books = [];
         this.totalBooks = 0;

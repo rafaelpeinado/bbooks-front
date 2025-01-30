@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Book } from '../../../models/book.model';
 import { BookStatus, mapBookStatus } from '../../../models/enums/BookStatus.enum';
 import { Router } from '@angular/router';
 import { UserbookService } from '../../../services/userbook.service';
@@ -7,7 +6,11 @@ import { BookAddDialogComponent } from '../book-add-dialog/book-add-dialog.compo
 import { MatDialog } from '@angular/material/dialog';
 import { BookService } from '../../../services/book.service';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
-import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
+import { Book } from 'src/app/core/domain/entities/book.entity';
+import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
+import { AuthService } from 'src/app/services/auth.service';
+import { combineLatest } from 'rxjs';
+import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 
 @Component({
     selector: 'app-book-card',
@@ -40,6 +43,8 @@ export class BookCardComponent implements OnInit {
         public dialog: MatDialog,
         private bookService: BookService,
         private getBookByIdUseCase: GetBookByIdUseCase,
+        private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
+        private authGuard: AuthService,
     ) {
     }
 
@@ -90,13 +95,18 @@ export class BookCardComponent implements OnInit {
     }
 
     getBook(): void {
+        combineLatest([
+            this.getAllUserBookByProfileIdUseCase.execute(this.authGuard.getUser().profile.id),
+            this.getBookByIdUseCase.execute(this.book.id, this.book.api)
+        ]).subscribe((value) => {
+            const userBooks: UserBook[] = value[0];
+            const book: Book = value[1];
+            const userBook: UserBook = userBooks.find((userBook) => userBook.book.id === book.id);
 
-        this.bookService.getAllUserBooks().subscribe((userbooks) => {
-            this.getBookByIdUseCase.execute(this.book.id, this.book.api).subscribe((book) => {
-                this.book = book;
-                this.userBook = this.book.idUserBook ? true : false;
-            });
-        });
+            this.book = book;
+            this.userBook = userBook.id ? true : false;
+        })
+
     }
 
     verifyrouter(): boolean {

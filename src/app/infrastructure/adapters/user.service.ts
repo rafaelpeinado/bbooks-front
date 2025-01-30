@@ -11,13 +11,11 @@ import { environment } from "src/environments/environment";
     providedIn: 'root',
 })
 
-export class UserService extends UserRepository {
+export class UserService implements UserRepository {
 
     private api: string = environment.api + 'users/';
 
-    constructor(private http: HttpClient) {
-        super();
-    }
+    constructor(private http: HttpClient) { }
 
     registerUser(): Observable<User> {
         throw new Error("Method not implemented.");

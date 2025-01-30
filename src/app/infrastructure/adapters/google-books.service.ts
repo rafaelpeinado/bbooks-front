@@ -31,26 +31,8 @@ export class GoogleBooksApiService implements BookRepository {
         return this.http.get<ListItemsGoogleBooks>(this.api, { params }).pipe(
             first(),
             map((response) => {
-                const books: Book[] = response.items.map((item) => new BookBuilder()
-                    .setId(item.id)
-                    .setIsbn10(this.getIsbn(item, ISBNGoogleEnum.ISBN_10))
-                    .setIsbn13(this.getIsbn(item, ISBNGoogleEnum.ISBN_13))
-                    .setTitle(item.volumeInfo.title)
-                    .setAuthors(this.getAuthors(item))
-                    .setNumberPage(item.volumeInfo.pageCount)
-                    .setLanguage(item.volumeInfo.language)
-                    .setPublisher(item.volumeInfo.publisher)
-                    .setPublishedDate(item.volumeInfo.publishedDate)
-                    // .setAverageRating(item.volumeInfo.a)
-                    .setImage(this.getImage(item))
-                    .setDescription(item.volumeInfo.description)
-                    // .setStatus()
-                    // .setIdUserBook()
-                    // .setTags()
-                    .setApi(ApiType.GOOGLE)
-                    // .setFinishDate()
-                    .build()
-                );
+                const books: Book[] = response.items.map((item) => this.convertItemGoogleBooksToBook(item));
+                
                 const size = filter.size;
                 const totalItems = response.totalItems;
                 const totalPages = Math.ceil(totalItems / size);
@@ -71,29 +53,19 @@ export class GoogleBooksApiService implements BookRepository {
             .set('q', bookName);
         return this.http.get<ListItemsGoogleBooks>(this.api, { params }).pipe(
             first(),
-            map((response) => {
-                return response.items.map((item) => new BookBuilder()
-                    .setId(item.id)
-                    .setIsbn10(this.getIsbn(item, ISBNGoogleEnum.ISBN_10))
-                    .setIsbn13(this.getIsbn(item, ISBNGoogleEnum.ISBN_13))
-                    .setTitle(item.volumeInfo.title)
-                    .setAuthors(this.getAuthors(item))
-                    .setNumberPage(item.volumeInfo.pageCount)
-                    .setLanguage(item.volumeInfo.language)
-                    .setPublisher(item.volumeInfo.publisher)
-                    .setPublishedDate(item.volumeInfo.publishedDate)
-                    // .setAverageRating(item.volumeInfo.a)
-                    .setImage(this.getImage(item))
-                    .setDescription(item.volumeInfo.description)
-                    // .setStatus()
-                    // .setIdUserBook()
-                    // .setTags()
-                    .setApi(ApiType.GOOGLE)
-                    // .setFinishDate()
-                    .build()
-                );
-            }),
+            map((response) => response.items.map((item) => this.convertItemGoogleBooksToBook(item))),
         );
+    }
+
+    getBookById(id: string): Observable<Book> {
+        return this.http.get<ItemGoogleBooks>(this.api + id).pipe(
+            first(),
+            map((response) => this.convertItemGoogleBooksToBook(response)),
+        );
+    }
+
+    searchMergedBook(filterSearch: FilterSearch): Observable<PaginationInterface<Book>> {
+        throw new Error("Method not implemented.");
     }
 
     addBook(book: Book): Observable<Book> {
@@ -104,30 +76,26 @@ export class GoogleBooksApiService implements BookRepository {
         throw new Error("Method not implemented.");
     }
 
-    getBookById(id: string): Observable<Book> {
-        return this.http.get<ItemGoogleBooks>(this.api + id).pipe(
-            first(),
-            map((response) => new BookBuilder()
-                .setId(response.id)
-                .setIsbn10(this.getIsbn(response, ISBNGoogleEnum.ISBN_10))
-                .setIsbn13(this.getIsbn(response, ISBNGoogleEnum.ISBN_13))
-                .setTitle(response.volumeInfo.title)
-                .setAuthors(this.getAuthors(response))
-                .setNumberPage(response.volumeInfo.pageCount)
-                .setLanguage(response.volumeInfo.language)
-                .setPublisher(response.volumeInfo.publisher)
-                .setPublishedDate(response.volumeInfo.publishedDate)
-                // .setAverageRating(response.volumeInfo.a)
-                .setImage(this.getImage(response))
-                .setDescription(response.volumeInfo.description)
-                // .setStatus()
-                // .setIdUserBook()
-                // .setTags()
-                .setApi(ApiType.GOOGLE)
-                // .setFinishDate()
-                .build()
-            ),
-        );
+    updateBook(book: Book): Observable<Book> {
+        throw new Error("Method not implemented.");
+    }
+
+    private convertItemGoogleBooksToBook(response: ItemGoogleBooks): Book {
+        return new BookBuilder()
+            .setId(response.id)
+            .setIsbn10(this.getIsbn(response, ISBNGoogleEnum.ISBN_10))
+            .setIsbn13(this.getIsbn(response, ISBNGoogleEnum.ISBN_13))
+            .setTitle(response.volumeInfo.title)
+            .setAuthors(this.getAuthors(response))
+            .setNumberPage(response.volumeInfo.pageCount)
+            .setLanguage(response.volumeInfo.language)
+            .setPublisher(response.volumeInfo.publisher)
+            .setPublishedDate(response.volumeInfo.publishedDate)
+            // .setAverageRating(response.volumeInfo.a)
+            .setImage(this.getImage(response))
+            .setDescription(response.volumeInfo.description)
+            .setApi(ApiType.GOOGLE)
+            .build()
     }
 
     private getIsbn(response: ItemGoogleBooks, isbnGoogleEnum: ISBNGoogleEnum): string {

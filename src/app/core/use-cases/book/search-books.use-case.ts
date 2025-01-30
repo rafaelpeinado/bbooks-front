@@ -17,5 +17,4 @@ export class SearchBooksUseCase implements UseCaseInterface {
         const bookRepository = this.bookServiceFactory.getService(ApiType.BBOOKS);
         return bookRepository.searchBooks(filter);
     }
-
 }

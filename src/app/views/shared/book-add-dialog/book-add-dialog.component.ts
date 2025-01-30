@@ -10,8 +10,6 @@ import {
     mapBookStatusEnglish
 } from '../../../models/enums/BookStatus.enum';
 import { AuthService } from '../../../services/auth.service';
-import { Tag } from '../../../models/tag';
-import { TagService } from '../../../services/tag.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, zip } from 'rxjs';
 import { Util } from '../Utils/util';
@@ -19,6 +17,9 @@ import { DateAdapter } from '@angular/material/core';
 import { CreateUserBookUseCase } from 'src/app/core/use-cases/user-book/create-user-book.use-case';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { UpdateUserBookUseCase } from 'src/app/core/use-cases/user-book/update-user-book.use-case';
+import { Tag } from 'src/app/core/domain/entities/tag.entity';
+import { GetAllTagsByProfileIdTagUseCase } from 'src/app/core/use-cases/tag/get-all-tags-by-profile-id.use-case';
+import { GetAllTagsByUserBookIdUseCase } from 'src/app/core/use-cases/tag/get-all-tags-by-user-book-id.use-case';
 
 @Component({
     selector: 'app-book-add-dialog',
@@ -47,17 +48,19 @@ export class BookAddDialogComponent implements OnInit {
         public dialogRef: MatDialogRef<BookAddDialogComponent>,
         private formBuilder: FormBuilder,
         private authService: AuthService,
-        private tagService: TagService,
         private adapter: DateAdapter<any>,
         private translate: TranslateService,
         private createUserBookUseCase: CreateUserBookUseCase,
         private updateUserBookUseCase: UpdateUserBookUseCase,
+        private getAllTagsByProfileIdTagUseCase: GetAllTagsByProfileIdTagUseCase,
+        private getAllTagsByUserBookIdUseCase: GetAllTagsByUserBookIdUseCase,
     ) {
         this.Book = data.book;
         this.tagsBook = [];
 
         if (this.Book.idUserBook) {
-            this.tagService.getAllByUserBook(this.Book.idUserBook).subscribe(tags => {
+            this.getAllTagsByUserBookIdUseCase.execute(this.Book.idUserBook.toString())
+            .subscribe((tags) => {
                 this.tagsBook = tags;
                 this.modeDialog();
             });
@@ -84,8 +87,9 @@ export class BookAddDialogComponent implements OnInit {
     }
 
     getTags(): void {
-        this.tagService.getAllByProfile(this.authService.getUser().profile.id).subscribe((response: Tag[]) => {
-            this.tags = response;
+        this.getAllTagsByProfileIdTagUseCase.execute(this.authService.getUser().profile.id)
+        .subscribe((tags) => {
+            this.tags = tags;
             this.initTags();
         });
     }
@@ -126,7 +130,7 @@ export class BookAddDialogComponent implements OnInit {
 
     private initTags(): void {
         this.tags.forEach((tag, i) => {
-            let tagId = new Tag();
+            let tagId: Tag;
             if (this.tagsBook !== null) {
                 tagId = this.tagsBook.find(t => tag.id === t.id);
             }

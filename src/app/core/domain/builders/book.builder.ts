@@ -1,8 +1,6 @@
 import { Author } from "../entities/author.entity";
 import { Book } from "../entities/book.entity";
-import { Tag } from "../entities/tag.entity";
 import { ApiType } from "../enums/api-type.enum";
-import { BookStatus } from "../enums/book-status.enum";
 
 export class BookBuilder {
     private _id!: string;
