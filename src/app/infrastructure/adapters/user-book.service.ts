@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { UserBookRepository } from 'src/app/core/repositories/user-book.repository';
 import { environment } from 'src/environments/environment';
-import { AllUserBookByProfileIdTO, UserBookTO } from '../dtos/user-book.dto';
+import { AllUserBookByProfileIdTO, UserBookTO, UserBookUpdateStatusTO } from '../dtos/user-book.dto';
 import { first, map } from 'rxjs/operators';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GeneralStatus } from 'src/app/core/domain/entities/general-status.entity';
@@ -24,6 +24,20 @@ export class UserBookApiService extends BaseApiService<UserBook, UserBookTO> imp
 
     constructor(protected http: HttpClient) {
         super(http);
+    }
+
+    changeStatusUserBook(userBookUpdateStatusTO: UserBookUpdateStatusTO): Observable<UserBook> {
+        const service = this.http.put<UserBookTO>(this.api + 'status', userBookUpdateStatusTO);
+        return this.handleRequestDTOToEntity(service, UserBookMapper.toEntity);
+    }
+
+    getAllUserBookTimelineByProfileId(profileId: string): Observable<UserBook[]> {
+        const params = new HttpParams()
+            .set('timeLine', 'true');
+        return this.http.get<AllUserBookByProfileIdTO>(this.api + 'profile/' + profileId, { params }).pipe(
+            first(),
+            map((response) => response.books.map((userBookTO) => UserBookMapper.toEntity(userBookTO)))
+        );
     }
 
     getGeneralStatusBooks(id: string, apiType: ApiType): Observable<GeneralStatus> {

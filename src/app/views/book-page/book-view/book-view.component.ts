@@ -164,7 +164,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
     }
 
     convertAuthorsToString(): string[] {
-        const namesAuthors = this.book.authors.map(value => value.name);
+        const namesAuthors = this.book.authors?.map(value => value.name);
         return namesAuthors;
     }
 

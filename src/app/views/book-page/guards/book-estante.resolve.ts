@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { BookService } from '../../../services/book.service';
 import { Book } from '../../../models/book.model';
 import { Observable } from 'rxjs';
-import { BookCase } from '../../../models/bookCase.model';
-import { of } from 'rxjs';
 import { SearchBookByNameUseCase } from 'src/app/core/use-cases/book/search-book-by-name.use-case';
+import { map } from 'rxjs/operators';
+import { AuthService } from 'src/app/services/auth.service';
+import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
+import { GetBookcaseByProfileIdUseCase } from 'src/app/core/use-cases/bookcase/get-bookcase-by-profile-id.use-case';
+import { GetBookcaseByTagIdUseCase } from 'src/app/core/use-cases/bookcase/get-bookcase-by-tag.use-case';
 
 
 @Injectable()
 export class BookEstanteResolve implements Resolve<Book[]> {
 
     constructor(
-        private bookService: BookService,
         private searchBookByNameUseCase: SearchBookByNameUseCase,
+        private authGuard: AuthService,
+        private getBookcaseByProfileIdUseCase: GetBookcaseByProfileIdUseCase,
+        private getBookcaseByTagIdUseCase: GetBookcaseByTagIdUseCase,
     ) {
     }
 
@@ -23,22 +27,14 @@ export class BookEstanteResolve implements Resolve<Book[]> {
     ): Observable<any> | Promise<any> | any {
         const myBook = route.url.toString().includes('my');
         const tag = route.params.tag;
-        const bookCase = new BookCase();
-        bookCase.books = [];
-        bookCase.description = tag;
-        bookCase.id = tag;
         if (myBook) {
             if (tag) {
-                return this.bookService.getBookCaseByTag(tag);
+                // TODO NÃO ESTÁ FUNCIONANDO
+                return this.getBookcaseByTagIdUseCase.execute(tag);
             } else {
-                this.bookService.getAllBooks().subscribe(books => {
-                    bookCase.books = books;
-                },
-                    error => console.log('errro', error));
+                return this.getBookcaseByProfileIdUseCase.execute(this.authGuard.getUser().profile.id);
             }
-        } else {
-            this.searchBookByNameUseCase.execute(tag).subscribe((books) => bookCase.books = books);
         }
-        return of(bookCase);
+        return this.searchBookByNameUseCase.execute(tag).pipe(map((books) => new Bookcase(tag, tag, books)));
     }
 }

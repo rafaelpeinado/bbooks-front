@@ -25,11 +25,14 @@ export class GoogleBooksMapper {
     }
 
     private static getIsbn(response: ItemGoogleBooks, isbnGoogleEnum: ISBNGoogleEnum): string {
-        return response.volumeInfo.industryIdentifiers.find((item) => item.type === isbnGoogleEnum)?.identifier;
+        return response.volumeInfo.industryIdentifiers?.find((item) => item.type === isbnGoogleEnum)?.identifier;
     }
 
     private static getAuthors(response: ItemGoogleBooks): Author[] {
-        return response.volumeInfo.authors.map((author) => new Author(undefined, author));
+        const authors: string[] = response.volumeInfo.authors;
+        if (authors) {
+            return authors.map((author) => new Author(undefined, author));
+        }
     }
 
     private static getImage(response: ItemGoogleBooks): string {

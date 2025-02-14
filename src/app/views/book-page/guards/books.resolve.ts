@@ -1,36 +1,31 @@
-import {BookCase} from '../../../models/bookCase.model';
-import {Observable, of} from 'rxjs';
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {BookService} from '../../../services/book.service';
+import { from, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { GenresEnum } from 'src/app/core/domain/enums/genres.enum';
+import { map, mergeMap, scan, startWith } from 'rxjs/operators';
+import { SearchBookByNameUseCase } from 'src/app/core/use-cases/book/search-book-by-name.use-case';
+import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
 
 @Injectable()
-export class BooksResolve implements Resolve<BookCase[]> {
-
-
+export class BooksResolve implements Resolve<Bookcase[]> {
     constructor(
-        private bookService: BookService,
-    ) {
-    }
+        private searchBookByNameUseCase: SearchBookByNameUseCase,
+    ) { }
 
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<any> | Promise<any> | any {
-        const myBook = route.url.toString().includes('mybooks');
-        let bookcases = [];
-        if (myBook) {
-            this.bookService.getAllBooksTags().subscribe(
-                bcs => {
-                    bookcases = bcs;
-                }, error => console.log('error booksResolve', error));
-        } else {
-            this.bookService.getAllBookGoogle()
-                .subscribe(bcs => {
-                    bookcases = bcs;
-                }, error => console.log('error booksResolve', error));
-        }
-        return of(bookcases);
-
+        return from(Object.keys(GenresEnum)).pipe(
+            mergeMap(
+                (key) => this.searchBookByNameUseCase.execute(GenresEnum[key]).pipe(
+                    map((books) => {
+                        return new Bookcase(GenresEnum[key], GenresEnum[key], books);
+                    })
+                )
+            ),
+            scan((bookcases: Bookcase[], bookcase: Bookcase) => [...bookcases, bookcase], []),
+            startWith([])
+        );
     }
 }

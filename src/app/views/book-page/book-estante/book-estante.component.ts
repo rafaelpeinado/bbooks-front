@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription, zip } from 'rxjs';
+import { forkJoin, Observable, Subscription, zip } from 'rxjs';
 import { BookService } from '../../../services/book.service';
 import { BookCase } from '../../../models/bookCase.model';
 import { Book } from '../../../models/book.model';
@@ -10,9 +10,12 @@ import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { BookStatus, getArrayStatus, mapBookStatus } from '../../../models/enums/BookStatus.enum';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { map, take } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { TranslateService } from '@ngx-translate/core';
+import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
+import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -47,7 +50,10 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
         public dialog: MatDialog,
         public mediaObserver: MediaObserver,
         private router: Router,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
+        private getBookByIdUseCase: GetBookByIdUseCase,
+        private authGuard: AuthService,
     ) { }
 
     ngOnInit(): void {
@@ -72,14 +78,10 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
                                 }, error => console.log('error booksComponent', error));
 
                     } else {
-                        this.bookService.getAllBooks()
-                            .pipe(
-                                take(1)
-                            )
-                            .subscribe(books => {
-                                this.bookCase.books = books;
-                            },
-                                error => console.log('error booksComponent get all', error));
+                        this.getAllUserBookByProfileIdUseCase.execute(this.authGuard.getUser().profile.id).pipe(
+                            switchMap(userBooks =>
+                                forkJoin(userBooks.map(userBook => this.getBookByIdUseCase.execute(userBook.book.id, userBook.book.api)))))
+                            .subscribe(books => this.bookCase.books = books);
                     }
                 }
             }

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BookStatus, mapBookStatus } from '../../../models/enums/BookStatus.enum';
 import { Router } from '@angular/router';
-import { UserbookService } from '../../../services/userbook.service';
 import { BookAddDialogComponent } from '../book-add-dialog/book-add-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BookService } from '../../../services/book.service';
@@ -11,6 +10,7 @@ import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-bo
 import { AuthService } from 'src/app/services/auth.service';
 import { combineLatest } from 'rxjs';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
+import { ChangeStatusUserBookUseCase } from 'src/app/core/use-cases/user-book/change-status-user-book.use-case';
 
 @Component({
     selector: 'app-book-card',
@@ -35,22 +35,22 @@ export class BookCardComponent implements OnInit {
 
     routerlink: string;
 
-    userBook: boolean;
+    isUserBook: boolean;
 
     constructor(
         private router: Router,
-        private userbookService: UserbookService,
         public dialog: MatDialog,
         private bookService: BookService,
         private getBookByIdUseCase: GetBookByIdUseCase,
         private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
+        private changeStatusUserBookUseCase: ChangeStatusUserBookUseCase,
         private authGuard: AuthService,
     ) {
     }
 
     ngOnInit(): void {
-        this.userBook = this.router.url.includes('mybooks');
-        if (!this.userBook) {
+        this.isUserBook = this.router.url.includes('mybooks');
+        if (!this.isUserBook) {
             if (!this.idTag) {
                 this.routerlink = '/books/';
             } else {
@@ -67,17 +67,17 @@ export class BookCardComponent implements OnInit {
 
 
     changeStatusBook(bookStatus: BookStatus, idBook: number, book: Book) {
-        const userBookUpdateStatusTO = {
-            id: idBook,
+        const userBookUpdateStatusTO: any = {
+            id: '68',
             status: mapBookStatus.get(bookStatus)
         };
-        this.userbookService.changeStatus(userBookUpdateStatusTO).subscribe(value => {
+
+        this.changeStatusUserBookUseCase.execute(userBookUpdateStatusTO).subscribe(value => {
             this.book.status = value.status;
             this.bookReturn.emit({ status: value.status, book });
-        },
-            error => {
-                console.log('Error', error);
-            });
+        }, error => {
+            console.log('Error', error);
+        });
     }
 
     openDialogAddBook(book: Book) {
@@ -101,10 +101,10 @@ export class BookCardComponent implements OnInit {
         ]).subscribe((value) => {
             const userBooks: UserBook[] = value[0];
             const book: Book = value[1];
-            const userBook: UserBook = userBooks.find((userBook) => userBook.book.id === book.id);
+            const isUserBook: UserBook = userBooks.find((isUserBook) => isUserBook.book.id === book.id);
 
             this.book = book;
-            this.userBook = userBook.id ? true : false;
+            this.isUserBook = isUserBook.id ? true : false;
         });
 
     }
