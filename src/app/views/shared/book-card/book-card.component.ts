@@ -66,9 +66,9 @@ export class BookCardComponent implements OnInit {
     }
 
 
-    changeStatusBook(bookStatus: BookStatus, idBook: number, book: Book) {
+    changeStatusBook(bookStatus: BookStatus, userBookId: number, book: Book) {
         const userBookUpdateStatusTO: any = {
-            id: '68',
+            id: userBookId,
             status: mapBookStatus.get(bookStatus)
         };
 
