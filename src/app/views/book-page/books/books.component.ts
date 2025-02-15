@@ -43,9 +43,9 @@ export class BooksComponent implements OnInit, OnDestroy {
 
     updateBooksStatus(event) {
         this.bookCases.forEach(bookcases => {
-            bookcases.books.forEach(book => {
-                if (book.id === event.idbook) {
-                    book.status = event.status;
+            bookcases.userBooks.forEach(userBook => {
+                if (userBook.book.id === event.idbook) {
+                    userBook.status = event.status;
                 }
             });
         });

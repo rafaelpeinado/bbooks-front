@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Book } from '../../../models/book.model';
 import { Observable } from 'rxjs';
-import { SearchBookByNameUseCase } from 'src/app/core/use-cases/book/search-book-by-name.use-case';
-import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
-import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
 import { GetBookcaseByProfileIdUseCase } from 'src/app/core/use-cases/bookcase/get-bookcase-by-profile-id.use-case';
 import { GetBookcaseByTagIdUseCase } from 'src/app/core/use-cases/bookcase/get-bookcase-by-tag.use-case';
 
@@ -14,7 +11,7 @@ import { GetBookcaseByTagIdUseCase } from 'src/app/core/use-cases/bookcase/get-b
 export class BookEstanteResolve implements Resolve<Book[]> {
 
     constructor(
-        private searchBookByNameUseCase: SearchBookByNameUseCase,
+        // private searchBookByNameUseCase: SearchBookByNameUseCase,
         private authGuard: AuthService,
         private getBookcaseByProfileIdUseCase: GetBookcaseByProfileIdUseCase,
         private getBookcaseByTagIdUseCase: GetBookcaseByTagIdUseCase,
@@ -35,6 +32,7 @@ export class BookEstanteResolve implements Resolve<Book[]> {
                 return this.getBookcaseByProfileIdUseCase.execute(this.authGuard.getUser().profile.id);
             }
         }
-        return this.searchBookByNameUseCase.execute(tag).pipe(map((books) => new Bookcase(tag, tag, books)));
+        // TODO refazer
+        // return this.searchBookByNameUseCase.execute(tag).pipe(map((books) => new Bookcase(tag, tag, books)));
     }
 }

@@ -7,7 +7,6 @@ import { take } from 'rxjs/operators';
 import { BookCase } from '../../../models/bookCase.model';
 import { Profile } from '../../../models/profileTO.model';
 import { AuthService } from '../../../services/auth.service';
-import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
 
 
@@ -21,9 +20,8 @@ export class BookcaseResolve implements Resolve<any> {
         private userService: UserService,
         private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
         private authservice: AuthService,
-        private getBookByIdUseCase: GetBookByIdUseCase,
     ) {
-        this.bookCase.books = [];
+        this.bookCase.userBooks = [];
         this.user.profile = new Profile();
 
     }
@@ -33,17 +31,12 @@ export class BookcaseResolve implements Resolve<any> {
         state: RouterStateSnapshot
     ): Observable<any> | Promise<any> | any {
         const username = route.parent.params.username;
-        this.bookCase.books = [];
+        this.bookCase.userBooks = [];
         this.userService.getUserName(username, this.authservice.getToken()).pipe(take(1)).subscribe(user => {
             this.getAllUserBookByProfileIdUseCase.execute(user.profile.id.toString())
                 .pipe(take(1))
                 .subscribe(userBooks => {
-                    userBooks.forEach((userBook) => {
-                        this.getBookByIdUseCase.execute(userBook.book.id, userBook.book.api).subscribe((book) => {
-                            // TODO ajustar para retornar book
-                            this.bookCase.books.push(book);
-                        });
-                    });
+                    this.bookCase.userBooks = userBooks;
                 });
             this.user.id = user.id;
             this.user.idSocial = user.idSocial;

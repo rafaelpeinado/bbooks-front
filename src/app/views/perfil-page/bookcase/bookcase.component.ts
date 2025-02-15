@@ -1,18 +1,18 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {BookCase} from '../../../models/bookCase.model';
-import {ActivatedRoute} from '@angular/router';
-import {MediaChange, MediaObserver} from '@angular/flex-layout';
-import {Observable, Subscription, zip} from 'rxjs';
-import {BookStatus, getArrayStatus, mapBookStatus} from '../../../models/enums/BookStatus.enum';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {FormControl} from '@angular/forms';
-import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {Book} from '../../../models/book.model';
-import {AuthService} from '../../../services/auth.service';
-import {map} from 'rxjs/operators';
-import {TranslateService} from '@ngx-translate/core';
-import {UserTO} from '../../../models/userTO.model';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { BookCase } from '../../../models/bookCase.model';
+import { ActivatedRoute } from '@angular/router';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { Observable, Subscription, zip } from 'rxjs';
+import { BookStatus, getArrayStatus, mapBookStatus } from '../../../models/enums/BookStatus.enum';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { FormControl } from '@angular/forms';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { AuthService } from '../../../services/auth.service';
+import { map } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { UserTO } from '../../../models/userTO.model';
+import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 
 @Component({
     selector: 'app-bookcase',
@@ -53,7 +53,7 @@ export class BookcaseComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.bookCase = new BookCase();
-        this.inscricao = this.route.data.subscribe((data: { data: {bookcase: BookCase, user: UserTO }}) => {
+        this.inscricao = this.route.data.subscribe((data: { data: { bookcase: BookCase, user: UserTO } }) => {
             this.bookCase = data.data.bookcase;
             this.user = data.data.user;
         });
@@ -86,7 +86,7 @@ export class BookcaseComponent implements OnInit, OnDestroy {
     }
 
     bookReturn(event) {
-        this.bookCase.books[this.bookCase.books.indexOf((event.book))].status = event.status;
+        this.bookCase.userBooks[this.bookCase.userBooks.indexOf((event.book))].status = event.status;
     }
 
     ngOnDestroy(): void {
@@ -130,37 +130,38 @@ export class BookcaseComponent implements OnInit, OnDestroy {
         return this.allStatus.filter(status => status.toLowerCase().indexOf(value.toLowerCase()) === 0);
     }
 
-    filterBooks(): Book[] {
+    filterBooks(): UserBook[] {
         if (this.search === undefined || this.search.trim() === null) {
             return this.filterStatus();
         }
-        const books = this.filterStatus().filter((book) => {
-            if (book.title.toLocaleLowerCase().indexOf(this.search.toLocaleLowerCase()) !== -1) {
+        const userBooks = this.filterStatus().filter((userBook) => {
+            if (userBook.book.title.toLocaleLowerCase().indexOf(this.search.toLocaleLowerCase()) !== -1) {
                 return true;
             } else {
                 return false;
             }
         });
-        return books;
+        return userBooks;
     }
 
-    filterStatus(): Book[] {
+    filterStatus(): UserBook[] {
         if (this.filter.length <= 0) {
-            return this.bookCase.books;
+            return this.bookCase.userBooks;
         }
-        const books = [];
-        this.bookCase.books.filter((book) => {
-            this.translate.get('STATUS.' + book.status).subscribe(statusBook => {
+        const userBooks = [];
+        this.bookCase.userBooks.filter((userBook) => {
+            this.translate.get('STATUS.' + userBook.status).subscribe(statusBook => {
                 for (const status of this.filter) {
                     if (status === statusBook) {
-                        books.push(book);
+                        userBooks.push(userBook);
                     }
                 }
             });
 
         });
-        return books;
+        return userBooks;
     }
+
     verfiyPerfilPageisUserLogged() {
         if (this.authService.getUser()?.id) {
             return this.authService.getUser().id === this.user.id;

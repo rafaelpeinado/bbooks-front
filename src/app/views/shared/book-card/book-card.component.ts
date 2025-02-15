@@ -21,7 +21,9 @@ export class BookCardComponent implements OnInit {
 
     @Output() bookReturn = new EventEmitter<any>();
 
-    @Input() book: any;
+    @Input() book?: Book;
+
+    @Input() userBook?: UserBook;
 
     @Input() deviceXs: boolean;
 
@@ -32,6 +34,7 @@ export class BookCardComponent implements OnInit {
     @Input() canEdit: boolean;
 
     bookStatus = BookStatus;
+    public isCompleted: boolean = false;
 
     routerlink: string;
 
@@ -49,6 +52,16 @@ export class BookCardComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        if (!this.userBook) {
+            this.isCompleted = true;
+        } else {
+            this.getBookByIdUseCase.execute(this.userBook.book.id, this.userBook.book.api)
+            .subscribe((book) => {
+                this.book = book;
+                this.isCompleted = true;
+            });
+        }        
+
         this.isUserBook = this.router.url.includes('mybooks');
         if (!this.isUserBook) {
             if (!this.idTag) {
@@ -66,14 +79,14 @@ export class BookCardComponent implements OnInit {
     }
 
 
-    changeStatusBook(bookStatus: BookStatus, userBookId: number, book: Book) {
+    changeStatusBook(bookStatus: BookStatus, userBookId: string, book: Book) {
         const userBookUpdateStatusTO: any = {
             id: userBookId,
             status: mapBookStatus.get(bookStatus)
         };
 
         this.changeStatusUserBookUseCase.execute(userBookUpdateStatusTO).subscribe(value => {
-            this.book.status = value.status;
+            this.userBook.status = value.status;
             this.bookReturn.emit({ status: value.status, book });
         }, error => {
             console.log('Error', error);

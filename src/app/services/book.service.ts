@@ -1,10 +1,9 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { BookCase } from '../models/bookCase.model';
-import { Book } from '../models/book.model';
 import { forkJoin, Observable, throwError } from 'rxjs';
 import { of } from 'rxjs';
 import { AuthService } from './auth.service';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, mergeMap } from 'rxjs/operators';
 import { GetBookByIdUseCase } from '../core/use-cases/book/get-book-by-id.use-case';
 import { GetAllUserBookByProfileIdUseCase } from '../core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
 import { UserBook } from '../core/domain/entities/user-book.entity';
@@ -33,18 +32,7 @@ export class BookService {
                     const bc = new BookCase();
                     bc.id = tag.id;
                     bc.description = tag.name;
-                    bc.books = [];
-
-                    if (tag.userBooks && tag.userBooks.length > 0) {
-                        return forkJoin(this.getBooksByUserBooks(tag.userBooks)).pipe(
-                            map((books: Book[]) => {
-                                bc.books = books;
-                                return bc;
-                            })
-                        );
-                    } else {
-                        return of(bc);
-                    }
+                    bc.userBooks = tag.userBooks;
                 });
 
                 return forkJoin(observables);
@@ -67,17 +55,8 @@ export class BookService {
                 const result: BookCase = {
                     id: tag.id,
                     description: tag.name,
-                    books: []
+                    userBooks: tag.userBooks,
                 };
-
-                if (tag?.userBooks?.length > 0) {
-                    return forkJoin(this.getBooksByUserBooks(tag.userBooks)).pipe(
-                        map((books: Book[]) => ({
-                            ...result,
-                            books
-                        }))
-                    );
-                }
                 return of(result);
             }),
             catchError(err => {

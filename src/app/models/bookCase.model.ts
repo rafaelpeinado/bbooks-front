@@ -1,6 +1,7 @@
+import { UserBook } from "../core/domain/entities/user-book.entity";
 
 export class BookCase {
     id: any;
     description: string;
-    books: any[];
+    userBooks: UserBook[];
 }

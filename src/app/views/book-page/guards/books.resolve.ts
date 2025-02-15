@@ -5,6 +5,8 @@ import { GenresEnum } from 'src/app/core/domain/enums/genres.enum';
 import { map, mergeMap, scan, startWith } from 'rxjs/operators';
 import { SearchBookByNameUseCase } from 'src/app/core/use-cases/book/search-book-by-name.use-case';
 import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
+import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
+import { UserBookBuilder } from 'src/app/core/domain/builders/user-book.builder';
 
 @Injectable()
 export class BooksResolve implements Resolve<Bookcase[]> {
@@ -20,7 +22,8 @@ export class BooksResolve implements Resolve<Bookcase[]> {
             mergeMap(
                 (key) => this.searchBookByNameUseCase.execute(GenresEnum[key]).pipe(
                     map((books) => {
-                        return new Bookcase(GenresEnum[key], GenresEnum[key], books);
+                        const userBooks: UserBook[] = books.map((book) => new UserBookBuilder().setBook(book).build());
+                        return new Bookcase(GenresEnum[key], GenresEnum[key], userBooks);
                     })
                 )
             ),
