@@ -3,7 +3,6 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription, zip } from 'rxjs';
 import { BookService } from '../../../services/book.service';
-import { BookCase } from '../../../models/bookCase.model';
 import { MatDialog } from '@angular/material/dialog';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { BookStatus, getArrayStatus, mapBookStatus } from '../../../models/enums/BookStatus.enum';
@@ -15,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
+import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
 
 
 @Component({
@@ -23,7 +23,7 @@ import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
     styleUrls: ['./book-estante.component.scss']
 })
 export class BookEstanteComponent implements OnInit, OnDestroy {
-    bookCase: BookCase = new BookCase();
+    public bookcase: Bookcase;
     search;
     inscricao: Subscription;
     deviceXs;
@@ -60,24 +60,24 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
         });
         this.userBook = this.verifyrouter();
 
-        this.inscricao = this.route.data.subscribe((data: { bookcase: BookCase }) => {
-            this.bookCase = data.bookcase;
+        this.inscricao = this.route.data.subscribe((data: { bookcase: Bookcase }) => {
+            this.bookcase = data.bookcase;
         });
         this.bookService.updateListCarrousel.subscribe(updated => {
             if (updated) {
                 const myBook = this.router.url.toString().includes('mybooks');
                 if (myBook) {
-                    if (this.bookCase.id) {
-                        this.bookService.getBookCaseByTag(this.bookCase.id)
+                    if (this.bookcase.id) {
+                        this.bookService.getBookCaseByTag(this.bookcase.id)
                             .pipe(take(1))
                             .subscribe(
                                 bcs => {
-                                    this.bookCase = bcs;
+                                    this.bookcase = bcs;
                                 }, error => console.log('error booksComponent', error));
 
                     } else {
                         this.getAllUserBookByProfileIdUseCase.execute(this.authGuard.getUser().profile.id)
-                            .subscribe((userBooks) => this.bookCase.userBooks = userBooks);
+                            .subscribe((userBooks) => this.bookcase.userBooks = userBooks);
                     }
                 }
             }
@@ -116,8 +116,7 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
 
 
     ngOnDestroy(): void {
-        this.bookCase = new BookCase();
-        this.bookCase.userBooks = [];
+        this.bookcase = new Bookcase(undefined, undefined, []);
         this.inscricao.unsubscribe();
         this.mediaSub.unsubscribe();
     }
@@ -178,10 +177,10 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
 
     filterStatus(): UserBook[] {
         if (this.filter.length <= 0) {
-            return this.bookCase.userBooks;
+            return this.bookcase.userBooks;
         }
         const userBooks = [];
-        this.bookCase.userBooks.filter((userBook) => {
+        this.bookcase.userBooks.filter((userBook) => {
             this.translate.get('STATUS.' + userBook.status).subscribe(statusBook => {
                 for (const status of this.filter) {
                     if (status === statusBook) {
@@ -195,7 +194,7 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
     }
 
     bookReturn(event) {
-        this.bookCase.userBooks[this.bookCase.userBooks.indexOf((event.book))].status = event.status;
+        this.bookcase.userBooks[this.bookcase.userBooks.indexOf((event.book))].status = event.status;
     }
 
 

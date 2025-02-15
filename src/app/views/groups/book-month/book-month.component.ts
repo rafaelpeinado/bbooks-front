@@ -3,12 +3,12 @@ import { GroupService } from '../../../services/group.service';
 import { map, take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { BookMonthTO } from '../../../models/BookMonthTO.model';
-import { BookCase } from '../../../models/bookCase.model';
 import { SearchBookComponent } from '../../shared/search-book/search-book.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Util } from '../../shared/Utils/util';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
 
 @Component({
     selector: 'app-book-month',
@@ -20,7 +20,7 @@ export class BookMonthComponent implements OnInit {
     groupId: string;
     bookMonthTO: BookMonthTO[] = [];
     bookMonth: BookMonthTO;
-    bookCase: BookCase = new BookCase();
+    bookcase: Bookcase;
     book: any;
     currentDate = new Date();
 

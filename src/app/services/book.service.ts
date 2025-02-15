@@ -1,14 +1,13 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import { BookCase } from '../models/bookCase.model';
 import { forkJoin, Observable, throwError } from 'rxjs';
-import { of } from 'rxjs';
 import { AuthService } from './auth.service';
-import { catchError, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { GetBookByIdUseCase } from '../core/use-cases/book/get-book-by-id.use-case';
 import { GetAllUserBookByProfileIdUseCase } from '../core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
 import { UserBook } from '../core/domain/entities/user-book.entity';
 import { GetAllTagsByProfileIdTagUseCase } from '../core/use-cases/tag/get-all-tags-by-profile-id.use-case';
 import { GetTagByIdUseCase } from '../core/use-cases/tag/get-tag-by-id.use-case';
+import { Bookcase } from '../core/domain/entities/bookcase.entity';
 
 @Injectable({
     providedIn: 'root'
@@ -25,14 +24,11 @@ export class BookService {
         private getTagByIdUseCase: GetTagByIdUseCase,
     ) { }
 
-    getAllBooksTags(): Observable<BookCase[]> {
+    getAllBooksTags(): Observable<Bookcase[]> {
         return this.getAllTagsByProfileIdTagUseCase.execute(this.authGuard.getUser().profile.id).pipe(
             mergeMap(tags => {
                 const observables = tags.map(tag => {
-                    const bc = new BookCase();
-                    bc.id = tag.id;
-                    bc.description = tag.name;
-                    bc.userBooks = tag.userBooks;
+                    return new Bookcase(tag.id, tag.name, tag.userBooks);
                 });
 
                 return forkJoin(observables);
@@ -49,16 +45,9 @@ export class BookService {
             );
     }
 
-    getBookCaseByTag(tagId: string): Observable<BookCase> {
+    getBookCaseByTag(tagId: string): Observable<Bookcase> {
         return this.getTagByIdUseCase.execute(tagId).pipe(
-            mergeMap(tag => {
-                const result: BookCase = {
-                    id: tag.id,
-                    description: tag.name,
-                    userBooks: tag.userBooks,
-                };
-                return of(result);
-            }),
+            map(tag => new Bookcase(tag.id, tag.name, tag.userBooks)),
             catchError(err => {
                 console.error('BookService - error, getBookCaseByTag', err);
                 return throwError(() => err);

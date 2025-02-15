@@ -4,15 +4,15 @@ import { Observable } from 'rxjs';
 import { UserService } from '../../../services/user.service';
 import { UserTO } from '../../../models/userTO.model';
 import { take } from 'rxjs/operators';
-import { BookCase } from '../../../models/bookCase.model';
 import { Profile } from '../../../models/profileTO.model';
 import { AuthService } from '../../../services/auth.service';
 import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
+import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
 
 
 @Injectable()
 export class BookcaseResolve implements Resolve<any> {
-    bookCase: BookCase = new BookCase();
+    public bookcase: Bookcase;
     user = new UserTO();
 
 
@@ -21,7 +21,7 @@ export class BookcaseResolve implements Resolve<any> {
         private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
         private authservice: AuthService,
     ) {
-        this.bookCase.userBooks = [];
+        this.bookcase.userBooks = [];
         this.user.profile = new Profile();
 
     }
@@ -31,12 +31,12 @@ export class BookcaseResolve implements Resolve<any> {
         state: RouterStateSnapshot
     ): Observable<any> | Promise<any> | any {
         const username = route.parent.params.username;
-        this.bookCase.userBooks = [];
+        this.bookcase.userBooks = [];
         this.userService.getUserName(username, this.authservice.getToken()).pipe(take(1)).subscribe(user => {
             this.getAllUserBookByProfileIdUseCase.execute(user.profile.id.toString())
                 .pipe(take(1))
                 .subscribe(userBooks => {
-                    this.bookCase.userBooks = userBooks;
+                    this.bookcase.userBooks = userBooks;
                 });
             this.user.id = user.id;
             this.user.idSocial = user.idSocial;
@@ -48,7 +48,7 @@ export class BookcaseResolve implements Resolve<any> {
             this.user.profile.name = this.user.profile.name;
         });
         return {
-            bookcase: this.bookCase,
+            bookcase: this.bookcase,
             user: this.user
         };
     }

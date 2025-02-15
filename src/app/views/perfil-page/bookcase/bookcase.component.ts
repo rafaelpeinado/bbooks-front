@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { BookCase } from '../../../models/bookCase.model';
 import { ActivatedRoute } from '@angular/router';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { Observable, Subscription, zip } from 'rxjs';
@@ -13,6 +12,7 @@ import { map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { UserTO } from '../../../models/userTO.model';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
+import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
 
 @Component({
     selector: 'app-bookcase',
@@ -22,7 +22,7 @@ import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 export class BookcaseComponent implements OnInit, OnDestroy {
     user: UserTO = new UserTO();
     panelOpenState = false;
-    bookCase: BookCase = new BookCase();
+    public bookcase: Bookcase;
     search;
     inscricao: Subscription;
     deviceXs;
@@ -52,9 +52,8 @@ export class BookcaseComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.bookCase = new BookCase();
-        this.inscricao = this.route.data.subscribe((data: { data: { bookcase: BookCase, user: UserTO } }) => {
-            this.bookCase = data.data.bookcase;
+        this.inscricao = this.route.data.subscribe((data: { data: { bookcase: Bookcase, user: UserTO } }) => {
+            this.bookcase = data.data.bookcase;
             this.user = data.data.user;
         });
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
@@ -86,7 +85,7 @@ export class BookcaseComponent implements OnInit, OnDestroy {
     }
 
     bookReturn(event) {
-        this.bookCase.userBooks[this.bookCase.userBooks.indexOf((event.book))].status = event.status;
+        this.bookcase.userBooks[this.bookcase.userBooks.indexOf((event.book))].status = event.status;
     }
 
     ngOnDestroy(): void {
@@ -146,10 +145,10 @@ export class BookcaseComponent implements OnInit, OnDestroy {
 
     filterStatus(): UserBook[] {
         if (this.filter.length <= 0) {
-            return this.bookCase.userBooks;
+            return this.bookcase.userBooks;
         }
         const userBooks = [];
-        this.bookCase.userBooks.filter((userBook) => {
+        this.bookcase.userBooks.filter((userBook) => {
             this.translate.get('STATUS.' + userBook.status).subscribe(statusBook => {
                 for (const status of this.filter) {
                     if (status === statusBook) {

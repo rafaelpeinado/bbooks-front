@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Book } from '../../../models/book.model';
 import { Observable } from 'rxjs';
-import { BookCase } from '../../../models/bookCase.model';
 import { SearchBookByNameUseCase } from 'src/app/core/use-cases/book/search-book-by-name.use-case';
+import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
 
 @Injectable()
 export class CarrouselResolve implements Resolve<Book[]> {
@@ -19,11 +19,11 @@ export class CarrouselResolve implements Resolve<Book[]> {
     ): Observable<any> | Promise<any> | any {
         const myBook = route.url.toString().includes('my');
         const bookcaseDescripton = route.params.bookcase;
-        const bookCase = new BookCase();
+        const bookcase = new Bookcase(undefined, undefined, []);
         if (myBook) {
-            // bookCase = this.bookService.getBookCaseByDescription(bookcaseDescripton);
-            if (bookCase) {
-                return bookCase;
+            // bookcase = this.bookService.getBookCaseByDescription(bookcaseDescripton);
+            if (bookcase) {
+                return bookcase;
             }
         } else {
             this.searchBookByNameUseCase.execute(bookcaseDescripton).subscribe((books) => {
