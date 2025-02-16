@@ -1,12 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {BookService} from '../../../services/book.service';
-import {BookSearchTO} from '../../../models/bookSearchTO.model';
-import {map, take} from 'rxjs/operators';
-import {Book} from '../../../models/book.model';
-import {PageEvent} from '@angular/material/paginator';
-import {Util} from '../Utils/util';
-import {MatDialogRef} from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
+import { Util } from '../Utils/util';
+import { MatDialogRef } from '@angular/material/dialog';
+import { FilterSearch } from 'src/app/core/domain/interfaces/filter-search.interface';
+import { SearchMergedBookUseCase } from 'src/app/core/use-cases/book/search-merged-books.use-case';
+import { Book } from 'src/app/core/domain/entities/book.entity';
 
 @Component({
     selector: 'app-search-book',
@@ -21,8 +20,8 @@ export class SearchBookComponent implements OnInit {
     pageSize = 10;
 
     constructor(
+        private searchMergedBookUseCase: SearchMergedBookUseCase,
         public fb: FormBuilder,
-        public bookService: BookService,
         public dialogRef: MatDialogRef<SearchBookComponent>,
     ) {
         this.formSearch = this.fb.group({
@@ -36,33 +35,26 @@ export class SearchBookComponent implements OnInit {
     }
 
     searchBooks(): void {
-        const searchBook = new BookSearchTO();
-        searchBook.search = this.formSearch.value.search.split(' ').join('+');
-        searchBook.page = this.pageEvent.pageIndex;
+        const filter: FilterSearch = {
+            input: this.formSearch.value.book.split(' ').join('+'),
+            page: this.pageEvent.pageIndex,
+            size: 10,
+        };
+
         Util.loadingScreen();
-        this.bookService.searchMergeBooks(searchBook, this.pageEvent.pageSize)
-            .pipe(
-                take(1),
-                map(sb => {
-                    sb.googleBooks.items ?
-                        sb.googleBooks.items = sb.googleBooks.items.map(i => this.bookService.convertBookToModel(i)) :
-                        sb.googleBooks.items = [];
-                    return sb;
-                }),
-            )
-            .subscribe(res => {
-                    Util.stopLoading();
-                    this.totalBooks = res.googleBooks.totalItems + res.books.totalElements;
+        this.searchMergedBookUseCase.execute(filter)
+            .subscribe((response) => {
+                Util.stopLoading();
+                this.totalBooks = response.totalElements;
+                this.books = response.content;
+
+                if (this.books.length < 0) {
                     this.books = [];
-                    this.books = res.books.content.concat(res.googleBooks.items);
-                    if (this.books.length < 0) {
-                        this.books = [];
-                        this.totalBooks = 0;
-                    }
-                },
-                error => {
-                    console.log('error search book', error);
-                });
+                    this.totalBooks = 0;
+                }
+            }, error => {
+                console.log('error search book', error);
+            });
     }
 
     changePage(event: PageEvent) {

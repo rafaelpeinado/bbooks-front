@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {BookService} from '../../../services/book.service';
-import {MatDialog} from '@angular/material/dialog';
-import {Input} from '@angular/core';
-import {TagDialogComponent} from '../tag-dialog/tag-dialog.component';
-import {TagService} from '../../../services/tag.service';
-import {AuthService} from '../../../services/auth.service';
-import {Tag} from '../../../models/tag';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { Input } from '@angular/core';
+import { TagDialogComponent } from '../tag-dialog/tag-dialog.component';
+import { DeleteTagUseCase } from 'src/app/core/use-cases/tag/delete-tag.use-case';
+import { Tag } from 'src/app/core/domain/entities/tag.entity';
+import { finalize } from 'rxjs/operators';
+import { GetAllTagsByProfileIdTagUseCase } from 'src/app/core/use-cases/tag/get-all-tags-by-profile-id.use-case';
 
 @Component({
     selector: 'app-book-menu',
@@ -23,9 +23,8 @@ export class BookMenuComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private bookService: BookService,
-        private tagService: TagService,
-        private authService: AuthService,
+        private deleteTagUseCase: DeleteTagUseCase,
+        private getAllTagsByProfileIdTagUseCase: GetAllTagsByProfileIdTagUseCase,
         public dialog: MatDialog
     ) {
     }
@@ -35,9 +34,8 @@ export class BookMenuComponent implements OnInit {
     }
 
     getTags(): void {
-        this.tagService.getAllByProfile(this.authService.getUser().profile.id).subscribe((response: Tag[]) => {
-            this.tags = response;
-        });
+        this.getAllTagsByProfileIdTagUseCase.execute()
+            .subscribe((tags) => this.tags = tags);
     }
 
     onScroll(e) {
@@ -74,15 +72,10 @@ export class BookMenuComponent implements OnInit {
         return this.router.url.includes(route);
     }
 
-    deleteTag(tagId: number): void {
-        this.tagService.delete(tagId).subscribe(
-            value => {
-                this.getTags();
-            },
-            error => {
-                console.log('erro bookmenu tag delete', error);
-            }
-        );
+    deleteTag(tagId: string): void {
+        this.deleteTagUseCase.execute(tagId)
+            .pipe(finalize(() => this.getTags()))
+            .subscribe();
     }
 
 }

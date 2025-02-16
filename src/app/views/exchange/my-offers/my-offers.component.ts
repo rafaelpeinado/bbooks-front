@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {BookAdTO} from '../../../models/BookAdTO.model';
-import {Observable} from 'rxjs';
-import {AuthService} from '../../../services/auth.service';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { BookAdTO } from '../../../models/BookAdTO.model';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import {TranslateService} from '@ngx-translate/core';
-import {map, take} from 'rxjs/operators';
-import {Util} from '../../shared/Utils/util';
-import {BookAdsService} from '../../../services/book-ads.service';
+import { TranslateService } from '@ngx-translate/core';
+import { map, take } from 'rxjs/operators';
+import { Util } from '../../shared/Utils/util';
+import { BookAdsService } from '../../../services/book-ads.service';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-my-offers',
@@ -19,15 +20,16 @@ export class MyOffersComponent implements OnInit {
 
     constructor(
         public bookAdsService: BookAdsService,
-        public authService: AuthService,
         public router: Router,
         private translate: TranslateService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
     ngOnInit(): void {
+        const user: User = this.getCachedUserUseCase.execute();
         this.booksAdsTo =
-            this.bookAdsService.getAllByUser(this.authService.getUser().id);
+            this.bookAdsService.getAllByUser(user.id);
     }
 
     edit(id: string): void {
@@ -46,7 +48,7 @@ export class MyOffersComponent implements OnInit {
                 cancelButtonText: 'No'
             }).then((result) => {
                 if (result.value) {
-                   this.deleteService(id);
+                    this.deleteService(id);
                 }
             });
         });
@@ -56,14 +58,14 @@ export class MyOffersComponent implements OnInit {
         this.bookAdsService.delete(id)
             .pipe(take(1))
             .subscribe(() => {
-                    Util.stopLoading();
-                    this.translate.get('EXCHANGE.OFFER_EXCLUIDA').subscribe(msg => {
-                        Util.showSuccessDialog(msg);
-                    });
-                    this.booksAdsTo = this.booksAdsTo.pipe(
-                        map(ba => ba.filter(i => i.id !== id))
-                    );
-                },
+                Util.stopLoading();
+                this.translate.get('EXCHANGE.OFFER_EXCLUIDA').subscribe(msg => {
+                    Util.showSuccessDialog(msg);
+                });
+                this.booksAdsTo = this.booksAdsTo.pipe(
+                    map(ba => ba.filter(i => i.id !== id))
+                );
+            },
                 error => {
                     Util.stopLoading();
                     this.verifyErrorOffer(error, 'error delete offer');
@@ -82,7 +84,7 @@ export class MyOffersComponent implements OnInit {
             this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {
                 Util.showErrorDialog(msg);
             });
-            console.log(locationError + ': ' , error);
+            console.log(locationError + ': ', error);
         }
     }
 }

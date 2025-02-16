@@ -1,10 +1,10 @@
-import {EventEmitter, Injectable} from '@angular/core';
-import {environment} from 'src/environments/environment';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {FacebookLoginProvider, SocialAuthService} from 'angularx-social-login';
-import {GoogleLoginProvider} from 'angularx-social-login';
-import {UserTO} from '../models/userTO.model';
-import {Observable} from 'rxjs';
+import { EventEmitter, Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { FacebookLoginProvider, SocialAuthService } from 'angularx-social-login';
+import { GoogleLoginProvider } from 'angularx-social-login';
+import { UserTO } from '../models/userTO.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -37,7 +37,7 @@ export class AuthService {
         return this.http.get<UserTO>(this.api + 'reset-pass/' + token);
     }
     resetPass(ResetPassTO: any): Observable<any> {
-        return this.http.put(this.api + 'reset-pass/' , ResetPassTO);
+        return this.http.put(this.api + 'reset-pass/', ResetPassTO);
     }
 
     logout() {
@@ -47,8 +47,8 @@ export class AuthService {
 
     public isLogged(): boolean {
         const user = JSON.parse(localStorage.getItem('user')) ?
-        JSON.parse(localStorage.getItem('user')) :
-        JSON.parse(sessionStorage.getItem('user'));
+            JSON.parse(localStorage.getItem('user')) :
+            JSON.parse(sessionStorage.getItem('user'));
         if (user !== null) {
             this.logged.emit(true);
             return true;
@@ -59,32 +59,21 @@ export class AuthService {
     }
 
     public setToken(token) {
-        localStorage.setItem('token', token);
+        localStorage.setItem('token', JSON.stringify(token));
     }
-
-    public getUser(): any {
-        return JSON.parse(localStorage.getItem('user')) ?
-        JSON.parse(localStorage.getItem('user')) :
-        JSON.parse(sessionStorage.getItem('user'));
-    }
-
 
     public setUser(user): void {
         localStorage.setItem('user', JSON.stringify(user));
     }
 
     public setSessionToken(token) {
-        sessionStorage.setItem('token', token);
-        localStorage.setItem('token', token);
+        sessionStorage.setItem('token', JSON.stringify(token));
+        localStorage.setItem('token', JSON.stringify(token));
     }
 
     public setSessionUser(user) {
         sessionStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('user', JSON.stringify(user));
-    }
-
-    public getToken(): string {
-        return localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token');
     }
 
     login(loginTO) {

@@ -1,18 +1,19 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {BookCase} from '../../../models/bookCase.model';
-import {ActivatedRoute} from '@angular/router';
-import {MediaChange, MediaObserver} from '@angular/flex-layout';
-import {Observable, Subscription, zip} from 'rxjs';
-import {BookStatus, getArrayStatus, mapBookStatus} from '../../../models/enums/BookStatus.enum';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {FormControl} from '@angular/forms';
-import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {Book} from '../../../models/book.model';
-import {AuthService} from '../../../services/auth.service';
-import {map} from 'rxjs/operators';
-import {TranslateService} from '@ngx-translate/core';
-import {UserTO} from '../../../models/userTO.model';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { Observable, Subscription, zip } from 'rxjs';
+import { BookStatus, getArrayStatus, mapBookStatus } from '../../../models/enums/BookStatus.enum';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { FormControl } from '@angular/forms';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { map } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { UserTO } from '../../../models/userTO.model';
+import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 
 @Component({
     selector: 'app-bookcase',
@@ -20,9 +21,10 @@ import {UserTO} from '../../../models/userTO.model';
     styleUrls: ['./bookcase.component.scss']
 })
 export class BookcaseComponent implements OnInit, OnDestroy {
-    user: UserTO = new UserTO();
+    public user: User;
+    private userTO: UserTO = new UserTO();
     panelOpenState = false;
-    bookCase: BookCase = new BookCase();
+    public bookcase: Bookcase;
     search;
     inscricao: Subscription;
     deviceXs;
@@ -44,18 +46,18 @@ export class BookcaseComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         public mediaObserver: MediaObserver,
-        public authService: AuthService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
 
     ) {
         this.updateLanguageStatus();
     }
 
     ngOnInit(): void {
-        this.bookCase = new BookCase();
-        this.inscricao = this.route.data.subscribe((data: { data: {bookcase: BookCase, user: UserTO }}) => {
-            this.bookCase = data.data.bookcase;
-            this.user = data.data.user;
+        this.user = this.getCachedUserUseCase.execute();
+        this.inscricao = this.route.data.subscribe((data: { data: { bookcase: Bookcase, userTO: UserTO } }) => {
+            this.bookcase = data.data.bookcase;
+            this.userTO = data.data.userTO;
         });
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
             this.deviceXs = result[0].mqAlias === 'xs' ? true : false;
@@ -86,7 +88,7 @@ export class BookcaseComponent implements OnInit, OnDestroy {
     }
 
     bookReturn(event) {
-        this.bookCase.books[this.bookCase.books.indexOf((event.book))].status = event.status;
+        this.bookcase.userBooks[this.bookcase.userBooks.indexOf((event.book))].status = event.status;
     }
 
     ngOnDestroy(): void {
@@ -130,43 +132,40 @@ export class BookcaseComponent implements OnInit, OnDestroy {
         return this.allStatus.filter(status => status.toLowerCase().indexOf(value.toLowerCase()) === 0);
     }
 
-    filterBooks(): Book[] {
+    filterBooks(): UserBook[] {
         if (this.search === undefined || this.search.trim() === null) {
             return this.filterStatus();
         }
-        const books = this.filterStatus().filter((book) => {
-            if (book.title.toLocaleLowerCase().indexOf(this.search.toLocaleLowerCase()) !== -1) {
+        const userBooks = this.filterStatus().filter((userBook) => {
+            if (userBook.book.title.toLocaleLowerCase().indexOf(this.search.toLocaleLowerCase()) !== -1) {
                 return true;
             } else {
                 return false;
             }
         });
-        return books;
+        return userBooks;
     }
 
-    filterStatus(): Book[] {
+    filterStatus(): UserBook[] {
         if (this.filter.length <= 0) {
-            return this.bookCase.books;
+            return this.bookcase.userBooks;
         }
-        const books = [];
-        this.bookCase.books.filter((book) => {
-            this.translate.get('STATUS.' + book.status).subscribe(statusBook => {
+        const userBooks = [];
+        this.bookcase.userBooks.filter((userBook) => {
+            this.translate.get('STATUS.' + userBook.status).subscribe(statusBook => {
                 for (const status of this.filter) {
                     if (status === statusBook) {
-                        books.push(book);
+                        userBooks.push(userBook);
                     }
                 }
             });
 
         });
-        return books;
+        return userBooks;
     }
-    verfiyPerfilPageisUserLogged() {
-        if (this.authService.getUser()?.id) {
-            return this.authService.getUser().id === this.user.id;
-        } else {
-            return false;
-        }
+
+    verifyPerfilPageisUserLogged(): boolean {
+        return !!this.user?.id && this.user.id === this.userTO?.id;
     }
 
 }

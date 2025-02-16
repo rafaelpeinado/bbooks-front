@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {CompetitionTO} from '../models/competitionTO.model';
 import {Observable} from 'rxjs';
 import {CompetitionMemberTO} from '../models/competitionMemberTO.model';
 import {CompetitionMemberSaveTO} from '../models/competitionMemberSaveTO.model';
 import {CompetitionPagination} from '../models/pagination/competition.pagination';
 import {CompetitionMemberPagination} from '../models/pagination/competition-member.pagination';
-import {Role} from '../models/enums/Role.enum';
 import {LiteraryMemberStatus} from '../models/enums/LiteraryMemberStatus.enum';
 
 @Injectable({

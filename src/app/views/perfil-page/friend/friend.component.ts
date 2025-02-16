@@ -1,15 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {map, take} from 'rxjs/operators';
-import {UserTO} from '../../../models/userTO.model';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Friendship} from '../../../models/Friendship.model';
-import {FriendsService} from '../../../services/friends.service';
-import {AuthService} from '../../../services/auth.service';
-import {Friend} from '../../../models/friend.model';
-import {TranslateService} from '@ngx-translate/core';
-import {UserService} from '../../../services/user.service';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { UserTO } from '../../../models/userTO.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Friendship } from '../../../models/Friendship.model';
+import { FriendsService } from '../../../services/friends.service';
+import { Friend } from '../../../models/friend.model';
+import { TranslateService } from '@ngx-translate/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Util } from '../../shared/Utils/util';
+import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case';
+import { UserService } from 'src/app/services/user.service';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-friend',
@@ -17,8 +19,9 @@ import { Util } from '../../shared/Utils/util';
     styleUrls: ['./friend.component.scss']
 })
 export class FriendComponent implements OnInit {
+    public user: User;
     search: string;
-    user: UserTO = new UserTO();
+    userTO: UserTO = new UserTO();
     friendShip: Friendship;
     friendTO: Friend = new Friend();
     public formSearch: FormGroup;
@@ -27,33 +30,35 @@ export class FriendComponent implements OnInit {
         private route: ActivatedRoute,
         private friendsService: FriendsService,
         private router: Router,
-        public authService: AuthService,
         public translate: TranslateService,
         private userService: UserService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private getTokenUseCase: GetTokenUseCase,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         this.formSearch = this.formBuilder.group({
             search: new FormControl(null)
         });
         this.route.data.pipe(take(1)).subscribe((data: { user: UserTO }) => {
-            this.user = data.user;
+            this.userTO = data.user;
         });
 
         this.getFriends();
     }
 
     getFriends() {
-        this.friendsService.getFriendsByUserName(this.user.userName).subscribe(friendShip => {
+        this.friendsService.getFriendsByUserName(this.userTO.userName).subscribe(friendShip => {
             this.friendShip = friendShip;
         });
     }
 
     ngOnInit(): void {
+        this.user = this.getCachedUserUseCase.execute();
     }
 
     getUser() {
-        this.userService.getUserName(this.user.userName, this.authService.getToken()).pipe(take(1)).subscribe(user => {
-            this.user = user;
+        this.userService.getUserName(this.userTO.userName, this.getTokenUseCase.execute<string>()).pipe(take(1)).subscribe(userTO => {
+            this.userTO = userTO;
         });
     }
 
@@ -65,8 +70,9 @@ export class FriendComponent implements OnInit {
     }
 
     verfiyPerfilPageisUserLogged() {
-        if (this.authService.getUser()?.id) {
-            return this.authService.getUser().id === this.user.id;
+
+        if (this.user?.id) {
+            return this.user.id === this.userTO.id;
         } else {
             return false;
         }
@@ -74,15 +80,15 @@ export class FriendComponent implements OnInit {
 
     sendRequest() {
         this.friendTO = new Friend();
-        this.friendTO.id = this.user.profile.id;
+        this.friendTO.id = this.userTO.profile.id;
         Util.loadingScreen();
         this.friendsService.add(this.friendTO).subscribe(() => {
-                Util.stopLoading();
-                this.translate.get('PADRAO.SOLICITACAO_ENVIADA').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-                this.user.profile.friendshipStatus = 'sent';
-            },
+            Util.stopLoading();
+            this.translate.get('PADRAO.SOLICITACAO_ENVIADA').subscribe(message => {
+                Util.showSuccessDialog(message);
+            });
+            this.userTO.profile.friendshipStatus = 'sent';
+        },
             error => {
                 console.log(error);
             });
@@ -118,8 +124,8 @@ export class FriendComponent implements OnInit {
 
     deleteFriend(idProfile: number) {
         this.friendsService.deleteFriend(idProfile).subscribe(() => {
-                this.getFriends();
-            },
+            this.getFriends();
+        },
             error => {
                 console.log(error);
             });

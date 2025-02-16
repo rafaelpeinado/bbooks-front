@@ -1,11 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {CompetitionTO} from '../../../models/competitionTO.model';
-import {AuthService} from '../../../services/auth.service';
-import {CompetitionMemberTO} from '../../../models/competitionMemberTO.model';
-import {map, take} from 'rxjs/operators';
-import {ActivatedRoute, Router} from '@angular/router';
-import {CompetitionMemberService} from '../../../services/competition-member.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CompetitionMemberTO } from '../../../models/competitionMemberTO.model';
+import { map, take } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CompetitionMemberService } from '../../../services/competition-member.service';
 
 @Component({
     selector: 'app-create-story',
@@ -23,7 +21,6 @@ export class CreateStoryComponent implements OnInit {
         private route: ActivatedRoute,
         private competitionMemberService: CompetitionMemberService,
         private router: Router,
-        private authService: AuthService
     ) {
     }
 
@@ -33,10 +30,10 @@ export class CreateStoryComponent implements OnInit {
                 map(params => params.id)
             )
             .subscribe(result => {
-                    if (result) {
-                        this.memberId = result;
-                    }
+                if (result) {
+                    this.memberId = result;
                 }
+            }
             );
         this.competitionMemberService.getMember(this.memberId)
             .pipe(take(1))
@@ -62,7 +59,7 @@ export class CreateStoryComponent implements OnInit {
     createStory() {
         this.competitionMemberService.updateMember(this.formCreateStory.value, this.memberId)
             .pipe(take(1))
-            .subscribe( () => {
+            .subscribe(() => {
                 this.router.navigateByUrl('literary-competition/' + this.competitionMemberTO.competitionTO.id);
             }, error => {
                 console.log(error);

@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from 'src/environments/environment';
-import {UserTO} from '../models/userTO.model';
-import {AuthService} from './auth.service';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { UserTO } from '../models/userTO.model';
+import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -31,8 +31,9 @@ export class UserService {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
-                 Authorization: userToken
-            })};
+                Authorization: userToken
+            })
+        };
         return this.http.get<UserTO>(this.api + 'username/' + username, httpOptions);
     }
     update(userTo: UserTO) {

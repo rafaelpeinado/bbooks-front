@@ -1,10 +1,7 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {ReactionsTO} from '../../../models/ReactionsTO';
-import {ReactionType} from '../../../models/enums/ReactionType.enum';
-import {Router} from '@angular/router';
-import {ReadingTrackingTO} from '../../../models/ReadingTrackingTO.model';
-
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ReactionsTO } from '../../../models/ReactionsTO';
+import { ReactionType } from '../../../models/enums/ReactionType.enum';
 
 @Component({
     selector: 'app-view-all-reactions',
@@ -16,8 +13,7 @@ export class ViewAllReactionsComponent implements OnInit {
     allUsers = [];
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public  reactions: ReactionsTO,
-        private router: Router,
+        @Inject(MAT_DIALOG_DATA) public reactions: ReactionsTO,
         public dialogRef: MatDialogRef<ViewAllReactionsComponent>
     ) {
     }

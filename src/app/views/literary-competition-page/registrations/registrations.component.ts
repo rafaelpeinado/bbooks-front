@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {map, take} from 'rxjs/operators';
-import {Role} from '../../../models/enums/Role.enum';
-import {CompetitionMemberService} from '../../../services/competition-member.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {CompetitionMemberTO} from '../../../models/competitionMemberTO.model';
-import {Util} from '../../shared/Utils/util';
-import {ProfileService} from '../../../services/profile.service';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {LiteraryMemberStatus} from '../../../models/enums/LiteraryMemberStatus.enum';
-import {CompetitionMemberSaveTO} from '../../../models/competitionMemberSaveTO.model';
+import { Component, OnInit } from '@angular/core';
+import { map, take } from 'rxjs/operators';
+import { Role } from '../../../models/enums/Role.enum';
+import { CompetitionMemberService } from '../../../services/competition-member.service';
+import { ActivatedRoute } from '@angular/router';
+import { CompetitionMemberTO } from '../../../models/competitionMemberTO.model';
+import { Util } from '../../shared/Utils/util';
+import { ProfileService } from '../../../services/profile.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { LiteraryMemberStatus } from '../../../models/enums/LiteraryMemberStatus.enum';
+import { CompetitionMemberSaveTO } from '../../../models/competitionMemberSaveTO.model';
 
 @Component({
     selector: 'app-registrations',
@@ -28,7 +28,6 @@ export class RegistrationsComponent implements OnInit {
         private competitionMemberService: CompetitionMemberService,
         private route: ActivatedRoute,
         private profileService: ProfileService,
-        private router: Router,
         private fb: FormBuilder
     ) {
         this.searchMembers = this.fb.group({
@@ -42,9 +41,9 @@ export class RegistrationsComponent implements OnInit {
                 map(params => params.id)
             )
             .subscribe(result => {
-                    this.literaryCompetitionId = result;
-                    this.getMembers();
-                }
+                this.literaryCompetitionId = result;
+                this.getMembers();
+            }
             );
     }
 

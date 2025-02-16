@@ -31,6 +31,6 @@
     </mat-menu>
 </div>
 
-<div *ngFor="let bookcase of bookCases">
-    <app-carrousel [books]="bookcase.books" [nameTag]="bookcase.description" [idTag]="bookcase.id" (updateBooks)="updateBooksStatus($event)"></app-carrousel>
+<div *ngFor="let bookcase of bookcases">
+    <app-carrousel [userBooks]="bookcase.userBooks" [nameTag]="bookcase.description" [idTag]="bookcase.id" (updateBooks)="updateBooksStatus($event)"></app-carrousel>
 </div>

@@ -1,7 +1,7 @@
 import {TestBed, async} from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AppComponent} from './app.component';
-import {SocialAuthService, SocialLoginModule} from 'angularx-social-login';
+import {SocialLoginModule} from 'angularx-social-login';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {TranslateServiceMockForRoot} from './mocks/translate.service.mock';
 import {AuthService} from './services/auth.service';

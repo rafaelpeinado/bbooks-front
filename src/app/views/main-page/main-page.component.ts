@@ -1,16 +1,15 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from 'src/app/services/user.service';
-import {FormBuilder} from '@angular/forms';
-import {GoogleBooksService} from 'src/app/services/google-books.service';
-import {AuthService} from '../../services/auth.service';
-import {Book} from '../../models/book.model';
-import {BookService} from '../../services/book.service';
-import {MediaChange, MediaObserver} from '@angular/flex-layout';
-import {Subscription} from 'rxjs';
-import {PageEvent} from '@angular/material/paginator';
-import {BookSearchTO} from '../../models/bookSearchTO.model';
-import {map, take} from 'rxjs/operators';
-import {UserTO} from '../../models/userTO.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { Subscription } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
+import { SearchMergedBookUseCase } from 'src/app/core/use-cases/book/search-merged-books.use-case';
+import { FilterSearch } from 'src/app/core/domain/interfaces/filter-search.interface';
+import { Book } from 'src/app/core/domain/entities/book.entity';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { UpdateUserInfoUseCase } from 'src/app/core/use-cases/user/update-user-info.use-case';
+import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case';
 
 @Component({
     selector: 'app-main-page',
@@ -18,23 +17,23 @@ import {UserTO} from '../../models/userTO.model';
     styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent implements OnInit, OnDestroy {
-    public user;
+    public user: User;
+    public isCompleted = false;
     searchControl;
     books: Book[];
-    mediaSub: Subscription;
     deviceXs: boolean;
     totalBooks = 0;
     pageEvent: PageEvent = new PageEvent();
     pageSize = 10;
-    logado: UserTO = this.auth.getUser();
+    private mediaSub: Subscription;
 
     constructor(
-        public auth: AuthService,
-        private userService: UserService,
         private fb: FormBuilder,
-        private gBooksService: GoogleBooksService,
-        private bookService: BookService,
-        public mediaObserver: MediaObserver,
+        private searchMergedBookUseCase: SearchMergedBookUseCase,
+        private getCachedUserUseCase: GetCachedUserUseCase,
+        private updateUserInfoUseCase: UpdateUserInfoUseCase,
+        private getTokenUseCase: GetTokenUseCase,
+        private mediaObserver: MediaObserver,
 
     ) {
         this.searchControl = this.fb.group({
@@ -46,75 +45,50 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (this.auth.getToken() != null) {
-            this.userService.updateUserInfo();
-            this.user = this.auth.getUser();
+        const cachedUser = this.getCachedUserUseCase.execute();
+        const token = this.getTokenUseCase.execute();
+        if (!cachedUser && token) {
+            this.updateUserInfoUseCase.execute().subscribe(() => {
+                this.user = this.getCachedUserUseCase.execute();
+                this.isCompleted = true;
+            });
+        } else {
+            this.user = cachedUser;
+            this.isCompleted = true;
         }
+
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
-            this.deviceXs = result[0].mqAlias === 'xs' ? true : false;
+            this.deviceXs = result[0].mqAlias === 'xs';
         });
     }
 
     searchBook(): void {
-        const searchBook = new BookSearchTO();
-        searchBook.search = this.searchControl.value.book.split(' ').join('+');
-        searchBook.page = this.pageEvent.pageIndex;
-        this.bookService.searchMergeBooks(searchBook,  this.pageEvent.pageSize)
-            .pipe(
-                map(sb => {
-                    sb.googleBooks.items ?
-                    sb.googleBooks.items = sb.googleBooks.items.map( i => this.bookService.convertBookToModel(i)) :
-                    sb.googleBooks.items = [];
-                    return sb;
-                }),
-                take(1)
-            )
-            .subscribe(res => {
-                this.totalBooks = res.googleBooks.totalItems + res.books.totalElements;
-                let booksConvert = [];
-                booksConvert = res.books.content.concat(res.googleBooks.items);
-                booksConvert?.length > 0 ?
-                this.resulSearch(booksConvert) :
-                this.resetBooks();
-            },
-            error => console.log(error));
+        const filter: FilterSearch = {
+            input: this.searchControl.value.book.split(' ').join('+'),
+            page: this.pageEvent.pageIndex,
+            size: 10,
+        };
+        this.searchMergedBookUseCase.execute(filter)
+            .subscribe((response) => {
+                this.totalBooks = response.totalElements;
+                const books: Book[] = response.content;
+                if (books.length > 0) {
+                    this.books = books;
+                } else {
+                    this.resetBooks();
+                }
+            }, error => console.log(error));
     }
+
     changePage(event: PageEvent) {
         this.pageEvent = event;
         this.searchBook();
     }
 
-    resulSearch(booksConvert): void {
-       const result =  booksConvert.map(book => {
-            if (this.user) {
-                this.bookService.getAllUserBooks().subscribe((userbooks) => {
-                    userbooks.books.forEach(userbook => {
-                        if (book?.id === userbook.idBookGoogle ||
-                            book?.id === userbook?.idBook) {
-                            book.status = userbook.status;
-                            book.idUserBook = userbook.id;
-                            book.finishDate = userbook.finishDate;
-                        }
-                    });
-                });
-            }
-            return book;
-        });
-       this.longPromise(500).then(() => {
-           this.books = result;
-       });
-    }
-    longPromise(delay: number) {
-        return new Promise<string>((resolve) => {
-            setTimeout(() => {
-                resolve('Done');
-            }, delay);
-        });
-    }
-
     ngOnDestroy(): void {
         this.mediaSub.unsubscribe();
     }
+
     resetBooks(): void {
         this.books = [];
         this.totalBooks = 0;

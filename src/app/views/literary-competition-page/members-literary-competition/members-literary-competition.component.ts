@@ -1,19 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {CompetitionMemberTO} from '../../../models/competitionMemberTO.model';
-import {map, take} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
-import {CompetitionMemberService} from '../../../services/competition-member.service';
-import {ProfileService} from '../../../services/profile.service';
-import {Role} from '../../../models/enums/Role.enum';
-import {Util} from '../../shared/Utils/util';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {LiteraryMemberStatus} from '../../../models/enums/LiteraryMemberStatus.enum';
-import {StoryLiteraryCompetitionComponent} from '../story-literary-competition/story-literary-competition.component';
-import {MatDialog} from '@angular/material/dialog';
-import {CompetitionVoteService} from '../../../services/competition-vote.service';
-import {CompetitionVotesSaveTO} from '../../../models/competitionVotesSaveTO.model';
-import {AuthService} from '../../../services/auth.service';
-import {VoteComponent} from '../vote/vote.component';
+import { Component, OnInit } from '@angular/core';
+import { CompetitionMemberTO } from '../../../models/competitionMemberTO.model';
+import { map, take } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { CompetitionMemberService } from '../../../services/competition-member.service';
+import { ProfileService } from '../../../services/profile.service';
+import { Role } from '../../../models/enums/Role.enum';
+import { Util } from '../../shared/Utils/util';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { LiteraryMemberStatus } from '../../../models/enums/LiteraryMemberStatus.enum';
+import { StoryLiteraryCompetitionComponent } from '../story-literary-competition/story-literary-competition.component';
+import { MatDialog } from '@angular/material/dialog';
+import { VoteComponent } from '../vote/vote.component';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-members-literary-competition',
@@ -38,8 +37,7 @@ export class MembersLiteraryCompetitionComponent implements OnInit {
         private profileService: ProfileService,
         private fb: FormBuilder,
         private dialog: MatDialog,
-        private authService: AuthService,
-        private competitionVoteService: CompetitionVoteService
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
@@ -49,13 +47,13 @@ export class MembersLiteraryCompetitionComponent implements OnInit {
                 map(params => params.id)
             )
             .subscribe(result => {
-                    this.literaryCompetitionId = result;
-                }
+                this.literaryCompetitionId = result;
+            }
             );
         this.getMembers();
         this.searchMembers = this.fb.group({
-                nameMembers: ['']
-            }
+            nameMembers: ['']
+        }
         );
     }
 
@@ -106,21 +104,6 @@ export class MembersLiteraryCompetitionComponent implements OnInit {
         });
     }
 
-    /*vote(memberTO: CompetitionMemberTO) {
-        const competitionVotesSaveTO = new CompetitionVotesSaveTO();
-        competitionVotesSaveTO.memberId = memberTO.memberId;
-        competitionVotesSaveTO.profileId = this.authService.getUser().profile.id;
-        competitionVotesSaveTO.value = 10;
-        console.log(competitionVotesSaveTO);
-        this.competitionVoteService.vote(competitionVotesSaveTO)
-            .pipe(take(1))
-            .subscribe(result => {
-                console.log(result);
-            }, error => {
-                console.log(error);
-            });
-    }*/
-
     openDialogVote(member: CompetitionMemberTO) {
         const dialogRef = this.dialog.open(VoteComponent, {
             height: '300px',
@@ -142,7 +125,8 @@ export class MembersLiteraryCompetitionComponent implements OnInit {
     }
 
     verifyUser(profileIdVote: number): boolean {
-        if (profileIdVote === this.authService.getUser().profile.id) {
+        const user: User = this.getCachedUserUseCase.execute();
+        if (profileIdVote === +user.profile.id) {
             return true;
         }
         return false;

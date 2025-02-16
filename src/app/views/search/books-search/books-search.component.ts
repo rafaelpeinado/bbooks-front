@@ -1,16 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Book} from '../../../models/book.model';
-import {Subscription} from 'rxjs';
-import {PageEvent} from '@angular/material/paginator';
-import {AuthService} from '../../../services/auth.service';
-import {UserService} from '../../../services/user.service';
-import {FormBuilder} from '@angular/forms';
-import {GoogleBooksService} from '../../../services/google-books.service';
-import {BookService} from '../../../services/book.service';
-import {MediaChange, MediaObserver} from '@angular/flex-layout';
-import {BookSearchTO} from '../../../models/bookSearchTO.model';
-import {map, take} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { Book } from 'src/app/core/domain/entities/book.entity';
+import { FilterSearch } from 'src/app/core/domain/interfaces/filter-search.interface';
+import { SearchMergedBookUseCase } from 'src/app/core/use-cases/book/search-merged-books.use-case';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 
 @Component({
     selector: 'app-books-search',
@@ -29,20 +26,17 @@ export class BooksSearchComponent implements OnInit, OnDestroy {
     loading = false;
 
     constructor(
-        public auth: AuthService,
-        private userService: UserService,
-        private fb: FormBuilder,
-        private gBooksService: GoogleBooksService,
-        private bookService: BookService,
+        private searchMergedBookUseCase: SearchMergedBookUseCase,
         public mediaObserver: MediaObserver,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         this.pageEvent.pageSize = 10;
         this.pageEvent.pageIndex = 0;
     }
 
     ngOnInit(): void {
-        this.user = this.auth.getUser();
+        this.user = this.getCachedUserUseCase.execute();
 
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
             this.deviceXs = result[0].mqAlias === 'xs' ? true : false;
@@ -60,27 +54,21 @@ export class BooksSearchComponent implements OnInit, OnDestroy {
     searchBook(): void {
         if (this.search) {
             this.loading = true;
-            const searchBook = new BookSearchTO();
-            searchBook.search = this.search.split(' ').join('+');
-            searchBook.page = this.pageEvent.pageIndex;
-            this.bookService.searchMergeBooks(searchBook, this.pageEvent.pageSize)
-                .pipe(
-                    map(sb => {
-                        sb.googleBooks.items ?
-                            sb.googleBooks.items = sb.googleBooks.items.map(i => this.bookService.convertBookToModel(i)) :
-                            sb.googleBooks.items = [];
-                        return sb;
-                    }),
-                    take(1)
-                )
-                .subscribe(res => {
-                        this.totalBooks = res.googleBooks.totalItems + res.books.totalElements;
-                        let booksConvert = [];
-                        booksConvert = res.books.content.concat(res.googleBooks.items);
-                        booksConvert?.length > 0 ?
-                            this.resulSearch(booksConvert) :
-                            this.resetBooks();
-                    },
+            const filter: FilterSearch = {
+                input: this.search.split(' ').join('+'),
+                page: this.pageEvent.pageIndex,
+                size: 10,
+            };
+            this.searchMergedBookUseCase.execute(filter)
+                .subscribe((response) => {
+                    this.totalBooks = response.totalElements;
+                    const books: Book[] = response.content;
+                    if (books.length > 0) {
+                        this.books = books;
+                    } else {
+                        this.resetBooks();
+                    }
+                },
                     error => console.log(error));
         }
     }
@@ -88,36 +76,6 @@ export class BooksSearchComponent implements OnInit, OnDestroy {
     changePage(event: PageEvent) {
         this.pageEvent = event;
         this.searchBook();
-    }
-
-    resulSearch(booksConvert): void {
-        const result = booksConvert.map(book => {
-            if (this.user) {
-                this.bookService.getAllUserBooks().subscribe((userbooks) => {
-                    userbooks.books.forEach(userbook => {
-                        if (book?.id === userbook.idBookGoogle ||
-                            book?.id === userbook?.idBook) {
-                            book.status = userbook.status;
-                            book.idUserBook = userbook.id;
-                            book.finishDate = userbook.finishDate;
-                        }
-                    });
-                });
-            }
-            return book;
-        });
-        this.longPromise(500).then(() => {
-            this.books = result;
-            this.loading = false;
-        });
-    }
-
-    longPromise(delay: number) {
-        return new Promise<string>((resolve) => {
-            setTimeout(() => {
-                resolve('Done');
-            }, delay);
-        });
     }
 
     ngOnDestroy(): void {

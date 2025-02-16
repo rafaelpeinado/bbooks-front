@@ -1,15 +1,16 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {CompetitionMemberTO} from '../../../models/competitionMemberTO.model';
-import {CompetitionVotesSaveTO} from '../../../models/competitionVotesSaveTO.model';
-import {AuthService} from '../../../services/auth.service';
-import {CompetitionVoteService} from '../../../services/competition-vote.service';
-import {max, take} from 'rxjs/operators';
-import {Util} from '../../shared/Utils/util';
-import {CompetitionMemberService} from '../../../services/competition-member.service';
-import {ProfileService} from '../../../services/profile.service';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {CompetitionVoteReturnTO} from '../../../models/competitionVoteReturnTO.model';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { CompetitionMemberTO } from '../../../models/competitionMemberTO.model';
+import { CompetitionVotesSaveTO } from '../../../models/competitionVotesSaveTO.model';
+import { CompetitionVoteService } from '../../../services/competition-vote.service';
+import { take } from 'rxjs/operators';
+import { Util } from '../../shared/Utils/util';
+import { CompetitionMemberService } from '../../../services/competition-member.service';
+import { ProfileService } from '../../../services/profile.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CompetitionVoteReturnTO } from '../../../models/competitionVoteReturnTO.model';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-vote',
@@ -26,11 +27,11 @@ export class VoteComponent implements OnInit {
     constructor(
         @Inject(MAT_DIALOG_DATA) public member: CompetitionMemberTO,
         public dialogRef: MatDialogRef<VoteComponent>,
-        private authService: AuthService,
         private competitionVoteService: CompetitionVoteService,
         private competitionMemberService: CompetitionMemberService,
         private profileService: ProfileService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
@@ -46,17 +47,18 @@ export class VoteComponent implements OnInit {
             memberId: new FormControl(this.competitionVoteReturnTO?.member?.memberId ? this.competitionVoteReturnTO.member.memberId : null),
             profileId: new FormControl(this.competitionVoteReturnTO?.profile?.id ? this.competitionVoteReturnTO.profile.id : null),
             value: new FormControl(this.competitionVoteReturnTO?.value ? this.competitionVoteReturnTO.value : null, Validators.compose([
-                    Validators.max(10),
-                    Validators.min(1)
-                ]
+                Validators.max(10),
+                Validators.min(1)
+            ]
             ))
         });
     }
 
     vote() {
+        const user: User = this.getCachedUserUseCase.execute();
         const competitionVotesSaveTO = new CompetitionVotesSaveTO();
         competitionVotesSaveTO.memberId = this.member.memberId;
-        competitionVotesSaveTO.profileId = this.authService.getUser().profile.id;
+        competitionVotesSaveTO.profileId = +user.profile.id;
         competitionVotesSaveTO.value = this.formVote.get('value').value;
         this.competitionVoteService.vote(competitionVotesSaveTO)
             .pipe(take(1))
@@ -92,7 +94,8 @@ export class VoteComponent implements OnInit {
     }
 
     verifyVoted() {
-        this.competitionVoteService.getVoteByMemberAndProfile(this.member.memberId, this.authService.getUser().profile.id)
+        const user: User = this.getCachedUserUseCase.execute();
+        this.competitionVoteService.getVoteByMemberAndProfile(this.member.memberId, user.profile.id)
             .pipe(take(1))
             .subscribe(result => {
                 this.competitionVoteReturnTO = result;

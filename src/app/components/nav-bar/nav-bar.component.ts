@@ -1,22 +1,24 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {TranslateService} from '@ngx-translate/core';
-import {UserTO} from '../../models/userTO.model';
-import {UserService} from '../../services/user.service';
-import {map, take} from 'rxjs/operators';
-import {FriendsService} from '../../services/friends.service';
-import {FriendRequest} from '../../models/friendRequest.model';
-import {Friend} from '../../models/friend.model';
-import {BookRecommendationService} from 'src/app/services/book-recommendation.service';
-import {BookRecommendationTO} from 'src/app/models/bookRecommendationTO.model';
-import {ProfileService} from 'src/app/services/profile.service';
-import {BookService} from 'src/app/services/book.service';
-import {GoogleBooksService} from 'src/app/services/google-books.service';
-import {GroupMemberService} from '../../services/group-member.service';
-import {GroupInviteTO} from '../../models/GroupInviteTO.model';
-import {Util} from '../../views/shared/Utils/util';
-import {PublicProfileService} from '../../services/public-profile.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { TranslateService } from '@ngx-translate/core';
+import { UserTO } from '../../models/userTO.model';
+import { UserService } from '../../services/user.service';
+import { map, take } from 'rxjs/operators';
+import { FriendsService } from '../../services/friends.service';
+import { FriendRequest } from '../../models/friendRequest.model';
+import { Friend } from '../../models/friend.model';
+import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
+import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
+import { ProfileService } from 'src/app/services/profile.service';
+import { GroupMemberService } from '../../services/group-member.service';
+import { GroupInviteTO } from '../../models/GroupInviteTO.model';
+import { Util } from '../../views/shared/Utils/util';
+import { PublicProfileService } from '../../services/public-profile.service';
+import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-nav-bar',
@@ -33,17 +35,17 @@ export class NavBarComponent implements OnInit {
     publicProfileId = '';
     timer;
     constructor(
-        public auth: AuthService,
+        private getBookByIdUseCase: GetBookByIdUseCase,
+        private auth: AuthService,
         private router: Router,
         public translate: TranslateService,
         private userService: UserService,
         private friendService: FriendsService,
         private bookRecommendation: BookRecommendationService,
         private profileService: ProfileService,
-        private bookService: BookService,
-        private gBookService: GoogleBooksService,
         public groupMembersService: GroupMemberService,
-        private publicProfileService: PublicProfileService
+        private publicProfileService: PublicProfileService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         translate.addLangs(['pt-BR', 'en']);
         translate.setDefaultLang('pt-BR');
@@ -73,8 +75,8 @@ export class NavBarComponent implements OnInit {
     getRequests() {
         if (this.isLogged) {
             this.friendService.getRequests().subscribe(requests => {
-                    this.requests = requests;
-                },
+                this.requests = requests;
+            },
                 error => {
                     this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
                         Util.showErrorDialog(message);
@@ -98,7 +100,8 @@ export class NavBarComponent implements OnInit {
 
     getuser() {
         if (this.isLogged) {
-            this.userService.getById(this.auth.getUser().id).pipe(
+            const user: User = this.getCachedUserUseCase.execute();
+            this.userService.getById(user.id).pipe(
                 take(1))
                 .subscribe(user => {
                     this.user = user;
@@ -160,14 +163,24 @@ export class NavBarComponent implements OnInit {
     }
 
     getRecommendations(): void {
-        this.bookRecommendation.getRecommentionsReceived(this.auth.getUser().profile.id)
+        const user: User = this.getCachedUserUseCase.execute();
+        this.bookRecommendation.getRecommentionsReceived(+user.profile.id)
             .pipe(
                 map((recommendations: BookRecommendationTO[]) => {
                     return recommendations.map(r => {
                         r.profileTO = this.profileService.getById(r.profileSubmitter);
-                        r.book = r.idBook ?
-                            this.bookService.getById(r.idBook) :
-                            this.gBookService.getById(r.idBookGoogle).pipe(map(b => this.bookService.convertBookToModel(b)));
+
+                        let apiType: ApiType;
+                        let id;
+
+                        if (r.idBook) {
+                            id = r.idBook;
+                            apiType = ApiType.BBOOKS;
+                        } else {
+                            id = r.idBookGoogle;
+                            apiType = ApiType.GOOGLE;
+                        }
+                        r.book = this.getBookByIdUseCase.execute(id, apiType);
                         return r;
                     });
                 })
@@ -180,11 +193,12 @@ export class NavBarComponent implements OnInit {
     }
 
     routerRecommendation(idGoogleBook: string): any {
-        return idGoogleBook ? {api: 'google'} : {};
+        return idGoogleBook ? { api: 'google' } : {};
     }
 
     getInvitesGroup(): void {
-        this.groupMembersService.getInvites(this.auth.getUser().id)
+        const user: User = this.getCachedUserUseCase.execute();
+        this.groupMembersService.getInvites(user.id)
             .pipe(
                 take(1),
                 map(invites => {
@@ -195,7 +209,7 @@ export class NavBarComponent implements OnInit {
                 })
             ).subscribe(result => {
                 this.invitesGroup = result;
-        });
+            });
 
     }
 
@@ -239,7 +253,8 @@ export class NavBarComponent implements OnInit {
 
     getPublicProfileByUser() {
         this.publicProfileId = '';
-        this.publicProfileService.getByUserId(this.auth.getUser().id)
+        const user: User = this.getCachedUserUseCase.execute();
+        this.publicProfileService.getByUserId(user.id)
             .pipe(take(1))
             .subscribe(result => {
                 if (result) {

@@ -1,31 +1,27 @@
-import {Injectable} from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
-import {Observable} from 'rxjs';
-import {UserService} from '../../../services/user.service';
-import {UserTO} from '../../../models/userTO.model';
-import {map, take} from 'rxjs/operators';
-import {BookCase} from '../../../models/bookCase.model';
-import {BookService} from '../../../services/book.service';
-import {UserbookService} from '../../../services/userbook.service';
-import {GoogleBooksService} from '../../../services/google-books.service';
-import {Profile} from '../../../models/profileTO.model';
-import {AuthService} from '../../../services/auth.service';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
+import { UserService } from '../../../services/user.service';
+import { UserTO } from '../../../models/userTO.model';
+import { take } from 'rxjs/operators';
+import { Profile } from '../../../models/profileTO.model';
+import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
+import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
+import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case';
 
 
 @Injectable()
 export class BookcaseResolve implements Resolve<any> {
-    bookCase: BookCase = new BookCase();
+    public bookcase: Bookcase;
     user = new UserTO();
 
 
     constructor(
-        private bookService: BookService,
         private userService: UserService,
-        private userBookService: UserbookService,
-        private gBooksService: GoogleBooksService,
-        private authservice: AuthService
+        private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
+        private getTokenUseCase: GetTokenUseCase,
     ) {
-        this.bookCase.books = [];
+        this.bookcase.userBooks = [];
         this.user.profile = new Profile();
 
     }
@@ -35,33 +31,13 @@ export class BookcaseResolve implements Resolve<any> {
         state: RouterStateSnapshot
     ): Observable<any> | Promise<any> | any {
         const username = route.parent.params.username;
-        this.bookCase.books = [];
-        this.userService.getUserName(username, this.authservice.getToken()).pipe(take(1)).subscribe(user => {
-            this.userBookService.getAllByProfile(user.profile.id)
+        this.bookcase.userBooks = [];
+        this.userService.getUserName(username, this.getTokenUseCase.execute<string>()).pipe(take(1)).subscribe(user => {
+            this.getAllUserBookByProfileIdUseCase.execute()
                 .pipe(take(1))
-                .subscribe(userBook => {
-                userBook.books.forEach(realation => {
-                    if (realation.idBookGoogle) {
-                        this.gBooksService.getById(realation.idBookGoogle).subscribe(book => {
-                            const b = this.bookService.convertBookToModel(book);
-                            b.idUserBook = realation.id;
-                            b.status = realation.status;
-                            b.finishDate = realation.finishDate;
-                            this.bookCase.books.push(b);
-
-                        });
-                    } else {
-                        const id = realation.idBook ? realation.idBook :  realation.book.id;
-                        this.bookService.getById(id)
-                            .subscribe(b => {
-                            b.idUserBook = realation.id;
-                            b.status = realation.status;
-                            b.finishDate = realation.finishDate;
-                            this.bookCase.books.push(b);
-                        });
-                    }
+                .subscribe(userBooks => {
+                    this.bookcase.userBooks = userBooks;
                 });
-            });
             this.user.id = user.id;
             this.user.idSocial = user.idSocial;
             this.user.email = user.email;
@@ -72,7 +48,7 @@ export class BookcaseResolve implements Resolve<any> {
             this.user.profile.name = this.user.profile.name;
         });
         return {
-            bookcase: this.bookCase,
+            bookcase: this.bookcase,
             user: this.user
         };
     }

@@ -1,21 +1,21 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ConsultaCepService} from '../../services/consulta-cep.service';
-import {Observable} from 'rxjs';
-import {map, startWith, take} from 'rxjs/operators';
-import {Country} from '../../models/country.model';
-import {State} from '../../models/state.model';
-import {City} from '../../models/city.model';
-import {ProfileService} from '../../services/profile.service';
-import {CDNService} from 'src/app/services/cdn.service';
-import {MatDialog} from '@angular/material/dialog';
-import {UploadComponent} from '../upload/upload.component';
-import {DateAdapter} from '@angular/material/core';
-import {Profile} from '../../models/profileTO.model';
-import {Util} from '../shared/Utils/util';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ConsultaCepService } from '../../services/consulta-cep.service';
+import { Observable } from 'rxjs';
+import { map, startWith, take } from 'rxjs/operators';
+import { Country } from '../../models/country.model';
+import { State } from '../../models/state.model';
+import { City } from '../../models/city.model';
+import { ProfileService } from '../../services/profile.service';
+import { CDNService } from 'src/app/services/cdn.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UploadComponent } from '../upload/upload.component';
+import { DateAdapter } from '@angular/material/core';
+import { Profile } from '../../models/profileTO.model';
+import { Util } from '../shared/Utils/util';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-cadastro-segunda-etapa',
@@ -29,6 +29,7 @@ export class CadastroSegundaEtapaComponent implements OnInit {
     public states: State[];
     public profileTo: Profile;
     dataAtual = new Date();
+    public userRegister: any;
 
     userLogin = {
         email: this.auth.getUserRegister().email,
@@ -41,7 +42,7 @@ export class CadastroSegundaEtapaComponent implements OnInit {
 
     constructor(
         private router: Router,
-        public auth: AuthService,
+        private auth: AuthService,
         private formBuilder: FormBuilder,
         private consultaCepService: ConsultaCepService,
         private profileService: ProfileService,
@@ -58,6 +59,7 @@ export class CadastroSegundaEtapaComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.userRegister = this.auth.getUserRegister();
         this.createForm();
         this.consultaCepService.getCountry().subscribe(result => {
             this.countrys = result;
@@ -67,7 +69,7 @@ export class CadastroSegundaEtapaComponent implements OnInit {
     private createForm(): void {
         this.formCadastro2 = this.formBuilder.group({
             id: [],
-            image: new FormControl({value: null, disabled: true}),
+            image: new FormControl({ value: null, disabled: true }),
             birthDate: new FormControl('', Validators.required),
             country: new FormControl(''),
             city: new FormControl(''),
@@ -163,9 +165,9 @@ export class CadastroSegundaEtapaComponent implements OnInit {
                 this.cdnService.upload({
                     file: this.file,
                     type: 'image'
-                }, {objectType: 'profile_image'}).subscribe(() => {
-                        this.getByIdToUpdateProfile();
-                    },
+                }, { objectType: 'profile_image' }).subscribe(() => {
+                    this.getByIdToUpdateProfile();
+                },
                     error => {
                         Util.stopLoading();
                         console.log('error upload', error);
@@ -206,11 +208,11 @@ export class CadastroSegundaEtapaComponent implements OnInit {
     login(): void {
         Util.loadingScreen();
         this.auth.loginToken(this.userLogin).pipe(take(1)).subscribe(res => {
-                Util.stopLoading();
-                localStorage.clear();
-                this.auth.authenticate(res, true);
-                this.router.navigate(['/feed']);
-            },
+            Util.stopLoading();
+            localStorage.clear();
+            this.auth.authenticate(res, true);
+            this.router.navigate(['/feed']);
+        },
             (err) => {
                 Util.stopLoading();
                 Util.showErrorDialog(err.error.message);

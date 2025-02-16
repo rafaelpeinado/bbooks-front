@@ -1,19 +1,20 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {take} from 'rxjs/operators';
-import {UserTO} from '../../../models/userTO.model';
-import {MatDialog} from '@angular/material/dialog';
-import {AuthService} from '../../../services/auth.service';
-import {PostService} from '../../../services/post.service';
-import {PostTO} from '../../../models/PostTO.model';
-import {TranslateService} from '@ngx-translate/core';
-import {FeedService} from '../../../services/feed.service';
-import {FeedPerfilManageService} from '../store/feed-perfil-manage.service';
-import {IFeedState} from '../store/state/feed.state.interface';
-import {Observable} from 'rxjs';
-import {TypePostControler} from '../../../models/enums/TypePost.enum';
-import {FeedGenericService} from '../../../services/feed-generic.service';
-import {PostPagination} from '../../../models/pagination/post.pagination';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { UserTO } from '../../../models/userTO.model';
+import { MatDialog } from '@angular/material/dialog';
+import { PostService } from '../../../services/post.service';
+import { PostTO } from '../../../models/PostTO.model';
+import { TranslateService } from '@ngx-translate/core';
+import { FeedService } from '../../../services/feed.service';
+import { FeedPerfilManageService } from '../store/feed-perfil-manage.service';
+import { IFeedState } from '../store/state/feed.state.interface';
+import { Observable } from 'rxjs';
+import { TypePostControler } from '../../../models/enums/TypePost.enum';
+import { FeedGenericService } from '../../../services/feed-generic.service';
+import { PostPagination } from '../../../models/pagination/post.pagination';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 
 @Component({
     selector: 'app-feed',
@@ -21,7 +22,8 @@ import {PostPagination} from '../../../models/pagination/post.pagination';
     styleUrls: ['./feed.component.scss']
 })
 export class FeedComponent implements OnInit, OnDestroy {
-    user: UserTO;
+    public user: User;
+    userTO: UserTO;
     page = 0;
     loading = false;
     feedRedux$: Observable<IFeedState>;
@@ -30,19 +32,19 @@ export class FeedComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         public dialog: MatDialog,
-        private router: Router,
-        public authService: AuthService,
         public postService: PostService,
         public translate: TranslateService,
         public feedService: FeedService,
         private feedPerfilManage: FeedPerfilManageService,
-        public feedGenericService: FeedGenericService
+        public feedGenericService: FeedGenericService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
     ngOnInit(): void {
+        this.user = this.getCachedUserUseCase.execute();
         this.route.data.pipe(take(1)).subscribe((data: { user: UserTO }) => {
-            this.user = data.user;
+            this.userTO = data.user;
             this.getPosts();
         });
         this.feedRedux$ = this.feedPerfilManage.getFeed();
@@ -53,9 +55,9 @@ export class FeedComponent implements OnInit, OnDestroy {
     }
 
     getPosts(): void {
-        if (this.user.id === this.authService.getUser().id) {
+        if (this.userTO.id === this.user.id) {
             this.loading = true;
-            this.postService.getByProfileId(this.authService.getUser().profile.id, 5, this.page)
+            this.postService.getByProfileId(+this.user.profile.id, 5, this.page)
                 .pipe(take(1))
                 .subscribe(result => {
                     this.loading = false;
@@ -72,7 +74,7 @@ export class FeedComponent implements OnInit, OnDestroy {
                 });
         } else {
             this.loading = true;
-            this.feedService.getPersonFeed(this.user.profile.id, 5, this.page)
+            this.feedService.getPersonFeed(this.userTO.profile.id, 5, this.page)
                 .pipe(take(1))
                 .subscribe(result => {
                     this.loading = false;

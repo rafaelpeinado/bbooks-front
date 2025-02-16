@@ -2,7 +2,7 @@
      fxLayoutAlign="center center"
      *ngIf="isMember || isAdmin">
     <app-post-create
-            [user]="this.authService.getUser()"
+            [user]="user"
             [typePostControler]="typePostControler.group"
     ></app-post-create>
 </div>

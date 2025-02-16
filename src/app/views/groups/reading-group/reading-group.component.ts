@@ -1,19 +1,20 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {GroupTO} from '../../../models/GroupTO.model';
-import {Util} from '../../shared/Utils/util';
-import {take} from 'rxjs/operators';
-import {mapPostPrivacyStrinView, PostPrivacy} from '../../../models/enums/PostPrivacy.enum';
-import {GroupMemberService} from '../../../services/group-member.service';
-import {GroupMembers} from '../../../models/GroupMembers.model';
-import {AuthService} from '../../../services/auth.service';
-import {Role} from '../../../models/enums/Role.enum';
-import {TranslateService} from '@ngx-translate/core';
-import {ReferBookDialogComponent} from '../../shared/refer-book-dialog/refer-book-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
-import {GroupInviteTO} from '../../../models/GroupInviteTO.model';
-import {GroupService} from '../../../services/group.service';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GroupTO } from '../../../models/GroupTO.model';
+import { Util } from '../../shared/Utils/util';
+import { take } from 'rxjs/operators';
+import { mapPostPrivacyStrinView } from '../../../models/enums/PostPrivacy.enum';
+import { GroupMemberService } from '../../../services/group-member.service';
+import { GroupMembers } from '../../../models/GroupMembers.model';
+import { Role } from '../../../models/enums/Role.enum';
+import { TranslateService } from '@ngx-translate/core';
+import { ReferBookDialogComponent } from '../../shared/refer-book-dialog/refer-book-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { GroupInviteTO } from '../../../models/GroupInviteTO.model';
+import { GroupService } from '../../../services/group.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-reading-group',
@@ -35,11 +36,11 @@ export class ReadingGroupComponent implements OnInit {
         public router: Router,
         private route: ActivatedRoute,
         private groupMemberService: GroupMemberService,
-        private authService: AuthService,
         private translate: TranslateService,
         public dialog: MatDialog,
         private groupService: GroupService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
@@ -66,8 +67,9 @@ export class ReadingGroupComponent implements OnInit {
     }
 
     enterGroup(): void {
+        const user: User = this.getCachedUserUseCase.execute();
         const member = new GroupMembers();
-        member.userId = this.authService.getUser().id;
+        member.userId = user.id;
         member.groupId = this.groupTO.id;
 
         member.role = this.role.member;
@@ -90,28 +92,30 @@ export class ReadingGroupComponent implements OnInit {
             .pipe(
                 take(1)
             ).subscribe(result => {
-            Util.stopLoading();
-            const member = result.find(m => m.user.id === this.authService.getUser().id);
-            if (member) {
-                if (member.role === Role.owner || member.role === Role.admin) {
-                    this.isAdmin = true;
+                Util.stopLoading();
+                const user: User = this.getCachedUserUseCase.execute();
+                const member = result.find(m => m.user.id === user.id);
+                if (member) {
+                    if (member.role === Role.owner || member.role === Role.admin) {
+                        this.isAdmin = true;
+                    }
+                    this.isMember = true;
                 }
-                this.isMember = true;
-            }
-        }, error => {
-            Util.stopLoading();
-            this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
-                Util.showErrorDialog(message);
+            }, error => {
+                Util.stopLoading();
+                this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
+                    Util.showErrorDialog(message);
+                });
+                console.log('Erro: members-group getMembers', error);
             });
-            console.log('Erro: members-group getMembers', error);
-        });
     }
 
     openDialogReferBook() {
+        const user: User = this.getCachedUserUseCase.execute();
         const groupInviteTO = new GroupInviteTO();
         groupInviteTO.group = this.groupTO;
         groupInviteTO.groupId = this.groupTO.id;
-        groupInviteTO.inviter = this.authService.getUser().id;
+        groupInviteTO.inviter = user.id;
 
         const dialogRef = this.dialog.open(ReferBookDialogComponent, {
             height: '580px',

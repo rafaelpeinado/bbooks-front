@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {map, take} from 'rxjs/operators';
-import {UserPublicProfileTO} from '../../../models/UserPublicProfileTO.model';
-import {PublicProfileService} from '../../../services/public-profile.service';
-import {AuthService} from '../../../services/auth.service';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { map, take } from 'rxjs/operators';
+import { UserPublicProfileTO } from '../../../models/UserPublicProfileTO.model';
+import { PublicProfileService } from '../../../services/public-profile.service';
+import { ActivatedRoute } from '@angular/router';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-about-public-profile',
@@ -19,8 +20,8 @@ export class AboutPublicProfileComponent implements OnInit {
 
     constructor(
         private publicProfileService: PublicProfileService,
-        private authService: AuthService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
@@ -30,9 +31,9 @@ export class AboutPublicProfileComponent implements OnInit {
                 map(params => params.id)
             )
             .subscribe(result => {
-                    this.getPublicProfileById(result);
-                    this.publicProfileId = result;
-                }
+                this.getPublicProfileById(result);
+                this.publicProfileId = result;
+            }
             );
     }
 
@@ -40,8 +41,9 @@ export class AboutPublicProfileComponent implements OnInit {
         this.publicProfileService.getById(idPublic)
             .pipe(take(1))
             .subscribe(result => {
+                const user: User = this.getCachedUserUseCase.execute();
                 this.publicProfileTO = result;
-                if (this.publicProfileTO.user.id === this.authService.getUser().id) {
+                if (this.publicProfileTO.user.id === user.id) {
                     this.isOwner = true;
                 }
             }, error => {

@@ -11,7 +11,8 @@
         <mat-form-field appearance="outline">
             <mat-label>{{'PADRAO.PAIS' | translate}}</mat-label>
             <mat-select formControlName="country">
-                <mat-option [value]="country.name" *ngFor="let country of countrys"  (blur)="getStates(country)">{{country.name}}</mat-option>
+                <mat-option [value]="country.name" *ngFor="let country of countrys"
+                    (blur)="getStates(country)">{{country.name}}</mat-option>
             </mat-select>
             <mat-error *ngIf="verificaValidToTouched('country')">
                 {{'CADASTRO2.MSG_PAIS_E' | translate}} <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
@@ -20,8 +21,9 @@
 
         <mat-form-field class="inputSegundaEtapa" appearance="outline">
             <mat-label>{{'PADRAO.ESTADO' | translate}}</mat-label>
-            <mat-select  formControlName="state">
-                <mat-option [value]="state.name" *ngFor="let state of states" (blur)="getCitys(state)">{{state.name}}</mat-option>
+            <mat-select formControlName="state">
+                <mat-option [value]="state.name" *ngFor="let state of states"
+                    (blur)="getCitys(state)">{{state.name}}</mat-option>
             </mat-select>
             <mat-error *ngIf="verificaValidToTouched('state')">
                 {{'CADASTRO2.MSG_ESTADO_E' | translate}} <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
@@ -29,12 +31,8 @@
         </mat-form-field>
 
         <mat-form-field class="inputSegundaEtapa" appearance="outline">
-            <input type="text"
-                   placeholder="{{'PADRAO.CIDADE' | translate}}"
-                   aria-label="Number"
-                   matInput
-                   formControlName="city"
-                   [matAutocomplete]="autoCity" class="example-full-width">
+            <input type="text" placeholder="{{'PADRAO.CIDADE' | translate}}" aria-label="Number" matInput
+                formControlName="city" [matAutocomplete]="autoCity" class="example-full-width">
             <mat-autocomplete autoActiveFirstOption #autoCity="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsCity | async" [value]="option.name">
                     {{option.name}}
@@ -48,7 +46,7 @@
     </div>
 
     <div fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center end" fxLayoutGap="10px">
-        <mat-form-field class="inputSegundaEtapa" *ngIf="!this.auth.getUserRegister()?.profile?.profileImage" appearance="outline">
+        <mat-form-field class="inputSegundaEtapa" *ngIf="!userRegister?.profile?.profileImage" appearance="outline">
             <mat-label>{{'CADASTRO2.FOTO' | translate}}</mat-label>
             <input type="text" matInput id="fotoSegundaEtapa" formControlName="image">
             <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="openDialogUpload()">
@@ -71,6 +69,7 @@
     </div>
 
     <div id="divBotao">
-        <button type="button" mat-raised-button color="primary" (click)="loginRegister()" [disabled]="formCadastro2.invalid">{{'CADASTRO2.CADASTRAR' | translate}}</button>
+        <button type="button" mat-raised-button color="primary" (click)="loginRegister()"
+            [disabled]="formCadastro2.invalid">{{'CADASTRO2.CADASTRAR' | translate}}</button>
     </div>
 </form>

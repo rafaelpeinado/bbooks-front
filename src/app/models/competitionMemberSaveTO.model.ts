@@ -1,5 +1,4 @@
 import {Role} from './enums/Role.enum';
-import {Status} from 'cucumber';
 import {LiteraryMemberStatus} from './enums/LiteraryMemberStatus.enum';
 
 export class CompetitionMemberSaveTO {

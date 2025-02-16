@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {ExchangeT0} from '../../../models/exchangeT0,model';
-import {ExchangeService} from '../../../services/exchange.service';
-import {AuthService} from '../../../services/auth.service';
-import {TranslateService} from '@ngx-translate/core';
-import {BookExchangeStatus} from '../../../models/enums/BookExchangeStatus.enum';
-import {Util} from '../../shared/Utils/util';
-import {map, take} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ExchangeT0 } from '../../../models/exchangeT0,model';
+import { ExchangeService } from '../../../services/exchange.service';
+import { TranslateService } from '@ngx-translate/core';
+import { BookExchangeStatus } from '../../../models/enums/BookExchangeStatus.enum';
+import { Util } from '../../shared/Utils/util';
+import { map, take } from 'rxjs/operators';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-exchange-sent',
@@ -20,13 +21,14 @@ export class ExchangeSentComponent implements OnInit {
 
     constructor(
         public exchangeService: ExchangeService,
-        public authService: AuthService,
-        public translate: TranslateService
+        public translate: TranslateService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
     ngOnInit(): void {
-        this.exchanges$ = this.exchangeService.getByUserSent(this.authService.getUser().id);
+        const user: User = this.getCachedUserUseCase.execute();
+        this.exchanges$ = this.exchangeService.getByUserSent(user.id);
     }
     cancel(id: string): void {
         Util.loadingScreen();
@@ -46,7 +48,7 @@ export class ExchangeSentComponent implements OnInit {
     updateStatus(id: string, status: BookExchangeStatus): void {
         this.exchanges$ = this.exchanges$.pipe(
             map(exchanges => {
-                return exchanges.map( e => {
+                return exchanges.map(e => {
                     if (e.id === id) {
                         e.status = status;
                     }

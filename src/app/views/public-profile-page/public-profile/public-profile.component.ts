@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {map, take} from 'rxjs/operators';
-import {UserPublicProfileTO} from '../../../models/UserPublicProfileTO.model';
-import {PublicProfileService} from '../../../services/public-profile.service';
-import {AuthService} from '../../../services/auth.service';
-import {ActivatedRoute} from '@angular/router';
-import {Util} from '../../shared/Utils/util';
+import { Component, OnInit } from '@angular/core';
+import { map, take } from 'rxjs/operators';
+import { UserPublicProfileTO } from '../../../models/UserPublicProfileTO.model';
+import { PublicProfileService } from '../../../services/public-profile.service';
+import { ActivatedRoute } from '@angular/router';
+import { Util } from '../../shared/Utils/util';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-public-profile',
@@ -21,8 +22,8 @@ export class PublicProfileComponent implements OnInit {
     loading = false;
     constructor(
         private publicProfileService: PublicProfileService,
-        private authService: AuthService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
@@ -32,9 +33,9 @@ export class PublicProfileComponent implements OnInit {
                 map(params => params.id)
             )
             .subscribe(result => {
-                    this.getPublicProfileById(result);
-                    this.publicProfileId = result;
-                }
+                this.getPublicProfileById(result);
+                this.publicProfileId = result;
+            }
             );
         this.verifyIsFollower();
     }
@@ -44,10 +45,11 @@ export class PublicProfileComponent implements OnInit {
         this.publicProfileService.getById(idPublic)
             .pipe(take(1))
             .subscribe(result => {
+                const user: User = this.getCachedUserUseCase.execute();
                 this.loading = true;
                 Util.stopLoading();
                 this.publicProfileTO = result;
-                if (this.publicProfileTO.user.id === this.authService.getUser().id) {
+                if (this.publicProfileTO.user.id === user.id) {
                     this.isOwner = true;
                 }
             }, error => {
@@ -57,22 +59,24 @@ export class PublicProfileComponent implements OnInit {
     }
 
     getPublicProfile() {
-      this.publicProfileService.getByUserId(this.authService.getUser().id)
-          .pipe(take(1))
-          .subscribe(result => {
-            this.publicProfileTO = result;
-          }, error => {
-            console.log(error);
-          });
+        const user: User = this.getCachedUserUseCase.execute();
+        this.publicProfileService.getByUserId(user.id)
+            .pipe(take(1))
+            .subscribe(result => {
+                this.publicProfileTO = result;
+            }, error => {
+                console.log(error);
+            });
     }
 
     verifyIsFollower() {
         this.publicProfileService.getById(this.publicProfileId)
             .pipe(take(1))
             .subscribe(result => {
+                const user: User = this.getCachedUserUseCase.execute();
                 this.isFollower = false;
                 result.followers.forEach(f => {
-                    if (f.id === this.authService.getUser().profile.id) {
+                    if (f.id === +user.profile.id) {
                         this.isFollower = true;
                     }
                 });

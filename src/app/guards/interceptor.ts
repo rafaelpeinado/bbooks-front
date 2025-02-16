@@ -1,16 +1,18 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthGuard } from './auth-guard';
 import { tap } from 'rxjs/operators';
 import { LoaderService } from '../services/loader.service';
 import { environment } from 'src/environments/environment';
-import {AuthService} from '../services/auth.service';
+import { GetTokenUseCase } from '../core/use-cases/auth/get-token.use-case';
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
 
-  constructor(private auth: AuthService, private loader: LoaderService) { }
+  constructor(
+    private loader: LoaderService,
+    private getTokenUseCase: GetTokenUseCase,
+  ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url.includes(environment.api) || req.url.includes(environment.feedApi) || req.url.includes(environment.competitionApi)) {
@@ -20,7 +22,7 @@ export class Interceptor implements HttpInterceptor {
           // 'Access-Control-Allow-Origin': '*',
           // 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
            'Access-Control-Allow-Methods': 'GET, POST',
-          Authorization: `Bearer ${this.auth.getToken()}`,
+          Authorization: `Bearer ${this.getTokenUseCase.execute<string>()}`,
         },
       });
       return next.handle(request).pipe(

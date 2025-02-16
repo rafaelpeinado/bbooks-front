@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ExchangeService} from '../../../services/exchange.service';
-import {Observable} from 'rxjs';
-import {ExchangeT0} from '../../../models/exchangeT0,model';
-import {AuthService} from '../../../services/auth.service';
-import {Util} from '../../shared/Utils/util';
-import {map, take} from 'rxjs/operators';
-import {TranslateService} from '@ngx-translate/core';
-import {BookExchangeStatus} from '../../../models/enums/BookExchangeStatus.enum';
+import { Component, OnInit } from '@angular/core';
+import { ExchangeService } from '../../../services/exchange.service';
+import { Observable } from 'rxjs';
+import { ExchangeT0 } from '../../../models/exchangeT0,model';
+import { Util } from '../../shared/Utils/util';
+import { map, take } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { BookExchangeStatus } from '../../../models/enums/BookExchangeStatus.enum';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-exchange-received',
@@ -18,13 +19,14 @@ export class ExchangeReceivedComponent implements OnInit {
     exchangeStatus = BookExchangeStatus;
     constructor(
         public exchangeService: ExchangeService,
-        public authService: AuthService,
-        public translate: TranslateService
+        public translate: TranslateService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
     ngOnInit(): void {
-        this.exchanges$ = this.exchangeService.getByUserReceived(this.authService.getUser().id);
+        const user: User = this.getCachedUserUseCase.execute();
+        this.exchanges$ = this.exchangeService.getByUserReceived(user.id);
     }
 
     accept(id: string): void {
@@ -60,7 +62,7 @@ export class ExchangeReceivedComponent implements OnInit {
     updateStatus(id: string, status: BookExchangeStatus): void {
         this.exchanges$ = this.exchanges$.pipe(
             map(exchanges => {
-                return exchanges.map( e => {
+                return exchanges.map(e => {
                     if (e.id === id) {
                         e.status = status;
                     }

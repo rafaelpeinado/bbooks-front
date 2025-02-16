@@ -1,13 +1,10 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {OwlOptions} from 'ngx-owl-carousel-o';
-import {GoogleBooksService} from '../../../services/google-books.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {MatDialog} from '@angular/material/dialog';
-import {Book} from '../../../models/book.model';
-import {MediaChange, MediaObserver} from '@angular/flex-layout';
-import {BookStatus, mapBookStatus} from '../../../models/enums/BookStatus.enum';
-import {UserbookService} from '../../../services/userbook.service';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { OwlOptions } from 'ngx-owl-carousel-o';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 
 @Component({
     selector: 'app-carrousel',
@@ -43,16 +40,15 @@ export class CarrouselComponent implements OnInit, OnDestroy {
 
     @Output() updateBooks = new EventEmitter<any>();
     @Output() updateListCarrousel = new EventEmitter<any>();
-    @Input() books: Book[];
+    @Input() userBooks: UserBook[];
     @Input() nameTag: string;
     @Input() idTag: number;
     mediaSub: Subscription;
     deviceXs;
-    userBook: boolean;
+    isUserBook: boolean;
     routerlink: string;
 
     constructor(
-        private gBooksService: GoogleBooksService,
         private router: Router,
         public dialog: MatDialog,
         public mediaObserver: MediaObserver,
@@ -63,16 +59,16 @@ export class CarrouselComponent implements OnInit, OnDestroy {
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
             this.deviceXs = result[0].mqAlias === 'xs' ? true : false;
         });
-        this.userBook = this.router.url.includes('mybooks');
-        if (!this.userBook) {
+        this.isUserBook = this.router.url.includes('mybooks');
+        if (!this.isUserBook) {
             this.routerlink = '/book/';
         } else {
-           this.routerlink = '/mybooks/';
+            this.routerlink = '/mybooks/';
         }
     }
     bookReturn(event) {
-        this.books[this.books.indexOf((event.book))].status = event.status;
-        this.updateBooks.emit({ idbook: event.book.id, status: event.status});
+        this.userBooks[this.userBooks.indexOf((event.book))].status = event.status;
+        this.updateBooks.emit({ idbook: event.book.id, status: event.status });
     }
 
     ngOnDestroy(): void {

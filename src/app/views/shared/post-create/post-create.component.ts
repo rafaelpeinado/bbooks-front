@@ -1,16 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {UserTO} from '../../../models/userTO.model';
-import {PostTO} from '../../../models/PostTO.model';
-import {PostDialogComponent} from '../post-dialog/post-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
-import {PostService} from '../../../services/post.service';
-import {TypePostControler} from '../../../models/enums/TypePost.enum';
-import {FeedPerfilManageService} from '../../perfil-page/store/feed-perfil-manage.service';
-import {AuthService} from '../../../services/auth.service';
-import {FeedMainManagerService} from '../../feed-page/store/feed-main-manager.service';
-import {FeedGroupManagerService} from '../../groups/store/feed-group-manager.service';
-import {FeedPublicProfilePageManagerService} from '../../public-profile-page/store/feed-public-profile-manager.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { UserTO } from '../../../models/userTO.model';
+import { PostTO } from '../../../models/PostTO.model';
+import { PostDialogComponent } from '../post-dialog/post-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { PostService } from '../../../services/post.service';
+import { TypePostControler } from '../../../models/enums/TypePost.enum';
+import { FeedPerfilManageService } from '../../perfil-page/store/feed-perfil-manage.service';
+import { FeedMainManagerService } from '../../feed-page/store/feed-main-manager.service';
+import { FeedGroupManagerService } from '../../groups/store/feed-group-manager.service';
+import { FeedPublicProfilePageManagerService } from '../../public-profile-page/store/feed-public-profile-manager.service';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-post-create',
@@ -21,20 +22,22 @@ export class PostCreateComponent implements OnInit {
 
     @Input() user: UserTO;
     @Input() typePostControler: TypePostControler;
+    public cachedUser: User;
 
     constructor(
         public dialog: MatDialog,
         private router: Router,
         public postService: PostService,
         private feedPerfilManageService: FeedPerfilManageService,
-        public authService: AuthService,
         public feedMainManagerService: FeedMainManagerService,
         public feedGroupManagerService: FeedGroupManagerService,
         public feedPublicProfilePageManagerService: FeedPublicProfilePageManagerService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
     ngOnInit(): void {
+        this.cachedUser = this.getCachedUserUseCase.execute();
     }
 
     openPost() {
@@ -53,10 +56,10 @@ export class PostCreateComponent implements OnInit {
         });
         dialogRef.afterClosed()
             .pipe().subscribe((res) => {
-            if (res) {
-                this.saveReduxOfTypePost(this.typePostControler, res);
-            }
-        });
+                if (res) {
+                    this.saveReduxOfTypePost(this.typePostControler, res);
+                }
+            });
     }
 
     saveReduxOfTypePost(typePostController: TypePostControler, postTo: PostTO) {
@@ -78,16 +81,16 @@ export class PostCreateComponent implements OnInit {
     redirectRouterPost() {
         switch (this.typePostControler) {
             case TypePostControler.feed:
-                this.router.navigate(['feed/create-post'], {state: {}});
+                this.router.navigate(['feed/create-post'], { state: {} });
                 return;
             case TypePostControler.feedPerfil:
-                this.router.navigate([this.user.userName + '/create-post', {state: {}}]);
+                this.router.navigate([this.user.userName + '/create-post', { state: {} }]);
                 return;
             case TypePostControler.group:
-                this.router.navigate(['groups/create-post'], {state: {}});
+                this.router.navigate(['groups/create-post'], { state: {} });
                 return;
             case TypePostControler.feedPublicProfile:
-                this.router.navigate(['public-profile/create-post'], {state: {}});
+                this.router.navigate(['public-profile/create-post'], { state: {} });
                 return;
         }
     }

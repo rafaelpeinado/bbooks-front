@@ -1,9 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BookCase} from '../../../models/bookCase.model';
-import {GoogleBooksService} from '../../../services/google-books.service';
-import {BookService} from '../../../services/book.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BehaviorSubject, Subscription} from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { BookService } from '../../../services/book.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
 
 @Component({
     selector: 'app-books',
@@ -11,11 +10,10 @@ import {BehaviorSubject, Subscription} from 'rxjs';
     styleUrls: ['./books.component.scss']
 })
 export class BooksComponent implements OnInit, OnDestroy {
-    bookCases: BookCase[];
+    public bookcases: Bookcase[];
     inscricao: Subscription;
 
     constructor(
-        private gBookService: GoogleBooksService,
         private route: ActivatedRoute,
         private bookService: BookService,
         private router: Router
@@ -23,8 +21,8 @@ export class BooksComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.inscricao = this.route.data.subscribe((data: { bookcases: BookCase[] }) => {
-            this.bookCases = data.bookcases;
+        this.inscricao = this.route.data.subscribe((data: { bookcases: Bookcase[] }) => {
+            this.bookcases = data.bookcases;
         });
 
         this.bookService.updateListCarrousel.subscribe(updated => {
@@ -33,7 +31,7 @@ export class BooksComponent implements OnInit, OnDestroy {
                 if (myBook) {
                     this.bookService.getAllBooksTags().subscribe(
                         bcs => {
-                            this.bookCases = bcs;
+                            this.bookcases = bcs;
                         }, error => console.log('error booksComponent', error));
                 }
             }
@@ -44,10 +42,10 @@ export class BooksComponent implements OnInit, OnDestroy {
     }
 
     updateBooksStatus(event) {
-        this.bookCases.forEach(bookcases => {
-            bookcases.books.forEach(book => {
-                if (book.id === event.idbook) {
-                    book.status = event.status;
+        this.bookcases.forEach(bookcases => {
+            bookcases.userBooks.forEach(userBook => {
+                if (userBook.book.id === event.idbook) {
+                    userBook.status = event.status;
                 }
             });
         });

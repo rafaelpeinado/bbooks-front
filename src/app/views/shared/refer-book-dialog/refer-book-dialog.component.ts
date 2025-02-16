@@ -1,19 +1,20 @@
-import {TranslateService} from '@ngx-translate/core';
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Book} from 'src/app/models/book.model';
-import {BookRecommendationTO} from 'src/app/models/bookRecommendationTO.model';
-import {Profile} from 'src/app/models/profileTO.model';
-import {UserTO} from 'src/app/models/userTO.model';
-import {AuthService} from 'src/app/services/auth.service';
-import {BookRecommendationService} from 'src/app/services/book-recommendation.service';
-import {GroupInviteTO} from '../../../models/GroupInviteTO.model';
-import {GroupMemberService} from '../../../services/group-member.service';
-import {take} from 'rxjs/operators';
-import {Util} from '../Utils/util';
-import {Friendship} from '../../../models/Friendship.model';
-import {FriendsService} from '../../../services/friends.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Book } from 'src/app/models/book.model';
+import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
+import { Profile } from 'src/app/models/profileTO.model';
+import { UserTO } from 'src/app/models/userTO.model';
+import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
+import { GroupInviteTO } from '../../../models/GroupInviteTO.model';
+import { GroupMemberService } from '../../../services/group-member.service';
+import { take } from 'rxjs/operators';
+import { Util } from '../Utils/util';
+import { Friendship } from '../../../models/Friendship.model';
+import { FriendsService } from '../../../services/friends.service';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-refer-book-dialog',
@@ -36,10 +37,10 @@ export class ReferBookDialogComponent implements OnInit {
         public dialogRef: MatDialogRef<ReferBookDialogComponent>,
         private fb: FormBuilder,
         private bookRecommendationService: BookRecommendationService,
-        private authService: AuthService,
         public translate: TranslateService,
         public groupMemberService: GroupMemberService,
-        private friendsService: FriendsService
+        private friendsService: FriendsService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         this.pesquisarUsuarios = this.fb.group({
             user: ['']
@@ -65,7 +66,8 @@ export class ReferBookDialogComponent implements OnInit {
     }
 
     referBook(profileReceivedId: number): void {
-        this.bookRecommendationTO.profileSubmitter = this.authService.getUser().profile.id;
+        const user: User = this.getCachedUserUseCase.execute();
+        this.bookRecommendationTO.profileSubmitter = +user.profile.id;
         this.bookRecommendationTO.profileReceived = profileReceivedId;
         this.Book.api === 'google' ?
             this.bookRecommendationTO.idBookGoogle = this.Book.id :
@@ -120,7 +122,8 @@ export class ReferBookDialogComponent implements OnInit {
     }
 
     getFriends(): void {
-        this.friendsService.getFriendsByUserName(this.authService.getUser().userName).subscribe(friendShip => {
+        const user: User = this.getCachedUserUseCase.execute();
+        this.friendsService.getFriendsByUserName(user.profile.username).subscribe(friendShip => {
             this.friendShip = friendShip;
         });
     }

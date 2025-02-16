@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {CompetitionTO} from '../models/competitionTO.model';
 import {Observable} from 'rxjs';
 import {CompetitionVoteReturnTO} from '../models/competitionVoteReturnTO.model';
 import {CompetitionVotesSaveTO} from '../models/competitionVotesSaveTO.model';
