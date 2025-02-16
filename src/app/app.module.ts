@@ -50,6 +50,8 @@ import { TimeLineComponent } from './views/time-line/time-line.component';
 import { MglTimelineModule } from 'angular-mgl-timeline';
 import { BookRepository } from './core/repositories/book.repository';
 import { BookServiceFactory } from './infrastructure/adapters/factories/book-service.factory';
+import { CacheRepository } from './core/repositories/cache.repository';
+import { StorageServiceFactory } from './infrastructure/adapters/factories/storage-service.factory';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -116,7 +118,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     providers: [
         BnNgIdleService,
         AuthVerifyLogin,
-        AuthGuard, { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
+        AuthGuard,
+        { provide: BookRepository, useClass: BookServiceFactory },
+        { provide: CacheRepository, useClass: StorageServiceFactory },
+        { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
         {
             provide: ErrorStateMatcher,
             useClass: ShowOnDirtyErrorStateMatcher,
@@ -141,7 +146,6 @@ export function HttpLoaderFactory(http: HttpClient) {
                 ],
             } as SocialAuthServiceConfig
         },
-        { provide: BookRepository, useClass: BookServiceFactory },
     ],
     exports: [],
 

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BookStatus, mapBookStatus } from '../../../models/enums/BookStatus.enum';
+import { BookStatus } from '../../../models/enums/BookStatus.enum';
 import { Router } from '@angular/router';
 import { BookAddDialogComponent } from '../book-add-dialog/book-add-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { combineLatest } from 'rxjs';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { ChangeStatusUserBookUseCase } from 'src/app/core/use-cases/user-book/change-status-user-book.use-case';
+import { UserBookBuilder } from 'src/app/core/domain/builders/user-book.builder';
 
 @Component({
     selector: 'app-book-card',
@@ -56,11 +57,11 @@ export class BookCardComponent implements OnInit {
             this.isCompleted = true;
         } else {
             this.getBookByIdUseCase.execute(this.userBook.book.id, this.userBook.book.api)
-            .subscribe((book) => {
-                this.book = book;
-                this.isCompleted = true;
-            });
-        }        
+                .subscribe((book) => {
+                    this.book = book;
+                    this.isCompleted = true;
+                });
+        }
 
         this.isUserBook = this.router.url.includes('mybooks');
         if (!this.isUserBook) {
@@ -80,12 +81,12 @@ export class BookCardComponent implements OnInit {
 
 
     changeStatusBook(bookStatus: BookStatus, userBookId: string, book: Book) {
-        const userBookUpdateStatusTO: any = {
-            id: userBookId,
-            status: mapBookStatus.get(bookStatus)
-        };
+        const userBook: UserBook = UserBookBuilder.builder()
+            .setId(userBookId)
+            .setStatus(bookStatus)
+            .build();
 
-        this.changeStatusUserBookUseCase.execute(userBookUpdateStatusTO).subscribe(value => {
+        this.changeStatusUserBookUseCase.execute(userBook).subscribe(value => {
             this.userBook.status = value.status;
             this.bookReturn.emit({ status: value.status, book });
         }, error => {

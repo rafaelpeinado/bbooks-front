@@ -5,7 +5,7 @@ import { UserBookMapper } from './user-book.mapper';
 
 export class TagMapper {
     static toEntity(tagTO: TagTO): Tag {
-        return new TagBuilder()
+        return TagBuilder.builder()
             .setId(tagTO.id)
             .setName(tagTO.name)
             .setColor(tagTO.color)

@@ -11,6 +11,7 @@ import { GeneralStatus } from 'src/app/core/domain/entities/general-status.entit
 import { GeneralStatusTO } from '../dtos/general-status.dto';
 import { UserBookMapper } from '../mappers/user-book.mapper';
 import { BaseApiService } from './base-service.service';
+import { mapBookStatus } from 'src/app/core/domain/enums/book-status.enum';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +27,8 @@ export class UserBookApiService extends BaseApiService<UserBook, UserBookTO> imp
         super(http);
     }
 
-    changeStatusUserBook(userBookUpdateStatusTO: UserBookUpdateStatusTO): Observable<UserBook> {
+    changeStatusUserBook(userBook: Partial<UserBook>): Observable<UserBook> {
+        const userBookUpdateStatusTO: UserBookUpdateStatusTO = { id: userBook.id, status: mapBookStatus.get(userBook.status) }
         const service = this.http.put<UserBookTO>(this.api + 'status', userBookUpdateStatusTO);
         return this.handleRequestDTOToEntity(service, UserBookMapper.toEntity);
     }

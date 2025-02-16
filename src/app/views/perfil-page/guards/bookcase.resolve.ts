@@ -5,9 +5,9 @@ import { UserService } from '../../../services/user.service';
 import { UserTO } from '../../../models/userTO.model';
 import { take } from 'rxjs/operators';
 import { Profile } from '../../../models/profileTO.model';
-import { AuthService } from '../../../services/auth.service';
 import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
 import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
+import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case';
 
 
 @Injectable()
@@ -19,7 +19,7 @@ export class BookcaseResolve implements Resolve<any> {
     constructor(
         private userService: UserService,
         private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
-        private authservice: AuthService,
+        private getTokenUseCase: GetTokenUseCase,
     ) {
         this.bookcase.userBooks = [];
         this.user.profile = new Profile();
@@ -32,7 +32,7 @@ export class BookcaseResolve implements Resolve<any> {
     ): Observable<any> | Promise<any> | any {
         const username = route.parent.params.username;
         this.bookcase.userBooks = [];
-        this.userService.getUserName(username, this.authservice.getToken()).pipe(take(1)).subscribe(user => {
+        this.userService.getUserName(username, this.getTokenUseCase.execute<string>()).pipe(take(1)).subscribe(user => {
             this.getAllUserBookByProfileIdUseCase.execute(user.profile.id.toString())
                 .pipe(take(1))
                 .subscribe(userBooks => {

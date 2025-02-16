@@ -60,7 +60,7 @@ export class TagDialogComponent implements OnInit {
     }
 
     private buildTag(tag: any): Tag {
-        const builder = new TagBuilder().copyFrom(tag).setName(this.formTag.get('name')?.value).setUserBooks([]);
+        const builder = TagBuilder.builder().copyFrom(tag).setName(this.formTag.get('name')?.value).setUserBooks([]);
 
         if (!this.tag) {
             builder.setProfile(this.authService.getUser().profile);

@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UserService } from 'src/app/services/user.service';
 import { FormBuilder } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { Subscription } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
-import { UserTO } from '../../models/userTO.model';
 import { SearchMergedBookUseCase } from 'src/app/core/use-cases/book/search-merged-books.use-case';
 import { FilterSearch } from 'src/app/core/domain/interfaces/filter-search.interface';
 import { Book } from 'src/app/core/domain/entities/book.entity';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { UpdateUserInfoUseCase } from 'src/app/core/use-cases/user/update-user-info.use-case';
 
 @Component({
     selector: 'app-main-page',
@@ -16,22 +16,22 @@ import { Book } from 'src/app/core/domain/entities/book.entity';
     styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent implements OnInit, OnDestroy {
-    public user;
+    public user: User;
+    public isCompleted: boolean = false;
     searchControl;
     books: Book[];
-    mediaSub: Subscription;
     deviceXs: boolean;
     totalBooks = 0;
     pageEvent: PageEvent = new PageEvent();
     pageSize = 10;
-    logado: UserTO = this.auth.getUser();
+    private mediaSub: Subscription;
 
     constructor(
-        public auth: AuthService,
-        private userService: UserService,
         private fb: FormBuilder,
         private searchMergedBookUseCase: SearchMergedBookUseCase,
-        public mediaObserver: MediaObserver,
+        private getCachedUserUseCase: GetCachedUserUseCase,
+        private updateUserInfoUseCase: UpdateUserInfoUseCase,
+        private mediaObserver: MediaObserver,
 
     ) {
         this.searchControl = this.fb.group({
@@ -43,12 +43,18 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (this.auth.getToken() != null) {
-            this.userService.updateUserInfo();
-            this.user = this.auth.getUser();
+        if (!this.getCachedUserUseCase.execute()) {
+            this.updateUserInfoUseCase.execute().subscribe(() => {
+                this.user = this.getCachedUserUseCase.execute();
+                this.isCompleted = true;
+            });
+        } else {
+            this.user = this.getCachedUserUseCase.execute();
+            this.isCompleted = true;
         }
+        
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
-            this.deviceXs = result[0].mqAlias === 'xs' ? true : false;
+            this.deviceXs = result[0].mqAlias === 'xs';
         });
     }
 

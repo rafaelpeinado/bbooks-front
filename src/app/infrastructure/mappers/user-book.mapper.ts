@@ -6,37 +6,48 @@ import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 
 export class UserBookMapper {
     static toEntity(userBookTO: UserBookTO): UserBook {
-        return new UserBookBuilder()
-            .setId(userBookTO.id)
-            .setBook(
-                new BookBuilder().copyFrom(userBookTO.book)
-                    .setId(userBookTO.idBookGoogle ? userBookTO.idBookGoogle : userBookTO.idBook)
-                    .setApi(userBookTO.idBookGoogle ? ApiType.GOOGLE : ApiType.BBOOKS)
-                    .setNumberPage(userBookTO.page)
-                    .build()
-            )
-            .setStatus(userBookTO.status)
-            .setTags(userBookTO.tags)
-            .setProfileId(userBookTO.profileId)
-            .setAddDate(userBookTO.addDate)
-            .setPage(userBookTO.page)
-            .setFinishDate(userBookTO.finishDate)
+        const builder = UserBookBuilder.builder();
+
+        if (userBookTO.id) builder.setId(userBookTO.id);
+        if (userBookTO.status) builder.setStatus(userBookTO.status);
+        if (userBookTO.tags) builder.setTags(userBookTO.tags);
+        if (userBookTO.profileId) builder.setProfileId(userBookTO.profileId);
+        if (userBookTO.addDate) builder.setAddDate(userBookTO.addDate);
+        if (userBookTO.page !== undefined) builder.setPage(userBookTO.page);
+        if (userBookTO.finishDate) builder.setFinishDate(userBookTO.finishDate);
+
+        const idBook = userBookTO.idBookGoogle ?? userBookTO.idBook;
+        const apiType = userBookTO.idBookGoogle ? ApiType.GOOGLE : ApiType.BBOOKS;
+
+        const book = BookBuilder.builder()
+            .copyFrom(userBookTO.book)
+            .setId(idBook)
+            .setApi(apiType)
+            .setNumberPage(userBookTO.page)
             .build();
+
+        builder.setBook(book);
+
+        return builder.build();
     }
 
     static toDTO(userBook: UserBook): UserBookTO {
+        const idBookGoogle = userBook.book.api === ApiType.GOOGLE ? userBook.book.id : null;
+        const idBook = userBook.book.api !== ApiType.GOOGLE ? userBook.book.id : null;
+
         const userBookTO: UserBookTO = {
             profileId: userBook.profileId,
             status: userBook.status,
             tags: userBook.tags,
             page: userBook.page,
-            idBookGoogle: userBook.book.api === ApiType.GOOGLE ? userBook.book.id : null,
-            idBook: userBook.book.api !== ApiType.GOOGLE ? userBook.book.id : null,
+            idBookGoogle,
+            idBook,
             addDate: null,
             book: null,
             finishDate: null,
             id: null
         };
+
         return userBookTO;
     }
 }

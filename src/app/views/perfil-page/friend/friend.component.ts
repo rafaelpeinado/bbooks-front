@@ -1,15 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {take} from 'rxjs/operators';
-import {UserTO} from '../../../models/userTO.model';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Friendship} from '../../../models/Friendship.model';
-import {FriendsService} from '../../../services/friends.service';
-import {AuthService} from '../../../services/auth.service';
-import {Friend} from '../../../models/friend.model';
-import {TranslateService} from '@ngx-translate/core';
-import {UserService} from '../../../services/user.service';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { UserTO } from '../../../models/userTO.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Friendship } from '../../../models/Friendship.model';
+import { FriendsService } from '../../../services/friends.service';
+import { AuthService } from '../../../services/auth.service';
+import { Friend } from '../../../models/friend.model';
+import { TranslateService } from '@ngx-translate/core';
+import { UserService } from '../../../services/user.service';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Util } from '../../shared/Utils/util';
+import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case';
 
 @Component({
     selector: 'app-friend',
@@ -30,7 +31,8 @@ export class FriendComponent implements OnInit {
         public authService: AuthService,
         public translate: TranslateService,
         private userService: UserService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private getTokenUseCase: GetTokenUseCase,
     ) {
         this.formSearch = this.formBuilder.group({
             search: new FormControl(null)
@@ -52,7 +54,7 @@ export class FriendComponent implements OnInit {
     }
 
     getUser() {
-        this.userService.getUserName(this.user.userName, this.authService.getToken()).pipe(take(1)).subscribe(user => {
+        this.userService.getUserName(this.user.userName, this.getTokenUseCase.execute<string>()).pipe(take(1)).subscribe(user => {
             this.user = user;
         });
     }
@@ -77,12 +79,12 @@ export class FriendComponent implements OnInit {
         this.friendTO.id = this.user.profile.id;
         Util.loadingScreen();
         this.friendsService.add(this.friendTO).subscribe(() => {
-                Util.stopLoading();
-                this.translate.get('PADRAO.SOLICITACAO_ENVIADA').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-                this.user.profile.friendshipStatus = 'sent';
-            },
+            Util.stopLoading();
+            this.translate.get('PADRAO.SOLICITACAO_ENVIADA').subscribe(message => {
+                Util.showSuccessDialog(message);
+            });
+            this.user.profile.friendshipStatus = 'sent';
+        },
             error => {
                 console.log(error);
             });
@@ -118,8 +120,8 @@ export class FriendComponent implements OnInit {
 
     deleteFriend(idProfile: number) {
         this.friendsService.deleteFriend(idProfile).subscribe(() => {
-                this.getFriends();
-            },
+            this.getFriends();
+        },
             error => {
                 console.log(error);
             });

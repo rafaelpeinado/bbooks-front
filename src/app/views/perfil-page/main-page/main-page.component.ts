@@ -1,12 +1,13 @@
-import {Component, OnChanges, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {UserTO} from '../../../models/userTO.model';
-import {AuthService} from '../../../services/auth.service';
-import {FriendsService} from '../../../services/friends.service';
-import {Friend} from '../../../models/friend.model';
-import {UserService} from '../../../services/user.service';
-import {TranslateService} from '@ngx-translate/core';
-import {Util} from '../../shared/Utils/util';
+import { Component, OnChanges, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserTO } from '../../../models/userTO.model';
+import { AuthService } from '../../../services/auth.service';
+import { FriendsService } from '../../../services/friends.service';
+import { Friend } from '../../../models/friend.model';
+import { UserService } from '../../../services/user.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Util } from '../../shared/Utils/util';
+import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case';
 
 @Component({
     selector: 'app-main-page',
@@ -25,6 +26,7 @@ export class MainPageComponent implements OnInit, OnChanges {
         private authService: AuthService,
         private friendsService: FriendsService,
         private userService: UserService,
+        private getTokenUseCase: GetTokenUseCase,
         public translate: TranslateService,
     ) {
         this.route.data.subscribe((data: { user: UserTO }) => {
@@ -42,7 +44,7 @@ export class MainPageComponent implements OnInit, OnChanges {
     }
 
     getUser() {
-        this.userService.getUserName(this.user.userName, this.authService.getToken()).subscribe((result) => {
+        this.userService.getUserName(this.user.userName, this.getTokenUseCase.execute<string>()).subscribe((result) => {
             this.user = result;
         });
     }
@@ -70,11 +72,11 @@ export class MainPageComponent implements OnInit, OnChanges {
         this.friendTO = new Friend();
         this.friendTO.id = this.user.profile.id;
         this.friendsService.add(this.friendTO).subscribe(() => {
-                this.translate.get('PADRAO.SOLICITACAO_ENVIADA').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-                this.user.profile.friendshipStatus = 'sent';
-            },
+            this.translate.get('PADRAO.SOLICITACAO_ENVIADA').subscribe(message => {
+                Util.showSuccessDialog(message);
+            });
+            this.user.profile.friendshipStatus = 'sent';
+        },
             error => {
                 console.log(error);
             });
@@ -108,8 +110,8 @@ export class MainPageComponent implements OnInit, OnChanges {
 
     deleteFriend(idProfile: number) {
         this.friendsService.deleteFriend(idProfile).subscribe(() => {
-                this.getUser();
-            },
+            this.getUser();
+        },
             error => {
                 console.log(error);
             });

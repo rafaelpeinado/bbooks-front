@@ -69,7 +69,7 @@ export class BookApiService implements BookRepository {
 
     getBookById(id: string): Observable<Book> {
         return this.http.get<Book>(this.api + id).pipe(
-            map((book) => new BookBuilder()
+            map((book) => BookBuilder.builder()
                 .copyFrom(book)
                 .setApi(ApiType.BBOOKS)
                 .build()

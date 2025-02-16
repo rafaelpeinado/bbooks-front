@@ -1,46 +1,31 @@
 import { Profile } from '../entities/profile.entity';
 import { Tag } from '../entities/tag.entity';
 import { UserBook } from '../entities/user-book.entity';
+import { BuilderImpl } from './builder.builder';
 
-export class TagBuilder {
-    private _tag: Partial<Tag> = {};
+export class TagBuilder extends BuilderImpl<Tag, TagBuilder> {
 
-    constructor() { }
+    static builder() {
+        return new this();
+    }
 
     setId(id: string): TagBuilder {
-        this._tag.id = id;
-        return this;
+        return this.set('id', id);
     }
 
     setName(name: string): TagBuilder {
-        this._tag.name = name;
-        return this;
+        return this.set('name', name);
     }
 
     setColor(color: string): TagBuilder {
-        this._tag.color = color;
-        return this;
+        return this.set('color', color);
     }
 
     setProfile(profile: Profile): TagBuilder {
-        this._tag.profile = profile;
-        return this;
+        return this.set('profile', profile);
     }
 
     setUserBooks(userBooks: UserBook[]): TagBuilder {
-        this._tag.userBooks = userBooks;
-        return this;
-    }
-
-    copyFrom(tag: Tag): TagBuilder {
-        if (tag) {
-            Object.keys(tag)
-                .forEach((key) => this._tag[key] = tag[key]);
-        }
-        return this;
-    }
-
-    build(): Tag {
-        return this._tag as Tag;
+        return this.set('userBooks', userBooks);
     }
 }

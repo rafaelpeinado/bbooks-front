@@ -2,62 +2,43 @@ import { Book } from '../entities/book.entity';
 import { Tag } from '../entities/tag.entity';
 import { UserBook } from '../entities/user-book.entity';
 import { BookStatus } from '../enums/book-status.enum';
+import { BuilderImpl } from './builder.builder';
 
-export class UserBookBuilder {
-    private _userBook: Partial<UserBook> = {};
+export class UserBookBuilder extends BuilderImpl<UserBook, UserBookBuilder> {
 
-    constructor() { }
-
+    static builder() {
+        return new this();
+    }
+    
     setId(id: string): UserBookBuilder {
-        this._userBook.id = id;
-        return this;
+        return this.set('id', id);
     }
 
     setProfileId(profileId: number): UserBookBuilder {
-        this._userBook.profileId = profileId;
-        return this;
+        return this.set('profileId', profileId);
     }
 
     setBook(book: Book): UserBookBuilder {
-        this._userBook.book = book;
-        return this;
+        return this.set('book', book);
     }
 
     setStatus(status: BookStatus): UserBookBuilder {
-        this._userBook.status = status;
-        return this;
+        return this.set('status', status);
     }
 
     setAddDate(addDate: Date): UserBookBuilder {
-        this._userBook.addDate = addDate;
-        return this;
+        return this.set('addDate', addDate);
     }
 
     setFinishDate(finishDate: Date | null): UserBookBuilder {
-        this._userBook.finishDate = finishDate;
-        return this;
+        return this.set('finishDate', finishDate);
     }
 
     setTags(tags: Tag[]): UserBookBuilder {
-        this._userBook.tags = tags;
-        return this;
+        return this.set('tags', tags);
     }
 
     setPage(page: number): UserBookBuilder {
-        this._userBook.page = page;
-        return this;
-    }
-
-    copyFrom(userBook: UserBook): UserBookBuilder {
-        if (userBook) {
-            Object.keys(userBook)
-                .forEach((key) => this._userBook[key] = userBook[key]);
-        }
-
-        return this;
-    }
-
-    build(): UserBook {
-        return this._userBook as UserBook;
+        return this.set('page', page);
     }
 }

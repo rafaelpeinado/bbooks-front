@@ -87,7 +87,7 @@ export class OfferViewComponent implements OnInit {
 
         this.getBookByIdUseCase.execute(id, apiType)
             .subscribe((book) => {
-                this.book = new BookBuilder()
+                this.book = BookBuilder.builder()
                     .copyFrom(book)
                     .build();
                 if (apiType === ApiType.GOOGLE) {

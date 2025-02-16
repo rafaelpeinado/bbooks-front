@@ -7,7 +7,7 @@ import { Book } from 'src/app/core/domain/entities/book.entity';
 
 export class GoogleBooksMapper {
     static toBook(googleBooks: ItemGoogleBooks): Book {
-        return new BookBuilder()
+        return BookBuilder.builder()
             .setId(googleBooks.id)
             .setIsbn10(GoogleBooksMapper.getIsbn(googleBooks, ISBNGoogleEnum.ISBN_10))
             .setIsbn13(GoogleBooksMapper.getIsbn(googleBooks, ISBNGoogleEnum.ISBN_13))

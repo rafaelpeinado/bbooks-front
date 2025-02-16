@@ -8,7 +8,7 @@ import { GeneralStatus } from '../../domain/entities/general-status.entity';
 @Injectable({
     providedIn: 'root'
 })
-export class GetGeneralStatusBooksUseCase implements UseCaseApiInterface {
+export class GetGeneralStatusBooksUseCase implements UseCaseApiInterface<ApiType> {
     constructor(private userBookApiService: UserBookApiService) { }
 
     execute(id: string, apiType: ApiType): Observable<GeneralStatus> {

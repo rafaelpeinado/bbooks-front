@@ -22,7 +22,7 @@ export class BooksResolve implements Resolve<Bookcase[]> {
             mergeMap(
                 (key) => this.searchBookByNameUseCase.execute(GenresEnum[key]).pipe(
                     map((books) => {
-                        const userBooks: UserBook[] = books.map((book) => new UserBookBuilder().setBook(book).build());
+                        const userBooks: UserBook[] = books.map((book) => UserBookBuilder.builder().setBook(book).build());
                         return new Bookcase(GenresEnum[key], GenresEnum[key], userBooks);
                     })
                 )
