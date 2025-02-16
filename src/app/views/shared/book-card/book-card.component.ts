@@ -7,7 +7,6 @@ import { BookService } from '../../../services/book.service';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { Book } from 'src/app/core/domain/entities/book.entity';
 import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
-import { AuthService } from 'src/app/services/auth.service';
 import { combineLatest } from 'rxjs';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { ChangeStatusUserBookUseCase } from 'src/app/core/use-cases/user-book/change-status-user-book.use-case';
@@ -21,25 +20,17 @@ import { UserBookBuilder } from 'src/app/core/domain/builders/user-book.builder'
 export class BookCardComponent implements OnInit {
 
     @Output() bookReturn = new EventEmitter<any>();
-
     @Input() book?: Book;
-
     @Input() userBook?: UserBook;
-
     @Input() deviceXs: boolean;
-
     @Input() idTag: any;
-
     @Input() logged: boolean;
-
     @Input() canEdit: boolean;
 
-    bookStatus = BookStatus;
-    public isCompleted: boolean = false;
-
-    routerlink: string;
-
-    isUserBook: boolean;
+    public isCompleted = false;
+    public routerlink: string;
+    public bookStatus = BookStatus;
+    private isUserBook: boolean;
 
     constructor(
         private router: Router,
@@ -48,7 +39,6 @@ export class BookCardComponent implements OnInit {
         private getBookByIdUseCase: GetBookByIdUseCase,
         private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
         private changeStatusUserBookUseCase: ChangeStatusUserBookUseCase,
-        private authGuard: AuthService,
     ) {
     }
 
@@ -110,7 +100,7 @@ export class BookCardComponent implements OnInit {
 
     getBook(): void {
         combineLatest([
-            this.getAllUserBookByProfileIdUseCase.execute(this.authGuard.getUser().profile.id),
+            this.getAllUserBookByProfileIdUseCase.execute(),
             this.getBookByIdUseCase.execute(this.book.id, this.book.api)
         ]).subscribe((value) => {
             const userBooks: UserBook[] = value[0];

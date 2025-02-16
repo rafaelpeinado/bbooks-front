@@ -4,7 +4,6 @@ import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
-import { AuthService } from 'src/app/services/auth.service';
 import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
 import { UserBookDetails } from 'src/app/core/domain/interfaces/user-book-details.interface';
 import { Book } from 'src/app/core/domain/entities/book.entity';
@@ -14,7 +13,6 @@ export class BookViewResolve implements Resolve<UserBookDetails> {
     userbooks;
     constructor(
         private getBookByIdUseCase: GetBookByIdUseCase,
-        private authGuard: AuthService,
         private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
     ) { }
 
@@ -26,7 +24,7 @@ export class BookViewResolve implements Resolve<UserBookDetails> {
         const id = route.params.id;
 
         return combineLatest([
-            this.getAllUserBookByProfileIdUseCase.execute(this.authGuard.getUser().profile.id),
+            this.getAllUserBookByProfileIdUseCase.execute(),
             this.getBookByIdUseCase.execute(id, api)
         ]).pipe(
             map((value) => {

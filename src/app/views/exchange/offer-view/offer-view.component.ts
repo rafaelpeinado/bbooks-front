@@ -6,7 +6,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookAdsService } from '../../../services/book-ads.service';
 import { BookAdTO } from '../../../models/BookAdTO.model';
-import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
 import { UserService } from '../../../services/user.service';
 import { UserTO } from '../../../models/userTO.model';
@@ -15,6 +14,8 @@ import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 import { Book } from 'src/app/core/domain/entities/book.entity';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 
 @Component({
     selector: 'app-offer-view',
@@ -22,6 +23,7 @@ import { Book } from 'src/app/core/domain/entities/book.entity';
     styleUrls: ['./offer-view.component.scss']
 })
 export class OfferViewComponent implements OnInit {
+    public user: User;
     slideIndex = 0;
     bookAdTO: BookAdTO;
     book: Book;
@@ -32,13 +34,14 @@ export class OfferViewComponent implements OnInit {
         private route: ActivatedRoute,
         private getBookByIdUseCase: GetBookByIdUseCase,
         public bookAdsService: BookAdsService,
-        public authService: AuthService,
         public router: Router,
-        public userService: UserService
+        public userService: UserService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
     ngOnInit(): void {
+        this.user = this.getCachedUserUseCase.execute();
         this.showSlides(this.slideIndex);
         this.getOffer();
     }

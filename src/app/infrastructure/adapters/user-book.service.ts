@@ -28,7 +28,7 @@ export class UserBookApiService extends BaseApiService<UserBook, UserBookTO> imp
     }
 
     changeStatusUserBook(userBook: Partial<UserBook>): Observable<UserBook> {
-        const userBookUpdateStatusTO: UserBookUpdateStatusTO = { id: userBook.id, status: mapBookStatus.get(userBook.status) }
+        const userBookUpdateStatusTO: UserBookUpdateStatusTO = { id: userBook.id, status: mapBookStatus.get(userBook.status) };
         const service = this.http.put<UserBookTO>(this.api + 'status', userBookUpdateStatusTO);
         return this.handleRequestDTOToEntity(service, UserBookMapper.toEntity);
     }

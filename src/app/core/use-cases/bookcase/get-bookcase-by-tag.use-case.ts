@@ -1,24 +1,25 @@
-import { Injectable } from "@angular/core";
-import { UseCaseInterface } from "../use-case.interface";
-import { from, Observable } from "rxjs";
-import { Bookcase } from "../../domain/entities/bookcase.entity";
-import { GetTagByIdUseCase } from "../tag/get-tag-by-id.use-case";
-import { mergeMap } from "rxjs/operators";
-import { GetBookcaseByProfileIdUseCase } from "./get-bookcase-by-profile-id.use-case";
+import { Injectable } from '@angular/core';
+import { UseCaseInterface } from '../use-case.interface';
+import { Observable } from 'rxjs';
+import { Bookcase } from '../../domain/entities/bookcase.entity';
+import { map } from 'rxjs/operators';
+import { GetAllUserBookByProfileIdUseCase } from '../user-book/get-all-user-book-by-profile-id.case-use';
+import { UserBook } from '../../domain/entities/user-book.entity';
 
 @Injectable({
     providedIn: 'root'
 })
 export class GetBookcaseByTagIdUseCase implements UseCaseInterface {
     constructor(
-        private getTagByIdUseCase: GetTagByIdUseCase,
-        private getBookcaseByProfileIdUseCase: GetBookcaseByProfileIdUseCase,
+        private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
     ) { }
 
     execute(tagId: string): Observable<Bookcase> {
-        return this.getTagByIdUseCase.execute(tagId).pipe(
-            mergeMap((tag) => from(tag.userBooks)),
-            mergeMap((userBook) => this.getBookcaseByProfileIdUseCase.execute(userBook.profileId.toString()))
+        return this.getAllUserBookByProfileIdUseCase.execute().pipe(
+            map((userBooks) => {
+                const userBooksByTagId: UserBook[] = userBooks.filter((userBook) => userBook.tags.find((tag) => tag.id === tagId));
+                return new Bookcase(undefined, undefined, userBooksByTagId);
+            })
         );
     }
 }

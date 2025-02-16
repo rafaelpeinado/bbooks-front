@@ -1,9 +1,9 @@
-import { CacheRepository } from "src/app/core/repositories/cache.repository";
-import { StorageItem } from "../enums/storage-item.enum";
-import { StorageServiceFactory } from "./factories/storage-service.factory";
-import { StorageType } from "src/app/core/domain/enums/storage-type.enum";
-import { SetCache } from "src/app/core/domain/interfaces/set-cache.interface";
-import { Injectable } from "@angular/core";
+import { CacheRepository } from 'src/app/core/repositories/cache.repository';
+import { StorageItem } from '../enums/storage-item.enum';
+import { StorageServiceFactory } from './factories/storage-service.factory';
+import { StorageType } from 'src/app/core/domain/enums/storage-type.enum';
+import { SetCache } from 'src/app/core/domain/interfaces/set-cache.interface';
+import { Injectable } from '@angular/core';
 
 @Injectable({
     providedIn: 'root'

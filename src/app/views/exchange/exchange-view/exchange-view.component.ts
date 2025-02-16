@@ -1,15 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ExchangeService} from '../../../services/exchange.service';
-import {AuthService} from '../../../services/auth.service';
-import {TranslateService} from '@ngx-translate/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {map, take} from 'rxjs/operators';
-import {Util} from '../../shared/Utils/util';
-import {ExchangeT0} from '../../../models/exchangeT0,model';
-import {BookExchangeStatus} from '../../../models/enums/BookExchangeStatus.enum';
-import {BarCodeScannerComponent} from '../../shared/bar-code-scanner/bar-code-scanner.component';
-import {MatDialog} from '@angular/material/dialog';
-import {BookAdTO} from '../../../models/BookAdTO.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ExchangeService } from '../../../services/exchange.service';
+import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, take } from 'rxjs/operators';
+import { Util } from '../../shared/Utils/util';
+import { ExchangeT0 } from '../../../models/exchangeT0,model';
+import { BookExchangeStatus } from '../../../models/enums/BookExchangeStatus.enum';
+import { BarCodeScannerComponent } from '../../shared/bar-code-scanner/bar-code-scanner.component';
+import { MatDialog } from '@angular/material/dialog';
+import { BookAdTO } from '../../../models/BookAdTO.model';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 
 @Component({
     selector: 'app-exchange-view',
@@ -27,11 +28,11 @@ export class ExchangeViewComponent implements OnInit, OnDestroy {
 
     constructor(
         public exchangeService: ExchangeService,
-        public authService: AuthService,
         public translate: TranslateService,
         public router: Router,
         public route: ActivatedRoute,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
@@ -192,7 +193,8 @@ export class ExchangeViewComponent implements OnInit, OnDestroy {
     }
 
     isReceiver(): boolean {
-        return this.exchange.receiverId === this.authService.getUser().id ? true : false;
+        const user: User = this.getCachedUserUseCase.execute();
+        return this.exchange.receiverId === user.id ? true : false;
     }
 
     isMobile() {

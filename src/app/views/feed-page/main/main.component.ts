@@ -1,15 +1,15 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from '../../../services/auth.service';
-import {UserTO} from '../../../models/userTO.model';
-import {TypePostControler} from '../../../models/enums/TypePost.enum';
-import {FeedMainManagerService} from '../store/feed-main-manager.service';
-import {Observable} from 'rxjs';
-import {IFeedMainState} from '../store/state/feed-main.state';
-import {take} from 'rxjs/operators';
-import {FeedService} from '../../../services/feed.service';
-import {PostTO} from '../../../models/PostTO.model';
-import {PostService} from '../../../services/post.service';
-import {FeedGenericService} from '../../../services/feed-generic.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { TypePostControler } from '../../../models/enums/TypePost.enum';
+import { FeedMainManagerService } from '../store/feed-main-manager.service';
+import { Observable } from 'rxjs';
+import { IFeedMainState } from '../store/state/feed-main.state';
+import { take } from 'rxjs/operators';
+import { FeedService } from '../../../services/feed.service';
+import { PostTO } from '../../../models/PostTO.model';
+import { PostService } from '../../../services/post.service';
+import { FeedGenericService } from '../../../services/feed-generic.service';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 
 @Component({
     selector: 'app-main',
@@ -17,23 +17,23 @@ import {FeedGenericService} from '../../../services/feed-generic.service';
     styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, OnDestroy {
-    user: UserTO;
+    public user: User;
     typePostControler = TypePostControler;
     feedRedux$: Observable<IFeedMainState>;
     loading = false;
     page = 0;
 
     constructor(
-        private authService: AuthService,
         public feedMainManagerService: FeedMainManagerService,
         public feedService: FeedService,
         public postService: PostService,
-        public feedGenericService: FeedGenericService
+        public feedGenericService: FeedGenericService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
     ngOnInit(): void {
-        this.user = this.authService.getUser();
+        this.user = this.getCachedUserUseCase.execute();
         this.getPosts();
         this.feedRedux$ = this.feedMainManagerService.getFeed();
     }

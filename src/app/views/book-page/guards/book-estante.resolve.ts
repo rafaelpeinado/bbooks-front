@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Book } from '../../../models/book.model';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
 import { GetBookcaseByProfileIdUseCase } from 'src/app/core/use-cases/bookcase/get-bookcase-by-profile-id.use-case';
 import { GetBookcaseByTagIdUseCase } from 'src/app/core/use-cases/bookcase/get-bookcase-by-tag.use-case';
 
@@ -12,7 +11,6 @@ export class BookEstanteResolve implements Resolve<Book[]> {
 
     constructor(
         // private searchBookByNameUseCase: SearchBookByNameUseCase,
-        private authGuard: AuthService,
         private getBookcaseByProfileIdUseCase: GetBookcaseByProfileIdUseCase,
         private getBookcaseByTagIdUseCase: GetBookcaseByTagIdUseCase,
     ) {
@@ -29,7 +27,7 @@ export class BookEstanteResolve implements Resolve<Book[]> {
                 // TODO NÃO ESTÁ FUNCIONANDO
                 return this.getBookcaseByTagIdUseCase.execute(tag);
             } else {
-                return this.getBookcaseByProfileIdUseCase.execute(this.authGuard.getUser().profile.id);
+                return this.getBookcaseByProfileIdUseCase.execute();
             }
         }
         // TODO refazer

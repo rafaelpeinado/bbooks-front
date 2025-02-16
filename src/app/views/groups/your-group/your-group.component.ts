@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {GroupTO} from '../../../models/GroupTO.model';
-import {AuthService} from '../../../services/auth.service';
-import {GroupMemberService} from '../../../services/group-member.service';
-import {take} from 'rxjs/operators';
-import {TranslateService} from '@ngx-translate/core';
-import {Util} from '../../shared/Utils/util';
+import { Component, OnInit } from '@angular/core';
+import { GroupTO } from '../../../models/GroupTO.model';
+import { GroupMemberService } from '../../../services/group-member.service';
+import { take } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { Util } from '../../shared/Utils/util';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-your-group',
@@ -18,9 +19,8 @@ export class YourGroupComponent implements OnInit {
 
     constructor(
         private groupMemberService: GroupMemberService,
-        private authService: AuthService,
         private translate: TranslateService,
-
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
@@ -30,12 +30,13 @@ export class YourGroupComponent implements OnInit {
 
     getGroupsByUser(): void {
         this.loading = true;
-        this.groupMemberService.getGroupsByUser(this.authService.getUser().id)
+        const user: User = this.getCachedUserUseCase.execute();
+        this.groupMemberService.getGroupsByUser(user.id)
             .pipe(take(1))
             .subscribe(result => {
-                    this.groups = result;
-                    this.loading = false;
-                },
+                this.groups = result;
+                this.loading = false;
+            },
                 error => {
                     this.loading = false;
                     this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {

@@ -1,10 +1,11 @@
 import { UserBookTO } from './../../models/userBookTO';
 import { ReadingTargetTO } from './../../models/readingTargetTO.model';
-import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ReadingTargetService } from 'src/app/services/reading-target.service';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
   selector: 'app-previous-goals',
@@ -19,8 +20,8 @@ export class PreviousGoalsComponent implements OnInit {
 
   constructor(
     private readingTargetService: ReadingTargetService,
-    public authService: AuthService,
     private getBookByIdUseCase: GetBookByIdUseCase,
+    private getCachedUserUseCase: GetCachedUserUseCase,
   ) {
   }
 
@@ -29,7 +30,8 @@ export class PreviousGoalsComponent implements OnInit {
   }
 
   getPreviousGoals() {
-    this.readingTargetService.getAllByProfileId(this.authService.getUser().profile.id)
+    const user: User = this.getCachedUserUseCase.execute();
+    this.readingTargetService.getAllByProfileId(+user.profile.id)
       .subscribe(
         (res) => {
           this.previousGoals = res;

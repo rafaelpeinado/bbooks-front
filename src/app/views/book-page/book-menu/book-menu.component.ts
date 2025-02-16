@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Input } from '@angular/core';
 import { TagDialogComponent } from '../tag-dialog/tag-dialog.component';
-import { AuthService } from '../../../services/auth.service';
 import { DeleteTagUseCase } from 'src/app/core/use-cases/tag/delete-tag.use-case';
 import { Tag } from 'src/app/core/domain/entities/tag.entity';
 import { finalize } from 'rxjs/operators';
@@ -24,7 +23,6 @@ export class BookMenuComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private authService: AuthService,
         private deleteTagUseCase: DeleteTagUseCase,
         private getAllTagsByProfileIdTagUseCase: GetAllTagsByProfileIdTagUseCase,
         public dialog: MatDialog
@@ -36,7 +34,7 @@ export class BookMenuComponent implements OnInit {
     }
 
     getTags(): void {
-        this.getAllTagsByProfileIdTagUseCase.execute(this.authService.getUser().profile.id)
+        this.getAllTagsByProfileIdTagUseCase.execute()
             .subscribe((tags) => this.tags = tags);
     }
 

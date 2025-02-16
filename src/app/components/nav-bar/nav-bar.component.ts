@@ -17,6 +17,8 @@ import { Util } from '../../views/shared/Utils/util';
 import { PublicProfileService } from '../../services/public-profile.service';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-nav-bar',
@@ -34,7 +36,7 @@ export class NavBarComponent implements OnInit {
     timer;
     constructor(
         private getBookByIdUseCase: GetBookByIdUseCase,
-        public auth: AuthService,
+        private auth: AuthService,
         private router: Router,
         public translate: TranslateService,
         private userService: UserService,
@@ -42,7 +44,8 @@ export class NavBarComponent implements OnInit {
         private bookRecommendation: BookRecommendationService,
         private profileService: ProfileService,
         public groupMembersService: GroupMemberService,
-        private publicProfileService: PublicProfileService
+        private publicProfileService: PublicProfileService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         translate.addLangs(['pt-BR', 'en']);
         translate.setDefaultLang('pt-BR');
@@ -97,7 +100,8 @@ export class NavBarComponent implements OnInit {
 
     getuser() {
         if (this.isLogged) {
-            this.userService.getById(this.auth.getUser().id).pipe(
+            const user: User = this.getCachedUserUseCase.execute();
+            this.userService.getById(user.id).pipe(
                 take(1))
                 .subscribe(user => {
                     this.user = user;
@@ -159,7 +163,8 @@ export class NavBarComponent implements OnInit {
     }
 
     getRecommendations(): void {
-        this.bookRecommendation.getRecommentionsReceived(this.auth.getUser().profile.id)
+        const user: User = this.getCachedUserUseCase.execute();
+        this.bookRecommendation.getRecommentionsReceived(+user.profile.id)
             .pipe(
                 map((recommendations: BookRecommendationTO[]) => {
                     return recommendations.map(r => {
@@ -192,7 +197,8 @@ export class NavBarComponent implements OnInit {
     }
 
     getInvitesGroup(): void {
-        this.groupMembersService.getInvites(this.auth.getUser().id)
+        const user: User = this.getCachedUserUseCase.execute();
+        this.groupMembersService.getInvites(user.id)
             .pipe(
                 take(1),
                 map(invites => {
@@ -247,7 +253,8 @@ export class NavBarComponent implements OnInit {
 
     getPublicProfileByUser() {
         this.publicProfileId = '';
-        this.publicProfileService.getByUserId(this.auth.getUser().id)
+        const user: User = this.getCachedUserUseCase.execute();
+        this.publicProfileService.getByUserId(user.id)
             .pipe(take(1))
             .subscribe(result => {
                 if (result) {

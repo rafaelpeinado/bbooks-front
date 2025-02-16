@@ -1,6 +1,6 @@
-import { Profile } from "../entities/profile.entity";
-import { User } from "../entities/user.entity";
-import { BuilderImpl } from "./builder.builder";
+import { Profile } from '../entities/profile.entity';
+import { User } from '../entities/user.entity';
+import { BuilderImpl } from './builder.builder';
 
 export class UserBuilder extends BuilderImpl<User, UserBuilder> {
     static builder() { return new this(); }

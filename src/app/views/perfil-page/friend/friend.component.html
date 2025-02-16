@@ -1,11 +1,11 @@
-<div fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center end" fxLayoutGap="20px"
-     fxLayoutAlign.xs="center center" style="width: 100%">
+<div fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center end" fxLayoutGap="20px" fxLayoutAlign.xs="center center"
+    style="width: 100%">
     <div>
         <form [formGroup]="formSearch" style="width: 100%">
             <mat-form-field appearance="outline">
                 <mat-label>{{'PESQUISAR_AMIGOS.PROCURAR' | translate}}</mat-label>
                 <input matInput type="text" formControlName="search" class="barra-pesquisar" (blur)="filterFriends()"
-                       (keyup.enter)="filterFriends()">
+                    (keyup.enter)="filterFriends()">
             </mat-form-field>
         </form>
     </div>
@@ -13,29 +13,28 @@
 
 <div fxLayout="column" fxLayoutAlign="space-evenly center" fxLayoutGap="6px">
     <div *ngFor="let friend of filterFriends()">
-        <mat-card class="matcard" *ngIf="friend.userName !== this.authService.getUser().userName">
+        <mat-card class="matcard" *ngIf="friend.userName !== user?.profile?.username">
             <div fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="card">
                     <div class="container">
                         <img [src]="friend?.profile.profileImage ? friend.profile.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
-                             class="image">
+                            class="image">
                     </div>
                 </div>
                 <div>
-                    <div><a style="color: black"
-                            [routerLink]="['', friend?.userName]"><b>@{{friend?.userName}}</b></a>
+                    <div><a style="color: black" [routerLink]="['', friend?.userName]"><b>@{{friend?.userName}}</b></a>
                     </div>
                 </div>
 
                 <button fxFlex="px" mat-raised-button color="accent" class="iconTextWhite"
-                        *ngIf="friend.profile.friendshipStatus === null" (click)="sendRequest()">
+                    *ngIf="friend.profile.friendshipStatus === null" (click)="sendRequest()">
                     <mat-icon>
                         group_add
                     </mat-icon>
                     {{'PADRAO.ADICIONAR' | translate | titlecase}}
                 </button>
                 <button fxFlex="px" mat-raised-button color="accent" class="iconTextWhite"
-                        [matMenuTriggerFor]="menuAmigos" *ngIf=" friend.profile.friendshipStatus == 'added'">
+                    [matMenuTriggerFor]="menuAmigos" *ngIf=" friend.profile.friendshipStatus == 'added'">
                     <mat-icon>
                         people_alt
                     </mat-icon>
@@ -48,7 +47,7 @@
                     </div>
                 </mat-menu>
                 <button mat-raised-button color="primary" [matMenuTriggerFor]="menuSent"
-                        *ngIf=" friend.profile.friendshipStatus === 'sent'">
+                    *ngIf=" friend.profile.friendshipStatus === 'sent'">
                     <mat-icon>done</mat-icon>
                     {{'PADRAO.SOLICITACAO_ENVIADA' | translate}}
                 </button>
@@ -60,7 +59,7 @@
                 </mat-menu>
 
                 <button mat-raised-button color="primary" [matMenuTriggerFor]="menuReceive"
-                        *ngIf="!verfiyPerfilPageisUserLogged() && user.profile.friendshipStatus === 'received'">
+                    *ngIf="!verfiyPerfilPageisUserLogged() && userTO.profile.friendshipStatus === 'received'">
                     <mat-icon>done</mat-icon>
                     {{'PADRAO.SOLICITACAO_RECEBIDA' | translate}}
                 </button>
@@ -77,11 +76,10 @@
 
             </div>
             <div>
-                <div><a style="color: black"
-                        [routerLink]="['', friend?.userName]"><b>{{friend?.profile.name}} {{friend?.profile.lastName}}</b></a>
+                <div><a style="color: black" [routerLink]="['', friend?.userName]"><b>{{friend?.profile.name}}
+                            {{friend?.profile.lastName}}</b></a>
                 </div>
             </div>
         </mat-card>
     </div>
 </div>
-

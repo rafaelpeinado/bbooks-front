@@ -174,7 +174,7 @@
                                             <b>{{r.title}}</b>
                                         </div>
                                         <button mat-icon-button [matMenuTriggerFor]="menu"
-                                            *ngIf=" (r.profileTO | async)?.id == authService.getUser().profile.id">
+                                            *ngIf=" (r.profileTO | async)?.id == user.profile.id">
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
                                     </div>

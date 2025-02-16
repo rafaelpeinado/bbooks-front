@@ -8,13 +8,13 @@ export class UserBookMapper {
     static toEntity(userBookTO: UserBookTO): UserBook {
         const builder = UserBookBuilder.builder();
 
-        if (userBookTO.id) builder.setId(userBookTO.id);
-        if (userBookTO.status) builder.setStatus(userBookTO.status);
-        if (userBookTO.tags) builder.setTags(userBookTO.tags);
-        if (userBookTO.profileId) builder.setProfileId(userBookTO.profileId);
-        if (userBookTO.addDate) builder.setAddDate(userBookTO.addDate);
-        if (userBookTO.page !== undefined) builder.setPage(userBookTO.page);
-        if (userBookTO.finishDate) builder.setFinishDate(userBookTO.finishDate);
+        if (userBookTO.id) { builder.setId(userBookTO.id); }
+        if (userBookTO.status) { builder.setStatus(userBookTO.status); }
+        if (userBookTO.tags) { builder.setTags(userBookTO.tags); }
+        if (userBookTO.profileId) { builder.setProfileId(userBookTO.profileId); }
+        if (userBookTO.addDate) { builder.setAddDate(userBookTO.addDate); }
+        if (userBookTO.page !== undefined) { builder.setPage(userBookTO.page); }
+        if (userBookTO.finishDate) { builder.setFinishDate(userBookTO.finishDate); }
 
         const idBook = userBookTO.idBookGoogle ?? userBookTO.idBook;
         const apiType = userBookTO.idBookGoogle ? ApiType.GOOGLE : ApiType.BBOOKS;

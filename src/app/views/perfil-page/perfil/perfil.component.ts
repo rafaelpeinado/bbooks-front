@@ -1,20 +1,21 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Country} from 'src/app/models/country.model';
-import {ConsultaCepService} from 'src/app/services/consulta-cep.service';
-import {City} from 'src/app/models/city.model';
-import {State} from 'src/app/models/state.model';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {AuthService} from 'src/app/services/auth.service';
-import {UserService} from '../../../services/user.service';
-import {UserTO} from '../../../models/userTO.model';
-import {ProfileService} from '../../../services/profile.service';
-import {CDNService} from '../../../services/cdn.service';
-import {Util} from '../../shared/Utils/util';
-import {MatDialog} from '@angular/material/dialog';
-import {UploadComponent} from '../../upload/upload.component';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Country } from 'src/app/models/country.model';
+import { ConsultaCepService } from 'src/app/services/consulta-cep.service';
+import { City } from 'src/app/models/city.model';
+import { State } from 'src/app/models/state.model';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { UserService } from '../../../services/user.service';
+import { UserTO } from '../../../models/userTO.model';
+import { ProfileService } from '../../../services/profile.service';
+import { CDNService } from '../../../services/cdn.service';
+import { Util } from '../../shared/Utils/util';
+import { MatDialog } from '@angular/material/dialog';
+import { UploadComponent } from '../../upload/upload.component';
+import { TranslateService } from '@ngx-translate/core';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-perfil',
@@ -36,18 +37,19 @@ export class PerfilComponent implements OnInit {
         private fb: FormBuilder,
         private consultaCepService: ConsultaCepService,
         private userService: UserService,
-        private authService: AuthService,
         private profileService: ProfileService,
         private cdnService: CDNService,
         private matDialog: MatDialog,
         public translate: TranslateService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
 
     }
 
     ngOnInit(): void {
         this.createForm();
-        this.userService.getById(this.authService.getUser().id).subscribe(
+        const user: User = this.getCachedUserUseCase.execute();
+        this.userService.getById(user.id).subscribe(
             user => {
                 this.userTO = user;
                 this.createForm();
@@ -149,10 +151,10 @@ export class PerfilComponent implements OnInit {
         this.userService.update(this.userTO).subscribe(
             response => {
                 this.profileService.update(this.userTO.profile).subscribe(profile => {
-                        this.userTO = response;
-                        this.userTO.profile = profile;
-                        this.changeModeBasicInfo();
-                    },
+                    this.userTO = response;
+                    this.userTO.profile = profile;
+                    this.changeModeBasicInfo();
+                },
                     error => {
                         console.log('error update profile', error);
                     });
@@ -171,14 +173,14 @@ export class PerfilComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 Util.loadingScreen();
-                this.cdnService.upload({file: result, type: 'image'}, {objectType: 'profile_image'}).subscribe(() => {
-                        Util.stopLoading();
-                        this.image = result;
-                        const reader = new FileReader();
-                        reader.onload = (e) => this.image = e.target.result;
-                        reader.readAsDataURL(this.image);
-                        this.userTO.profile.profileImage = this.image;
-                    },
+                this.cdnService.upload({ file: result, type: 'image' }, { objectType: 'profile_image' }).subscribe(() => {
+                    Util.stopLoading();
+                    this.image = result;
+                    const reader = new FileReader();
+                    reader.onload = (e) => this.image = e.target.result;
+                    reader.readAsDataURL(this.image);
+                    this.userTO.profile.profileImage = this.image;
+                },
                     error => {
                         Util.stopLoading();
                         this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {

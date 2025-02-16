@@ -1,6 +1,5 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { forkJoin, Observable, throwError } from 'rxjs';
-import { AuthService } from './auth.service';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { GetBookByIdUseCase } from '../core/use-cases/book/get-book-by-id.use-case';
 import { GetAllUserBookByProfileIdUseCase } from '../core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
@@ -17,7 +16,6 @@ export class BookService {
     @Output() updateListCarrousel = new EventEmitter<any>();
 
     constructor(
-        private authGuard: AuthService,
         private getBookByIdUseCase: GetBookByIdUseCase,
         private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
         private getAllTagsByProfileIdTagUseCase: GetAllTagsByProfileIdTagUseCase,
@@ -25,7 +23,7 @@ export class BookService {
     ) { }
 
     getAllBooksTags(): Observable<Bookcase[]> {
-        return this.getAllTagsByProfileIdTagUseCase.execute(this.authGuard.getUser().profile.id).pipe(
+        return this.getAllTagsByProfileIdTagUseCase.execute().pipe(
             mergeMap(tags => {
                 const observables = tags.map(tag => {
                     return new Bookcase(tag.id, tag.name, tag.userBooks);
@@ -37,7 +35,7 @@ export class BookService {
     }
 
     getAllBooks(): Observable<any> {
-        return this.getAllUserBookByProfileIdUseCase.execute(this.authGuard.getUser().profile.id)
+        return this.getAllUserBookByProfileIdUseCase.execute()
             .pipe(
                 mergeMap(userBooks => {
                     return forkJoin(this.getBooksByUserBooks(userBooks));

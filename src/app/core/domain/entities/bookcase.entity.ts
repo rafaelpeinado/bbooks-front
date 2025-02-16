@@ -1,4 +1,4 @@
-import { UserBook } from "./user-book.entity";
+import { UserBook } from './user-book.entity';
 
 export class Bookcase {
     constructor(

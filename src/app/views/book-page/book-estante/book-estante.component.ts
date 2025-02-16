@@ -12,7 +12,6 @@ import { map, take } from 'rxjs/operators';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { TranslateService } from '@ngx-translate/core';
 import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
-import { AuthService } from 'src/app/services/auth.service';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
 
@@ -51,7 +50,6 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
         private router: Router,
         private translate: TranslateService,
         private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
-        private authGuard: AuthService,
     ) { }
 
     ngOnInit(): void {
@@ -76,7 +74,7 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
                                 }, error => console.log('error booksComponent', error));
 
                     } else {
-                        this.getAllUserBookByProfileIdUseCase.execute(this.authGuard.getUser().profile.id)
+                        this.getAllUserBookByProfileIdUseCase.execute()
                             .subscribe((userBooks) => this.bookcase.userBooks = userBooks);
                     }
                 }

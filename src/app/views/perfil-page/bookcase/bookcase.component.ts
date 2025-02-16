@@ -7,12 +7,13 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { AuthService } from '../../../services/auth.service';
 import { map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { UserTO } from '../../../models/userTO.model';
-import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 
 @Component({
     selector: 'app-bookcase',
@@ -20,7 +21,8 @@ import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
     styleUrls: ['./bookcase.component.scss']
 })
 export class BookcaseComponent implements OnInit, OnDestroy {
-    user: UserTO = new UserTO();
+    public user: User;
+    private userTO: UserTO = new UserTO();
     panelOpenState = false;
     public bookcase: Bookcase;
     search;
@@ -44,17 +46,18 @@ export class BookcaseComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         public mediaObserver: MediaObserver,
-        public authService: AuthService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
 
     ) {
         this.updateLanguageStatus();
     }
 
     ngOnInit(): void {
-        this.inscricao = this.route.data.subscribe((data: { data: { bookcase: Bookcase, user: UserTO } }) => {
+        this.user = this.getCachedUserUseCase.execute();
+        this.inscricao = this.route.data.subscribe((data: { data: { bookcase: Bookcase, userTO: UserTO } }) => {
             this.bookcase = data.data.bookcase;
-            this.user = data.data.user;
+            this.userTO = data.data.userTO;
         });
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
             this.deviceXs = result[0].mqAlias === 'xs' ? true : false;
@@ -161,12 +164,8 @@ export class BookcaseComponent implements OnInit, OnDestroy {
         return userBooks;
     }
 
-    verfiyPerfilPageisUserLogged() {
-        if (this.authService.getUser()?.id) {
-            return this.authService.getUser().id === this.user.id;
-        } else {
-            return false;
-        }
+    verifyPerfilPageisUserLogged(): boolean {
+        return !!this.user?.id && this.user.id === this.userTO?.id;
     }
 
 }

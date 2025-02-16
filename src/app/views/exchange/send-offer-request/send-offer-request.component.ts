@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {Util} from '../../shared/Utils/util';
-import {take} from 'rxjs/operators';
-import {BookAdsService} from '../../../services/book-ads.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BookAdTO} from '../../../models/BookAdTO.model';
-import {MatDialog} from '@angular/material/dialog';
-import {SearchBookAdtoComponent} from '../search-book-adto/search-book-adto.component';
-import {AuthService} from '../../../services/auth.service';
-import {ExchangeService} from '../../../services/exchange.service';
-import {ExchangeT0} from '../../../models/exchangeT0,model';
-import {BookExchangeStatus} from '../../../models/enums/BookExchangeStatus.enum';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { Util } from '../../shared/Utils/util';
+import { take } from 'rxjs/operators';
+import { BookAdsService } from '../../../services/book-ads.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BookAdTO } from '../../../models/BookAdTO.model';
+import { MatDialog } from '@angular/material/dialog';
+import { SearchBookAdtoComponent } from '../search-book-adto/search-book-adto.component';
+import { ExchangeService } from '../../../services/exchange.service';
+import { ExchangeT0 } from '../../../models/exchangeT0,model';
+import { BookExchangeStatus } from '../../../models/enums/BookExchangeStatus.enum';
+import { TranslateService } from '@ngx-translate/core';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-send-offer-request',
@@ -25,10 +26,10 @@ export class SendOfferRequestComponent implements OnInit {
         public bookAdsService: BookAdsService,
         private route: ActivatedRoute,
         public dialog: MatDialog,
-        public authService: AuthService,
         public exchangeService: ExchangeService,
         public router: Router,
-        public translate: TranslateService
+        public translate: TranslateService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
@@ -78,11 +79,12 @@ export class SendOfferRequestComponent implements OnInit {
     }
 
     openDialogMySearchBookAd(): void {
+        const user: User = this.getCachedUserUseCase.execute();
         const dialogRef = this.dialog.open(SearchBookAdtoComponent, {
             height: '600px',
             width: '600px',
             data: {
-                idUserOffer: this.authService.getUser().id,
+                idUserOffer: user.id,
                 bookAdsSelected: this.myBookAdOffer
             }
         });
@@ -94,19 +96,20 @@ export class SendOfferRequestComponent implements OnInit {
     }
 
     sendProposal(): void {
+        const user: User = this.getCachedUserUseCase.execute();
         const exchange = new ExchangeT0();
         exchange.receiverAds = this.bookAdSend;
         exchange.receiverId = this.bookAdSend[0].userId;
         exchange.requesterAds = this.myBookAdOffer;
-        exchange.requesterId = this.authService.getUser().id;
+        exchange.requesterId = user.id;
         exchange.status = BookExchangeStatus.pending;
         Util.loadingScreen();
         this.exchangeService.createExchange(exchange)
             .pipe(take(1))
             .subscribe(result => {
-                    Util.stopLoading();
-                    this.router.navigate(['exchange/my-exchanges/sent']);
-                },
+                Util.stopLoading();
+                this.router.navigate(['exchange/my-exchanges/sent']);
+            },
                 error => {
                     Util.stopLoading();
                     this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {

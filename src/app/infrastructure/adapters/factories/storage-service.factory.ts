@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { StorageType } from "../../../core/domain/enums/storage-type.enum";
+import { Injectable } from '@angular/core';
+import { StorageType } from '../../../core/domain/enums/storage-type.enum';
 
 @Injectable({
     providedIn: 'root'

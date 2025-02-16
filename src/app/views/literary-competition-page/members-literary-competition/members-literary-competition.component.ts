@@ -10,8 +10,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { LiteraryMemberStatus } from '../../../models/enums/LiteraryMemberStatus.enum';
 import { StoryLiteraryCompetitionComponent } from '../story-literary-competition/story-literary-competition.component';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../../../services/auth.service';
 import { VoteComponent } from '../vote/vote.component';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-members-literary-competition',
@@ -36,7 +37,7 @@ export class MembersLiteraryCompetitionComponent implements OnInit {
         private profileService: ProfileService,
         private fb: FormBuilder,
         private dialog: MatDialog,
-        private authService: AuthService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
@@ -103,21 +104,6 @@ export class MembersLiteraryCompetitionComponent implements OnInit {
         });
     }
 
-    /*vote(memberTO: CompetitionMemberTO) {
-        const competitionVotesSaveTO = new CompetitionVotesSaveTO();
-        competitionVotesSaveTO.memberId = memberTO.memberId;
-        competitionVotesSaveTO.profileId = this.authService.getUser().profile.id;
-        competitionVotesSaveTO.value = 10;
-        console.log(competitionVotesSaveTO);
-        this.competitionVoteService.vote(competitionVotesSaveTO)
-            .pipe(take(1))
-            .subscribe(result => {
-                console.log(result);
-            }, error => {
-                console.log(error);
-            });
-    }*/
-
     openDialogVote(member: CompetitionMemberTO) {
         const dialogRef = this.dialog.open(VoteComponent, {
             height: '300px',
@@ -139,7 +125,8 @@ export class MembersLiteraryCompetitionComponent implements OnInit {
     }
 
     verifyUser(profileIdVote: number): boolean {
-        if (profileIdVote === this.authService.getUser().profile.id) {
+        const user: User = this.getCachedUserUseCase.execute();
+        if (profileIdVote === +user.profile.id) {
             return true;
         }
         return false;

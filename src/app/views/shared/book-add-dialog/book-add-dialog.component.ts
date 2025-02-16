@@ -20,6 +20,8 @@ import { UpdateUserBookUseCase } from 'src/app/core/use-cases/user-book/update-u
 import { Tag } from 'src/app/core/domain/entities/tag.entity';
 import { GetAllTagsByProfileIdTagUseCase } from 'src/app/core/use-cases/tag/get-all-tags-by-profile-id.use-case';
 import { GetAllTagsByUserBookIdUseCase } from 'src/app/core/use-cases/tag/get-all-tags-by-user-book-id.use-case';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-book-add-dialog',
@@ -54,6 +56,7 @@ export class BookAddDialogComponent implements OnInit {
         private updateUserBookUseCase: UpdateUserBookUseCase,
         private getAllTagsByProfileIdTagUseCase: GetAllTagsByProfileIdTagUseCase,
         private getAllTagsByUserBookIdUseCase: GetAllTagsByUserBookIdUseCase,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         this.Book = data.book;
         this.tagsBook = [];
@@ -87,7 +90,7 @@ export class BookAddDialogComponent implements OnInit {
     }
 
     getTags(): void {
-        this.getAllTagsByProfileIdTagUseCase.execute(this.authService.getUser().profile.id)
+        this.getAllTagsByProfileIdTagUseCase.execute()
         .subscribe((tags) => {
             this.tags = tags;
             this.initTags();
@@ -153,9 +156,10 @@ export class BookAddDialogComponent implements OnInit {
     }
 
     saveBook() {
+        const user: User = this.getCachedUserUseCase.execute();
         this.userBookTo = {
             id: this.Book.idUserBook,
-            profileId: this.authService.getUser().profile.id,
+            profileId: user.profile.id,
             status: this.getStatusToUserBook(),
             tags: this.getSelectedTags(),
             page: this.Book.numberPage,

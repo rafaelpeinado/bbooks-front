@@ -9,6 +9,7 @@ import { Book } from 'src/app/core/domain/entities/book.entity';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { UpdateUserInfoUseCase } from 'src/app/core/use-cases/user/update-user-info.use-case';
+import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case';
 
 @Component({
     selector: 'app-main-page',
@@ -17,7 +18,7 @@ import { UpdateUserInfoUseCase } from 'src/app/core/use-cases/user/update-user-i
 })
 export class MainPageComponent implements OnInit, OnDestroy {
     public user: User;
-    public isCompleted: boolean = false;
+    public isCompleted = false;
     searchControl;
     books: Book[];
     deviceXs: boolean;
@@ -31,6 +32,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
         private searchMergedBookUseCase: SearchMergedBookUseCase,
         private getCachedUserUseCase: GetCachedUserUseCase,
         private updateUserInfoUseCase: UpdateUserInfoUseCase,
+        private getTokenUseCase: GetTokenUseCase,
         private mediaObserver: MediaObserver,
 
     ) {
@@ -43,16 +45,18 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (!this.getCachedUserUseCase.execute()) {
+        const cachedUser = this.getCachedUserUseCase.execute();
+        const token = this.getTokenUseCase.execute();
+        if (!cachedUser && token) {
             this.updateUserInfoUseCase.execute().subscribe(() => {
                 this.user = this.getCachedUserUseCase.execute();
                 this.isCompleted = true;
             });
         } else {
-            this.user = this.getCachedUserUseCase.execute();
+            this.user = cachedUser;
             this.isCompleted = true;
         }
-        
+
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
             this.deviceXs = result[0].mqAlias === 'xs';
         });

@@ -2,8 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TypePostControler } from '../../../models/enums/TypePost.enum';
 import { Observable } from 'rxjs';
 import { IPublicProfilePageState } from '../store/state/feed-public-profile.state';
-import { AuthService } from '../../../services/auth.service';
-import { UserTO } from '../../../models/userTO.model';
 import { FeedService } from '../../../services/feed.service';
 import { PostService } from '../../../services/post.service';
 import { FeedGenericService } from '../../../services/feed-generic.service';
@@ -14,6 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 import { PostPagination } from '../../../models/pagination/post.pagination';
 import { PublicProfileService } from '../../../services/public-profile.service';
 import { UserPublicProfileTO } from '../../../models/UserPublicProfileTO.model';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-feed-public-profile',
@@ -23,7 +23,7 @@ import { UserPublicProfileTO } from '../../../models/UserPublicProfileTO.model';
 export class FeedPublicProfileComponent implements OnInit, OnDestroy {
     typePostControler = TypePostControler;
     feedRedux$: Observable<IPublicProfilePageState>;
-    user: UserTO;
+    public user: User;
     loading = false;
     publicProfileId: string;
     page = 0;
@@ -31,13 +31,13 @@ export class FeedPublicProfileComponent implements OnInit, OnDestroy {
     isOwner = false;
 
     constructor(
-        public authService: AuthService,
         public feedService: FeedService,
         public postService: PostService,
         public feedGenericService: FeedGenericService,
         public feedPublicProfilePageManagerService: FeedPublicProfilePageManagerService,
         public route: ActivatedRoute,
         private publicProfileService: PublicProfileService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         this.feedPublicProfilePageManagerService.clearRedux();
     }
@@ -54,7 +54,7 @@ export class FeedPublicProfileComponent implements OnInit, OnDestroy {
                 this.getPublicProfileById(result);
             }
             );
-        this.user = this.authService.getUser();
+        this.user = this.getCachedUserUseCase.execute();
         this.feedRedux$ = this.feedPublicProfilePageManagerService.getFeed();
     }
 
@@ -110,7 +110,7 @@ export class FeedPublicProfileComponent implements OnInit, OnDestroy {
             .pipe(take(1))
             .subscribe(result => {
                 this.publicProfileTO = result;
-                if (this.publicProfileTO.user.id === this.authService.getUser().id) {
+                if (this.publicProfileTO.user.id === this.user.id) {
                     this.isOwner = true;
                 }
                 localStorage.setItem('namePage', result.name);

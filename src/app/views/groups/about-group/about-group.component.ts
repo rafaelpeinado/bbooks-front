@@ -1,18 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {Util} from '../../shared/Utils/util';
-import {take} from 'rxjs/operators';
-import {GroupTO} from '../../../models/GroupTO.model';
-import {ActivatedRoute, Router} from '@angular/router';
-import {GroupService} from '../../../services/group.service';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {mapPostPrivacy, mapPostPrivacyStrinView, PostPrivacy} from '../../../models/enums/PostPrivacy.enum';
-import {TranslateService} from '@ngx-translate/core';
-import {GroupMemberService} from '../../../services/group-member.service';
-import {Role} from '../../../models/enums/Role.enum';
-import {AuthService} from '../../../services/auth.service';
-import {GroupMembers} from '../../../models/GroupMembers.model';
+import { Component, OnInit } from '@angular/core';
+import { Util } from '../../shared/Utils/util';
+import { take } from 'rxjs/operators';
+import { GroupTO } from '../../../models/GroupTO.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GroupService } from '../../../services/group.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { mapPostPrivacy, mapPostPrivacyStrinView, PostPrivacy } from '../../../models/enums/PostPrivacy.enum';
+import { TranslateService } from '@ngx-translate/core';
+import { GroupMemberService } from '../../../services/group-member.service';
+import { Role } from '../../../models/enums/Role.enum';
+import { GroupMembers } from '../../../models/GroupMembers.model';
 import Swal from 'sweetalert2';
-import {zip} from 'rxjs';
+import { zip } from 'rxjs';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-about-group',
@@ -38,8 +39,8 @@ export class AboutGroupComponent implements OnInit {
         private formBuilder: FormBuilder,
         private translate: TranslateService,
         private groupMemberService: GroupMemberService,
-        private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
 
     }
@@ -75,9 +76,9 @@ export class AboutGroupComponent implements OnInit {
         this.groupService.update(this.formGroup.value)
             .pipe(take(1))
             .subscribe(result => {
-                    Util.stopLoading();
-                    this.groupTO = result;
-                },
+                Util.stopLoading();
+                this.groupTO = result;
+            },
                 error => {
                     Util.stopLoading();
                     this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
@@ -93,21 +94,22 @@ export class AboutGroupComponent implements OnInit {
             .pipe(
                 take(1)
             ).subscribe(result => {
-            Util.stopLoading();
-            const member = result.find(m => m.user.id === this.authService.getUser().id);
-            this.member = member;
-            if (member) {
-                if (member.role === Role.owner || member.role === Role.admin) {
-                    this.isAdmin = true;
+                Util.stopLoading();
+                const user: User = this.getCachedUserUseCase.execute();
+                const member = result.find(m => m.user.id === user.id);
+                this.member = member;
+                if (member) {
+                    if (member.role === Role.owner || member.role === Role.admin) {
+                        this.isAdmin = true;
+                    }
                 }
-            }
-        }, error => {
-            Util.stopLoading();
-            this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
-                Util.showErrorDialog(message);
+            }, error => {
+                Util.stopLoading();
+                this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
+                    Util.showErrorDialog(message);
+                });
+                console.log('Erro: members-group getMembers', error);
             });
-            console.log('Erro: members-group getMembers', error);
-        });
     }
 
     exitDilaogConfirm(sair?: string): void {
@@ -144,12 +146,12 @@ export class AboutGroupComponent implements OnInit {
         this.groupMemberService.exitGroup(member)
             .pipe(take(1))
             .subscribe(() => {
-                    Util.stopLoading();
-                    this.translate.get('GRUPO_LEITURA.VOCE_SAIU').subscribe(msg => {
-                        Util.showSuccessDialog(msg);
-                    });
-                    this.router.navigateByUrl('/group/' + member.groupId);
-                },
+                Util.stopLoading();
+                this.translate.get('GRUPO_LEITURA.VOCE_SAIU').subscribe(msg => {
+                    Util.showSuccessDialog(msg);
+                });
+                this.router.navigateByUrl('/group/' + member.groupId);
+            },
                 error => {
                     console.log('error exit group member', error);
                     this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {
@@ -164,12 +166,12 @@ export class AboutGroupComponent implements OnInit {
         this.groupService.delete(this.groupTO.id)
             .pipe(take(1))
             .subscribe(() => {
-                    Util.stopLoading();
-                    this.translate.get('GRUPO_LEITURA.EXCLUIDO').subscribe(msg => {
-                        Util.showSuccessDialog(msg);
-                    });
-                    this.router.navigateByUrl('/groups-search');
-                },
+                Util.stopLoading();
+                this.translate.get('GRUPO_LEITURA.EXCLUIDO').subscribe(msg => {
+                    Util.showSuccessDialog(msg);
+                });
+                this.router.navigateByUrl('/groups-search');
+            },
                 error => {
                     console.log('error exit group member', error);
                     this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {

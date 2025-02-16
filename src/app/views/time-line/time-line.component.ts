@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
 import { Util } from '../shared/Utils/util';
 import { GetAllBookCaseTimelineByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-timeline-by-profile-id.use-case';
 import { Book } from 'src/app/core/domain/entities/book.entity';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+
 
 @Component({
     selector: 'app-time-line',
@@ -28,7 +28,6 @@ export class TimeLineComponent implements OnInit {
     constructor(
         private getAllBookCaseTimelineByProfileIdUseCase: GetAllBookCaseTimelineByProfileIdUseCase,
         private getBookByIdUseCase: GetBookByIdUseCase,
-        private authservice: AuthService
     ) {
     }
 
@@ -40,7 +39,7 @@ export class TimeLineComponent implements OnInit {
     }
 
     getBooks(): void {
-        this.getAllBookCaseTimelineByProfileIdUseCase.execute(this.authservice.getUser().profile.id)
+        this.getAllBookCaseTimelineByProfileIdUseCase.execute()
             .subscribe((userBooks) => {
                 userBooks.forEach((userBook) => {
                     if (userBook.finishDate) {

@@ -1,13 +1,13 @@
-import { UserService } from "src/app/infrastructure/adapters/user.service";
-import { UseCaseInterface } from "../use-case.interface";
-import { Injectable } from "@angular/core";
-import { map } from "rxjs/operators";
-import { SetCacheUseCase } from "../cache/set-cache.use-case";
-import { SetCache } from "../../domain/interfaces/set-cache.interface";
-import { User } from "../../domain/entities/user.entity";
-import { StorageItem } from "src/app/infrastructure/enums/storage-item.enum";
-import { StorageType } from "../../domain/enums/storage-type.enum";
-import { Observable } from "rxjs";
+import { UserService } from 'src/app/infrastructure/adapters/user.service';
+import { UseCaseInterface } from '../use-case.interface';
+import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { SetCacheUseCase } from '../cache/set-cache.use-case';
+import { SetCache } from '../../domain/interfaces/set-cache.interface';
+import { User } from '../../domain/entities/user.entity';
+import { StorageItem } from 'src/app/infrastructure/enums/storage-item.enum';
+import { StorageType } from '../../domain/enums/storage-type.enum';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',

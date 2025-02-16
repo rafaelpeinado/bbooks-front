@@ -17,7 +17,6 @@ import { TrackingViewComponent } from '../tracking-view/tracking-view.component'
 import { TrackingTO } from '../../../models/TrackingTO.model';
 import { TrackingService } from '../../../services/tracking.service';
 import { ReviewTO } from '../../../models/ReviewTO.model';
-import { AuthService } from '../../../services/auth.service';
 import { ReviewDialogComponent } from '../review-dialog/review-dialog.component';
 import { ReviewService } from '../../../services/review.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,6 +30,8 @@ import { UserBookDetails } from 'src/app/core/domain/interfaces/user-book-detail
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { GetGeneralStatusBooksUseCase } from 'src/app/core/use-cases/user-book/get-general-status-books.use-case';
 import { GeneralStatus } from 'src/app/core/domain/entities/general-status.entity';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-book-view',
@@ -39,6 +40,7 @@ import { GeneralStatus } from 'src/app/core/domain/entities/general-status.entit
 })
 export class BookViewComponent implements OnInit, OnDestroy {
 
+    public user: User;
     inscricao: Subscription;
     book: Book;
     userBook: UserBook;
@@ -69,12 +71,12 @@ export class BookViewComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         public dialog: MatDialog,
         private trackingService: TrackingService,
-        public authService: AuthService,
         private reviewService: ReviewService,
         private readingTargetService: ReadingTargetService,
         private translate: TranslateService,
         private getBookByIdUseCase: GetBookByIdUseCase,
         private getGeneralStatusBooksUseCase: GetGeneralStatusBooksUseCase,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         Util.loadingScreen();
         this.inscricao = this.route.data.subscribe((data: { userBookDetails: UserBookDetails }) => {
@@ -91,6 +93,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.user = this.getCachedUserUseCase.execute();
         this.getBook();
         this.getAllReviews();
     }
@@ -189,7 +192,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
             review.body = r.body;
             review.profileTO = r.profileTO;
         } else {
-            review.profileId = this.authService.getUser().profile.id;
+            review.profileId = +this.user.profile.id;
         }
         if (this.book.api) {
             review.idGoogleBook = this.book.id;
@@ -227,7 +230,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
 
     addToReadingTarget(): void {
         Util.loadingScreen();
-        this.readingTargetService.addTarget(this.authService.getUser().profile.id, +this.userBook.id).subscribe(
+        this.readingTargetService.addTarget(+this.user.profile.id, +this.userBook.id).subscribe(
             () => {
                 Util.stopLoading();
                 this.translate.get('BOOK.BOOK_ADDED_TARGET').subscribe(message => {
@@ -246,7 +249,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
 
     removeFromReadingTarget(): void {
         Util.loadingScreen();
-        this.readingTargetService.removeTarget(this.authService.getUser().profile.id, +this.userBook.id).subscribe(
+        this.readingTargetService.removeTarget(+this.user.profile.id, +this.userBook.id).subscribe(
             () => {
                 Util.stopLoading();
                 this.translate.get('BOOK.BOOK_REMOVED_TARGET').subscribe(message => {
@@ -265,7 +268,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
     }
 
     verifyReadingTarget(): void {
-        this.readingTargetService.getByUserBookId(this.authService.getUser().profile.id, +this.userBook.id).subscribe(
+        this.readingTargetService.getByUserBookId(+this.user.profile.id, +this.userBook.id).subscribe(
             (res) => {
                 res?.id ? this.hasReadingTarget = true : this.hasReadingTarget = false;
             },

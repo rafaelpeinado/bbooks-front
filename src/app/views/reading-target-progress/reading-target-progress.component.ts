@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/core/domain/entities/user.entity';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { ReadingTargetTO } from 'src/app/models/readingTargetTO.model';
 import { UserBookTO } from 'src/app/models/userBookTO';
-import { AuthService } from 'src/app/services/auth.service';
 import { ReadingTargetService } from 'src/app/services/reading-target.service';
 
 @Component({
@@ -22,7 +23,7 @@ export class ReadingTargetProgressComponent implements OnInit {
   constructor(
     private readingTargetService: ReadingTargetService,
     private getBookByIdUseCase: GetBookByIdUseCase,
-    public authService: AuthService
+    private getCachedUserUseCase: GetCachedUserUseCase,
   ) {
   }
 
@@ -31,7 +32,8 @@ export class ReadingTargetProgressComponent implements OnInit {
   }
 
   getPreviousGoals() {
-    this.readingTargetService.getAllByProfileId(this.authService.getUser().profile.id)
+    const user: User = this.getCachedUserUseCase.execute();
+    this.readingTargetService.getAllByProfileId(+user.profile.id)
       .subscribe(
         (res) => {
           this.previousGoals = res;

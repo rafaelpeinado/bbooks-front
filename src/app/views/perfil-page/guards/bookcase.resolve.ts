@@ -33,7 +33,7 @@ export class BookcaseResolve implements Resolve<any> {
         const username = route.parent.params.username;
         this.bookcase.userBooks = [];
         this.userService.getUserName(username, this.getTokenUseCase.execute<string>()).pipe(take(1)).subscribe(user => {
-            this.getAllUserBookByProfileIdUseCase.execute(user.profile.id.toString())
+            this.getAllUserBookByProfileIdUseCase.execute()
                 .pipe(take(1))
                 .subscribe(userBooks => {
                     this.bookcase.userBooks = userBooks;

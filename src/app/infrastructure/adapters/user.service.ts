@@ -1,12 +1,12 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { User } from "src/app/core/domain/entities/user.entity";
-import { UserRepository } from "src/app/core/repositories/user.repository";
-import { environment } from "src/environments/environment";
-import { UserTO } from "../dtos/user-dto";
-import { BaseApiService } from "./base-service.service";
-import { UserMapper } from "../mappers/user.mapper";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { UserRepository } from 'src/app/core/repositories/user.repository';
+import { environment } from 'src/environments/environment';
+import { UserTO } from '../dtos/user-dto';
+import { BaseApiService } from './base-service.service';
+import { UserMapper } from '../mappers/user.mapper';
 
 @Injectable({
     providedIn: 'root',
@@ -26,11 +26,11 @@ export class UserService extends BaseApiService<User, UserTO> implements UserRep
     }
 
     registerUser(): Observable<User> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     getUserById(id: string): Observable<User> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
 }

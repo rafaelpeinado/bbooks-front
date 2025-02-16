@@ -3,7 +3,7 @@
         <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px" fxLayoutGap.xs="10px">
             <div>
                 <img class="cardImagePost" routerLink="/{{userPost?.userName}}"
-                     src="{{userPost.profile?.profileImage ? userPost?.profile?.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'}}">
+                    src="{{userPost.profile?.profileImage ? userPost?.profile?.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'}}">
             </div>
             <div>
                 <div fxLayout="column" fxLayoutAlign="center start">
@@ -15,7 +15,8 @@
                             <div style="color: #7f7f7f" *ngIf="group?.id && !isGroupRouter()">
                                 <span class="material-icons">play_arrow</span>
                             </div>
-                            <div  *ngIf="group?.id && !isGroupRouter()" class="linkPerfil" routerLink="/group/{{group?.id}}">
+                            <div *ngIf="group?.id && !isGroupRouter()" class="linkPerfil"
+                                routerLink="/group/{{group?.id}}">
                                 {{group?.name}}
                             </div>
                         </div>
@@ -27,7 +28,7 @@
                 </div>
             </div>
             <button mat-icon-button [matMenuTriggerFor]="menu" style="position: absolute; right: 0"
-                    *ngIf=" userPost?.profile.id == authService.getUser().profile.id">
+                *ngIf=" userPost?.profile.id == cachedUser.profile.id">
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
@@ -45,14 +46,15 @@
         <div fxLayout="row" fxLayoutAlign="start center" class="description">
             {{post?.description}}
         </div>
-        <div  *ngIf="post?.survey?.options?.length > 0">
+        <div *ngIf="post?.survey?.options?.length > 0">
             <br>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <div fxLayout="row" fxLayoutAlign="center center" class="description">
                     <div class="iconCheck">
-                        <span class="material-icons" style="color: #36BF7F; margin-bottom: 10px; margin-right: 5px">check_circle</span>
+                        <span class="material-icons"
+                            style="color: #36BF7F; margin-bottom: 10px; margin-right: 5px">check_circle</span>
                     </div>
-                    <div  class="options" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="options" fxLayout="row" fxLayoutAlign="space-between center">
                         <div>
                             {{post.survey.options[0].option}}
 
@@ -64,12 +66,13 @@
 
                 </div>
             </div>
-            <div *ngFor="let option of post.survey.options"   class="description">
+            <div *ngFor="let option of post.survey.options" class="description">
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <div class="iconCheck">
-                        <span class="material-icons" style="color: #414141; margin-bottom: 10px; margin-right: 5px">radio_button_unchecked</span>
+                        <span class="material-icons"
+                            style="color: #414141; margin-bottom: 10px; margin-right: 5px">radio_button_unchecked</span>
                     </div>
-                    <div  class="optionsDeselected" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="optionsDeselected" fxLayout="row" fxLayoutAlign="space-between center">
                         <div>
                             {{option.option}}
                         </div>
@@ -80,7 +83,7 @@
                 </div>
             </div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="center center" >
+        <div fxLayout="row" fxLayoutAlign="center center">
             <img [src]="post?.image" class="imagePost">
         </div>
         <br>
@@ -88,7 +91,8 @@
             <i class="far fa-thumbs-up fa-lg" *ngIf="post.reactions.likes && post.reactions.likes.count > 0"></i>
             <i class="far fa-thumbs-down fa-lg" *ngIf="post.reactions.dislike && post.reactions.dislike.count > 0"></i>
             <i class="far fa-heart fa-lg" *ngIf="post.reactions.loved && post.reactions.loved.count > 0"></i>
-            <i class="far fa-laugh-squint fa-lg" *ngIf="post.reactions.hilarius && post.reactions.hilarius.count > 0"></i>
+            <i class="far fa-laugh-squint fa-lg"
+                *ngIf="post.reactions.hilarius && post.reactions.hilarius.count > 0"></i>
             <i class="far fa-surprise fa-lg" *ngIf="post.reactions.surprised && post.reactions.surprised.count > 0"></i>
             <i class="far fa-sad-tear fa-lg" *ngIf="post.reactions.sad && post.reactions.sad.count > 0"></i>
             <i class="far fa-angry fa-lg" *ngIf="post.reactions.hated && post.reactions.hated.count > 0"></i>
@@ -107,30 +111,30 @@
             <mat-menu #reacoes="matMenu" yPosition="above">
                 <button mat-menu-item (click)="changeReaction('fa-thumbs-up', reactionsType.like)">
                     <i style="margin: 0 5px 0 0;" class="far fa-thumbs-up fa-lg"></i>
-                    <span> {{'REACTIONS.' + reactionsType.like  | translate}}</span>
+                    <span> {{'REACTIONS.' + reactionsType.like | translate}}</span>
                 </button>
                 <button mat-menu-item (click)="changeReaction('fa-thumbs-down', reactionsType.dislike)">
-                    <i  class="far fa-thumbs-down fa-lg" style="margin: 0 5px 0 0;"></i>
+                    <i class="far fa-thumbs-down fa-lg" style="margin: 0 5px 0 0;"></i>
                     <span>{{'REACTIONS.' + reactionsType.dislike | translate}}</span>
                 </button>
                 <button mat-menu-item (click)="changeReaction('fa-heart', reactionsType.loved)">
-                    <i  class="far fa-heart fa-lg" style="margin: 0 5px 0 0;"></i>
+                    <i class="far fa-heart fa-lg" style="margin: 0 5px 0 0;"></i>
                     <span>{{'REACTIONS.' + reactionsType.loved | translate }}</span>
                 </button>
                 <button mat-menu-item (click)="changeReaction('fa-laugh-squint', reactionsType.hilarius)">
-                    <i  class="far fa-laugh-squint fa-lg" style="margin: 0 5px 0 0;"></i>
+                    <i class="far fa-laugh-squint fa-lg" style="margin: 0 5px 0 0;"></i>
                     <span>{{'REACTIONS.' + reactionsType.hilarius | translate }}</span>
                 </button>
                 <button mat-menu-item (click)="changeReaction('fa-surprise', reactionsType.surprised)">
-                    <i  class="far fa-surprise fa-lg" style="margin: 0 5px 0 0;"></i>
+                    <i class="far fa-surprise fa-lg" style="margin: 0 5px 0 0;"></i>
                     <span>{{'REACTIONS.' + reactionsType.surprised | translate }}</span>
                 </button>
                 <button mat-menu-item (click)="changeReaction('fa-sad-tear', reactionsType.sad)">
-                    <i  class="far fa-sad-tear fa-lg" style="margin: 0 5px 0 0;"></i>
-                    <span>{{'REACTIONS.' + reactionsType.sad | translate  }}</span>
+                    <i class="far fa-sad-tear fa-lg" style="margin: 0 5px 0 0;"></i>
+                    <span>{{'REACTIONS.' + reactionsType.sad | translate }}</span>
                 </button>
                 <button mat-menu-item (click)="changeReaction('fa-angry', reactionsType.hated)">
-                    <i  class="far fa-angry fa-lg" style="margin: 0 5px 0 0;"></i>
+                    <i class="far fa-angry fa-lg" style="margin: 0 5px 0 0;"></i>
                     <span>{{'REACTIONS.' + reactionsType.hated | translate }}</span>
                 </button>
             </mat-menu>
@@ -148,10 +152,11 @@
         </div>
         <br>
 
-        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" fxLayoutGap.xs="5px" *ngFor="let comment of comments">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" fxLayoutGap.xs="5px"
+            *ngFor="let comment of comments">
             <div>
                 <img class="cardImagePost"
-                     src="{{comment?.user?.profile?.profileImage ? comment.user.profile.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'}}">
+                    src="{{comment?.user?.profile?.profileImage ? comment.user.profile.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'}}">
             </div>
             <div class="commentView" *ngIf="!comment.editMode">
                 <div> <b>{{comment.user.profile.name}} {{comment.user.profile.lastName}}</b></div>
@@ -160,25 +165,16 @@
 
 
             <form [formGroup]="editForm" fxFlex *ngIf="comment.editMode">
-                <textarea
-                        formControlName="description"
-                        autocomplete="off"
-                        placeholder="Escreva um comentario"
-                        #textarea [scrollTop]="textarea.scrollHeight"
-                        appTextareaAutoresize
-                ></textarea>
+                <textarea formControlName="description" autocomplete="off" placeholder="Escreva um comentario" #textarea
+                    [scrollTop]="textarea.scrollHeight" appTextareaAutoresize></textarea>
             </form>
             <div>
-                <button
-                        (click)="saveComment(comment)"
-                        *ngIf="comment.editMode"
-                        [disabled]="editForm.invalid"
-                        mat-raised-button color="accent"
-                        class="publisherWeb" >{{'PADRAO.SALVAR' | translate}}
+                <button (click)="saveComment(comment)" *ngIf="comment.editMode" [disabled]="editForm.invalid"
+                    mat-raised-button color="accent" class="publisherWeb">{{'PADRAO.SALVAR' | translate}}
                 </button>
             </div>
             <button mat-icon-button [matMenuTriggerFor]="menu" style="position: absolute; right: 0"
-                    *ngIf=" comment.user?.profile.id == authService.getUser().profile.id && !comment.editMode">
+                *ngIf=" comment.user?.profile.id == cachedUser.profile.id && !comment.editMode">
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
@@ -195,26 +191,16 @@
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" fxLayoutGap.xs="2px">
             <div>
                 <img class="cardImagePost"
-                     src="{{this.authService.getUser().profile.profileImage ? this.authService.getUser().profile?.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'}}">
+                    src="{{cachedUser.profile.profileImage ? cachedUser.profile?.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'}}">
             </div>
 
             <form [formGroup]="formComment" fxFlex>
-                <textarea
-                        formControlName="description"
-                        autocomplete="off"
-                        placeholder="Escreva um comentario"
-                        #textarea [scrollTop]="textarea.scrollHeight"
-                        appTextareaAutoresize
-                        (keyup.enter)="saveComment()"
-                ></textarea>
+                <textarea formControlName="description" autocomplete="off" placeholder="Escreva um comentario" #textarea
+                    [scrollTop]="textarea.scrollHeight" appTextareaAutoresize (keyup.enter)="saveComment()"></textarea>
             </form>
-            <div >
-                <button
-                        *ngIf="isMobile()"
-                        (click)="saveComment()"
-                        [disabled]="formComment.invalid"
-                        mat-raised-button color="accent"
-                        class="publisherWeb" >{{'PADRAO.PUBLICAR' | translate}}
+            <div>
+                <button *ngIf="isMobile()" (click)="saveComment()" [disabled]="formComment.invalid" mat-raised-button
+                    color="accent" class="publisherWeb">{{'PADRAO.PUBLICAR' | translate}}
                 </button>
             </div>
         </div>

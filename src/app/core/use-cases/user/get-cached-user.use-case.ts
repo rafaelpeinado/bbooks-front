@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { User } from "../../domain/entities/user.entity";
-import { UseCaseInterface } from "../use-case.interface";
-import { CacheService } from "src/app/infrastructure/adapters/cache.service";
-import { StorageItem } from "src/app/infrastructure/enums/storage-item.enum";
-import { StorageType } from "../../domain/enums/storage-type.enum";
+import { Injectable } from '@angular/core';
+import { User } from '../../domain/entities/user.entity';
+import { UseCaseInterface } from '../use-case.interface';
+import { CacheService } from 'src/app/infrastructure/adapters/cache.service';
+import { StorageItem } from 'src/app/infrastructure/enums/storage-item.enum';
+import { StorageType } from '../../domain/enums/storage-type.enum';
 
 @Injectable({
     providedIn: 'root',

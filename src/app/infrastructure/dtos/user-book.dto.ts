@@ -22,8 +22,8 @@ export interface AllUserBookByProfileIdTO {
 }
 
 export interface UserBookUpdateStatusTO {
-    id: string,
-    status: string,
+    id: string;
+    status: string;
 }
 
 

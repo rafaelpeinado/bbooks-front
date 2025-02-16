@@ -9,7 +9,7 @@ export class UserBookBuilder extends BuilderImpl<UserBook, UserBookBuilder> {
     static builder() {
         return new this();
     }
-    
+
     setId(id: string): UserBookBuilder {
         return this.set('id', id);
     }

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UploadComponent } from '../../upload/upload.component';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../../../services/auth.service';
 import { SearchBookComponent } from '../../shared/search-book/search-book.component';
 import { BookCondition } from '../../../models/enums/BookCondition.enum';
 import { flatMap, map, startWith, take } from 'rxjs/operators';
@@ -21,6 +20,8 @@ import { State } from '../../../models/state.model';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { Book } from 'src/app/core/domain/entities/book.entity';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-offer-new',
@@ -45,7 +46,6 @@ export class OfferNewComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         public dialog: MatDialog,
-        public authService: AuthService,
         public bookAdsService: BookAdsService,
         public router: Router,
         public bookService: BookService,
@@ -54,6 +54,7 @@ export class OfferNewComponent implements OnInit {
         public cdnService: CDNService,
         private consultaCepService: ConsultaCepService,
         private getBookByIdUseCase: GetBookByIdUseCase,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
@@ -169,12 +170,13 @@ export class OfferNewComponent implements OnInit {
     }
 
     private createForm(): void {
+        const user: User = this.getCachedUserUseCase.execute();
         this.formNewOffer = this.formBuilder.group({
             id: new FormControl(this.bookAdTO ? this.bookAdTO.id : null),
             title: new FormControl(this.bookAdTO ? this.bookAdTO.title : null, Validators.required),
             condition: new FormControl(this.bookAdTO ? this.bookAdTO.condition : BookCondition.not_used, Validators.required),
             description: new FormControl(this.bookAdTO ? this.bookAdTO.description : null, Validators.required),
-            userId: new FormControl(this.authService.getUser().id),
+            userId: new FormControl(user.id),
             address: new FormControl(this.bookAdTO ? this.bookAdTO.address : null),
             contact: new FormControl(this.bookAdTO ? this.bookAdTO.contact : null),
             images: new FormControl(null),

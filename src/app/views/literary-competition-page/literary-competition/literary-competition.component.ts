@@ -8,12 +8,13 @@ import { ProfileService } from '../../../services/profile.service';
 import { CompetitionMemberTO } from '../../../models/competitionMemberTO.model';
 import { Role } from '../../../models/enums/Role.enum';
 import { Util } from '../../shared/Utils/util';
-import { AuthService } from '../../../services/auth.service';
 import { Profile } from '../../../models/profileTO.model';
 import { CompetitionMemberSaveTO } from '../../../models/competitionMemberSaveTO.model';
 import { LiteraryMemberStatus } from '../../../models/enums/LiteraryMemberStatus.enum';
 import { StoryLiteraryCompetitionComponent } from '../story-literary-competition/story-literary-competition.component';
 import { MatDialog } from '@angular/material/dialog';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-literary-competition',
@@ -38,8 +39,8 @@ export class LiteraryCompetitionComponent implements OnInit {
         private competitionService: CompetitionService,
         private competitionMemberService: CompetitionMemberService,
         private profileService: ProfileService,
-        private authService: AuthService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
@@ -65,7 +66,8 @@ export class LiteraryCompetitionComponent implements OnInit {
             .subscribe(result => {
                 Util.stopLoading();
                 if (result.content.length > 0) {
-                    const r = result.content.find(i => i.profileId === this.authService.getUser().profile.id);
+                    const user: User = this.getCachedUserUseCase.execute();
+                    const r = result.content.find(i => i.profileId === +user.profile.id);
                     this.page++;
                     if (r) {
                         this.member = r;
@@ -132,7 +134,8 @@ export class LiteraryCompetitionComponent implements OnInit {
 
     getProfile() {
         Util.loadingScreen();
-        this.profileService.getById(this.authService.getUser().profile.id)
+        const user: User = this.getCachedUserUseCase.execute();
+        this.profileService.getById(+user.profile.id)
             .pipe(take(1))
             .subscribe(result => {
                 Util.stopLoading();

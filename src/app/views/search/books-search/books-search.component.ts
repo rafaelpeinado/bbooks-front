@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
-import { AuthService } from '../../../services/auth.service';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Book } from 'src/app/core/domain/entities/book.entity';
 import { FilterSearch } from 'src/app/core/domain/interfaces/filter-search.interface';
 import { SearchMergedBookUseCase } from 'src/app/core/use-cases/book/search-merged-books.use-case';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 
 @Component({
     selector: 'app-books-search',
@@ -29,14 +29,14 @@ export class BooksSearchComponent implements OnInit, OnDestroy {
         private searchMergedBookUseCase: SearchMergedBookUseCase,
         public mediaObserver: MediaObserver,
         private route: ActivatedRoute,
-        private authGuard: AuthService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         this.pageEvent.pageSize = 10;
         this.pageEvent.pageIndex = 0;
     }
 
     ngOnInit(): void {
-        this.user = this.authGuard.getUser();
+        this.user = this.getCachedUserUseCase.execute();
 
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
             this.deviceXs = result[0].mqAlias === 'xs' ? true : false;

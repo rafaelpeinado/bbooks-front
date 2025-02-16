@@ -1,16 +1,15 @@
-<mat-card fxLayout="row" fxLayoutAlign="space-around center"
-          *ngIf="user?.id === this.authService.getUser().id">
+<mat-card fxLayout="row" fxLayoutAlign="space-around center" *ngIf="user?.id === cachedUser.id">
     <div>
 
         <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px" fxLayoutGap.xs="10px">
             <div>
                 <img class="cardImageReview"
-                     src="{{user.profile?.profileImage ? user.profile?.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'}}">
+                    src="{{user.profile?.profileImage ? user.profile?.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'}}">
             </div>
             <mat-card class="commentReview" (click)="openPost()">
                 <div fxLayout="row" fxLayoutAlign="space-between center">
                     <div style="color:#5f5f5f;">
-                        {{'POST.TEXT_POST_INPUT'  | translate}}
+                        {{'POST.TEXT_POST_INPUT' | translate}}
                     </div>
                 </div>
             </mat-card>

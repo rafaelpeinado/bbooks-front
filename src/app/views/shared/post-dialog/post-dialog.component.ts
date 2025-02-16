@@ -1,18 +1,18 @@
-import {Component, Injector, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../../../services/auth.service';
-import {UserTO} from '../../../models/userTO.model';
-import {PostService} from '../../../services/post.service';
-import {take} from 'rxjs/operators';
-import {TypePost} from '../../../models/enums/TypePost.enum';
-import {getArrayPostPrivacy, mapPostPrivacy, PostPrivacy} from '../../../models/enums/PostPrivacy.enum';
-import {Router} from '@angular/router';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {PostTO} from '../../../models/PostTO.model';
-import {Util} from '../Utils/util';
-import {TranslateService} from '@ngx-translate/core';
-import {UploadComponent} from '../../upload/upload.component';
-import {CDNService} from '../../../services/cdn.service';
+import { Component, Injector, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { PostService } from '../../../services/post.service';
+import { take } from 'rxjs/operators';
+import { TypePost } from '../../../models/enums/TypePost.enum';
+import { getArrayPostPrivacy, mapPostPrivacy, PostPrivacy } from '../../../models/enums/PostPrivacy.enum';
+import { Router } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { PostTO } from '../../../models/PostTO.model';
+import { Util } from '../Utils/util';
+import { TranslateService } from '@ngx-translate/core';
+import { UploadComponent } from '../../upload/upload.component';
+import { CDNService } from '../../../services/cdn.service';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 export enum Menu {
     ASK = 0,
@@ -28,7 +28,7 @@ export enum Menu {
 export class PostDialogComponent implements OnInit {
 
     public formFeed: FormGroup;
-    public user: UserTO;
+    public user: User;
     public menu = Menu;
     public menuChoose: Menu;
     public mapTypePost = getArrayPostPrivacy();
@@ -45,13 +45,13 @@ export class PostDialogComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private authService: AuthService,
         public postService: PostService,
         public router: Router,
         private injector: Injector,
         public translate: TranslateService,
         public dialog: MatDialog,
-        public cdnService: CDNService
+        public cdnService: CDNService,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         this.dialogRef = this.injector.get(MatDialogRef, null);
         if (!this.isMobile()) {
@@ -63,7 +63,7 @@ export class PostDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.configTexts();
-        this.user = this.authService.getUser();
+        this.user = this.getCachedUserUseCase.execute();
         this.createForm();
         this.initOptions();
     }
@@ -98,8 +98,8 @@ export class PostDialogComponent implements OnInit {
         this.image = this.dataDialog ? this.dataDialog.image : null;
     }
 
-    hadProfileId(): number {
-        return this.router.url.includes('public-profile') || this.router.url.includes('perfil-publico') ? 0 : this.user.profile.id;
+    hadProfileId(): string {
+        return this.router.url.includes('public-profile') || this.router.url.includes('perfil-publico') ? null : this.user.profile.id;
     }
 
     getGroupId(): string {
@@ -183,9 +183,9 @@ export class PostDialogComponent implements OnInit {
 
     private createAskForm(id: string, option: string): FormGroup {
         return new FormGroup({
-                id: new FormControl(id),
-                option: new FormControl(option, Validators.required),
-            }
+            id: new FormControl(id),
+            option: new FormControl(option, Validators.required),
+        }
         );
     }
 
@@ -200,9 +200,9 @@ export class PostDialogComponent implements OnInit {
             this.postService.update(this.formFeed.value)
                 .pipe(take(1))
                 .subscribe(post => {
-                        Util.stopLoading();
-                        this.uploadPhotoPost(post);
-                    },
+                    Util.stopLoading();
+                    this.uploadPhotoPost(post);
+                },
                     error => {
                         this.showErrorDialog();
                         console.log('Error post-dialog', error);
@@ -211,9 +211,9 @@ export class PostDialogComponent implements OnInit {
             this.postService.save(this.formFeed.value)
                 .pipe(take(1))
                 .subscribe(post => {
-                        Util.stopLoading();
-                        this.uploadPhotoPost(post);
-                    },
+                    Util.stopLoading();
+                    this.uploadPhotoPost(post);
+                },
                     error => {
                         this.showErrorDialog();
                         console.log('Error post-dialog', error);
@@ -228,8 +228,8 @@ export class PostDialogComponent implements OnInit {
         } else {
             Util.loadingScreen();
             this.cdnService.uploadFeedApi(
-                {file: this.file, type: 'image'},
-                {objectType: 'post_image', postId: post.id}
+                { file: this.file, type: 'image' },
+                { objectType: 'post_image', postId: post.id }
             )
                 .pipe(take(1))
                 .subscribe(() => {
@@ -257,7 +257,7 @@ export class PostDialogComponent implements OnInit {
         if (this.isMobile()) {
             window.history.back();
         } else {
-            post.user = this.authService.getUser();
+            post.user = this.getCachedUserUseCase.execute();
             this.dialogRef.close(post);
         }
     }

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { CompetitionMemberService } from '../../../services/competition-member.service';
 import { CompetitionTO } from '../../../models/competitionTO.model';
-import { AuthService } from '../../../services/auth.service';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-list-literary-competition',
@@ -17,7 +18,7 @@ export class ListLiteraryCompetitionComponent implements OnInit {
 
     constructor(
         private competitionMemberService: CompetitionMemberService,
-        private authService: AuthService
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 
@@ -27,7 +28,8 @@ export class ListLiteraryCompetitionComponent implements OnInit {
 
     getCompetitionByProfile() {
         this.loading = true;
-        this.competitionMemberService.getCompetitionByProfile(this.authService.getUser().profile.id, this.page, 12)
+        const user: User = this.getCachedUserUseCase.execute();
+        this.competitionMemberService.getCompetitionByProfile(+user.profile.id, this.page, 12)
             .pipe(take(1))
             .subscribe(result => {
                 this.loading = false;

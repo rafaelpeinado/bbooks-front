@@ -7,8 +7,9 @@ import { GroupMemberService } from '../../../services/group-member.service';
 import { GroupMembers } from '../../../models/GroupMembers.model';
 import { TranslateService } from '@ngx-translate/core';
 import { Role } from '../../../models/enums/Role.enum';
-import { AuthService } from '../../../services/auth.service';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-members-group',
@@ -29,8 +30,8 @@ export class MembersGroupComponent implements OnInit {
         private route: ActivatedRoute,
         private groupMemberService: GroupMemberService,
         private translate: TranslateService,
-        private authService: AuthService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         this.formSearch = this.formBuilder.group({
             search: new FormControl(null)
@@ -54,9 +55,10 @@ export class MembersGroupComponent implements OnInit {
             .pipe(
                 take(1)
             ).subscribe(result => {
+                const user: User = this.getCachedUserUseCase.execute();
                 Util.stopLoading();
                 this.members = result;
-                const member = result.find(m => m.user.id === this.authService.getUser().id);
+                const member = result.find(m => m.user.id === user.id);
                 this.memberGroup = member;
                 if (member) {
                     if (member.role === Role.owner || member.role === Role.admin) {
