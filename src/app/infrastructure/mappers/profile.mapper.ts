@@ -1,7 +1,7 @@
 import { ProfileBuilder } from 'src/app/core/domain/builders/profile.builder';
-import { ProfileTO } from '../dtos/user-dto';
 import { Profile } from 'src/app/core/domain/entities/profile.entity';
 import { Utils } from '../utils/utils';
+import { ProfileTO } from '../dtos/user.dto';
 
 export class ProfileMapper {
     static toEntity(profileTO: ProfileTO): Profile {

@@ -24,7 +24,7 @@ export class MainResolve implements Resolve<UserTO> {
     ): Observable<any> | Promise<any> | any {
         const username = route.params.username;
         let result;
-        result = this.userService.getUserName(username, this.getTokenUseCase.execute<string>())
+        result = this.userService.getUserName(username, this.getTokenUseCase.execute())
             .pipe(
                 map(user => user)
             );

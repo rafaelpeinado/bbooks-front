@@ -57,7 +57,7 @@ export class FriendComponent implements OnInit {
     }
 
     getUser() {
-        this.userService.getUserName(this.userTO.userName, this.getTokenUseCase.execute<string>()).pipe(take(1)).subscribe(userTO => {
+        this.userService.getUserName(this.userTO.userName, this.getTokenUseCase.execute()).pipe(take(1)).subscribe(userTO => {
             this.userTO = userTO;
         });
     }

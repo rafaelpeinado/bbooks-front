@@ -15,7 +15,7 @@ export class SearchMergedBookUseCase implements UseCaseInterface {
     constructor(private bookServiceFactory: BookServiceFactory) { }
 
     execute(filterSearch: FilterSearch): Observable<PaginationInterface<Book>> {
-        const bookRepository = this.bookServiceFactory.getService(ApiType.BBOOKS);
+        const bookRepository = this.bookServiceFactory.create(ApiType.BBOOKS);
         return bookRepository.searchMergedBook(filterSearch);
     }
 }

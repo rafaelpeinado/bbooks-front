@@ -11,8 +11,6 @@ export class UserBuilder extends BuilderImpl<User, UserBuilder> {
     setEmail(email: string): UserBuilder { return this.set('email', email); }
     setPassword(password: string): UserBuilder { return this.set('password', password); }
     setToken(token: string): UserBuilder { return this.set('token', token); }
-    setIdToken(idToken: string): UserBuilder { return this.set('idToken', idToken); }
-    setIdSocial(idSocial: string): UserBuilder { return this.set('idSocial', idSocial); }
     setVerified(verified: boolean): UserBuilder { return this.set('verified', verified); }
     setProfile(profile: Profile): UserBuilder { return this.set('profile', profile); }
 }

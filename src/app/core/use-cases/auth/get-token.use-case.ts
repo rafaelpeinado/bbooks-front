@@ -10,7 +10,7 @@ import { StorageItem } from 'src/app/infrastructure/enums/storage-item.enum';
 export class GetTokenUseCase implements UseCaseInterface {
     constructor(private getCacheUseCase: GetCacheUseCase) { }
 
-    execute<T>(): T {
-        return this.getCacheUseCase.execute<T>(StorageItem.TOKEN, StorageType.LOCAL_STORAGE);
+    execute(): string {
+        return this.getCacheUseCase.execute<string>(StorageItem.TOKEN, StorageType.LOCAL_STORAGE);
     }
 }

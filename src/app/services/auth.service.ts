@@ -1,8 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { FacebookLoginProvider, SocialAuthService } from 'angularx-social-login';
-import { GoogleLoginProvider } from 'angularx-social-login';
+import { SocialAuthService } from 'angularx-social-login';
 import { UserTO } from '../models/userTO.model';
 import { Observable } from 'rxjs';
 
@@ -76,10 +75,6 @@ export class AuthService {
         localStorage.setItem('user', JSON.stringify(user));
     }
 
-    login(loginTO) {
-        return this.http.post(this.api + 'login', loginTO);
-    }
-
     loginToken(loginTO) {
         return this.http.post(this.api + 'login/token', loginTO);
     }
@@ -92,17 +87,10 @@ export class AuthService {
         return this.http.post(this.api + 'reset-pass', dto);
     }
 
-    signInWithGoogle(): void {
-        this.authServiceSocial.signIn(GoogleLoginProvider.PROVIDER_ID);
-    }
-
     signOutGoogle(): void {
         this.authServiceSocial.signOut();
     }
 
-    signInWithFacebook(): void {
-        this.authServiceSocial.signIn(FacebookLoginProvider.PROVIDER_ID);
-    }
     signOutFacebook(): void {
         this.authServiceSocial.signOut();
     }

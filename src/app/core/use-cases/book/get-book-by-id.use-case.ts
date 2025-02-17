@@ -34,7 +34,7 @@ export class GetBookByIdUseCase implements UseCaseApiInterface<ApiType> {
     }
 
     private getBookFromService(bookId: string, api: ApiType): Observable<Book> {
-        const bookRepository = this.bookServiceFactory.getService(api);
+        const bookRepository = this.bookServiceFactory.create(api);
         return bookRepository.getBookById(bookId)
             .pipe(tap((book) => this.addBookToCache(book)));
     }

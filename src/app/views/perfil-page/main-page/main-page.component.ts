@@ -47,7 +47,7 @@ export class MainPageComponent implements OnInit, OnChanges {
     }
 
     getUser() {
-        this.userService.getUserName(this.userTO.userName, this.getTokenUseCase.execute<string>()).subscribe((result) => {
+        this.userService.getUserName(this.userTO.userName, this.getTokenUseCase.execute()).subscribe((result) => {
             this.userTO = result;
         });
     }

@@ -1,14 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormBuilder} from '@angular/forms';
-import {AuthService} from 'src/app/services/auth.service';
-import {Router} from '@angular/router';
-import {SocialAuthService} from 'angularx-social-login';
-import {SocialUser} from 'angularx-social-login';
-import {UserTO} from '../../models/userTO.model';
-import {UserService} from '../../services/user.service';
-import {Profile} from '../../models/profileTO.model';
-import {TranslateService} from '@ngx-translate/core';
-import {Util} from '../../views/shared/Utils/util';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { SocialUser } from 'angularx-social-login';
+import { TranslateService } from '@ngx-translate/core';
+import { Util } from '../../views/shared/Utils/util';
+import { LoginType } from 'src/app/core/domain/enums/login-type.enum';
+import { LoginUseCase } from 'src/app/core/use-cases/auth/login.use-case';
+import { Login } from 'src/app/core/domain/entities/login.entity';
+import { LoginBuilder } from 'src/app/core/domain/builders/login.builder';
+import { LoginMapper } from 'src/app/infrastructure/mappers/login.mapper';
+import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'app-login',
@@ -17,6 +18,7 @@ import {Util} from '../../views/shared/Utils/util';
 })
 export class LoginComponent implements OnInit {
 
+    public loginType = LoginType;
     hide = true;
     loginControl: FormGroup;
     user: SocialUser;
@@ -24,11 +26,9 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private authService: AuthService,
         private router: Router,
-        private authServiceSocial: SocialAuthService,
-        private userService: UserService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private loginUseCase: LoginUseCase,
     ) {
         this.loginControl = this.fb.group({
             email: '',
@@ -40,108 +40,41 @@ export class LoginComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    loginSocial() {
-        this.authServiceSocial.authState.subscribe((user) => {
-            this.user = user;
-            this.loggedIn = (user != null);
-            if (this.loggedIn) {
-                const userTO = new UserTO();
-                userTO.profile = new Profile();
-                userTO.userName = this.user.id;
-                userTO.profile.name = this.user.firstName;
-                userTO.profile.lastName = this.user.lastName;
-                userTO.email = this.user.email;
-                userTO.token = this.user.authToken;
-                userTO.idToken = this.user.idToken;
-                userTO.idSocial = this.user.id;
-                userTO.profile.profileImage = this.user.photoUrl;
-                Util.loadingScreen();
-                this.userService.verifyEmailForSocialLogin(userTO.email).subscribe(
-                    (result: UserTO) => {
-                        if (result?.id) {
-                            const userLogin = {
-                                email: result.email,
-                                token: result.token
-                            };
-                            Util.stopLoading();
-                            this.LoginFinalizeToken(userLogin);
-                        } else {
-                            Util.stopLoading();
-                            this.authService.setUserRegister(userTO);
-                            this.router.navigateByUrl('/cadastro');
-                        }
-                    }, error => {
-                        console.log('error login google', error);
-                    }
-                );
-            }
-
-        });
-    }
-
-    login(): void {
-        this.loginFinalize(this.loginControl.value);
-    }
-
-    loginFinalize(userLogin): void {
+    login(loginType: LoginType): void {
         Util.loadingScreen();
-        this.authService.login(userLogin).subscribe(res => {
-                Util.stopLoading();
-                this.authService.authenticate(res, this.loginControl.value.keepLogin);
-                this.router.navigateByUrl('/feed');
-            },
-            (err) => {
-                if (err.error.message) {
-                    Util.stopLoading();
-                    let codMessage = '';
-                    if (err.error.message.includes('AT001')) {
-                        codMessage = 'AT001';
-                    }
-                    if (codMessage) {
-                        this.translate.get('MESSAGE_ERROR.' + codMessage).subscribe(message => {
-                            Util.showErrorDialog(message);
-                        });
-                    } else {
-                        this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
-                            Util.showErrorDialog(message);
-                        });
-                        console.log('error login', err);
-                    }
-                } else {
-                    this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
-                        Util.showErrorDialog(message);
-                    });
-                }
+        const login: Login = LoginBuilder.builder()
+            .copyFrom(LoginMapper.toEntity(this.loginControl.value))
+            .setLoginType(loginType)
+            .build();
 
-            }
-        );
+        this.loginUseCase.execute(login)
+            .pipe(finalize(() => Util.stopLoading()))
+            .subscribe(
+                () => this.router.navigateByUrl('/feed'),
+                (err) => this.errorLogin(err),
+            );
     }
 
-    LoginFinalizeToken(userLogin): void {
-        Util.loadingScreen();
-        this.authService.loginToken(userLogin).subscribe(res => {
-                Util.stopLoading();
-                this.authService.authenticate(res, this.loginControl.value.keepLogin);
-                this.router.navigateByUrl('/feed');
-            },
-            (err) => {
-                Util.stopLoading();
+    private errorLogin(err): void {
+        if (err.error.message) {
+            let codMessage = '';
+            if (err.error.message.includes('AT001')) {
+                codMessage = 'AT001';
+            }
+            if (codMessage) {
+                this.translate.get('MESSAGE_ERROR.' + codMessage).subscribe(message => {
+                    Util.showErrorDialog(message);
+                });
+            } else {
                 this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
                     Util.showErrorDialog(message);
                 });
-                console.log('error login token', err);
+                console.log('error login', err);
             }
-        );
+        } else {
+            this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
+                Util.showErrorDialog(message);
+            });
+        }
     }
-
-    loginGoogle(): void {
-        this.authService.signInWithGoogle();
-        this.loginSocial();
-    }
-
-    loginFacebook(): void {
-        this.authService.signInWithFacebook();
-        this.loginSocial();
-    }
-
 }

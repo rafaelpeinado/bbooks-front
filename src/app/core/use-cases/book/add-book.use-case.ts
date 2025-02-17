@@ -12,7 +12,7 @@ export class AddBookUseCase implements UseCaseInterface {
     constructor(private bookServiceFactory: BookServiceFactory) { }
 
     execute(book: Book): Observable<Book> {
-        const bookRepository = this.bookServiceFactory.getService(ApiType.BBOOKS);
+        const bookRepository = this.bookServiceFactory.create(ApiType.BBOOKS);
         return bookRepository.addBook(book);
     }
 

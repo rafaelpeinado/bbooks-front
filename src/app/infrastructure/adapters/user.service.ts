@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { UserRepository } from 'src/app/core/repositories/user.repository';
 import { environment } from 'src/environments/environment';
-import { UserTO } from '../dtos/user-dto';
+import { UserTO } from '../dtos/user.dto';
 import { BaseApiService } from './base-service.service';
 import { UserMapper } from '../mappers/user.mapper';
 
@@ -15,9 +15,15 @@ import { UserMapper } from '../mappers/user.mapper';
 export class UserService extends BaseApiService<User, UserTO> implements UserRepository {
 
     private api: string = environment.api + 'users/';
+    private apiGoogle: string = this.api + 'google/';
 
     constructor(protected http: HttpClient) {
         super(http);
+    }
+
+    getUserByEmail(email: string): Observable<User> {
+       const service = this.http.get<UserTO>(this.apiGoogle + email);
+       return this.handleRequestDTOToEntity(service, UserMapper.toEntity);
     }
 
     updateUserInfo(): Observable<User> {

@@ -13,7 +13,7 @@ export class CacheService implements CacheRepository {
     constructor(private storageServiceFactory: StorageServiceFactory) { }
 
     get<T>(storageItem: StorageItem, storageType: StorageType): T | null {
-        const storageRepository = this.storageServiceFactory.getStorage(storageType);
+        const storageRepository = this.storageServiceFactory.create(storageType);
         const item = storageRepository.getItem(storageItem);
         if (!item) {
             return null;
@@ -28,12 +28,12 @@ export class CacheService implements CacheRepository {
     }
 
     set<T>(setCache: SetCache<T>, storageType: StorageType): void {
-        const storageRepository = this.storageServiceFactory.getStorage(storageType);
+        const storageRepository = this.storageServiceFactory.create(storageType);
         storageRepository.setItem(setCache.storageItem, JSON.stringify(setCache.value));
     }
 
     remove(storageItem: StorageItem, storageType: StorageType): void {
-        const storageRepository = this.storageServiceFactory.getStorage(storageType);
+        const storageRepository = this.storageServiceFactory.create(storageType);
         storageRepository.removeItem(storageItem);
     }
 }

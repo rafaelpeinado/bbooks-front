@@ -22,7 +22,7 @@ export class FeedResolve implements Resolve<UserTO> {
         state: RouterStateSnapshot
     ): Observable<any> | Promise<any> | any {
         const username = route.parent.params.username;
-        return this.userService.getUserName(username, this.getTokenUseCase.execute<string>())
+        return this.userService.getUserName(username, this.getTokenUseCase.execute())
             .pipe(
                 map(user => user)
             );

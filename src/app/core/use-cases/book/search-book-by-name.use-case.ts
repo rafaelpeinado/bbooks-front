@@ -12,7 +12,7 @@ export class SearchBookByNameUseCase implements UseCaseInterface {
     constructor(private bookServiceFactory: BookServiceFactory) { }
 
     execute(bookName: string): Observable<Book[]> {
-        const bookRepository = this.bookServiceFactory.getService(ApiType.GOOGLE);
+        const bookRepository = this.bookServiceFactory.create(ApiType.GOOGLE);
         return bookRepository.searchBookByName(bookName);
     }
 

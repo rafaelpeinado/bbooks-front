@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { UserTO } from '../models/userTO.model';
-import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,17 +10,7 @@ import { Observable } from 'rxjs';
 export class UserService {
     api: string = environment.api + 'users/';
 
-    constructor(private http: HttpClient, private auth: AuthService) {
-    }
-
-    updateUserInfo() {
-        this.http.get(this.api + 'info/').subscribe(response => {
-            this.auth.setUser(response);
-        });
-    }
-
-    verifyEmailForSocialLogin(email: string) {
-        return this.http.get(this.api + 'google/' + email);
+    constructor(private http: HttpClient) {
     }
 
     getById(id: string): Observable<UserTO> {

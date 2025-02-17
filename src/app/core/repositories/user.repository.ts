@@ -5,4 +5,5 @@ export abstract class UserRepository {
     abstract getUserById(id: string): Observable<User>;
     abstract registerUser(user: Partial<User>): Observable<User>;
     abstract updateUserInfo(): Observable<User>;
+    abstract getUserByEmail(email: string): Observable<User>;
 }

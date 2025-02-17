@@ -7,8 +7,6 @@ export interface User {
     email: string;
     password: string;
     token: string;
-    idToken: string;
-    idSocial: string;
     verified: boolean;
     profile: Profile;
 }
