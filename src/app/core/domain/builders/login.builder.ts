@@ -10,4 +10,5 @@ export class LoginBuilder extends BuilderImpl<Login, LoginBuilder> {
     setPassword(password: string): LoginBuilder { return this.set('password', password); }
     setLoginType(loginType: LoginType): LoginBuilder { return this.set('loginType', loginType); }
     setKeepLogin(keepLogin: boolean): LoginBuilder { return this.set('keepLogin', keepLogin); }
+    setToken(token: string): LoginBuilder { return this.set('token', token); }
 }

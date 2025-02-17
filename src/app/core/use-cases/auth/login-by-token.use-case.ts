@@ -12,7 +12,7 @@ import { User } from "../../domain/entities/user.entity";
 @Injectable({
     providedIn: 'root'
 })
-export class LoginUseCase implements UseCaseApiInterface<LoginType> {
+export class LoginByTokenUseCase implements UseCaseApiInterface<LoginType> {
     constructor(
         private loginServiceFactory: LoginServiceFactory,
         private createLoginCacheUseCase: CreateLoginCacheUseCase,
@@ -20,13 +20,11 @@ export class LoginUseCase implements UseCaseApiInterface<LoginType> {
     ) { }
 
     execute(login: Login): Observable<User> {
-        const service = this.loginServiceFactory.create(login.loginType);
-        return service.login(login).pipe(
+        const service = this.loginServiceFactory.create(LoginType.BBOOKS);
+        return service.loginByToken(login).pipe(
             map((user) => {
-                if (user?.id) {
-                    this.createLoginCacheUseCase.execute(user, login.loginType);
-                    this.setIsLoggedUseCase.execute(true);
-                }
+                this.createLoginCacheUseCase.execute(user, login.loginType);
+                this.setIsLoggedUseCase.execute(true);
                 return user;
             }),
         );

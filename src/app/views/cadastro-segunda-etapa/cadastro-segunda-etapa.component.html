@@ -46,7 +46,7 @@
     </div>
 
     <div fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center end" fxLayoutGap="10px">
-        <mat-form-field class="inputSegundaEtapa" *ngIf="!userRegister?.profile?.profileImage" appearance="outline">
+        <mat-form-field class="inputSegundaEtapa" *ngIf="!user?.profile?.profileImage" appearance="outline">
             <mat-label>{{'CADASTRO2.FOTO' | translate}}</mat-label>
             <input type="text" matInput id="fotoSegundaEtapa" formControlName="image">
             <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="openDialogUpload()">

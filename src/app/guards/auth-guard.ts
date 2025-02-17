@@ -1,7 +1,9 @@
-import { Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
-import {Observable} from 'rxjs';
-import {AuthService} from '../services/auth.service';
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { GetIsLoggedUseCase } from '../core/use-cases/auth/get-is-logged.use-case';
+import { map } from 'rxjs/operators';
+import { LogoutUseCase } from '../core/use-cases/auth/logout.use-case';
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +11,8 @@ import {AuthService} from '../services/auth.service';
 export class AuthGuard implements CanActivate {
     constructor(
         private router: Router,
-        private authService: AuthService
+        private getIsLoggedUseCase: GetIsLoggedUseCase,
+        private logoutUseCase: LogoutUseCase,
     ) {
     }
 
@@ -17,11 +20,17 @@ export class AuthGuard implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean> | boolean {
-        if (this.authService.isLogged()) {
-            return true;
-        }
-        localStorage.clear();
-        this.router.navigate(['']);
-        return false;
+        return this.getIsLoggedUseCase.execute().pipe(
+            map((isLogged) => {
+                if (!isLogged) {
+                    this.logoutUseCase.execute().subscribe(() => {
+                    this.router.navigate(['']);
+                    return isLogged;
+                });
+                }
+                return isLogged;
+                
+            })
+        );
     }
 }

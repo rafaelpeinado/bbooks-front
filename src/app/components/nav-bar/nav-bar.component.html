@@ -1,12 +1,13 @@
 <mat-toolbar color="primary" style="padding: 0 8px;">
     <span routerLink="{{isLogged ? '/feed' : ''}}">
-        <img class="iconbbooks"src="assets/images/logobboks.png">
+        <img class="iconbbooks" src="assets/images/logobboks.png">
     </span>
     <span class="example-spacer"></span>
     <button *ngIf="isLogged" mat-flat-button color="primary" style="width: 5vw;" routerLink="/book">
         <mat-icon>menu_book</mat-icon>
     </button>
-    <button  *ngIf="isLogged" mat-flat-button color="primary" style="width: 5vw;"  [routerLink]="['/literary-competition']">
+    <button *ngIf="isLogged" mat-flat-button color="primary" style="width: 5vw;"
+        [routerLink]="['/literary-competition']">
         <mat-icon>emoji_events</mat-icon>
     </button>
     <button *ngIf="isLogged" mat-flat-button color="primary" style="width: 5vw;" [routerLink]="['/exchange']">
@@ -16,12 +17,14 @@
         {{'PADRAO.ENTRAR' | translate}}
     </button>
     <div *ngIf="isLogged">
-        <button  mat-flat-button color="primary">
-            <mat-icon [matBadge]="requests?.length || invitesGroup?.length ? verifyRequests() : ''" matBadgeColor="warn" [matMenuTriggerFor]="menuNofify">add_alert</mat-icon>
+        <button mat-flat-button color="primary">
+            <mat-icon [matBadge]="requests?.length || invitesGroup?.length ? verifyRequests() : ''" matBadgeColor="warn"
+                [matMenuTriggerFor]="menuNofify">add_alert</mat-icon>
         </button>
-        <mat-menu  #menuNofify="matMenu">
+        <mat-menu #menuNofify="matMenu">
             <div *ngIf="requests?.length === 0 && invitesGroup?.length === 0 && recommendations?.length === 0">
-                <app-empty-content-message message="{{'NAV.NOT_NOTITIFCATION' | translate}}"></app-empty-content-message>
+                <app-empty-content-message
+                    message="{{'NAV.NOT_NOTITIFCATION' | translate}}"></app-empty-content-message>
             </div>
             <div class="container-lista-amigos">
                 <div class="titulo-notificacao" *ngIf="invitesGroup?.length > 0">
@@ -32,18 +35,20 @@
                     <div class="container-imagem">
                         <div>
                             <img class="imagem-perfil-notificacao"
-                                 [src]="(r?.inviterUser | async)?.profile?.profileImage ? (r?.inviterUser | async)?.profile?.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'" alt="imagem de perfil"/>
+                                [src]="(r?.inviterUser | async)?.profile?.profileImage ? (r?.inviterUser | async)?.profile?.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
+                                alt="imagem de perfil" />
                         </div>
                         <div class="informacoes">
 
-                            <p>{{(r?.inviterUser | async)?.profile?.name}} {{(r?.inviterUser | async)?.profile?.lastName}} {{'NAV.CONVITE_GRUPO' | translate}}: {{r.group.name}}</p>
+                            <p>{{(r?.inviterUser | async)?.profile?.name}} {{(r?.inviterUser |
+                                async)?.profile?.lastName}} {{'NAV.CONVITE_GRUPO' | translate}}: {{r.group.name}}</p>
                         </div>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
-                        <button  mat-flat-button color="warn" (click)="refuseInviteGroup(r.id)">
+                        <button mat-flat-button color="warn" (click)="refuseInviteGroup(r.id)">
                             <mat-icon>clear</mat-icon>
                         </button>
-                        <button  mat-flat-button color="accent" (click)="acceptInviteGroup(r.id)">
+                        <button mat-flat-button color="accent" (click)="acceptInviteGroup(r.id)">
                             <mat-icon>done</mat-icon>
                         </button>
                     </div>
@@ -57,15 +62,18 @@
                 </div>
                 <!--começa card-->
                 <div class="container-amigo" *ngFor="let r of recommendations">
-                    <div class="container-imagem" [routerLink]="['/books/', (r?.book | async)?.id]" [queryParams]="routerRecommendation(r?.idBookGoogle)">
+                    <div class="container-imagem" [routerLink]="['/books/', (r?.book | async)?.id]"
+                        [queryParams]="routerRecommendation(r?.idBookGoogle)">
                         <div>
                             <img class="imagem-perfil-notificacao"
-                            [src]="(r?.profileTO | async)?.profileImage ? (r?.profileTO | async)?.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'" alt="imagem de perfil"/>
+                                [src]="(r?.profileTO | async)?.profileImage ? (r?.profileTO | async)?.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
+                                alt="imagem de perfil" />
                         </div>
                         <div class="informacoes">
-<!--                             <div><span><a class="nome-usuario" [routerLink]="['', user.userName]">{{user?.profile?.name}} {{user?.profile?.lastName}}</a></span></div>
+                            <!--                             <div><span><a class="nome-usuario" [routerLink]="['', user.userName]">{{user?.profile?.name}} {{user?.profile?.lastName}}</a></span></div>
                             <div><span>Rafael Peinado</span></div> -->
-                            <p>{{(r?.profileTO | async)?.name}} {{(r?.profileTO | async)?.lastName}} {{'NAV.INDICOU' | translate}} {{(r?.book | async)?.title}}</p>
+                            <p>{{(r?.profileTO | async)?.name}} {{(r?.profileTO | async)?.lastName}} {{'NAV.INDICOU' |
+                                translate}} {{(r?.book | async)?.title}}</p>
                         </div>
                     </div>
                     <mat-divider></mat-divider>
@@ -74,18 +82,20 @@
             <div fxLayout="row" fxLayoutAlign="center center" *ngIf="requestsReceived()?.length > 0">
                 <p><b>{{'PADRAO.SOLICITACOES_RECEBIDAS' | translate}}</b></p>
             </div>
-            <div *ngFor="let request of requestsReceived()" >
-                <div mat-menu-item style="height: 120px" *ngIf="request.profileTO.id" >
+            <div *ngFor="let request of requestsReceived()">
+                <div mat-menu-item style="height: 120px" *ngIf="request.profileTO.id">
                     <div fxLayout="row" [routerLink]="['', request?.profileTO.username]">
-                        <img class="imagem-perfil" [src]="request?.profileTO?.profileImage ? request.profileTO.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'" alt="imagem de perfil"/>
+                        <img class="imagem-perfil"
+                            [src]="request?.profileTO?.profileImage ? request.profileTO.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
+                            alt="imagem de perfil" />
 
                         <span> {{this.request.profileTO?.name}} {{this.request.profileTO?.lastName}}</span>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="5px">
-                        <button  mat-flat-button color="warn" (click)="deleteRequest(request)">
+                        <button mat-flat-button color="warn" (click)="deleteRequest(request)">
                             <mat-icon>clear</mat-icon>
                         </button>
-                        <button  mat-flat-button color="accent" (click)="aceptRequest(request)">
+                        <button mat-flat-button color="accent" (click)="aceptRequest(request)">
                             <mat-icon>done</mat-icon>
                         </button>
                     </div>
@@ -94,16 +104,18 @@
             <div fxLayout="row" fxLayoutAlign="center center" *ngIf="requestsSent()?.length > 0">
                 <p><b>{{'PADRAO.SOLICITACOES_ENVIADAS' | translate}}</b></p>
             </div>
-            <div *ngFor="let request of requestsSent()" >
-                <div mat-menu-item style="height: 120px" *ngIf="request.profileTO.id" >
+            <div *ngFor="let request of requestsSent()">
+                <div mat-menu-item style="height: 120px" *ngIf="request.profileTO.id">
 
                     <div fxLayout="row" [routerLink]="['', request?.profileTO.username]">
-                        <img class="imagem-perfil" [src]="request?.profileTO?.profileImage ? request.profileTO.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'" alt="imagem de perfil"/>
+                        <img class="imagem-perfil"
+                            [src]="request?.profileTO?.profileImage ? request.profileTO.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
+                            alt="imagem de perfil" />
 
                         <span> {{this.request.profileTO?.name}} {{this.request.profileTO?.lastName}}</span>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="5px">
-                        <button  mat-flat-button color="warn" (click)="deleteRequest(request)">
+                        <button mat-flat-button color="warn" (click)="deleteRequest(request)">
                             <mat-icon>clear</mat-icon>
                             {{'PADRAO.CANCELAR' | translate}}
                         </button>
@@ -114,19 +126,21 @@
     </div>
 
     <div *ngIf="isLogged">
-        <button  mat-flat-button color="primary" style="width: 5vw;" [routerLink]="['/search']">
+        <button mat-flat-button color="primary" style="width: 5vw;" [routerLink]="['/search']">
             <mat-icon>search</mat-icon>
         </button>
 
-        <button  mat-flat-button color="primary" style="width: 5vw;"  [matMenuTriggerFor]="menuPerfil">
+        <button mat-flat-button color="primary" style="width: 5vw;" [matMenuTriggerFor]="menuPerfil">
             <mat-icon>account_circle</mat-icon>
         </button>
         <mat-menu #menuPerfil="matMenu">
-            <div mat-menu-item >
-                <div fxLayout="row" [routerLink]="['', user?.userName]">
-                    <img class="imagem-perfil" [src]="user?.profile?.profileImage ? user.profile.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'" alt="imagem de perfil"/>
+            <div mat-menu-item>
+                <div fxLayout="row" [routerLink]="['', user?.profile?.username]">
+                    <img class="imagem-perfil"
+                        [src]="user?.profile?.profileImage ? user.profile.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
+                        alt="imagem de perfil" />
 
-                    <span> {{this.user?.userName}}</span>
+                    <span> {{user?.profile?.username}}</span>
                 </div>
             </div>
 
@@ -139,11 +153,11 @@
                 <mat-icon>donut_large</mat-icon>
                 <span>{{'PADRAO.ANDAMENTO_META' | translate}}</span>
             </div>
-            <div mat-menu-item  [routerLink]="['/perfil-publico/' + publicProfileId]">
+            <div mat-menu-item [routerLink]="['/perfil-publico/' + publicProfileId]">
                 <mat-icon>verified</mat-icon>
                 <span>{{'PERFIL_PUBLICO.PERFIL_PUBLICO' | translate}}</span>
             </div>
-            <div mat-menu-item  [routerLink]="['/time-line']">
+            <div mat-menu-item [routerLink]="['/time-line']">
                 <mat-icon>timeline</mat-icon>
                 <span>{{'PADRAO.TIME_LINE' | translate}}</span>
             </div>
@@ -154,8 +168,8 @@
             </div>
 
             <mat-menu #languages="matMenu">
-                    <button mat-menu-item (click)="switchLang('pt-BR')">{{'NAV.PORTUGUES' | translate}}</button>
-                    <button mat-menu-item (click)="switchLang('en')">{{'NAV.INGLES' | translate}}</button>
+                <button mat-menu-item (click)="switchLang('pt-BR')">{{'NAV.PORTUGUES' | translate}}</button>
+                <button mat-menu-item (click)="switchLang('en')">{{'NAV.INGLES' | translate}}</button>
             </mat-menu>
             <div mat-menu-item (click)="logout()">
                 <mat-icon>login</mat-icon>

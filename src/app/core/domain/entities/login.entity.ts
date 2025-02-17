@@ -5,4 +5,5 @@ export interface Login {
     password: string;
     loginType: LoginType;
     keepLogin: boolean;
+    token: string;
 }

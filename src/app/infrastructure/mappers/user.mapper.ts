@@ -10,7 +10,8 @@ export class UserMapper {
         if (userTO.id) { builder.setId(userTO.id); }
         if (userTO.email) { builder.setEmail(userTO.email); }
         if (userTO.token) { builder.setToken(userTO.token); }
-        if (userTO.verified !== undefined) { builder.setVerified(userTO.verified); }
+        if (userTO.verified) { builder.setVerified(userTO.verified); }
+        if (userTO.idSocial) { builder.setIdSocial(userTO.idSocial); }
 
         if (userTO.profile) {
             builder

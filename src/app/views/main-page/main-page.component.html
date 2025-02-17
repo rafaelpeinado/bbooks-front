@@ -1,4 +1,4 @@
-<div class="container-geral" *ngIf="user && isCompleted">
+<div class="container-geral" *ngIf="isLogged && isCompleted">
     <form [formGroup]="searchControl" class="form-inline mr-auto" (ngSubmit)="searchBook()">
         <div class="container-pesquisar">
             <mat-form-field class="barra-pesquisar" appearance="outline">
@@ -24,7 +24,7 @@
     </div>
 </div>
 
-<div class="container-pagina-inicial" *ngIf="!user && isCompleted">
+<div class="container-pagina-inicial" *ngIf="!isLogged && isCompleted">
     <div class="primeiro">
         <form [formGroup]="searchControl" class="form-inline mr-auto" (ngSubmit)="searchBook()">
             <div class="container-pesquisar">

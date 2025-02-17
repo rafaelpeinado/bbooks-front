@@ -7,9 +7,7 @@ import { SearchMergedBookUseCase } from 'src/app/core/use-cases/book/search-merg
 import { FilterSearch } from 'src/app/core/domain/interfaces/filter-search.interface';
 import { Book } from 'src/app/core/domain/entities/book.entity';
 import { User } from 'src/app/core/domain/entities/user.entity';
-import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
-import { UpdateUserInfoUseCase } from 'src/app/core/use-cases/user/update-user-info.use-case';
-import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case';
+import { GetIsLoggedUseCase } from 'src/app/core/use-cases/auth/get-is-logged.use-case';
 
 @Component({
     selector: 'app-main-page',
@@ -19,6 +17,8 @@ import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case'
 export class MainPageComponent implements OnInit, OnDestroy {
     public user: User;
     public isCompleted = false;
+    public isLogged: boolean = false;
+    private isLoggedSubscription: Subscription;
     searchControl;
     books: Book[];
     deviceXs: boolean;
@@ -30,10 +30,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
     constructor(
         private fb: FormBuilder,
         private searchMergedBookUseCase: SearchMergedBookUseCase,
-        private getCachedUserUseCase: GetCachedUserUseCase,
-        private updateUserInfoUseCase: UpdateUserInfoUseCase,
-        private getTokenUseCase: GetTokenUseCase,
         private mediaObserver: MediaObserver,
+        private getIsLoggedUseCase: GetIsLoggedUseCase,
 
     ) {
         this.searchControl = this.fb.group({
@@ -45,17 +43,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        const cachedUser = this.getCachedUserUseCase.execute();
-        const token = this.getTokenUseCase.execute();
-        if (!cachedUser && token) {
-            this.updateUserInfoUseCase.execute().subscribe(() => {
-                this.user = this.getCachedUserUseCase.execute();
+        this.isLoggedSubscription = this.getIsLoggedUseCase.execute()
+            .subscribe((isLogged) => {
+                this.isLogged = isLogged;
                 this.isCompleted = true;
             });
-        } else {
-            this.user = cachedUser;
-            this.isCompleted = true;
-        }
 
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
             this.deviceXs = result[0].mqAlias === 'xs';
@@ -86,7 +78,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.mediaSub.unsubscribe();
+        this.mediaSub?.unsubscribe();
+        this.isLoggedSubscription?.unsubscribe();
     }
 
     resetBooks(): void {

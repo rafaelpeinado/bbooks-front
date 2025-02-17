@@ -19,11 +19,12 @@ export class UpdateUserInfoUseCase implements UseCaseInterface {
         private setCacheUseCase: SetCacheUseCase,
     ) { }
 
-    execute(): Observable<void> {
+    execute(): Observable<User> {
         return this.userService.updateUserInfo().pipe(
             map((user) => {
                 const setCache: SetCache<User> = { value: user, storageItem: StorageItem.USER };
-                return this.setCacheUseCase.execute<User>(setCache, StorageType.LOCAL_STORAGE);
+                this.setCacheUseCase.execute<User>(setCache, StorageType.LOCAL_STORAGE);
+                return user;
             })
         );
     }

@@ -146,3 +146,5 @@
       <button type="button" mat-raised-button color="primary" (click)="cadastrar()" [disabled]="cadastroControl.invalid">{{'CADASTRO1.PROXIMO' | translate}}</button>
     </div>
   </form>
+
+  {{ cadastroControl.value | json }}

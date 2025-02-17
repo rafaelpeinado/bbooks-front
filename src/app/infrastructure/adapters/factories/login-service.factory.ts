@@ -18,7 +18,7 @@ export class LoginServiceFactory extends FactoryApi<AuthRepository> {
     }
 
     public create(loginType: LoginType): AuthRepository {
-        if (loginType === LoginType.BBOOKS) {
+        if (loginType === LoginType.BBOOKS || !loginType) {
             return this.authService;
         }
         return this.authSocialService;

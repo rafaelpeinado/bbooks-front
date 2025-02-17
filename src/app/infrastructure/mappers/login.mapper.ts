@@ -9,6 +9,7 @@ export class LoginMapper {
 
         if (loginTO.email) { builder.setEmail(loginTO.email); }
         if (loginTO.password) { builder.setPassword(loginTO.password); }
+        if (loginTO.token) { builder.setToken(loginTO.token); }
         builder.setKeepLogin(true);
 
         return builder.build();
@@ -17,6 +18,7 @@ export class LoginMapper {
     static toDTO(login: Login): LoginTO {
         const loginTO: LoginTO = {
             email: login.email,
+            token: login.token,
             password: login.password,
             keepLogin: login.keepLogin,
         };

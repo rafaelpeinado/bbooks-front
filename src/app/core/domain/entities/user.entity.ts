@@ -9,5 +9,6 @@ export interface User {
     token: string;
     verified: boolean;
     profile: Profile;
+    idSocial: string;
 }
 

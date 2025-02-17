@@ -1,5 +1,5 @@
 export enum LoginType {
-    GOOGLE,
-    FACEBOOK,
-    BBOOKS,
+    GOOGLE = 'GOOGLE',
+    FACEBOOK = 'FACEBOOK',
+    BBOOKS = 'BBOOKS',
 }

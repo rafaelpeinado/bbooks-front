@@ -4,7 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConsultaCepService } from '../../services/consulta-cep.service';
 import { Observable } from 'rxjs';
-import { map, startWith, take } from 'rxjs/operators';
+import { finalize, map, startWith, take } from 'rxjs/operators';
 import { Country } from '../../models/country.model';
 import { State } from '../../models/state.model';
 import { City } from '../../models/city.model';
@@ -16,6 +16,12 @@ import { DateAdapter } from '@angular/material/core';
 import { Profile } from '../../models/profileTO.model';
 import { Util } from '../shared/Utils/util';
 import { TranslateService } from '@ngx-translate/core';
+import { ClearCacheUseCase } from 'src/app/core/use-cases/auth/clear-cache.use-case';
+import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { Login } from 'src/app/core/domain/entities/login.entity';
+import { LoginBuilder } from 'src/app/core/domain/builders/login.builder';
+import { LoginByTokenUseCase } from 'src/app/core/use-cases/auth/login-by-token.use-case';
 
 @Component({
     selector: 'app-cadastro-segunda-etapa',
@@ -29,12 +35,8 @@ export class CadastroSegundaEtapaComponent implements OnInit {
     public states: State[];
     public profileTo: Profile;
     dataAtual = new Date();
-    public userRegister: any;
+    public user: User;
 
-    userLogin = {
-        email: this.auth.getUserRegister().email,
-        token: this.auth.getUserRegister().token
-    };
     maxSize = 3579139;
     file;
 
@@ -49,7 +51,10 @@ export class CadastroSegundaEtapaComponent implements OnInit {
         private cdnService: CDNService,
         public dialog: MatDialog,
         private adapter: DateAdapter<any>,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private clearCacheUseCase: ClearCacheUseCase,
+        private getCachedUserUseCase: GetCachedUserUseCase,
+        private loginByTokenUseCase: LoginByTokenUseCase,
     ) {
         const browserLang = this.translate.getBrowserLang().toString();
         this.adapter.setLocale(browserLang);
@@ -59,7 +64,7 @@ export class CadastroSegundaEtapaComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.userRegister = this.auth.getUserRegister();
+        this.user = this.getCachedUserUseCase.execute();
         this.createForm();
         this.consultaCepService.getCountry().subscribe(result => {
             this.countrys = result;
@@ -155,9 +160,8 @@ export class CadastroSegundaEtapaComponent implements OnInit {
     }
 
     loginRegister() {
-
-        this.formCadastro2.get('id').setValue(this.auth.getUserRegister().profile.id);
-        if (this.auth.getUserRegister().profile.profileImage) {
+        this.formCadastro2.get('id').setValue(this.user.profile.id);
+        if (this.user.profile.profileImage) {
             this.getByIdToUpdateProfile();
         } else {
             if (this.file) {
@@ -171,7 +175,7 @@ export class CadastroSegundaEtapaComponent implements OnInit {
                     error => {
                         Util.stopLoading();
                         console.log('error upload', error);
-                        localStorage.clear();
+                        this.clearCacheUseCase.execute();
                     });
             } else {
                 this.getByIdToUpdateProfile();
@@ -182,7 +186,7 @@ export class CadastroSegundaEtapaComponent implements OnInit {
 
     getByIdToUpdateProfile(): void {
         Util.loadingScreen();
-        this.profileService.getById(this.auth.getUserRegister().profile.id).pipe(take(1)).subscribe((profile: Profile) => {
+        this.profileService.getById(+this.user.profile.id).pipe(take(1)).subscribe((profile: Profile) => {
             Util.stopLoading();
             this.profileTo = profile;
             this.updateProfileTo();
@@ -200,25 +204,26 @@ export class CadastroSegundaEtapaComponent implements OnInit {
             error => {
                 Util.stopLoading();
                 console.log('error update profile', error);
-                localStorage.clear();
+                this.clearCacheUseCase.execute();
             }
         );
     }
 
     login(): void {
         Util.loadingScreen();
-        this.auth.loginToken(this.userLogin).pipe(take(1)).subscribe(res => {
-            Util.stopLoading();
-            localStorage.clear();
-            this.auth.authenticate(res, true);
-            this.router.navigate(['/feed']);
-        },
-            (err) => {
-                Util.stopLoading();
-                Util.showErrorDialog(err.error.message);
-                localStorage.clear();
-            }
-        );
+        const login: Login = LoginBuilder.builder()
+            .setEmail(this.user.email)
+            .setToken(this.user.token)
+            .build();
+        this.loginByTokenUseCase.execute(login)
+            .pipe(finalize(() => Util.stopLoading()))
+            .subscribe(
+                () => this.router.navigate(['/feed']),
+                (err) => {
+                    Util.showErrorDialog(err.error.message);
+                    this.clearCacheUseCase.execute();
+                }
+            );
     }
 
     consultaCep() {
