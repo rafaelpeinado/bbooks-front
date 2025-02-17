@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CompetitionTO } from '../../../models/competitionTO.model';
-import { AuthService } from '../../../services/auth.service';
 import { CompetitionService } from '../../../services/competition.service';
 import { map, take } from 'rxjs/operators';
 import { Util } from '../../shared/Utils/util';
@@ -10,6 +9,7 @@ import { DateAdapter } from '@angular/material/core';
 import { TranslateService } from '@ngx-translate/core';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
+import { TemporaryService } from 'src/app/services/temporary.service';
 
 @Component({
     selector: 'app-create-literary-competition',
@@ -24,17 +24,17 @@ export class CreateLiteraryCompetitionComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private authService: AuthService,
         private competitionService: CompetitionService,
         private router: Router,
         private route: ActivatedRoute,
         private adapter: DateAdapter<any>,
         private translate: TranslateService,
         private getCachedUserUseCase: GetCachedUserUseCase,
+        private temporaryService: TemporaryService,
     ) {
         const browserLang = this.translate.getBrowserLang().toString();
         this.adapter.setLocale(browserLang);
-        this.authService.language.subscribe(lang => {
+        this.temporaryService.language.subscribe(lang => {
             this.adapter.setLocale(lang);
         });
     }

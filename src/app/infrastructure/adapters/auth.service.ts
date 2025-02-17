@@ -10,6 +10,7 @@ import { LoginMapper } from "../mappers/login.mapper";
 import { BaseApiService } from "./base-service.service";
 import { UserMapper } from "../mappers/user.mapper";
 import { UserTO } from "../dtos/user.dto";
+import { first } from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
@@ -19,10 +20,31 @@ export class AuthApiService extends BaseApiService<User, UserTO> implements Auth
     private isLogged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
     private api = environment.api + 'auth/';
     private apiLogin = this.api + 'login/';
+    private apiLoginGoogle = this.apiLogin + 'google/'
     private apiToken = this.apiLogin + 'token';
+    private apiResetPass = this.api + 'reset-pass/';
 
     constructor(protected http: HttpClient) {
         super(http);
+    }
+
+    changePassword(login: Login): Observable<User> {
+        const service = this.http.put<UserTO>(this.apiResetPass, login);
+        return this.handleRequestDTOToEntity(service, UserMapper.toEntity);
+    }
+
+    sendEmailResetPassword(input: { email: string; url: string }): Observable<string> {
+        return this.http.post<string>(this.api + 'reset-pass', input).pipe(first());
+    }
+
+    loginByGoogle(user: User): Observable<User> {
+        const service = this.http.post<UserTO>(this.apiLoginGoogle, user);
+        return this.handleRequestDTOToEntity(service, UserMapper.toEntity);
+    }
+
+    getUserByPasswordToken(token: string): Observable<User> {
+        const service = this.http.get<UserTO>(this.apiResetPass + token);
+        return this.handleRequestDTOToEntity(service, UserMapper.toEntity);
     }
 
     loginByToken(login: Login): Observable<User> {

@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../services/user.service';
 import { map, take } from 'rxjs/operators';
@@ -23,6 +22,7 @@ import { GetIsLoggedUseCase } from 'src/app/core/use-cases/auth/get-is-logged.us
 import { Subscription } from 'rxjs';
 import { UpdateUserInfoUseCase } from 'src/app/core/use-cases/user/update-user-info.use-case';
 import { UserMapper } from 'src/app/infrastructure/mappers/user.mapper';
+import { TemporaryService } from 'src/app/services/temporary.service';
 
 @Component({
     selector: 'app-nav-bar',
@@ -42,7 +42,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
     timer;
     constructor(
         private getBookByIdUseCase: GetBookByIdUseCase,
-        private auth: AuthService,
         private router: Router,
         public translate: TranslateService,
         private userService: UserService,
@@ -55,6 +54,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         private logoutUseCase: LogoutUseCase,
         private getIsLoggedUseCase: GetIsLoggedUseCase,
         private updateUserInfoUseCase: UpdateUserInfoUseCase,
+        private temporaryService: TemporaryService,
     ) {
         translate.addLangs(['pt-BR', 'en']);
         translate.setDefaultLang('pt-BR');
@@ -133,7 +133,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
     switchLang(lang: string): void {
         this.translate.use(lang);
-        this.auth.language.emit(lang);
+        this.temporaryService.language.emit(lang);
     }
 
     logout() {

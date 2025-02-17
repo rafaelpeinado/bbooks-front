@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserTO } from '../../models/userTO.model';
 import { MyErrorStateMatcher } from '../cadastro/cadastro.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Util } from '../shared/Utils/util';
+import { GetUserByPasswordTokenUseCase } from 'src/app/core/use-cases/auth/get-user-by-password-token.use-case';
+import { switchMap } from 'rxjs/operators';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { ChangePasswordUseCase } from 'src/app/core/use-cases/auth/change-password.use-case';
+import { LoginBuilder } from 'src/app/core/domain/builders/login.builder';
+import { Login } from 'src/app/core/domain/entities/login.entity';
 
 
 @Component({
@@ -18,29 +22,26 @@ export class NovaSenhaComponent implements OnInit {
     hide = true;
     matcher = new MyErrorStateMatcher();
     newPassword: FormGroup;
-    user: UserTO;
+    user: User;
 
     constructor(
         private fb: FormBuilder,
-        private authService: AuthService,
         private route: ActivatedRoute,
         private router: Router,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private getUserByPasswordTokenUseCase: GetUserByPasswordTokenUseCase,
+        private changePasswordUseCase: ChangePasswordUseCase,
     ) {
     }
 
     ngOnInit(): void {
         this.createForm();
-        this.route.params.subscribe((result) => {
-            const token = result.token;
-            this.authService.getByToken(token).subscribe(
-                user => {
-                    this.user = user;
-                    this.createForm();
-                }
-            );
+        this.route.params.pipe(
+            switchMap((result) => this.getUserByPasswordTokenUseCase.execute(result?.token))
+        ).subscribe((user) => {
+            this.user = user;
+            this.createForm();
         });
-
     }
 
     createForm() {
@@ -67,17 +68,17 @@ export class NovaSenhaComponent implements OnInit {
     }
 
     resetPassword() {
-        const resetPass = {
-            token: this.user.token,
-            password: this.newPassword.get('password').value
-        };
-        this.authService.resetPass(resetPass).subscribe(value => {
-            this.translate.get('PADRAO.SENHA_ALTERADA').subscribe(message => {
-                Util.showErrorDialog(message);
+        const login: Login = LoginBuilder.builder()
+            .setToken(this.user.token)
+            .setPassword(this.newPassword.get('password').value)
+            .build();
+        this.changePasswordUseCase.execute(login).pipe(
+            switchMap(() => this.translate.get('PADRAO.SENHA_ALTERADA'))).subscribe((message) => {
+                Util.showSuccessDialog(message);
+                this.router.navigate(['/']);
+            }, (error) => {
+                console.log('error reset pass', error);
             });
-            this.router.navigate(['/']);
-        }, error => {
-            console.log('error reset pass', error);
-        });
+
     }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConsultaCepService } from '../../services/consulta-cep.service';
 import { Observable } from 'rxjs';
@@ -22,6 +21,7 @@ import { User } from 'src/app/core/domain/entities/user.entity';
 import { Login } from 'src/app/core/domain/entities/login.entity';
 import { LoginBuilder } from 'src/app/core/domain/builders/login.builder';
 import { LoginByTokenUseCase } from 'src/app/core/use-cases/auth/login-by-token.use-case';
+import { TemporaryService } from 'src/app/services/temporary.service';
 
 @Component({
     selector: 'app-cadastro-segunda-etapa',
@@ -44,7 +44,6 @@ export class CadastroSegundaEtapaComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private auth: AuthService,
         private formBuilder: FormBuilder,
         private consultaCepService: ConsultaCepService,
         private profileService: ProfileService,
@@ -55,10 +54,11 @@ export class CadastroSegundaEtapaComponent implements OnInit {
         private clearCacheUseCase: ClearCacheUseCase,
         private getCachedUserUseCase: GetCachedUserUseCase,
         private loginByTokenUseCase: LoginByTokenUseCase,
+        private temporaryService: TemporaryService,
     ) {
         const browserLang = this.translate.getBrowserLang().toString();
         this.adapter.setLocale(browserLang);
-        this.auth.language.subscribe(lang => {
+        this.temporaryService.language.subscribe(lang => {
             this.adapter.setLocale(lang);
         });
     }

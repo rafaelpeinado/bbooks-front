@@ -9,7 +9,6 @@ import {
     mapBookStatus,
     mapBookStatusEnglish
 } from '../../../models/enums/BookStatus.enum';
-import { AuthService } from '../../../services/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, zip } from 'rxjs';
 import { Util } from '../Utils/util';
@@ -22,6 +21,7 @@ import { GetAllTagsByProfileIdTagUseCase } from 'src/app/core/use-cases/tag/get-
 import { GetAllTagsByUserBookIdUseCase } from 'src/app/core/use-cases/tag/get-all-tags-by-user-book-id.use-case';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
+import { TemporaryService } from 'src/app/services/temporary.service';
 
 @Component({
     selector: 'app-book-add-dialog',
@@ -49,7 +49,6 @@ export class BookAddDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: { book: Book },
         public dialogRef: MatDialogRef<BookAddDialogComponent>,
         private formBuilder: FormBuilder,
-        private authService: AuthService,
         private adapter: DateAdapter<any>,
         private translate: TranslateService,
         private createUserBookUseCase: CreateUserBookUseCase,
@@ -57,6 +56,7 @@ export class BookAddDialogComponent implements OnInit {
         private getAllTagsByProfileIdTagUseCase: GetAllTagsByProfileIdTagUseCase,
         private getAllTagsByUserBookIdUseCase: GetAllTagsByUserBookIdUseCase,
         private getCachedUserUseCase: GetCachedUserUseCase,
+        private temporaryService: TemporaryService,
     ) {
         this.Book = data.book;
         this.tagsBook = [];
@@ -77,7 +77,7 @@ export class BookAddDialogComponent implements OnInit {
 
         const browserLang = this.translate.getBrowserLang().toString();
         this.adapter.setLocale(browserLang);
-        this.authService.language.subscribe(lang => {
+        this.temporaryService.language.subscribe(lang => {
             this.adapter.setLocale(lang);
         });
     }

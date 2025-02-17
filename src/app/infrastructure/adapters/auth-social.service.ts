@@ -18,7 +18,23 @@ export class AuthSocialService implements AuthRepository {
         private authServiceSocial: SocialAuthService,
         private userService: UserService,
     ) { }
-    
+
+    loginByGoogle(user: User): Observable<User> {
+        throw new Error("Method not implemented.");
+    }
+
+    changePassword(login: Login): Observable<User> {
+        throw new Error("Method not implemented.");
+    }
+
+    sendEmailResetPassword(input: { email: string; url: string }): Observable<string> {
+        throw new Error("Method not implemented.");
+    }
+
+    getUserByPasswordToken(token: string): Observable<User> {
+        throw new Error("Method not implemented.");
+    }
+
     loginByToken(login: Login): Observable<User> {
         throw new Error("Method not implemented.");
     }
@@ -30,7 +46,7 @@ export class AuthSocialService implements AuthRepository {
     setIsLogged(isLogged: boolean): void {
         throw new Error("Method not implemented.");
     }
-    
+
 
     logout(): Observable<void> {
         return this.authServiceSocial.authState.pipe(
