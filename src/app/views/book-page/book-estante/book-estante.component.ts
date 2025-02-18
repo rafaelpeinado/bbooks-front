@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
+import { TemporaryService } from 'src/app/services/temporary.service';
 
 
 @Component({
@@ -49,6 +50,7 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
         public mediaObserver: MediaObserver,
         private router: Router,
         private translate: TranslateService,
+        private temporaryService: TemporaryService,
         private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
     ) { }
 
@@ -61,7 +63,7 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
         this.inscricao = this.route.data.subscribe((data: { bookcase: Bookcase }) => {
             this.bookcase = data.bookcase;
         });
-        this.bookService.updateListCarrousel.subscribe(updated => {
+        this.temporaryService.updateListCarrousel.subscribe(updated => {
             if (updated) {
                 const myBook = this.router.url.toString().includes('mybooks');
                 if (myBook) {

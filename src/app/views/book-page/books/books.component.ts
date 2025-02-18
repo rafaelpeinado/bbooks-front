@@ -3,6 +3,7 @@ import { BookService } from '../../../services/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
+import { TemporaryService } from 'src/app/services/temporary.service';
 
 @Component({
     selector: 'app-books',
@@ -16,7 +17,8 @@ export class BooksComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private bookService: BookService,
-        private router: Router
+        private router: Router,
+        private temporaryService: TemporaryService,
     ) {
     }
 
@@ -25,7 +27,7 @@ export class BooksComponent implements OnInit, OnDestroy {
             this.bookcases = data.bookcases;
         });
 
-        this.bookService.updateListCarrousel.subscribe(updated => {
+        this.temporaryService.updateListCarrousel.subscribe(updated => {
             if (updated) {
                 const myBook = this.router.url.toString().includes('mybooks');
                 if (myBook) {

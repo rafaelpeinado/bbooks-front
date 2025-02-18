@@ -9,11 +9,12 @@ import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material
 import { MatChipInputEvent } from '@angular/material/chips';
 import { map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { UserTO } from '../../../models/userTO.model';
 import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
+import { UserTO } from 'src/app/infrastructure/dtos/user.dto';
+import { UserMapper } from 'src/app/infrastructure/mappers/user.mapper';
 
 @Component({
     selector: 'app-bookcase',
@@ -22,7 +23,7 @@ import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 })
 export class BookcaseComponent implements OnInit, OnDestroy {
     public user: User;
-    private userTO: UserTO = new UserTO();
+    private userTO: UserTO;
     panelOpenState = false;
     public bookcase: Bookcase;
     search;
@@ -55,9 +56,9 @@ export class BookcaseComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.user = this.getCachedUserUseCase.execute();
-        this.inscricao = this.route.data.subscribe((data: { data: { bookcase: Bookcase, userTO: UserTO } }) => {
+        this.inscricao = this.route.data.subscribe((data: { data: { bookcase: Bookcase, user: User } }) => {
             this.bookcase = data.data.bookcase;
-            this.userTO = data.data.userTO;
+            this.userTO = UserMapper.toDTO(data.data.user);
         });
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
             this.deviceXs = result[0].mqAlias === 'xs' ? true : false;

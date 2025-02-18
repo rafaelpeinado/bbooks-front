@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { UserService } from '../../../services/user.service';
 import { catchError, map } from 'rxjs/operators';
-import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case';
+import { GetUserByUsernameUseCase } from 'src/app/core/use-cases/user/get-user-by-username.use-case';
 
 @Injectable({
     providedIn: 'root'
@@ -11,8 +10,7 @@ import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case'
 export class MainGuard implements CanActivate {
     constructor(
         private router: Router,
-        private userService: UserService,
-        private getTokenUseCase: GetTokenUseCase,
+        private getUserByUsernameUseCase: GetUserByUsernameUseCase,
 
     ) {
     }
@@ -22,9 +20,9 @@ export class MainGuard implements CanActivate {
         state: RouterStateSnapshot
     ): Observable<boolean> | boolean {
         const username = route.params.username;
-        return this.userService.getUserName(username, this.getTokenUseCase.execute()).pipe(
+        return this.getUserByUsernameUseCase.execute(username).pipe(
             map((res) => {
-                if (res?.userName.includes(username)) {
+                if (res?.profile?.username.includes(username)) {
                     return true;
                 }
                 this.router.navigate(['/']);

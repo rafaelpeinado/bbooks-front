@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable, Output } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { forkJoin, Observable, throwError } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { GetBookByIdUseCase } from '../core/use-cases/book/get-book-by-id.use-case';
@@ -12,8 +12,6 @@ import { Bookcase } from '../core/domain/entities/bookcase.entity';
     providedIn: 'root'
 })
 export class BookService {
-    genres: string[] = ['ficção', 'classicos', 'romance', 'literatura'];
-    @Output() updateListCarrousel = new EventEmitter<any>();
 
     constructor(
         private getBookByIdUseCase: GetBookByIdUseCase,

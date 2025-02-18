@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ExchangeT0 } from '../../../models/exchangeT0,model';
+import { ExchangeT0 } from '../../../models/exchangeT0.model';
 import { ExchangeService } from '../../../services/exchange.service';
 import { TranslateService } from '@ngx-translate/core';
 import { BookExchangeStatus } from '../../../models/enums/BookExchangeStatus.enum';

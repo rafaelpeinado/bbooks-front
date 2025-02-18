@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { UseCaseInterface } from '../use-case.interface';
 import { Tag } from '../../domain/entities/tag.entity';
 import { Observable } from 'rxjs';
-import { TagApiService } from 'src/app/infrastructure/adapters/tag.service';
+import { TagRepository } from '../../repositories/tag.repository';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CreateTagUseCase implements UseCaseInterface {
-    constructor(private tagApiService: TagApiService) { }
+    constructor(private tagRepository: TagRepository) { }
 
     execute(tag: Tag): Observable<Tag> {
-        return this.tagApiService.addTag(tag);
+        return this.tagRepository.addTag(tag);
     }
 }

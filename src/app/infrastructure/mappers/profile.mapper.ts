@@ -2,6 +2,7 @@ import { ProfileBuilder } from 'src/app/core/domain/builders/profile.builder';
 import { Profile } from 'src/app/core/domain/entities/profile.entity';
 import { Utils } from '../utils/utils';
 import { ProfileTO } from '../dtos/user.dto';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 export class ProfileMapper {
     static toEntity(profileTO: ProfileTO): Profile {
@@ -18,8 +19,28 @@ export class ProfileMapper {
         return builder.build();
     }
 
-    static toDTO(profile: Profile): ProfileTO {
-        const profileTO: ProfileTO = undefined;
-        return profileTO;
+    static toDTO(user: User): ProfileTO {
+        if (user) {
+            let birthDate;
+            if (user.profile?.birthDate instanceof Date) {
+                birthDate = user.profile?.birthDate.toISOString()
+            } else {
+                birthDate = user.profile?.birthDate;
+            }
+            const profileTO: ProfileTO = {
+                birthDate: birthDate,
+                city: user.profile?.city,
+                country: user.profile?.country,
+                friendshipStatus: null,
+                id: user.profile?.id,
+                name: user.name,
+                lastName: user.lastName,
+                profileImage: user.profile?.profileImage,
+                state: user.profile?.state,
+                username: user.profile?.username,
+            };
+            return profileTO;
+        }
+        return null;
     }
 }

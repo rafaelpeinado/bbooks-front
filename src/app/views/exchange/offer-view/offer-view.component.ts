@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Util } from '../../shared/Utils/util';
-import { take } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 import { BookService } from '../../../services/book.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookAdsService } from '../../../services/book-ads.service';
 import { BookAdTO } from '../../../models/BookAdTO.model';
 import Swal from 'sweetalert2';
-import { UserService } from '../../../services/user.service';
-import { UserTO } from '../../../models/userTO.model';
 import { zip } from 'rxjs';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
@@ -16,6 +14,7 @@ import { BookBuilder } from 'src/app/core/domain/builders/book.builder';
 import { Book } from 'src/app/core/domain/entities/book.entity';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { GetUserByIdUseCase } from 'src/app/core/use-cases/user/get-user-by-id.use-case';
 
 @Component({
     selector: 'app-offer-view',
@@ -27,7 +26,6 @@ export class OfferViewComponent implements OnInit {
     slideIndex = 0;
     bookAdTO: BookAdTO;
     book: Book;
-    userOffer: UserTO;
     constructor(
         public bookService: BookService,
         private translate: TranslateService,
@@ -35,8 +33,8 @@ export class OfferViewComponent implements OnInit {
         private getBookByIdUseCase: GetBookByIdUseCase,
         public bookAdsService: BookAdsService,
         public router: Router,
-        public userService: UserService,
         private getCachedUserUseCase: GetCachedUserUseCase,
+        private getUserByIdUseCase: GetUserByIdUseCase,
     ) {
     }
 
@@ -68,12 +66,9 @@ export class OfferViewComponent implements OnInit {
     }
     getUserOffer(): void {
         Util.loadingScreen();
-        this.userService.getById(this.bookAdTO.userId)
-            .pipe(take(1))
-            .subscribe(user => {
-                Util.stopLoading();
-                this.userOffer = user;
-            });
+        this.getUserByIdUseCase.execute(this.bookAdTO.userId)
+            .pipe(finalize(() => Util.stopLoading()))
+            .subscribe((user) => this.user = user);
     }
     getBook() {
         Util.loadingScreen();

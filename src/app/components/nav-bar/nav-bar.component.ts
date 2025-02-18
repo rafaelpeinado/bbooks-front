@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { UserService } from '../../services/user.service';
 import { map, take } from 'rxjs/operators';
 import { FriendsService } from '../../services/friends.service';
 import { FriendRequest } from '../../models/friendRequest.model';
@@ -21,8 +20,8 @@ import { LogoutUseCase } from 'src/app/core/use-cases/auth/logout.use-case';
 import { GetIsLoggedUseCase } from 'src/app/core/use-cases/auth/get-is-logged.use-case';
 import { Subscription } from 'rxjs';
 import { UpdateUserInfoUseCase } from 'src/app/core/use-cases/user/update-user-info.use-case';
-import { UserMapper } from 'src/app/infrastructure/mappers/user.mapper';
 import { TemporaryService } from 'src/app/services/temporary.service';
+import { GetUserByIdUseCase } from 'src/app/core/use-cases/user/get-user-by-id.use-case';
 
 @Component({
     selector: 'app-nav-bar',
@@ -44,7 +43,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
         private getBookByIdUseCase: GetBookByIdUseCase,
         private router: Router,
         public translate: TranslateService,
-        private userService: UserService,
         private friendService: FriendsService,
         private bookRecommendation: BookRecommendationService,
         private profileService: ProfileService,
@@ -55,6 +53,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         private getIsLoggedUseCase: GetIsLoggedUseCase,
         private updateUserInfoUseCase: UpdateUserInfoUseCase,
         private temporaryService: TemporaryService,
+        private getUserByIdUseCase: GetUserByIdUseCase,
     ) {
         translate.addLangs(['pt-BR', 'en']);
         translate.setDefaultLang('pt-BR');
@@ -116,11 +115,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
         if (this.isLogged) {
             const user: User = this.getCachedUserUseCase.execute();
             if (user) {
-                this.userService.getById(user.id).pipe(
-                    take(1))
-                    .subscribe((user: any) => {
-                        this.user = UserMapper.toEntity(user);
-                    });
+                this.getUserByIdUseCase.execute(user.id)
+                    .subscribe((user) => this.user = user)
             } else {
                 this.updateUserInfoUseCase.execute()
                     .subscribe((user) => this.user = user);
@@ -224,7 +220,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
                 take(1),
                 map(invites => {
                     return invites.map(i => {
-                        i.inviterUser = this.userService.getById(i.inviter);
+                        i.inviterUser = this.getUserByIdUseCase.execute(user.id);
                         return i;
                     });
                 })

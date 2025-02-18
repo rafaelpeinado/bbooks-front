@@ -7,7 +7,6 @@ import { FlexLayoutModule, FlexModule } from '@angular/flex-layout';
 import { FriendComponent } from './friend/friend.component';
 import { FeedComponent } from './feed/feed.component';
 import { BookcaseComponent } from './bookcase/bookcase.component';
-import { UserService } from '../../services/user.service';
 import { MainResolve } from './guards/main.resolve';
 import { FeedResolve } from './guards/feed.resolve';
 import { BookcaseResolve } from './guards/bookcase.resolve';
@@ -51,7 +50,6 @@ import { reducer } from './store/reducers/feed.reducer';
         BookModule
     ],
     providers: [
-        UserService,
         MainResolve,
         FeedResolve,
         BookcaseResolve,

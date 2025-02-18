@@ -7,7 +7,7 @@ import { BookAdTO } from '../../../models/BookAdTO.model';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchBookAdtoComponent } from '../search-book-adto/search-book-adto.component';
 import { ExchangeService } from '../../../services/exchange.service';
-import { ExchangeT0 } from '../../../models/exchangeT0,model';
+import { ExchangeT0 } from '../../../models/exchangeT0.model';
 import { BookExchangeStatus } from '../../../models/enums/BookExchangeStatus.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';

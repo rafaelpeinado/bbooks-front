@@ -1,55 +1,34 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
-import { UserService } from '../../../services/user.service';
-import { UserTO } from '../../../models/userTO.model';
-import { take } from 'rxjs/operators';
-import { Profile } from '../../../models/profileTO.model';
+import { forkJoin, Observable } from 'rxjs';
 import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
 import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
-import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case';
+import { GetUserByUsernameUseCase } from 'src/app/core/use-cases/user/get-user-by-username.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { map } from 'rxjs/operators';
 
 
 @Injectable()
-export class BookcaseResolve implements Resolve<any> {
+export class BookcaseResolve implements Resolve<{ bookcase: Bookcase, user: User }> {
     public bookcase: Bookcase;
-    user = new UserTO();
+    user: User;
 
 
     constructor(
-        private userService: UserService,
         private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
-        private getTokenUseCase: GetTokenUseCase,
-    ) {
-        this.bookcase.userBooks = [];
-        this.user.profile = new Profile();
-
-    }
+        private getUserByUsernameUseCase: GetUserByUsernameUseCase,
+    ) { }
 
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
-    ): Observable<any> | Promise<any> | any {
+    ): Observable<{ bookcase: Bookcase, user: User }> | Promise<{ bookcase: Bookcase, user: User }> | { bookcase: Bookcase, user: User } {
         const username = route.parent.params.username;
-        this.bookcase.userBooks = [];
-        this.userService.getUserName(username, this.getTokenUseCase.execute()).pipe(take(1)).subscribe(user => {
-            this.getAllUserBookByProfileIdUseCase.execute()
-                .pipe(take(1))
-                .subscribe(userBooks => {
-                    this.bookcase.userBooks = userBooks;
-                });
-            this.user.id = user.id;
-            this.user.idSocial = user.idSocial;
-            this.user.email = user.email;
-            this.user.verified = user.verified;
-            this.user.userName = user.userName;
-            this.user.token = user.token;
-            this.user.profile.id = this.user.profile.id;
-            this.user.profile.name = this.user.profile.name;
-        });
-        return {
-            bookcase: this.bookcase,
-            user: this.user
-        };
+        return forkJoin([
+            this.getUserByUsernameUseCase.execute(username),
+            this.getAllUserBookByProfileIdUseCase.execute(),
+        ]).pipe(map((value) => {
+            return { bookcase: new Bookcase(undefined, undefined, value[1]), user: value[0] }
+        }));
     }
 }

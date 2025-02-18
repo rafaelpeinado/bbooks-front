@@ -1,6 +1,6 @@
-import {Observable} from 'rxjs';
-import {UserTO} from './userTO.model';
-import {GroupTO} from './GroupTO.model';
+import { Observable } from 'rxjs';
+import { GroupTO } from './GroupTO.model';
+import { User } from '../core/domain/entities/user.entity';
 
 export class GroupInviteTO {
     id: string;
@@ -8,6 +8,6 @@ export class GroupInviteTO {
     group: GroupTO;
     userId: string;
     inviter: string;
-    inviterUser: Observable<UserTO>;
+    inviterUser: Observable<User>;
     groupInvite: Observable<GroupTO>;
 }

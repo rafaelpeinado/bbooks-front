@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, take } from 'rxjs/operators';
 import { Util } from '../../shared/Utils/util';
-import { ExchangeT0 } from '../../../models/exchangeT0,model';
+import { ExchangeT0 } from '../../../models/exchangeT0.model';
 import { BookExchangeStatus } from '../../../models/enums/BookExchangeStatus.enum';
 import { BarCodeScannerComponent } from '../../shared/bar-code-scanner/bar-code-scanner.component';
 import { MatDialog } from '@angular/material/dialog';

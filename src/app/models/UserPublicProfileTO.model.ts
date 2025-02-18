@@ -1,6 +1,6 @@
-import {UserTO} from './userTO.model';
-import {List} from '@zxing/library/es2015/customTypings';
-import {Profile} from './profileTO.model';
+import { List } from '@zxing/library/es2015/customTypings';
+import { Profile } from './profileTO.model';
+import { UserTO } from '../infrastructure/dtos/user.dto';
 
 export class UserPublicProfileTO {
     id: string;

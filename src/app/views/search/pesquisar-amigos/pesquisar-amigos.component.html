@@ -15,9 +15,9 @@
                     </div>
                     <div class="informacoes">
                         <div><span><a class="nome-usuario"
-                                      [routerLink]="['', user.userName]">{{user?.profile?.name}} {{user?.profile?.lastName}}</a></span>
+                                      [routerLink]="['', user.profile.username]">{{user?.name}} {{user?.lastName}}</a></span>
                         </div>
-                        <div><span>{{user?.userName}}</span></div>
+                        <div><span>{{user?.profile?.username}}</span></div>
                         <div><span>{{user?.profile?.city}}</span></div>
                     </div>
                 </div>

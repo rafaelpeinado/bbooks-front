@@ -27,14 +27,14 @@
                 </div>
 
                 <button fxFlex="px" mat-raised-button color="accent" class="iconTextWhite"
-                    *ngIf="friend.profile.friendshipStatus === null" (click)="sendRequest()">
+                    *ngIf="friendshipStatus === null" (click)="sendRequest()">
                     <mat-icon>
                         group_add
                     </mat-icon>
                     {{'PADRAO.ADICIONAR' | translate | titlecase}}
                 </button>
                 <button fxFlex="px" mat-raised-button color="accent" class="iconTextWhite"
-                    [matMenuTriggerFor]="menuAmigos" *ngIf=" friend.profile.friendshipStatus == 'added'">
+                    [matMenuTriggerFor]="menuAmigos" *ngIf="friendshipStatus == 'added'">
                     <mat-icon>
                         people_alt
                     </mat-icon>
@@ -47,7 +47,7 @@
                     </div>
                 </mat-menu>
                 <button mat-raised-button color="primary" [matMenuTriggerFor]="menuSent"
-                    *ngIf=" friend.profile.friendshipStatus === 'sent'">
+                    *ngIf="friendshipStatus === 'sent'">
                     <mat-icon>done</mat-icon>
                     {{'PADRAO.SOLICITACAO_ENVIADA' | translate}}
                 </button>
@@ -59,7 +59,7 @@
                 </mat-menu>
 
                 <button mat-raised-button color="primary" [matMenuTriggerFor]="menuReceive"
-                    *ngIf="!verfiyPerfilPageisUserLogged() && userTO.profile.friendshipStatus === 'received'">
+                    *ngIf="!verfiyPerfilPageisUserLogged() && friendshipStatus === 'received'">
                     <mat-icon>done</mat-icon>
                     {{'PADRAO.SOLICITACAO_RECEBIDA' | translate}}
                 </button>

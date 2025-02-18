@@ -14,7 +14,7 @@ export class SearchBooksUseCase implements UseCaseInterface {
     constructor(private bookServiceFactory: BookServiceFactory) { }
 
     execute(filter: FilterSearch): Observable<PaginationInterface<Book>> {
-        const bookRepository = this.bookServiceFactory.getService(ApiType.BBOOKS);
+        const bookRepository = this.bookServiceFactory.create(ApiType.BBOOKS);
         return bookRepository.searchBooks(filter);
     }
 }

@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { UserTO } from '../../../models/userTO.model';
 import { MatDialog } from '@angular/material/dialog';
 import { PostService } from '../../../services/post.service';
 import { PostTO } from '../../../models/PostTO.model';
@@ -15,6 +14,7 @@ import { FeedGenericService } from '../../../services/feed-generic.service';
 import { PostPagination } from '../../../models/pagination/post.pagination';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { UserTO } from 'src/app/infrastructure/dtos/user.dto';
 
 @Component({
     selector: 'app-feed',
@@ -43,6 +43,7 @@ export class FeedComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.user = this.getCachedUserUseCase.execute();
+        // TODO trocar UserTO para User
         this.route.data.pipe(take(1)).subscribe((data: { user: UserTO }) => {
             this.userTO = data.user;
             this.getPosts();
@@ -74,7 +75,7 @@ export class FeedComponent implements OnInit, OnDestroy {
                 });
         } else {
             this.loading = true;
-            this.feedService.getPersonFeed(this.userTO.profile.id, 5, this.page)
+            this.feedService.getPersonFeed(+this.userTO.profile.id, 5, this.page)
                 .pipe(take(1))
                 .subscribe(result => {
                     this.loading = false;

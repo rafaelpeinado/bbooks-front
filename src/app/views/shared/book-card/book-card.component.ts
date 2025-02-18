@@ -3,7 +3,6 @@ import { BookStatus } from '../../../models/enums/BookStatus.enum';
 import { Router } from '@angular/router';
 import { BookAddDialogComponent } from '../book-add-dialog/book-add-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { BookService } from '../../../services/book.service';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { Book } from 'src/app/core/domain/entities/book.entity';
 import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-by-profile-id.case-use';
@@ -11,6 +10,7 @@ import { combineLatest } from 'rxjs';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { ChangeStatusUserBookUseCase } from 'src/app/core/use-cases/user-book/change-status-user-book.use-case';
 import { UserBookBuilder } from 'src/app/core/domain/builders/user-book.builder';
+import { TemporaryService } from 'src/app/services/temporary.service';
 
 @Component({
     selector: 'app-book-card',
@@ -35,10 +35,10 @@ export class BookCardComponent implements OnInit {
     constructor(
         private router: Router,
         public dialog: MatDialog,
-        private bookService: BookService,
         private getBookByIdUseCase: GetBookByIdUseCase,
         private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
         private changeStatusUserBookUseCase: ChangeStatusUserBookUseCase,
+        private temporaryService: TemporaryService,
     ) {
     }
 
@@ -94,7 +94,7 @@ export class BookCardComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(() => {
             this.getBook();
-            this.bookService.updateListCarrousel.emit(true);
+            this.temporaryService.updateListCarrousel.emit(true);
         });
     }
 

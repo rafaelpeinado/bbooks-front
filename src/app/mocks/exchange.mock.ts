@@ -1,4 +1,4 @@
-import {ExchangeT0} from '../models/exchangeT0,model';
+import {ExchangeT0} from '../models/exchangeT0.model';
 import {userMock} from './user.model.mock';
 import {bookAdsMock} from './book-ad.mock';
 import {BookExchangeStatus} from '../models/enums/BookExchangeStatus.enum';

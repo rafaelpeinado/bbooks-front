@@ -5,7 +5,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Book } from 'src/app/models/book.model';
 import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
 import { Profile } from 'src/app/models/profileTO.model';
-import { UserTO } from 'src/app/models/userTO.model';
 import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
 import { GroupInviteTO } from '../../../models/GroupInviteTO.model';
 import { GroupMemberService } from '../../../services/group-member.service';
@@ -15,6 +14,7 @@ import { Friendship } from '../../../models/Friendship.model';
 import { FriendsService } from '../../../services/friends.service';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
+import { UserTO } from 'src/app/infrastructure/dtos/user.dto';
 
 @Component({
     selector: 'app-refer-book-dialog',

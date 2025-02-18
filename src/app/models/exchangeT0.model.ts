@@ -1,6 +1,6 @@
+import { UserTO } from '../infrastructure/dtos/user.dto';
 import {BookAdTO} from './BookAdTO.model';
 import {BookExchangeStatus} from './enums/BookExchangeStatus.enum';
-import {UserTO} from './userTO.model';
 
 export class ExchangeT0 {
     id: string;

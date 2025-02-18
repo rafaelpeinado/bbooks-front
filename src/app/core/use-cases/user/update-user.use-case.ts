@@ -8,11 +8,11 @@ import { UseCaseInterface } from "../use-case.interface";
     providedIn: 'root',
 })
 
-export class GetUserByEmailUseCase implements UseCaseInterface {
+export class UpdateUserUseCase implements UseCaseInterface {
     constructor(private userRepository: UserRepository) { }
 
-    execute(email: string): Observable<User> {
-        return this.userRepository.getUserByEmail(email);
+    execute(user: User): Observable<User> {
+        return this.userRepository.updateUser(user);
     }
 }
 

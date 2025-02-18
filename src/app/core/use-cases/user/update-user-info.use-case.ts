@@ -1,4 +1,3 @@
-import { UserService } from 'src/app/infrastructure/adapters/user.service';
 import { UseCaseInterface } from '../use-case.interface';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
@@ -8,6 +7,7 @@ import { User } from '../../domain/entities/user.entity';
 import { StorageItem } from 'src/app/infrastructure/enums/storage-item.enum';
 import { StorageType } from '../../domain/enums/storage-type.enum';
 import { Observable } from 'rxjs';
+import { UserRepository } from '../../repositories/user.repository';
 
 @Injectable({
     providedIn: 'root',
@@ -15,12 +15,12 @@ import { Observable } from 'rxjs';
 
 export class UpdateUserInfoUseCase implements UseCaseInterface {
     constructor(
-        private userService: UserService,
+        private userRepository: UserRepository,
         private setCacheUseCase: SetCacheUseCase,
     ) { }
 
     execute(): Observable<User> {
-        return this.userService.updateUserInfo().pipe(
+        return this.userRepository.updateUserInfo().pipe(
             map((user) => {
                 const setCache: SetCache<User> = { value: user, storageItem: StorageItem.USER };
                 this.setCacheUseCase.execute<User>(setCache, StorageType.LOCAL_STORAGE);

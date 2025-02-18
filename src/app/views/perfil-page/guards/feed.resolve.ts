@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { UserService } from '../../../services/user.service';
-import { UserTO } from '../../../models/userTO.model';
-import { map } from 'rxjs/operators';
-import { GetTokenUseCase } from 'src/app/core/use-cases/auth/get-token.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { GetUserByUsernameUseCase } from 'src/app/core/use-cases/user/get-user-by-username.use-case';
 
 
 @Injectable()
-export class FeedResolve implements Resolve<UserTO> {
+export class FeedResolve implements Resolve<User> {
 
     constructor(
-        private userService: UserService,
-        private getTokenUseCase: GetTokenUseCase,
+        private getUserByUsernameUseCase: GetUserByUsernameUseCase,
 
     ) {
     }
@@ -21,10 +18,6 @@ export class FeedResolve implements Resolve<UserTO> {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<any> | Promise<any> | any {
-        const username = route.parent.params.username;
-        return this.userService.getUserName(username, this.getTokenUseCase.execute())
-            .pipe(
-                map(user => user)
-            );
+        return this.getUserByUsernameUseCase.execute(route.parent.params.username);
     }
 }

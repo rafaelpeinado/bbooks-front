@@ -3,10 +3,8 @@ import { FormGroup, FormBuilder, FormControl, FormGroupDirective, NgForm, Valida
 import { Router } from '@angular/router';
 import { CadastroService } from '../../services/cadastro-service.service';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { UserTO } from '../../models/userTO.model';
 import { take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { Util } from '../shared/Utils/util';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { SocialUser } from 'angularx-social-login';
 import { GetCacheUseCase } from 'src/app/core/use-cases/cache/get-cache.use-case';
@@ -17,6 +15,8 @@ import { LoginBuilder } from 'src/app/core/domain/builders/login.builder';
 import { Login } from 'src/app/core/domain/entities/login.entity';
 import { SetCacheUserUseCase } from 'src/app/core/use-cases/user/set-cache-user.use-case';
 import { RemoveCacheUseCase } from 'src/app/core/use-cases/cache/remove-cache.use-case';
+import { UserTO } from 'src/app/infrastructure/dtos/user.dto';
+import { Util } from '../shared/Utils/util';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {

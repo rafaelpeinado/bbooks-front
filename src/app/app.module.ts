@@ -52,6 +52,15 @@ import { BookRepository } from './core/repositories/book.repository';
 import { BookServiceFactory } from './infrastructure/adapters/factories/book-service.factory';
 import { CacheRepository } from './core/repositories/cache.repository';
 import { StorageServiceFactory } from './infrastructure/adapters/factories/storage-service.factory';
+import { UserRepository } from './core/repositories/user.repository';
+import { UserService } from './infrastructure/adapters/user.service';
+import { CacheService } from './infrastructure/adapters/cache.service';
+import { AuthRepository } from './core/repositories/auth.repository';
+import { LoginServiceFactory } from './infrastructure/adapters/factories/login-service.factory';
+import { TagRepository } from './core/repositories/tag.repository';
+import { TagApiService } from './infrastructure/adapters/tag.service';
+import { UserBookRepository } from './core/repositories/user-book.repository';
+import { UserBookApiService } from './infrastructure/adapters/user-book.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -121,6 +130,11 @@ export function HttpLoaderFactory(http: HttpClient) {
         AuthGuard,
         { provide: BookRepository, useClass: BookServiceFactory },
         { provide: CacheRepository, useClass: StorageServiceFactory },
+        { provide: AuthRepository, useClass: LoginServiceFactory },
+        { provide: UserRepository, useClass: UserService },
+        { provide: CacheRepository, useClass: CacheService },
+        { provide: TagRepository, useClass: TagApiService },
+        { provide: UserBookRepository, useClass: UserBookApiService },
         { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
         {
             provide: ErrorStateMatcher,

@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PostService } from '../../../services/post.service';
 import { TranslateService } from '@ngx-translate/core';
-import { UserTO } from '../../../models/userTO.model';
 import { PostTO } from '../../../models/PostTO.model';
 import { PostDialogComponent } from '../post-dialog/post-dialog.component';
 import { Util } from '../Utils/util';
@@ -26,6 +25,7 @@ import {
 } from '../../public-profile-page/store/feed-public-profile-manager.service';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
+import { UserTO } from 'src/app/infrastructure/dtos/user.dto';
 
 @Component({
     selector: 'app-reactions',

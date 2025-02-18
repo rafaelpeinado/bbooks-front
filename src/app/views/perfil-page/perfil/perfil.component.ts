@@ -4,10 +4,8 @@ import { Country } from 'src/app/models/country.model';
 import { ConsultaCepService } from 'src/app/services/consulta-cep.service';
 import { City } from 'src/app/models/city.model';
 import { State } from 'src/app/models/state.model';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { UserService } from '../../../services/user.service';
-import { UserTO } from '../../../models/userTO.model';
 import { ProfileService } from '../../../services/profile.service';
 import { CDNService } from '../../../services/cdn.service';
 import { Util } from '../../shared/Utils/util';
@@ -16,6 +14,9 @@ import { UploadComponent } from '../../upload/upload.component';
 import { TranslateService } from '@ngx-translate/core';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
+import { GetUserByIdUseCase } from 'src/app/core/use-cases/user/get-user-by-id.use-case';
+import { ProfileMapper } from 'src/app/infrastructure/mappers/profile.mapper';
+import { UpdateUserUseCase } from 'src/app/core/use-cases/user/update-user.use-case';
 
 @Component({
     selector: 'app-perfil',
@@ -26,9 +27,9 @@ export class PerfilComponent implements OnInit {
 
     modeBasicInfo: boolean;
     basicInfo: FormGroup;
-    userTO: UserTO;
-    public countrys: Country[];
-    public citys: City[];
+    public user: User;
+    public countries: Country[];
+    public cities: City[];
     public states: State[];
     image;
     filteredOptionsCity: Observable<City[]>;
@@ -36,12 +37,13 @@ export class PerfilComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private consultaCepService: ConsultaCepService,
-        private userService: UserService,
         private profileService: ProfileService,
         private cdnService: CDNService,
         private matDialog: MatDialog,
         public translate: TranslateService,
         private getCachedUserUseCase: GetCachedUserUseCase,
+        private getUserByIdUseCase: GetUserByIdUseCase,
+        private updateUserUseCase: UpdateUserUseCase,
     ) {
 
     }
@@ -49,37 +51,38 @@ export class PerfilComponent implements OnInit {
     ngOnInit(): void {
         this.createForm();
         const user: User = this.getCachedUserUseCase.execute();
-        this.userService.getById(user.id).subscribe(
-            user => {
-                this.userTO = user;
+        combineLatest([
+            this.getUserByIdUseCase.execute(user.id),
+            this.consultaCepService.getCountry()
+        ]).subscribe(
+            (value) => {
+                const user: User = value[0];
+                this.user = user;
+                this.countries = value[1];
+                const country: Country = this.countries.find(c => c.name.includes(this.basicInfo.get('country').value));
+                this.getStates(country);
                 this.createForm();
-            }, error => {
+            }, (error) => {
                 console.log('error', error);
-            }
-        );
-        this.consultaCepService.getCountry().subscribe(result => {
-            this.countrys = result;
-            const country = this.countrys.find(c => c.name.includes(this.basicInfo.get('country').value));
-            this.getStates(country);
-        });
+            });
     }
 
     createForm() {
         this.basicInfo = this.fb.group({
-            name: [this.userTO?.profile?.name ? this.userTO.profile.name : '', Validators.required],
-            lastName: [this.userTO?.profile?.lastName ? this.userTO.profile.lastName : '', Validators.required],
-            email: [this.userTO?.email ? this.userTO.email : '', Validators.compose([
+            name: [this.user?.name ? this.user.name : '', Validators.required],
+            lastName: [this.user?.lastName ? this.user.lastName : '', Validators.required],
+            email: [this.user?.email ? this.user.email : '', Validators.compose([
                 Validators.required,
                 Validators.email
             ])],
-            userName: [this.userTO?.userName ? this.userTO.userName : '', Validators.compose([
+            userName: [this.user?.profile?.username ? this.user.profile?.username : '', Validators.compose([
                 Validators.required,
                 Validators.pattern('^([A-Z]|[a-z])[A-Za-z0-9.]*$')
             ])],
-            birthDate: [this.userTO?.profile.birthDate ? this.userTO.profile.birthDate : ''],
-            country: [this.userTO?.profile.country ? this.userTO.profile.country : ''],
-            state: [this.userTO?.profile.state ? this.userTO.profile.state : ''],
-            city: [this.userTO?.profile.city ? this.userTO.profile.city : ''],
+            birthDate: [this.user?.profile.birthDate ? this.user.profile.birthDate : ''],
+            country: [this.user?.profile.country ? this.user.profile.country : ''],
+            state: [this.user?.profile.state ? this.user.profile.state : ''],
+            city: [this.user?.profile.city ? this.user.profile.city : ''],
         });
     }
 
@@ -102,25 +105,25 @@ export class PerfilComponent implements OnInit {
         if (state.sigla) {
             this.consultaCepService.getCitysBr(state.id).subscribe(
                 res => {
-                    this.citys = res;
+                    this.cities = res;
                     this.filteredOptionsCity = this.basicInfo.get('city').valueChanges.pipe(
                         startWith(''),
                         map(value => this._filterCity(value))
                     );
                 },
-                error => console.log('error get citys', error)
+                error => console.log('error get cities', error)
             );
 
         } else {
             this.consultaCepService.getCitys(state.id).subscribe(
                 res => {
-                    this.citys = res;
+                    this.cities = res;
                     this.filteredOptionsCity = this.basicInfo.get('city').valueChanges.pipe(
                         startWith(''),
                         map(value => this._filterCity(value))
                     );
                 },
-                error => console.log('error get citys', error)
+                error => console.log('error get cities', error)
             );
         }
 
@@ -128,7 +131,7 @@ export class PerfilComponent implements OnInit {
 
     private _filterCity(value: string): City[] {
         const filterValue = value.toLowerCase();
-        return this.citys.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+        return this.cities.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
     }
 
     verificaValidToTouched(campo: string) {
@@ -140,29 +143,27 @@ export class PerfilComponent implements OnInit {
     }
 
     save() {
-        this.userTO.profile.name = this.basicInfo.get('name').value;
-        this.userTO.profile.lastName = this.basicInfo.get('lastName').value;
-        this.userTO.email = this.basicInfo.get('email').value;
-        this.userTO.userName = this.basicInfo.get('userName').value;
-        this.userTO.profile.birthDate = this.basicInfo.get('birthDate').value;
-        this.userTO.profile.country = this.basicInfo.get('country').value;
-        this.userTO.profile.state = this.basicInfo.get('state').value;
-        this.userTO.profile.city = this.basicInfo.get('city').value;
-        this.userService.update(this.userTO).subscribe(
-            response => {
-                this.profileService.update(this.userTO.profile).subscribe(profile => {
-                    this.userTO = response;
-                    this.userTO.profile = profile;
-                    this.changeModeBasicInfo();
-                },
-                    error => {
-                        console.log('error update profile', error);
-                    });
+        this.user.name = this.basicInfo.get('name').value;
+        this.user.lastName = this.basicInfo.get('lastName').value;
+        this.user.email = this.basicInfo.get('email').value;
+        this.user.profile.username = this.basicInfo.get('userName').value;
+        this.user.profile.birthDate = this.basicInfo.get('birthDate').value;
+        this.user.profile.country = this.basicInfo.get('country').value;
+        this.user.profile.state = this.basicInfo.get('state').value;
+        this.user.profile.city = this.basicInfo.get('city').value;
+        combineLatest([
+            this.updateUserUseCase.execute(this.user),
+            this.profileService.update(ProfileMapper.toDTO(this.user))
+        ]).subscribe(
+            (value) => {
+                this.user = value[0];
+                this.user.profile = value[1];
+                this.changeModeBasicInfo();
             },
-            error => {
+            (error) => {
                 console.log('error update', error);
             }
-        );
+        )
     }
 
     showDialogUpload(): void {
@@ -179,7 +180,7 @@ export class PerfilComponent implements OnInit {
                     const reader = new FileReader();
                     reader.onload = (e) => this.image = e.target.result;
                     reader.readAsDataURL(this.image);
-                    this.userTO.profile.profileImage = this.image;
+                    this.user.profile.profileImage = this.image;
                 },
                     error => {
                         Util.stopLoading();

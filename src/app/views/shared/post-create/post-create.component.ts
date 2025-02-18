@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UserTO } from '../../../models/userTO.model';
 import { PostTO } from '../../../models/PostTO.model';
 import { PostDialogComponent } from '../post-dialog/post-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,6 +11,7 @@ import { FeedGroupManagerService } from '../../groups/store/feed-group-manager.s
 import { FeedPublicProfilePageManagerService } from '../../public-profile-page/store/feed-public-profile-manager.service';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
+import { UserTO } from 'src/app/infrastructure/dtos/user.dto';
 
 @Component({
     selector: 'app-post-create',

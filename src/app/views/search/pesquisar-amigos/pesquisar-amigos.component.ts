@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserTO } from 'src/app/models/userTO.model';
-import { UserService } from 'src/app/services/user.service';
 import { ActivatedRoute } from '@angular/router';
-import { map, take } from 'rxjs/operators';
+import { combineLatest, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { GetUsersByNameUseCase } from 'src/app/core/use-cases/user/get-users-by-name.use-case';
+import { GetUsersByUsernameUseCase } from 'src/app/core/use-cases/user/get-users-by-username.use-case';
 
 @Component({
     selector: 'app-pesquisar-amigos',
@@ -11,36 +13,32 @@ import { map, take } from 'rxjs/operators';
 })
 export class PesquisarAmigosComponent implements OnInit {
 
-    users: UserTO[];
-    filterUsers: UserTO[] = [];
+    public filterUsers: User[] = [];
 
     constructor(
-        private userService: UserService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private getUsersByNameUseCase: GetUsersByNameUseCase,
+        private getUsersByUsernameUseCase: GetUsersByUsernameUseCase,
     ) {
     }
 
     ngOnInit(): void {
-        this.route.queryParams
-            .pipe(
-                map(params => params.search)
-            )
-            .subscribe(params => {
-                if (params) {
-                    this.userService.getAllUsers()
-                        .pipe(
-                            take(1),
-                            map(users => {
-                                return users.filter(user =>
-                                    user?.profile?.name.concat(user?.profile?.lastName).toLocaleLowerCase().replace(' ', '')
-                                        .includes(params.toLocaleLowerCase().replace(' ', '')));
-                            })
-                        ).subscribe(users => {
-                            this.filterUsers = users;
-                        });
-                } else {
-                    this.filterUsers = [];
-                }
-            });
+        this.route.queryParams.pipe(
+            switchMap(({ search }) => {
+                if (!search) return of([]);
+                return combineLatest([
+                    this.getUsersByNameUseCase.execute(search),
+                    this.getUsersByUsernameUseCase.execute(search),
+                ]).pipe(
+                    map(([usersByName, usersByUsername]) => this.mergeUniqueUsers(usersByName, usersByUsername))
+                );
+            }),
+        ).subscribe((users) => this.filterUsers = users);
+    }
+
+    private mergeUniqueUsers(users1: User[], users2: User[]): User[] {
+        const userMap = new Map<string, User>();
+        [...users1, ...users2].forEach(user => userMap.set(user.id, user));
+        return Array.from(userMap.values());
     }
 }

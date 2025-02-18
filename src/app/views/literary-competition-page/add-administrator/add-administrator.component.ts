@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { UserService } from '../../../services/user.service';
-import { map, take } from 'rxjs/operators';
-import { UserTO } from '../../../models/userTO.model';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { CompetitionMemberService } from '../../../services/competition-member.service';
 import { LiteraryMemberStatus } from '../../../models/enums/LiteraryMemberStatus.enum';
 import { Role } from '../../../models/enums/Role.enum';
 import { CompetitionMemberSaveTO } from '../../../models/competitionMemberSaveTO.model';
 import { Util } from '../../shared/Utils/util';
+import { GetAllUsersUseCase } from 'src/app/core/use-cases/user/get-all-users.use-case';
+import { User } from 'src/app/core/domain/entities/user.entity';
 
 @Component({
     selector: 'app-add-administrator',
@@ -18,16 +18,16 @@ import { Util } from '../../shared/Utils/util';
 export class AddAdministratorComponent implements OnInit {
 
     formSearch: FormGroup;
-    users: UserTO[];
-    filterUsers: UserTO[] = [];
+    users: User[];
+    filterUsers: User[] = [];
     literaryCompetitionId: string;
     isAdmin: boolean;
 
     constructor(
-        private userService: UserService,
         private route: ActivatedRoute,
         private competitionMemberService: CompetitionMemberService,
         private formBuilder: FormBuilder,
+        private getAllUsersUseCase: GetAllUsersUseCase,
     ) {
         this.formSearch = this.formBuilder.group({
             search: ['']
@@ -35,32 +35,17 @@ export class AddAdministratorComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.route.params
-            .pipe(
-                map(params => params.id)
-            )
-            .subscribe(result => {
-                this.literaryCompetitionId = result;
-                this.getAllUsers();
-            }
-            );
-        this.getAllUsers();
-
+        this.route.params.pipe(
+            map(params => params.id),
+            tap(id => this.literaryCompetitionId = id),
+            switchMap(() => this.getAllUsersUseCase.execute()),
+        ).subscribe(users => this.users = users);
     }
-
-    getAllUsers() {
-        this.userService.getAllUsers()
-            .pipe(take(1))
-            .subscribe(result => {
-                this.users = result;
-            });
-    }
-
 
     searchAdmins() {
         const formSearch = this.formSearch.get('search').value;
         this.filterUsers = this.users.filter(user =>
-            user?.profile?.name.concat(user?.profile?.lastName).toLocaleLowerCase().replace(' ', '')
+            user?.name.concat(user?.lastName).toLocaleLowerCase().replace(' ', '')
                 .includes(formSearch.toLocaleLowerCase().replace(' ', '')));
 
     }

@@ -67,7 +67,7 @@
                 <mat-card-content>
                     <div fxLayout="row" fxLayoutAlign="start center">
                         <mat-card-subtitle><b>{{'EXCHANGE.POSTADO_POR' | translate}}:</b>
-                            {{userOffer?.profile?.name}}</mat-card-subtitle>
+                            {{user?.profile?.name}}</mat-card-subtitle>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="start center">
                         <mat-card-subtitle><b>{{'PADRAO.LOCALIZACAO' | translate}}:</b>
@@ -99,7 +99,7 @@
                     <!--                            Iniciar um chat </div>-->
                     <!--                    </div>-->
                     <div fxLayout="row" fxLayoutAlign="start center" *ngIf="bookAdTO.contact">
-                        <a href="https://{{isMobile() ? 'api.whatsapp.com' : 'web.whatsapp.com'}}/send?phone={{bookAdTO?.contact}}&text={{'WHATS.HELLO' | translate}}+{{userOffer?.profile?.name}},+{{'WHATS.ENCOTREI_SUA_OFERTA' | translate}}+*{{bookAdTO?.title?.replace(' ', '+')}}*{{'WHATS.MAIS_INFO' | translate}}"
+                        <a href="https://{{isMobile() ? 'api.whatsapp.com' : 'web.whatsapp.com'}}/send?phone={{bookAdTO?.contact}}&text={{'WHATS.HELLO' | translate}}+{{user?.profile?.name}},+{{'WHATS.ENCOTREI_SUA_OFERTA' | translate}}+*{{bookAdTO?.title?.replace(' ', '+')}}*{{'WHATS.MAIS_INFO' | translate}}"
                             target="_blank" class="linkWhatsapp">
                             <i class="fab fa-whatsapp"></i> {{'PADRAO.WHATSAPP' | translate}}
                         </a>

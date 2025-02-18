@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { UseCaseInterface } from '../use-case.interface';
-import { TagApiService } from 'src/app/infrastructure/adapters/tag.service';
 import { Tag } from '../../domain/entities/tag.entity';
 import { Observable } from 'rxjs';
+import { TagRepository } from '../../repositories/tag.repository';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DeleteTagUseCase implements UseCaseInterface {
-    constructor(private tagApiService: TagApiService) { }
+    constructor(private tagRepository: TagRepository) { }
 
     execute(id: string): Observable<Tag> {
-        return this.tagApiService.deleteTag(id);
+        return this.tagRepository.deleteTag(id);
     }
 }

@@ -1,5 +1,5 @@
 import { User } from 'src/app/core/domain/entities/user.entity';
-import { UserTO } from '../dtos/user.dto';
+import { ProfileTO, UserTO } from '../dtos/user.dto';
 import { UserBuilder } from 'src/app/core/domain/builders/user.builder';
 import { ProfileMapper } from './profile.mapper';
 
@@ -21,5 +21,24 @@ export class UserMapper {
         }
 
         return builder.build();
+    }
+
+    static toDTO(user: User): UserTO {
+        if (user) {
+            const profileTO: ProfileTO = ProfileMapper.toDTO(user);
+            const userTO: UserTO = {
+                id: user.id,
+                email: user.email,
+                idSocial: user.idSocial,
+                profile: profileTO,
+                publicProfile: null,
+                token: user.token,
+                userName: user.profile?.username,
+                verified: user.verified,
+            }
+            
+            return userTO;
+        }
+        return null;
     }
 }
