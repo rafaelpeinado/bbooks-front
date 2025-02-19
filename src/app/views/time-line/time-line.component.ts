@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Util } from '../shared/Utils/util';
+import { Util } from '../shared/utils/util';
 import { GetAllBookCaseTimelineByProfileIdUseCase } from 'src/app/core/use-cases/user-book/get-all-user-book-timeline-by-profile-id.use-case';
 import { Book } from 'src/app/core/domain/entities/book.entity';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';

@@ -9,7 +9,7 @@ import { CDNService } from '../../../services/cdn.service';
 import { UploadComponent } from '../../upload/upload.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { Router } from '@angular/router';
 import { BarCodeScannerComponent } from '../../shared/bar-code-scanner/bar-code-scanner.component';
 import { AddBookUseCase } from 'src/app/core/use-cases/book/add-book.use-case';

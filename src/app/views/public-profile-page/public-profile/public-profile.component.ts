@@ -3,7 +3,7 @@ import { map, take } from 'rxjs/operators';
 import { UserPublicProfileTO } from '../../../models/UserPublicProfileTO.model';
 import { PublicProfileService } from '../../../services/public-profile.service';
 import { ActivatedRoute } from '@angular/router';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
 

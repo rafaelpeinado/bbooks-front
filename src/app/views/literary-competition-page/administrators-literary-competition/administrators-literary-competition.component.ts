@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {map, take} from 'rxjs/operators';
-import {CompetitionMemberService} from '../../../services/competition-member.service';
-import {CompetitionMemberTO} from '../../../models/competitionMemberTO.model';
-import {ProfileService} from '../../../services/profile.service';
-import {Role} from '../../../models/enums/Role.enum';
-import {Util} from '../../shared/Utils/util';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {LiteraryMemberStatus} from '../../../models/enums/LiteraryMemberStatus.enum';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { finalize, map, take } from 'rxjs/operators';
+import { CompetitionMemberService } from '../../../services/competition-member.service';
+import { CompetitionMemberTO } from '../../../models/competitionMemberTO.model';
+import { Role } from '../../../models/enums/Role.enum';
+import { Util } from '../../shared/utils/util';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { LiteraryMemberStatus } from '../../../models/enums/LiteraryMemberStatus.enum';
+import { GetProfileByIdUseCase } from 'src/app/core/use-cases/profile/get-profile-by-id.use-case';
+import { ProfileMapper } from 'src/app/infrastructure/mappers/profile.mapper';
 
 @Component({
     selector: 'app-administrators-literary-competition',
@@ -25,9 +26,9 @@ export class AdministratorsLiteraryCompetitionComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private profileService: ProfileService,
         private competitionMemberService: CompetitionMemberService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private getProfileByIdUseCase: GetProfileByIdUseCase,
     ) {
         this.searchAdministrators = this.fb.group({
             nameAdministrator: ['']
@@ -40,10 +41,10 @@ export class AdministratorsLiteraryCompetitionComponent implements OnInit {
                 map(params => params.id)
             )
             .subscribe(result => {
-                    this.literaryCompetitionId = result;
-                    this.getOwner();
-                    this.getMembers();
-                }
+                this.literaryCompetitionId = result;
+                this.getOwner();
+                this.getMembers();
+            }
             );
     }
 
@@ -67,15 +68,12 @@ export class AdministratorsLiteraryCompetitionComponent implements OnInit {
         Util.loadingScreen();
         this.administrators.forEach((a, i) => {
             if (!a.profile) {
-                this.profileService.getById(a.profileId)
-                    .pipe(take(1))
-                    .subscribe(result => {
-                        Util.stopLoading();
-                        this.administrators[i].profile = result;
-                    }, error => {
-                        console.log(error);
-                        Util.stopLoading();
-                    });
+                this.getProfileByIdUseCase.execute(a.profileId)
+                    .pipe(finalize(() => Util.stopLoading()))
+                    .subscribe(
+                        (user) => this.administrators[i].profile = ProfileMapper.toDTO(user),
+                        (error) => console.log(error),
+                    );
             }
         });
     }

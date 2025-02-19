@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { CompetitionTO } from '../../../models/competitionTO.model';
 import { CompetitionService } from '../../../services/competition.service';
 import { map, take } from 'rxjs/operators';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DateAdapter } from '@angular/material/core';
 import { TranslateService } from '@ngx-translate/core';

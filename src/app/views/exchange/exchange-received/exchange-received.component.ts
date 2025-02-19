@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ExchangeService } from '../../../services/exchange.service';
 import { Observable } from 'rxjs';
 import { ExchangeT0 } from '../../../models/exchangeT0.model';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { map, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { BookExchangeStatus } from '../../../models/enums/BookExchangeStatus.enum';

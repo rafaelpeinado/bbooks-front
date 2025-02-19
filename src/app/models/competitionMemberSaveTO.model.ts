@@ -5,7 +5,7 @@ export class CompetitionMemberSaveTO {
     memberId: string;
     title: string;
     story: string;
-    profileId: number;
+    profileId: string;
     role: Role;
     status: LiteraryMemberStatus;
     competitionId: string;

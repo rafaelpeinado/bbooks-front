@@ -11,7 +11,7 @@ import { PostService } from '../../../services/post.service';
 import { FeedGenericService } from '../../../services/feed-generic.service';
 import { PostPagination } from '../../../models/pagination/post.pagination';
 import { GroupTO } from '../../../models/GroupTO.model';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { PostPrivacy } from '../../../models/enums/PostPrivacy.enum';
 import { Role } from '../../../models/enums/Role.enum';
 import { GroupMemberService } from '../../../services/group-member.service';

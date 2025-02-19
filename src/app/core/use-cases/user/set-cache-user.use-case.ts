@@ -14,7 +14,7 @@ export class SetCacheUserUseCase implements UseCaseInterface {
     constructor(private setCacheUseCase: SetCacheUseCase) { }
 
     execute(input: User): void {
-        const setCache: SetCache<User> = { value: input, storageItem: StorageItem.USER }
+        const setCache: SetCache<User> = { value: input, storageItem: StorageItem.USER };
         return this.setCacheUseCase.execute<User>(setCache, StorageType.LOCAL_STORAGE);
     }
 }

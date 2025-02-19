@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MyErrorStateMatcher } from '../cadastro/cadastro.component';
 import { TranslateService } from '@ngx-translate/core';
-import { Util } from '../shared/Utils/util';
+import { Util } from '../shared/utils/util';
 import { GetUserByPasswordTokenUseCase } from 'src/app/core/use-cases/auth/get-user-by-password-token.use-case';
 import { switchMap } from 'rxjs/operators';
 import { User } from 'src/app/core/domain/entities/user.entity';

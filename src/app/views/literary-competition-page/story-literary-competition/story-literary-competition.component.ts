@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { take } from 'rxjs/operators';
+import { finalize, switchMap, take } from 'rxjs/operators';
 import { CompetitionMemberService } from '../../../services/competition-member.service';
-import { ProfileService } from '../../../services/profile.service';
 import { CompetitionMemberTO } from '../../../models/competitionMemberTO.model';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { GetProfileByIdUseCase } from 'src/app/core/use-cases/profile/get-profile-by-id.use-case';
+import { ProfileMapper } from 'src/app/infrastructure/mappers/profile.mapper';
 
 @Component({
     selector: 'app-story-literary-competition',
@@ -19,7 +20,7 @@ export class StoryLiteraryCompetitionComponent implements OnInit {
     constructor(
         @Inject(MAT_DIALOG_DATA) public member: CompetitionMemberTO,
         private competitionMemberService: CompetitionMemberService,
-        private profileService: ProfileService,
+        private getProfileByIdUseCase: GetProfileByIdUseCase,
         public dialogRef: MatDialogRef<StoryLiteraryCompetitionComponent>,
     ) {
     }
@@ -42,24 +43,14 @@ export class StoryLiteraryCompetitionComponent implements OnInit {
     getProfile() {
         Util.loadingScreen();
         this.competitionMemberService.getMember(this.member.memberId)
-            .pipe(take(1))
-            .subscribe(result => {
-                Util.stopLoading();
-                Util.loadingScreen();
-                this.profileService
-                    .getById(result.profile.id)
-                    .pipe(take(1))
-                    .subscribe(profileMember => {
-                        Util.stopLoading();
-                        this.member.profile = profileMember;
-                    }, error => {
-                        console.log(error);
-                        Util.stopLoading();
-                    });
-            }, error => {
-                console.log(error);
-                Util.stopLoading();
-            });
+            .pipe(
+                take(1),
+                finalize(() => Util.stopLoading()),
+                switchMap((result) => this.getProfileByIdUseCase.execute(result.profile.id))
+            ).subscribe(
+                (user) => this.member.profile = ProfileMapper.toDTO(user),
+                (error) => console.log(error),
+            );
     }
 
     dialogClose() {

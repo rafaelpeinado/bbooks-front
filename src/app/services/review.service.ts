@@ -1,11 +1,10 @@
-import {Injectable} from '@angular/core';
-import {environment} from '../../environments/environment';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {ReviewTO} from '../models/ReviewTO.model';
-import {ReviewsPagination} from '../models/pagination/reviews.pagination';
-import {map} from 'rxjs/operators';
-import {ProfileService} from './profile.service';
+import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ReviewTO } from '../models/ReviewTO.model';
+import { ReviewsPagination } from '../models/pagination/reviews.pagination';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +13,6 @@ export class ReviewService {
     api: string = environment.api + 'review/';
     constructor(
         private http: HttpClient,
-        private profileService: ProfileService
     ) {
     }
 
@@ -31,7 +29,7 @@ export class ReviewService {
         const params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
-        return this.http.get<ReviewsPagination>(this.api + 'book/' + idBook , {params})
+        return this.http.get<ReviewsPagination>(this.api + 'book/' + idBook, { params })
             .pipe(
                 map(reviewsPagination => {
                     reviewsPagination.content = this.mapForReviews(reviewsPagination.content);
@@ -43,7 +41,7 @@ export class ReviewService {
         const params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
-        return this.http.get<ReviewsPagination>(this.api + 'google-book/' + googleBook, {params})
+        return this.http.get<ReviewsPagination>(this.api + 'google-book/' + googleBook, { params })
             .pipe(
                 map(reviewsPagination => {
                     reviewsPagination.content = this.mapForReviews(reviewsPagination.content);
@@ -53,7 +51,8 @@ export class ReviewService {
     }
     mapForReviews(reviews: ReviewTO[]): ReviewTO[] {
         return reviews.map(r => {
-            r.profileTO = this.profileService.getById(r.profileId);
+            // TODO refatorar essa parte
+            // r.profileTO = this.getProfileByIdUseCase.execute(r.profileId);
             return r;
         });
     }

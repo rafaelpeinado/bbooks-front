@@ -6,7 +6,7 @@ import { FriendsService } from '../../../services/friends.service';
 import { Friend } from '../../../models/friend.model';
 import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { GetUserByUsernameUseCase } from 'src/app/core/use-cases/user/get-user-by-username.use-case';
@@ -20,7 +20,7 @@ import { UserTO } from 'src/app/infrastructure/dtos/user.dto';
 export class FriendComponent implements OnInit {
     public userCached: User;
     public user: User;
-    public friendshipStatus: string = '';
+    public friendshipStatus = '';
     search: string;
     friendShip: Friendship;
     friendTO: Friend = new Friend();

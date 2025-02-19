@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { StorageItem } from "src/app/infrastructure/enums/storage-item.enum";
-import { StorageType } from "../../domain/enums/storage-type.enum";
-import { SetCacheUserUseCase } from "../user/set-cache-user.use-case";
-import { SetTokenUseCase } from "./set-token.use-case";
-import { SetCacheUseCase } from "../cache/set-cache.use-case";
-import { SetCache } from "../../domain/interfaces/set-cache.interface";
-import { User } from "../../domain/entities/user.entity";
-import { UseCaseApiInterface } from "../use-case.interface";
-import { LoginType } from "../../domain/enums/login-type.enum";
+import { Injectable } from '@angular/core';
+import { StorageItem } from 'src/app/infrastructure/enums/storage-item.enum';
+import { StorageType } from '../../domain/enums/storage-type.enum';
+import { SetCacheUserUseCase } from '../user/set-cache-user.use-case';
+import { SetTokenUseCase } from './set-token.use-case';
+import { SetCacheUseCase } from '../cache/set-cache.use-case';
+import { SetCache } from '../../domain/interfaces/set-cache.interface';
+import { User } from '../../domain/entities/user.entity';
+import { UseCaseApiInterface } from '../use-case.interface';
+import { LoginType } from '../../domain/enums/login-type.enum';
 
 @Injectable({
     providedIn: 'root',

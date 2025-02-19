@@ -1,4 +1,4 @@
-import { LoginType } from "../enums/login-type.enum";
+import { LoginType } from '../enums/login-type.enum';
 
 export interface Login {
     email: string;

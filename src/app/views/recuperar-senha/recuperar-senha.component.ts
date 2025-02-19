@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { finalize, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { Util } from '../shared/Utils/util';
+import { Util } from '../shared/utils/util';
 import { environment } from '../../../environments/environment';
 import { SendEmailResetPasswordUseCase } from 'src/app/core/use-cases/auth/send-email-reset-password.use-case';
 
@@ -38,7 +38,7 @@ export class RecuperarSenhaComponent implements OnInit {
         const input: { email: string; url: string } = {
             email: this.form.value.email,
             url: this.form.value.url,
-        }
+        };
         this.sendEmailResetPasswordUseCase.execute(input).pipe(
             finalize(() => Util.stopLoading()),
             switchMap(() => this.translate.get('PADRAO.EMAIL_ENVIADO')),

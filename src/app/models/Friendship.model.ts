@@ -1,4 +1,4 @@
-import { UserTO } from "../infrastructure/dtos/user.dto";
+import { UserTO } from '../infrastructure/dtos/user.dto';
 
 export class Friendship {
     id: number;

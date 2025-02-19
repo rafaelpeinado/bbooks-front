@@ -6,17 +6,17 @@ import { City } from 'src/app/models/city.model';
 import { State } from 'src/app/models/state.model';
 import { combineLatest, Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { ProfileService } from '../../../services/profile.service';
 import { CDNService } from '../../../services/cdn.service';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadComponent } from '../../upload/upload.component';
 import { TranslateService } from '@ngx-translate/core';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { GetUserByIdUseCase } from 'src/app/core/use-cases/user/get-user-by-id.use-case';
-import { ProfileMapper } from 'src/app/infrastructure/mappers/profile.mapper';
 import { UpdateUserUseCase } from 'src/app/core/use-cases/user/update-user.use-case';
+import { UpdateProfileUseCase } from 'src/app/core/use-cases/profile/update-profile.use-case';
+import { UserBuilder } from 'src/app/core/domain/builders/user.builder';
 
 @Component({
     selector: 'app-perfil',
@@ -37,13 +37,13 @@ export class PerfilComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private consultaCepService: ConsultaCepService,
-        private profileService: ProfileService,
         private cdnService: CDNService,
         private matDialog: MatDialog,
         public translate: TranslateService,
         private getCachedUserUseCase: GetCachedUserUseCase,
         private getUserByIdUseCase: GetUserByIdUseCase,
         private updateUserUseCase: UpdateUserUseCase,
+        private updateProfileUseCase: UpdateProfileUseCase,
     ) {
 
     }
@@ -153,17 +153,21 @@ export class PerfilComponent implements OnInit {
         this.user.profile.city = this.basicInfo.get('city').value;
         combineLatest([
             this.updateUserUseCase.execute(this.user),
-            this.profileService.update(ProfileMapper.toDTO(this.user))
+            this.updateProfileUseCase.execute(this.user),
         ]).subscribe(
             (value) => {
-                this.user = value[0];
-                this.user.profile = value[1];
+                this.user = UserBuilder.builder()
+                    .copyFrom(value[0])
+                    .setName(value[1].name)
+                    .setLastName(value[1].lastName)
+                    .setProfile(value[1].profile)
+                    .build();
                 this.changeModeBasicInfo();
             },
             (error) => {
                 console.log('error update', error);
             }
-        )
+        );
     }
 
     showDialogUpload(): void {

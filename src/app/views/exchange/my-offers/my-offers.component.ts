@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { TranslateService } from '@ngx-translate/core';
 import { map, take } from 'rxjs/operators';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { BookAdsService } from '../../../services/book-ads.service';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';

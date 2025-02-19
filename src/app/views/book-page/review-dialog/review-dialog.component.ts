@@ -1,11 +1,10 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ReviewTO} from '../../../models/ReviewTO.model';
-import {ReviewService} from '../../../services/review.service';
-import {take} from 'rxjs/operators';
-import {Book} from '../../../models/book.model';
-import {ProfileService} from '../../../services/profile.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ReviewTO } from '../../../models/ReviewTO.model';
+import { ReviewService } from '../../../services/review.service';
+import { take } from 'rxjs/operators';
+import { Book } from '../../../models/book.model';
 
 @Component({
     selector: 'app-review-dialog',
@@ -22,7 +21,6 @@ export class ReviewDialogComponent implements OnInit {
         private formBuilder: FormBuilder,
         private reviewService: ReviewService,
         public dialogRef: MatDialogRef<any>,
-        public profileService: ProfileService
     ) {
     }
 
@@ -57,7 +55,8 @@ export class ReviewDialogComponent implements OnInit {
             this.reviewService.save(this.formReview.value)
                 .pipe(take(1))
                 .subscribe(result => {
-                    result.profileTO = this.profileService.getById(result.profileId);
+                    // TODO refatorar essa parte
+                    // result.profileTO = this.getProfileByIdUseCase.execute(r.profileId);
                     this.dialogRef.close(result);
                 });
         }

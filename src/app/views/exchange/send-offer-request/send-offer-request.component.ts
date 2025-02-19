@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { take } from 'rxjs/operators';
 import { BookAdsService } from '../../../services/book-ads.service';
 import { ActivatedRoute, Router } from '@angular/router';

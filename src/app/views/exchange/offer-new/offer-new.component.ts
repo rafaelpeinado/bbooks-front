@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SearchBookComponent } from '../../shared/search-book/search-book.component';
 import { BookCondition } from '../../../models/enums/BookCondition.enum';
 import { flatMap, map, startWith, take } from 'rxjs/operators';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BookAdTO } from '../../../models/BookAdTO.model';

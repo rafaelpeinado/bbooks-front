@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { finalize, take } from 'rxjs/operators';
 import { BookService } from '../../../services/book.service';
 import { TranslateService } from '@ngx-translate/core';

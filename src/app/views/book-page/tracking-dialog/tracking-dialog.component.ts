@@ -5,7 +5,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {ReadingTrackingTO} from '../../../models/ReadingTrackingTO.model';
 import {ReadingTrackingService} from '../../../services/reading-tracking.service';
 import {take} from 'rxjs/operators';
-import {Util} from '../../shared/Utils/util';
+import {Util} from '../../shared/utils/util';
 
 @Component({
     selector: 'app-tracking-dialog',

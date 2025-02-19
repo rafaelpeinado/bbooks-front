@@ -7,7 +7,7 @@ import { getArrayPostPrivacy, mapPostPrivacy, PostPrivacy } from '../../../model
 import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PostTO } from '../../../models/PostTO.model';
-import { Util } from '../Utils/util';
+import { Util } from '../utils/util';
 import { TranslateService } from '@ngx-translate/core';
 import { UploadComponent } from '../../upload/upload.component';
 import { CDNService } from '../../../services/cdn.service';

@@ -4,7 +4,7 @@ import { ExchangeT0 } from '../../../models/exchangeT0.model';
 import { ExchangeService } from '../../../services/exchange.service';
 import { TranslateService } from '@ngx-translate/core';
 import { BookExchangeStatus } from '../../../models/enums/BookExchangeStatus.enum';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { map, take } from 'rxjs/operators';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';

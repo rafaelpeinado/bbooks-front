@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Util} from '../shared/Utils/util';
+import {Util} from '../shared/utils/util';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

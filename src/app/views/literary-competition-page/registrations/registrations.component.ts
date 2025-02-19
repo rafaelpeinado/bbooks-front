@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { map, take } from 'rxjs/operators';
+import { finalize, map, take } from 'rxjs/operators';
 import { Role } from '../../../models/enums/Role.enum';
 import { CompetitionMemberService } from '../../../services/competition-member.service';
 import { ActivatedRoute } from '@angular/router';
 import { CompetitionMemberTO } from '../../../models/competitionMemberTO.model';
-import { Util } from '../../shared/Utils/util';
-import { ProfileService } from '../../../services/profile.service';
+import { Util } from '../../shared/utils/util';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LiteraryMemberStatus } from '../../../models/enums/LiteraryMemberStatus.enum';
 import { CompetitionMemberSaveTO } from '../../../models/competitionMemberSaveTO.model';
+import { GetProfileByIdUseCase } from 'src/app/core/use-cases/profile/get-profile-by-id.use-case';
+import { ProfileMapper } from 'src/app/infrastructure/mappers/profile.mapper';
 
 @Component({
     selector: 'app-registrations',
@@ -27,7 +28,7 @@ export class RegistrationsComponent implements OnInit {
     constructor(
         private competitionMemberService: CompetitionMemberService,
         private route: ActivatedRoute,
-        private profileService: ProfileService,
+        private getProfileByIdUseCase: GetProfileByIdUseCase,
         private fb: FormBuilder
     ) {
         this.searchMembers = this.fb.group({
@@ -59,15 +60,12 @@ export class RegistrationsComponent implements OnInit {
         Util.loadingScreen();
         this.members.forEach((a, i) => {
             if (!a.profile) {
-                this.profileService.getById(a.profileId)
-                    .pipe(take(1))
-                    .subscribe(result => {
-                        Util.stopLoading();
-                        this.members[i].profile = result;
-                    }, error => {
-                        console.log(error);
-                        Util.stopLoading();
-                    });
+                this.getProfileByIdUseCase.execute(a.profileId)
+                    .pipe(finalize(() => Util.stopLoading()))
+                    .subscribe(
+                        (user) => this.members[i].profile = ProfileMapper.toDTO(user),
+                        (error) => console.log(error),
+                    );
             }
         });
     }

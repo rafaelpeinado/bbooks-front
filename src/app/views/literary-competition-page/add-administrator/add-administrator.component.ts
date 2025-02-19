@@ -6,7 +6,7 @@ import { CompetitionMemberService } from '../../../services/competition-member.s
 import { LiteraryMemberStatus } from '../../../models/enums/LiteraryMemberStatus.enum';
 import { Role } from '../../../models/enums/Role.enum';
 import { CompetitionMemberSaveTO } from '../../../models/competitionMemberSaveTO.model';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { GetAllUsersUseCase } from 'src/app/core/use-cases/user/get-all-users.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
 
@@ -55,7 +55,7 @@ export class AddAdministratorComponent implements OnInit {
         const competitionMemberSaveTO = new CompetitionMemberSaveTO();
         competitionMemberSaveTO.title = null;
         competitionMemberSaveTO.story = null;
-        competitionMemberSaveTO.profileId = id;
+        competitionMemberSaveTO.profileId = id.toString();
         competitionMemberSaveTO.role = Role.admin;
         competitionMemberSaveTO.status = LiteraryMemberStatus.accept;
         competitionMemberSaveTO.competitionId = this.literaryCompetitionId;

@@ -7,10 +7,9 @@ import { FriendRequest } from '../../models/friendRequest.model';
 import { Friend } from '../../models/friend.model';
 import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
 import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
-import { ProfileService } from 'src/app/services/profile.service';
 import { GroupMemberService } from '../../services/group-member.service';
 import { GroupInviteTO } from '../../models/GroupInviteTO.model';
-import { Util } from '../../views/shared/Utils/util';
+import { Util } from '../../views/shared/utils/util';
 import { PublicProfileService } from '../../services/public-profile.service';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
@@ -45,8 +44,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         public translate: TranslateService,
         private friendService: FriendsService,
         private bookRecommendation: BookRecommendationService,
-        private profileService: ProfileService,
-        public groupMembersService: GroupMemberService,
+        private groupMembersService: GroupMemberService,
         private publicProfileService: PublicProfileService,
         private getCachedUserUseCase: GetCachedUserUseCase,
         private logoutUseCase: LogoutUseCase,
@@ -105,7 +103,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     verifyRequests() {
         const result = this.requests?.filter(request => request.status === 'received');
         if (result?.length > 0 || this.invitesGroup?.length > 0) {
-            return result.length + this.invitesGroup.length;
+            return result?.length + this.invitesGroup?.length;
         } else {
             return '';
         }
@@ -116,7 +114,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
             const user: User = this.getCachedUserUseCase.execute();
             if (user) {
                 this.getUserByIdUseCase.execute(user.id)
-                    .subscribe((user) => this.user = user)
+                    .subscribe((user) => this.user = user);
             } else {
                 this.updateUserInfoUseCase.execute()
                     .subscribe((user) => this.user = user);
@@ -185,7 +183,9 @@ export class NavBarComponent implements OnInit, OnDestroy {
             .pipe(
                 map((recommendations: BookRecommendationTO[]) => {
                     return recommendations.map(r => {
-                        r.profileTO = this.profileService.getById(r.profileSubmitter);
+                        // TODO
+                        // TODO refatorar essa parte
+                        // r.profileTO = this.getProfileByIdUseCase.execute(r.profileSubmitter);
 
                         let apiType: ApiType;
                         let id;

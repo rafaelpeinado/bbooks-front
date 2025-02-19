@@ -3,14 +3,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CompetitionMemberTO } from '../../../models/competitionMemberTO.model';
 import { CompetitionVotesSaveTO } from '../../../models/competitionVotesSaveTO.model';
 import { CompetitionVoteService } from '../../../services/competition-vote.service';
-import { take } from 'rxjs/operators';
-import { Util } from '../../shared/Utils/util';
+import { finalize, switchMap, take } from 'rxjs/operators';
+import { Util } from '../../shared/utils/util';
 import { CompetitionMemberService } from '../../../services/competition-member.service';
-import { ProfileService } from '../../../services/profile.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CompetitionVoteReturnTO } from '../../../models/competitionVoteReturnTO.model';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
+import { GetProfileByIdUseCase } from 'src/app/core/use-cases/profile/get-profile-by-id.use-case';
+import { ProfileMapper } from 'src/app/infrastructure/mappers/profile.mapper';
 
 @Component({
     selector: 'app-vote',
@@ -29,9 +30,9 @@ export class VoteComponent implements OnInit {
         public dialogRef: MatDialogRef<VoteComponent>,
         private competitionVoteService: CompetitionVoteService,
         private competitionMemberService: CompetitionMemberService,
-        private profileService: ProfileService,
         private formBuilder: FormBuilder,
         private getCachedUserUseCase: GetCachedUserUseCase,
+        private getProfileByIdUseCase: GetProfileByIdUseCase,
     ) {
     }
 
@@ -73,24 +74,14 @@ export class VoteComponent implements OnInit {
     getProfile() {
         Util.loadingScreen();
         this.competitionMemberService.getMember(this.member.memberId)
-            .pipe(take(1))
-            .subscribe(result => {
-                Util.stopLoading();
-                Util.loadingScreen();
-                this.profileService
-                    .getById(result.profile.id)
-                    .pipe(take(1))
-                    .subscribe(profileMember => {
-                        Util.stopLoading();
-                        this.member.profile = profileMember;
-                    }, error => {
-                        console.log(error);
-                        Util.stopLoading();
-                    });
-            }, error => {
-                console.log(error);
-                Util.stopLoading();
-            });
+            .pipe(
+                finalize(() => Util.stopLoading()),
+                take(1),
+                switchMap((result) => this.getProfileByIdUseCase.execute(result.profile.id))
+            ).subscribe(
+                (user) => this.member.profile = ProfileMapper.toDTO(user),
+                (error) => console.log(error),
+            );
     }
 
     verifyVoted() {

@@ -1,6 +1,6 @@
-import { LoginBuilder } from "src/app/core/domain/builders/login.builder";
-import { Login } from "src/app/core/domain/entities/login.entity";
-import { LoginTO } from "src/app/core/use-cases/dtos/login.dto";
+import { LoginBuilder } from 'src/app/core/domain/builders/login.builder';
+import { Login } from 'src/app/core/domain/entities/login.entity';
+import { LoginTO } from 'src/app/core/use-cases/dtos/login.dto';
 
 export class LoginMapper {
 

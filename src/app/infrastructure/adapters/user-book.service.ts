@@ -16,7 +16,6 @@ import { mapBookStatus } from 'src/app/core/domain/enums/book-status.enum';
 @Injectable({
     providedIn: 'root'
 })
-
 export class UserBookApiService extends BaseApiService<UserBook, UserBookTO> implements UserBookRepository {
 
     private api: string = environment.api + 'bookcases/';

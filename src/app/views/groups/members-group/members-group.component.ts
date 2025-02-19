@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { take } from 'rxjs/operators';
 import { GroupTO } from '../../../models/GroupTO.model';
 import { ActivatedRoute } from '@angular/router';

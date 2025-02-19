@@ -28,7 +28,7 @@ export class BookcaseResolve implements Resolve<{ bookcase: Bookcase, user: User
             this.getUserByUsernameUseCase.execute(username),
             this.getAllUserBookByProfileIdUseCase.execute(),
         ]).pipe(map((value) => {
-            return { bookcase: new Bookcase(undefined, undefined, value[1]), user: value[0] }
+            return { bookcase: new Bookcase(undefined, undefined, value[1]), user: value[0] };
         }));
     }
 }

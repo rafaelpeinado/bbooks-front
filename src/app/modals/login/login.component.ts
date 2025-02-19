@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SocialUser } from 'angularx-social-login';
 import { TranslateService } from '@ngx-translate/core';
-import { Util } from '../../views/shared/Utils/util';
+import { Util } from '../../views/shared/utils/util';
 import { LoginType } from 'src/app/core/domain/enums/login-type.enum';
 import { LoginUseCase } from 'src/app/core/use-cases/auth/login.use-case';
 import { Login } from 'src/app/core/domain/entities/login.entity';
@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
                     if (user?.id) {
                         this.router.navigateByUrl('/feed');
                     } else {
-                        const setCache: SetCache<User> = { value: user, storageItem: StorageItem.REGISTERING_USER }
+                        const setCache: SetCache<User> = { value: user, storageItem: StorageItem.REGISTERING_USER };
                         this.SetCacheUseCase.execute(setCache, StorageType.LOCAL_STORAGE);
                         this.router.navigateByUrl('/cadastro');
                     }

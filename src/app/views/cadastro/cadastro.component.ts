@@ -16,7 +16,7 @@ import { Login } from 'src/app/core/domain/entities/login.entity';
 import { SetCacheUserUseCase } from 'src/app/core/use-cases/user/set-cache-user.use-case';
 import { RemoveCacheUseCase } from 'src/app/core/use-cases/cache/remove-cache.use-case';
 import { UserTO } from 'src/app/infrastructure/dtos/user.dto';
-import { Util } from '../shared/Utils/util';
+import { Util } from '../shared/utils/util';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {

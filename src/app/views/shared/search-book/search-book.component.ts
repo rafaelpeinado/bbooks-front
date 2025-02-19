@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { Util } from '../Utils/util';
+import { Util } from '../utils/util';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FilterSearch } from 'src/app/core/domain/interfaces/filter-search.interface';
 import { SearchMergedBookUseCase } from 'src/app/core/use-cases/book/search-merged-books.use-case';

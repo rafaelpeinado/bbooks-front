@@ -3,7 +3,7 @@ import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '
 import {Observable, of} from 'rxjs';
 import {catchError, map, take} from 'rxjs/operators';
 import {GroupService} from '../../../services/group.service';
-import {Util} from '../../shared/Utils/util';
+import {Util} from '../../shared/utils/util';
 import {TranslateService} from '@ngx-translate/core';
 
 @Injectable({

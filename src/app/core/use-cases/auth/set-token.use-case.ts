@@ -12,7 +12,7 @@ export class SetTokenUseCase implements UseCaseInterface {
     constructor(private setCacheUseCase: SetCacheUseCase) { }
 
     execute(input: string): void {
-        const setCache: SetCache<string> = { value: input, storageItem: StorageItem.TOKEN }
+        const setCache: SetCache<string> = { value: input, storageItem: StorageItem.TOKEN };
         return this.setCacheUseCase.execute<string>(setCache, StorageType.LOCAL_STORAGE);
     }
 }

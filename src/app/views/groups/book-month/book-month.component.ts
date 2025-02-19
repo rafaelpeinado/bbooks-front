@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BookMonthTO } from '../../../models/BookMonthTO.model';
 import { SearchBookComponent } from '../../shared/search-book/search-book.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';

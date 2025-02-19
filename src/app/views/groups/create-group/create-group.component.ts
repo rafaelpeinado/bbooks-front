@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { mapPostPrivacy, PostPrivacy } from '../../../models/enums/PostPrivacy.enum';
 import { GroupService } from '../../../services/group.service';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';

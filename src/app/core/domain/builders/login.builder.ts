@@ -1,6 +1,6 @@
-import { Login } from "../entities/login.entity";
-import { LoginType } from "../enums/login-type.enum";
-import { BuilderImpl } from "./builder.builder";
+import { Login } from '../entities/login.entity';
+import { LoginType } from '../enums/login-type.enum';
+import { BuilderImpl } from './builder.builder';
 
 export class LoginBuilder extends BuilderImpl<Login, LoginBuilder> {
 

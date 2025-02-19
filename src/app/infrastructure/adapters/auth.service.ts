@@ -1,16 +1,16 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, of } from "rxjs";
-import { Login } from "src/app/core/domain/entities/login.entity";
-import { User } from "src/app/core/domain/entities/user.entity";
-import { AuthRepository } from "src/app/core/repositories/auth.repository";
-import { LoginTO } from "src/app/core/use-cases/dtos/login.dto";
-import { environment } from "src/environments/environment";
-import { LoginMapper } from "../mappers/login.mapper";
-import { BaseApiService } from "./base-service.service";
-import { UserMapper } from "../mappers/user.mapper";
-import { UserTO } from "../dtos/user.dto";
-import { first } from "rxjs/operators";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Login } from 'src/app/core/domain/entities/login.entity';
+import { User } from 'src/app/core/domain/entities/user.entity';
+import { AuthRepository } from 'src/app/core/repositories/auth.repository';
+import { LoginTO } from 'src/app/core/use-cases/dtos/login.dto';
+import { environment } from 'src/environments/environment';
+import { LoginMapper } from '../mappers/login.mapper';
+import { BaseApiService } from './base-service.service';
+import { UserMapper } from '../mappers/user.mapper';
+import { UserTO } from '../dtos/user.dto';
+import { first } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +20,7 @@ export class AuthApiService extends BaseApiService<User, UserTO> implements Auth
     private isLogged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
     private api = environment.api + 'auth/';
     private apiLogin = this.api + 'login/';
-    private apiLoginGoogle = this.apiLogin + 'google/'
+    private apiLoginGoogle = this.apiLogin + 'google/';
     private apiToken = this.apiLogin + 'token';
     private apiResetPass = this.api + 'reset-pass/';
 

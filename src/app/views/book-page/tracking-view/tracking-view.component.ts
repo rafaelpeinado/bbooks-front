@@ -6,7 +6,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {take} from 'rxjs/operators';
 import {TrackingTO} from '../../../models/TrackingTO.model';
 import {TrackingService} from '../../../services/tracking.service';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 
 @Component({
     selector: 'app-tracking-view',

@@ -5,7 +5,7 @@ import { PostService } from '../../../services/post.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PostTO } from '../../../models/PostTO.model';
 import { PostDialogComponent } from '../post-dialog/post-dialog.component';
-import { Util } from '../Utils/util';
+import { Util } from '../utils/util';
 import { take } from 'rxjs/operators';
 import { FeedPerfilManageService } from '../../perfil-page/store/feed-perfil-manage.service';
 import { TypePostControler } from '../../../models/enums/TypePost.enum';

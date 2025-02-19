@@ -35,8 +35,8 @@ export class UserMapper {
                 token: user.token,
                 userName: user.profile?.username,
                 verified: user.verified,
-            }
-            
+            };
+
             return userTO;
         }
         return null;

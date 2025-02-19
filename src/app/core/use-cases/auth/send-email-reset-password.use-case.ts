@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { UseCaseApiInterface } from "../use-case.interface";
-import { LoginServiceFactory } from "src/app/infrastructure/adapters/factories/login-service.factory";
-import { LoginType } from "../../domain/enums/login-type.enum";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { UseCaseApiInterface } from '../use-case.interface';
+import { LoginServiceFactory } from 'src/app/infrastructure/adapters/factories/login-service.factory';
+import { LoginType } from '../../domain/enums/login-type.enum';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'

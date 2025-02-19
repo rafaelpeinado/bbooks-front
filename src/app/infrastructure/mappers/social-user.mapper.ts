@@ -14,7 +14,7 @@ export class SocialUserMapper {
 
         const builderProfile = ProfileBuilder.builder();
         if (socialUser.photoUrl) { builderProfile.setProfileImage(socialUser.photoUrl); }
-        builder.setProfile(builderProfile.build())
+        builder.setProfile(builderProfile.build());
 
         return builder.build();
     }

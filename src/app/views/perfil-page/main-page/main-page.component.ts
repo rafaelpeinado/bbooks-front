@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FriendsService } from '../../../services/friends.service';
 import { Friend } from '../../../models/friend.model';
 import { TranslateService } from '@ngx-translate/core';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { GetUserByUsernameUseCase } from 'src/app/core/use-cases/user/get-user-by-username.use-case';
@@ -16,7 +16,7 @@ import { GetUserByUsernameUseCase } from 'src/app/core/use-cases/user/get-user-b
 export class MainPageComponent implements OnInit, OnChanges {
     public user: User;
     public userCached: User;
-    public friendshipStatus: string = '';
+    public friendshipStatus = '';
     links = ['feed', 'bookcase', 'friends'];
     activeLink = this.links[0];
     friendTO: Friend = new Friend();

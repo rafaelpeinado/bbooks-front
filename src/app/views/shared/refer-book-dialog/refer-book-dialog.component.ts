@@ -9,7 +9,7 @@ import { BookRecommendationService } from 'src/app/services/book-recommendation.
 import { GroupInviteTO } from '../../../models/GroupInviteTO.model';
 import { GroupMemberService } from '../../../services/group-member.service';
 import { take } from 'rxjs/operators';
-import { Util } from '../Utils/util';
+import { Util } from '../utils/util';
 import { Friendship } from '../../../models/Friendship.model';
 import { FriendsService } from '../../../services/friends.service';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';

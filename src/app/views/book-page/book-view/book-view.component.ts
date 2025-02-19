@@ -23,7 +23,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ReferBookDialogComponent } from '../../shared/refer-book-dialog/refer-book-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
 import { ReviewsPagination } from '../../../models/pagination/reviews.pagination';
-import { Util } from '../../shared/Utils/util';
+import { Util } from '../../shared/utils/util';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { Book } from 'src/app/core/domain/entities/book.entity';
 import { UserBookDetails } from 'src/app/core/domain/interfaces/user-book-details.interface';

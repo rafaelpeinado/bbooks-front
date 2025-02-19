@@ -84,26 +84,4 @@ export class BookApiService implements BookRepository {
     searchBookByName(bookName: string): Observable<Book[]> {
         throw new Error('Method not implemented.');
     }
-
-    // TODO O book de update book era
-    // export class Book {
-    //     id: string;
-    //     isbn10: string;
-    //     isbn13: string;
-    //     title: string;
-    //     authors: Author[];
-    //     numberPage: number;
-    //     language: string;
-    //     publisher: string;
-    //     // country: number;
-    //     publishedDate: number;
-    //     averageRating: number;
-    //     image: string;
-    //     description: string;
-    //     status: BookStatus;
-    //     idUserBook: number;
-    //     tags: Tag[];
-    //     api: string;
-    //     finishDate: Date;
-    // }
 }

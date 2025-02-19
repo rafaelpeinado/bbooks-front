@@ -25,7 +25,7 @@ export class PesquisarAmigosComponent implements OnInit {
     ngOnInit(): void {
         this.route.queryParams.pipe(
             switchMap(({ search }) => {
-                if (!search) return of([]);
+                if (!search) { return of([]); }
                 return combineLatest([
                     this.getUsersByNameUseCase.execute(search),
                     this.getUsersByUsernameUseCase.execute(search),

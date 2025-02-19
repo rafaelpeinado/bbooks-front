@@ -41,110 +41,109 @@
   </form> -->
 
 
-  <form [formGroup]="cadastroControl">
+<form [formGroup]="cadastroControl">
 
-    <div>
-      <img mat-card-image src="assets/images/logo-bbooks-branco.png" alt="logo bbooks transparente">
-    </div>
-    <div>
-      <span id="texto-introducao">{{'CADASTRO1.TITULO' | translate}}</span>
-    </div>
+  <div>
+    <img mat-card-image src="assets/images/logo-bbooks-branco.png" alt="logo bbooks transparente">
+  </div>
+  <div>
+    <span id="texto-introducao">{{'CADASTRO1.TITULO' | translate}}</span>
+  </div>
 
-    <div id="nomeSobrenome">
-      <mat-form-field id="nome" class="inputCadastrar" appearance="outline">
-        <mat-label>{{'PADRAO.NOME' | translate}}</mat-label>
-        <input matInput id="nomeCadastrar" formControlName="name">
-        <mat-error *ngIf="cadastroControl.get('name').hasError('required')">
-          {{'CADASTRO1.MSG_NAME_E' | translate}} <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
-        </mat-error>
-      </mat-form-field>
+  <div id="nomeSobrenome">
+    <mat-form-field id="nome" class="inputCadastrar" appearance="outline">
+      <mat-label>{{'PADRAO.NOME' | translate}}</mat-label>
+      <input matInput id="nomeCadastrar" formControlName="name">
+      <mat-error *ngIf="cadastroControl.get('name').hasError('required')">
+        {{'CADASTRO1.MSG_NAME_E' | translate}} <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
+      </mat-error>
+    </mat-form-field>
 
-      <mat-form-field id="sobrenome" class="inputCadastrar" appearance="outline">
-        <mat-label>{{'PADRAO.SOBRENOME' | translate}}</mat-label>
-        <input matInput id="sobrenomeCadastrar" formControlName="lastName">
-        <mat-error *ngIf="cadastroControl.get('lastName').hasError('required')">
-          {{'CADASTRO1.MSG_SOBRENOME_E' | translate}} <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
-        </mat-error>
-      </mat-form-field>
-    </div>
-  
-    <div>
-      <mat-form-field class="inputCadastrar" appearance="outline">
-        <mat-label>{{'PADRAO.EMAIL' | translate}}</mat-label>
-        <input type="email" matInput id="emailCadastrar" formControlName="email">
-        <!-- <mat-error *ngIf="cadastroControl.get('email').hasError('email') && !cadastroControl.get('email').hasError('required')">
+    <mat-form-field id="sobrenome" class="inputCadastrar" appearance="outline">
+      <mat-label>{{'PADRAO.SOBRENOME' | translate}}</mat-label>
+      <input matInput id="sobrenomeCadastrar" formControlName="lastName">
+      <mat-error *ngIf="cadastroControl.get('lastName').hasError('required')">
+        {{'CADASTRO1.MSG_SOBRENOME_E' | translate}} <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field class="inputCadastrar" appearance="outline">
+      <mat-label>{{'PADRAO.EMAIL' | translate}}</mat-label>
+      <input type="email" matInput id="emailCadastrar" formControlName="email">
+      <!-- <mat-error *ngIf="cadastroControl.get('email').hasError('email') && !cadastroControl.get('email').hasError('required')">
           {{'CADASTRO1.VLD_EMAIL' | translate}}
         </mat-error> -->
-        <mat-error *ngIf="cadastroControl.get('email').hasError('required')">
-          {{'CADASTRO1.MSG_EMAIL_E' | translate}} <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
-        </mat-error>
-        <mat-error *ngIf="cadastroControl.get('email').hasError('pattern') && !cadastroControl.get('email').hasError('required')">
-          {{'CADASTRO1.VLD_EMAIL' | translate}} <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
-        </mat-error>
-        <mat-hint>{{'CADASTRO1.MSG_EMAIL_INIT' | translate}}</mat-hint>
-      </mat-form-field>
-    </div>
+      <mat-error *ngIf="cadastroControl.get('email').hasError('required')">
+        {{'CADASTRO1.MSG_EMAIL_E' | translate}} <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
+      </mat-error>
+      <mat-error
+        *ngIf="cadastroControl.get('email').hasError('pattern') && !cadastroControl.get('email').hasError('required')">
+        {{'CADASTRO1.VLD_EMAIL' | translate}} <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
+      </mat-error>
+      <mat-hint>{{'CADASTRO1.MSG_EMAIL_INIT' | translate}}</mat-hint>
+    </mat-form-field>
+  </div>
 
-    <div>
-      <mat-form-field class="inputCadastrar" appearance="outline">
-        <mat-label>{{'PADRAO.NOME_USUARIO' | translate}}</mat-label>
-        <input matInput id="nomeUsuarioCadastrar" formControlName="userName" #username (input)="username.value = username.value.toLowerCase()" >
-        <mat-error *ngIf="cadastroControl.get('userName').hasError('pattern') && !cadastroControl.get('userName').hasError('required')">
-          {{'CADASTRO1.VLD_USERNAME_LETRA' | translate}}
-        </mat-error>
-        <mat-error *ngIf="cadastroControl.get('userName').hasError('required')">
-          {{'CADASTRO1.MSG_USERNAME_E' | translate}}   <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
-        </mat-error>
-        <mat-hint> {{'CADASTRO1.MSG_USERNAME_INT' | translate}}</mat-hint>
-      </mat-form-field>
-    </div>
+  <div>
+    <mat-form-field class="inputCadastrar" appearance="outline">
+      <mat-label>{{'PADRAO.NOME_USUARIO' | translate}}</mat-label>
+      <input matInput id="nomeUsuarioCadastrar" formControlName="userName" #username
+        (input)="username.value = username.value.toLowerCase()">
+      <mat-error
+        *ngIf="cadastroControl.get('userName').hasError('pattern') && !cadastroControl.get('userName').hasError('required')">
+        {{'CADASTRO1.VLD_USERNAME_LETRA' | translate}}
+      </mat-error>
+      <mat-error *ngIf="cadastroControl.get('userName').hasError('required')">
+        {{'CADASTRO1.MSG_USERNAME_E' | translate}} <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
+      </mat-error>
+      <mat-hint> {{'CADASTRO1.MSG_USERNAME_INT' | translate}}</mat-hint>
+    </mat-form-field>
+  </div>
 
 
-    <div id="senhaConfirmarSenha" >
-      <mat-form-field class="inputCadastraSenha" appearance="outline">
-        <mat-label>{{'PADRAO.SENHA' | translate}}</mat-label>
-        <input type="password"
-        matInput 
-        [type]="hide ? 'password' : 'text'"
-        formControlName="password"
+  <div id="senhaConfirmarSenha">
+    <mat-form-field class="inputCadastraSenha" appearance="outline">
+      <mat-label>{{'PADRAO.SENHA' | translate}}</mat-label>
+      <input type="password" matInput [type]="hide ? 'password' : 'text'" formControlName="password"
         id="senhaCadastrar">
-        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-        <mat-error *ngIf="cadastroControl.get('password').hasError('maxlength') && !cadastroControl.get('password').hasError('required')">
-          {{'CADASTRO1.VLD_SENHA' | translate}}
-        </mat-error>
-        <mat-error *ngIf="cadastroControl.get('password').hasError('pattern') && !cadastroControl.get('password').hasError('required')">
-          {{'CADASTRO1.VLD_SENHA_CARACTERES' | translate}}
-        </mat-error>
-        <mat-error *ngIf="cadastroControl.get('password').hasError('required')">
-          {{'CADASTRO1.SENHA_E' | translate}}<strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
-        </mat-error>
-        <mat-hint>
-          {{'CADASTRO1.SENHA_INIT' | translate}}
-        </mat-hint>
-      </mat-form-field>
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error
+        *ngIf="cadastroControl.get('password').hasError('maxlength') && !cadastroControl.get('password').hasError('required')">
+        {{'CADASTRO1.VLD_SENHA' | translate}}
+      </mat-error>
+      <mat-error
+        *ngIf="cadastroControl.get('password').hasError('pattern') && !cadastroControl.get('password').hasError('required')">
+        {{'CADASTRO1.VLD_SENHA_CARACTERES' | translate}}
+      </mat-error>
+      <mat-error *ngIf="cadastroControl.get('password').hasError('required')">
+        {{'CADASTRO1.SENHA_E' | translate}}<strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
+      </mat-error>
+      <mat-hint>
+        {{'CADASTRO1.SENHA_INIT' | translate}}
+      </mat-hint>
+    </mat-form-field>
 
-      <mat-form-field class="inputCadastraSenha" appearance="outline">
-        <mat-label>{{'PADRAO.CONFIRMAR_SENHA' | translate}}</mat-label>
-        <input type="password"
-         [type]="hide ? 'password' : 'text'"
-        matInput
-        formControlName="confirmPassword"
-        [errorStateMatcher]="matcher"
-        id="confirmarSenhaCadastrar" onpaste="return false" ondrop="return false">
-        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-        <mat-error *ngIf="cadastroControl.hasError('notSame')">
-          {{'CADASTRO1.VLD_SENHA_DIFERENTE' | translate}}
-        </mat-error>
-      </mat-form-field>
-    </div>
-  
-    <div id="divBotao">
-      <button type="button" mat-raised-button color="primary" (click)="cadastrar()" [disabled]="cadastroControl.invalid">{{'CADASTRO1.PROXIMO' | translate}}</button>
-    </div>
-  </form>
+    <mat-form-field class="inputCadastraSenha" appearance="outline">
+      <mat-label>{{'PADRAO.CONFIRMAR_SENHA' | translate}}</mat-label>
+      <input type="password" [type]="hide ? 'password' : 'text'" matInput formControlName="confirmPassword"
+        [errorStateMatcher]="matcher" id="confirmarSenhaCadastrar" onpaste="return false" ondrop="return false">
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="cadastroControl.hasError('notSame')">
+        {{'CADASTRO1.VLD_SENHA_DIFERENTE' | translate}}
+      </mat-error>
+    </mat-form-field>
+  </div>
 
-  {{ cadastroControl.value | json }}
+  <div id="divBotao">
+    <button type="button" mat-raised-button color="primary" (click)="cadastrar()"
+      [disabled]="cadastroControl.invalid">{{'CADASTRO1.PROXIMO' | translate}}</button>
+  </div>
+</form>

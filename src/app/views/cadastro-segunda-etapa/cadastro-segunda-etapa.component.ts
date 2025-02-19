@@ -3,17 +3,15 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConsultaCepService } from '../../services/consulta-cep.service';
 import { Observable } from 'rxjs';
-import { finalize, map, startWith, take } from 'rxjs/operators';
+import { finalize, map, startWith } from 'rxjs/operators';
 import { Country } from '../../models/country.model';
 import { State } from '../../models/state.model';
 import { City } from '../../models/city.model';
-import { ProfileService } from '../../services/profile.service';
 import { CDNService } from 'src/app/services/cdn.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadComponent } from '../upload/upload.component';
 import { DateAdapter } from '@angular/material/core';
-import { Profile } from '../../models/profileTO.model';
-import { Util } from '../shared/Utils/util';
+import { Util } from '../shared/utils/util';
 import { TranslateService } from '@ngx-translate/core';
 import { ClearCacheUseCase } from 'src/app/core/use-cases/auth/clear-cache.use-case';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
@@ -22,6 +20,10 @@ import { Login } from 'src/app/core/domain/entities/login.entity';
 import { LoginBuilder } from 'src/app/core/domain/builders/login.builder';
 import { LoginByTokenUseCase } from 'src/app/core/use-cases/auth/login-by-token.use-case';
 import { TemporaryService } from 'src/app/services/temporary.service';
+import { UpdateProfileUseCase } from 'src/app/core/use-cases/profile/update-profile.use-case';
+import { ProfileTO } from 'src/app/infrastructure/dtos/user.dto';
+import { GetProfileByIdUseCase } from 'src/app/core/use-cases/profile/get-profile-by-id.use-case';
+import { ProfileMapper } from 'src/app/infrastructure/mappers/profile.mapper';
 
 @Component({
     selector: 'app-cadastro-segunda-etapa',
@@ -33,7 +35,7 @@ export class CadastroSegundaEtapaComponent implements OnInit {
     public citys: City[];
     public countrys: Country[];
     public states: State[];
-    public profileTo: Profile;
+    public profileTO: ProfileTO;
     dataAtual = new Date();
     public user: User;
 
@@ -46,7 +48,6 @@ export class CadastroSegundaEtapaComponent implements OnInit {
         private router: Router,
         private formBuilder: FormBuilder,
         private consultaCepService: ConsultaCepService,
-        private profileService: ProfileService,
         private cdnService: CDNService,
         public dialog: MatDialog,
         private adapter: DateAdapter<any>,
@@ -55,6 +56,8 @@ export class CadastroSegundaEtapaComponent implements OnInit {
         private getCachedUserUseCase: GetCachedUserUseCase,
         private loginByTokenUseCase: LoginByTokenUseCase,
         private temporaryService: TemporaryService,
+        private updateProfileUseCase: UpdateProfileUseCase,
+        private getProfileByIdUseCase: GetProfileByIdUseCase,
     ) {
         const browserLang = this.translate.getBrowserLang().toString();
         this.adapter.setLocale(browserLang);
@@ -153,10 +156,10 @@ export class CadastroSegundaEtapaComponent implements OnInit {
     }
 
     updateProfileTo() {
-        this.profileTo.birthDate = this.formCadastro2.get('birthDate').value;
-        this.profileTo.country = this.formCadastro2.get('country').value;
-        this.profileTo.city = this.formCadastro2.get('city').value;
-        this.profileTo.state = this.formCadastro2.get('state').value;
+        this.profileTO.birthDate = this.formCadastro2.get('birthDate').value;
+        this.profileTO.country = this.formCadastro2.get('country').value;
+        this.profileTO.city = this.formCadastro2.get('city').value;
+        this.profileTO.state = this.formCadastro2.get('state').value;
     }
 
     loginRegister() {
@@ -186,27 +189,26 @@ export class CadastroSegundaEtapaComponent implements OnInit {
 
     getByIdToUpdateProfile(): void {
         Util.loadingScreen();
-        this.profileService.getById(+this.user.profile.id).pipe(take(1)).subscribe((profile: Profile) => {
-            Util.stopLoading();
-            this.profileTo = profile;
-            this.updateProfileTo();
-            this.updateProfileToLogin();
-        });
+        this.getProfileByIdUseCase.execute(this.user.profile.id)
+            .pipe(finalize(() => Util.stopLoading()))
+            .subscribe((user) => {
+                this.profileTO = ProfileMapper.toDTO(user);
+                this.updateProfileTo();
+                this.updateProfileToLogin();
+            });
     }
 
     updateProfileToLogin(): void {
         Util.loadingScreen();
-        this.profileService.update(this.profileTo).subscribe(
-            () => {
-                Util.stopLoading();
-                this.login();
-            },
-            error => {
-                Util.stopLoading();
-                console.log('error update profile', error);
-                this.clearCacheUseCase.execute();
-            }
-        );
+        this.updateProfileUseCase.execute(ProfileMapper.toUser(this.profileTO))
+            .pipe(finalize(() => Util.stopLoading()))
+            .subscribe(
+                () => this.login(),
+                (error) => {
+                    console.log('error update profile', error);
+                    this.clearCacheUseCase.execute();
+                },
+            );
     }
 
     login(): void {

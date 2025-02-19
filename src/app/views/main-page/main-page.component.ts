@@ -17,7 +17,7 @@ import { GetIsLoggedUseCase } from 'src/app/core/use-cases/auth/get-is-logged.us
 export class MainPageComponent implements OnInit, OnDestroy {
     public user: User;
     public isCompleted = false;
-    public isLogged: boolean = false;
+    public isLogged = false;
     private isLoggedSubscription: Subscription;
     searchControl;
     books: Book[];
