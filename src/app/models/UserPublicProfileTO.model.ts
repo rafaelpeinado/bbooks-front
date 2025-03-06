@@ -1,6 +1,5 @@
 import { List } from '@zxing/library/es2015/customTypings';
-import { Profile } from './profileTO.model';
-import { UserTO } from '../infrastructure/dtos/user.dto';
+import { ProfileTO, UserTO } from '../infrastructure/dtos/user.dto';
 
 export class UserPublicProfileTO {
     id: string;
@@ -8,5 +7,5 @@ export class UserPublicProfileTO {
     description: string;
     user: UserTO;
     createdAt: Date;
-    followers: List<Profile>;
+    followers: List<ProfileTO>;
 }

@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { map, take } from 'rxjs/operators';
-import { FriendsService } from '../../services/friends.service';
+import { catchError, finalize, map, switchMap, take, tap } from 'rxjs/operators';
 import { FriendRequest } from '../../models/friendRequest.model';
 import { Friend } from '../../models/friend.model';
 import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
@@ -17,10 +16,19 @@ import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-use
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { LogoutUseCase } from 'src/app/core/use-cases/auth/logout.use-case';
 import { GetIsLoggedUseCase } from 'src/app/core/use-cases/auth/get-is-logged.use-case';
-import { Subscription } from 'rxjs';
+import { of, Subscription, throwError } from 'rxjs';
 import { UpdateUserInfoUseCase } from 'src/app/core/use-cases/user/update-user-info.use-case';
 import { TemporaryService } from 'src/app/services/temporary.service';
 import { GetUserByIdUseCase } from 'src/app/core/use-cases/user/get-user-by-id.use-case';
+import { FriendshipStatusEnum } from 'src/app/core/domain/enums/friendship-status.enum';
+import { GetAllFriendshipsUseCase } from 'src/app/core/use-cases/friendship/get-all-friendships.use-case';
+import { Friendship } from 'src/app/core/domain/entities/friendship.entity';
+import { FriendshipTO } from 'src/app/infrastructure/dtos/friendship.dto';
+import { GetProfileByIdUseCase } from 'src/app/core/use-cases/profile/get-profile-by-id.use-case';
+import { FriendshipMapper } from 'src/app/infrastructure/mappers/friendship.mapper';
+import { ProfileMapper } from 'src/app/infrastructure/mappers/profile.mapper';
+import { AcceptFriendshipUseCase } from 'src/app/core/use-cases/friendship/accept-friendship.use-case';
+import { DeleteFriendshipRequestUseCase } from 'src/app/core/use-cases/friendship/delete-friendship-request.use-case';
 
 @Component({
     selector: 'app-nav-bar',
@@ -30,10 +38,15 @@ import { GetUserByIdUseCase } from 'src/app/core/use-cases/user/get-user-by-id.u
 export class NavBarComponent implements OnInit, OnDestroy {
     public isLogged: boolean;
     public user: User;
+    public sentFriendships: FriendshipTO[] = [];
+    public receivedFriendships: FriendshipTO[] = [];
+    private sentAndReceivedStatus: FriendshipStatusEnum[] = [FriendshipStatusEnum.RECEIVED, FriendshipStatusEnum.SENT];
+    private setSentFriendships: Set<string> = new Set<string>();
+    private setReceivedFriendships: Set<string> = new Set<string>();
     private isLoggedSubscription: Subscription;
 
     menuPerfil;
-    requests: FriendRequest[];
+    public friendships: Friendship[];
     recommendations: BookRecommendationTO[];
     invitesGroup: GroupInviteTO[];
     publicProfileId = '';
@@ -42,7 +55,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
         private getBookByIdUseCase: GetBookByIdUseCase,
         private router: Router,
         public translate: TranslateService,
-        private friendService: FriendsService,
         private bookRecommendation: BookRecommendationService,
         private groupMembersService: GroupMemberService,
         private publicProfileService: PublicProfileService,
@@ -52,6 +64,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
         private updateUserInfoUseCase: UpdateUserInfoUseCase,
         private temporaryService: TemporaryService,
         private getUserByIdUseCase: GetUserByIdUseCase,
+        private getAllFriendshipsUseCase: GetAllFriendshipsUseCase,
+        private getProfileByIdUseCase: GetProfileByIdUseCase,
+        private acceptFriendshipUseCase: AcceptFriendshipUseCase,
+        private deleteFriendshipRequestUseCase: DeleteFriendshipRequestUseCase,
     ) {
         translate.addLangs(['pt-BR', 'en']);
         translate.setDefaultLang('pt-BR');
@@ -83,25 +99,35 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
     getRequests() {
         if (this.isLogged) {
-            this.friendService.getRequests().subscribe(requests => {
-                this.requests = requests;
-            },
-                error => {
-                    this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
-                        Util.showErrorDialog(message);
-                    });
-                    clearInterval(this.timer);
-                    this.logoutUseCase.execute()
-                        .subscribe(() => {
-                            this.router.navigateByUrl('/login');
-                            console.log('error getRequests', error);
-                        });
+            this.getAllFriendshipsUseCase.execute().subscribe((friendships) => {
+                this.friendships = friendships;
+                const sentOrReceivedFrienships = this.friendships.filter(friendship => {
+                    const hasReceivedFriendships = this.setReceivedFriendships.has(friendship.id);
+                    const hasSentFriendships = this.setSentFriendships.has(friendship.id);
+                    const isSentOrReceivedStatus = this.sentAndReceivedStatus.includes(friendship.friendshipStatus);
+                    return !hasReceivedFriendships && !hasSentFriendships && isSentOrReceivedStatus;
                 });
+                sentOrReceivedFrienships.forEach((sentOrReceivedFriendship) =>
+                    this.getProfileByIdUseCase.execute(sentOrReceivedFriendship.friendProfileId)
+                        .subscribe((user) => {
+                            const friendshipTO: FriendshipTO = FriendshipMapper.toDTO(sentOrReceivedFriendship);
+                            friendshipTO.profileTO = ProfileMapper.toDTO(user);
+                            if (sentOrReceivedFriendship.friendshipStatus === FriendshipStatusEnum.SENT) {
+                                this.addSentFriendships(friendshipTO);
+                            } else {
+                                this.addReceivedFriendships(friendshipTO);
+                            }
+
+                        })
+                );
+            }, (error) => this.handleError(error));
         }
     }
 
+
+
     verifyRequests() {
-        const result = this.requests?.filter(request => request.status === 'received');
+        const result = this.friendships?.filter(friendship => friendship.friendshipStatus === 'received');
         if (result?.length > 0 || this.invitesGroup?.length > 0) {
             return result?.length + this.invitesGroup?.length;
         } else {
@@ -137,44 +163,46 @@ export class NavBarComponent implements OnInit, OnDestroy {
             });
     }
 
-    aceptRequest(request: FriendRequest) {
-        const acept = new Friend();
-        acept.id = request.id;
-        Util.stopLoading();
-        this.friendService.acceptRequest(acept).subscribe(() => {
-            Util.stopLoading();
+    acceptRequest(friendshipTO: FriendshipTO) {
+        const accept = new Friend();
+        accept.id = +friendshipTO.id;
+        Util.loadingScreen();
+        this.acceptFriendshipUseCase.execute(friendshipTO.id).pipe(
+            finalize(() => Util.stopLoading())
+        ).subscribe(() => {
+            if (this.setSentFriendships.has(friendshipTO.id)) {
+                this.setSentFriendships.delete(friendshipTO.id);
+                this.sentFriendships = this.sentFriendships.filter((sentFriendship) => sentFriendship.id !== friendshipTO.id)
+            }
+
+            if (this.setReceivedFriendships.has(friendshipTO.id)) {
+                this.setReceivedFriendships.delete(friendshipTO.id);
+                this.receivedFriendships = this.receivedFriendships.filter((sentFriendship) => sentFriendship.id !== friendshipTO.id)
+            }
+
             this.translate.get('PADRAO.SOLICITACAO_ACEITA').subscribe(message => {
                 Util.showSuccessDialog(message);
             });
-        });
-
+        })
     }
 
-    deleteRequest(request: FriendRequest) {
-        const acept = new Friend();
-        acept.id = request.id;
+    deleteRequest(friendship: FriendRequest) {
         Util.stopLoading();
-        this.friendService.deleteRequest(acept).subscribe(() => {
-            Util.stopLoading();
-            if (request.status === 'sent') {
-                this.translate.get('PADRAO.SOLICITACAO_CANCELADA').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-            } else {
-                this.translate.get('PADRAO.SOLICITACAO_N_ACEITA').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-            }
 
-        });
-    }
+        this.deleteFriendshipRequestUseCase.execute(friendship.id).pipe(
+            finalize(() => Util.stopLoading()), // Garante que stopLoading será chamado
+            switchMap(() => {
+                const messageKey = friendship.status === 'sent'
+                    ? 'PADRAO.SOLICITACAO_CANCELADA'
+                    : 'PADRAO.SOLICITACAO_N_ACEITA';
 
-    requestsSent(): FriendRequest[] {
-        return this.requests?.filter(r => r.status === 'sent');
-    }
-
-    requestsReceived(): FriendRequest[] {
-        return this.requests?.filter(r => r.status === 'received');
+                return this.translate.get(messageKey);
+            }),
+            catchError(error => {
+                Util.showErrorDialog('Erro ao excluir solicitação de amizade.');
+                return throwError(() => error);
+            })
+        ).subscribe(message => Util.showSuccessDialog(message));
     }
 
     getRecommendations(): void {
@@ -280,5 +308,38 @@ export class NavBarComponent implements OnInit, OnDestroy {
                     this.publicProfileId = '';
                 }
             });
+    }
+
+
+    private handleError(error: any) {
+        this.translate.get('PADRAO.OCORREU_UM_ERRO').pipe(
+            switchMap(message => {
+                clearInterval(this.timer)
+                Util.showErrorDialog(message);
+                return this.logoutUseCase.execute();
+            }),
+            tap(() => {
+                this.router.navigateByUrl('/login');
+                console.error('Error getRequests', error);
+            }),
+            catchError(logoutError => {
+                console.error('Erro ao deslogar:', logoutError);
+                return of(null);
+            })
+        ).subscribe();
+    }
+
+    private addSentFriendships(friendshipTO: FriendshipTO): void {
+        if (!this.setSentFriendships.has(friendshipTO.id)) {
+            this.setSentFriendships.add(friendshipTO.id)
+            this.sentFriendships.push(friendshipTO);
+        }
+    }
+
+    private addReceivedFriendships(friendshipTO: FriendshipTO): void {
+        if (!this.setReceivedFriendships.has(friendshipTO.id)) {
+            this.setReceivedFriendships.add(friendshipTO.id)
+            this.receivedFriendships.push(friendshipTO);
+        }
     }
 }

@@ -1,12 +1,16 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FriendsService } from '../../../services/friends.service';
-import { Friend } from '../../../models/friend.model';
 import { TranslateService } from '@ngx-translate/core';
 import { Util } from '../../shared/utils/util';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { GetUserByUsernameUseCase } from 'src/app/core/use-cases/user/get-user-by-username.use-case';
+import { CreateFriendshipUseCase } from 'src/app/core/use-cases/friendship/create-friendship.use-case';
+import { finalize, switchMap } from 'rxjs/operators';
+import { AcceptFriendshipUseCase } from 'src/app/core/use-cases/friendship/accept-friendship.use-case';
+import { DeleteFriendshipRequestUseCase } from 'src/app/core/use-cases/friendship/delete-friendship-request.use-case';
+import { GetFriendshipRequestByUsernameUseCase } from 'src/app/core/use-cases/friendship/get-friendship-request-by-username.use-case';
+import { DeleteFriendshipUseCase } from 'src/app/core/use-cases/friendship/delete-friendship.use-case';
 
 @Component({
     selector: 'app-main-page',
@@ -16,18 +20,21 @@ import { GetUserByUsernameUseCase } from 'src/app/core/use-cases/user/get-user-b
 export class MainPageComponent implements OnInit, OnChanges {
     public user: User;
     public userCached: User;
-    public friendshipStatus = '';
+    public friendshipStatus = null;
     links = ['feed', 'bookcase', 'friends'];
     activeLink = this.links[0];
-    friendTO: Friend = new Friend();
 
     constructor(
         private router: Router,
         private route: ActivatedRoute,
-        private friendsService: FriendsService,
         public translate: TranslateService,
         private getCachedUserUseCase: GetCachedUserUseCase,
         private getUserByUsernameUseCase: GetUserByUsernameUseCase,
+        private sendAddFriendUseCase: CreateFriendshipUseCase,
+        private acceptFriendshipUseCase: AcceptFriendshipUseCase,
+        private deleteFriendshipRequestUseCase: DeleteFriendshipRequestUseCase,
+        private getFriendshipRequestByUsernameUseCase: GetFriendshipRequestByUsernameUseCase,
+        private deleteFriendshipUseCase: DeleteFriendshipUseCase,
     ) {
         this.route.data.subscribe((data: { user: User }) => {
             this.user = data.user;
@@ -68,52 +75,49 @@ export class MainPageComponent implements OnInit, OnChanges {
     }
 
     sendRequest() {
-        this.friendTO = new Friend();
-        this.friendTO.id = +this.user.profile.id;
-        this.friendsService.add(this.friendTO).subscribe(() => {
-            this.translate.get('PADRAO.SOLICITACAO_ENVIADA').subscribe(message => {
-                Util.showSuccessDialog(message);
-            });
-            this.friendshipStatus = 'sent';
-        },
-            error => {
-                console.log(error);
-            });
+        Util.loadingScreen();
+        this.sendAddFriendUseCase.execute(this.user.profile.id)
+            .pipe(
+                finalize(() => Util.stopLoading()),
+                switchMap(() => this.translate.get('PADRAO.SOLICITACAO_ENVIADA'))
+            )
+            .subscribe(
+                (message) => {
+                    this.friendshipStatus = 'sent';
+                    Util.showSuccessDialog(message);
+                },
+                (error) => console.log(error),
+            );
     }
 
     deleteRequest(username: string) {
-        this.friendsService.getRequestByUserName(username).subscribe(request => {
-            const acept = new Friend();
-            acept.id = request.id;
-            this.friendsService.deleteRequest(acept).subscribe(() => {
-                this.translate.get('PADRAO.SOLICITACAO_N_ACEITA').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                    this.getUser();
-                });
-            });
+        // TODO verificar se o status é pending
+        this.getFriendshipRequestByUsernameUseCase.execute(username).pipe(
+            switchMap((friendship) => this.deleteFriendshipRequestUseCase.execute(friendship.id)),
+            switchMap(() => this.translate.get('PADRAO.SOLICITACAO_N_ACEITA')),
+        ).subscribe(message => {
+            Util.showSuccessDialog(message);
+            this.getUser();
         });
     }
 
     aceptRequest(username: string) {
-        this.friendsService.getRequestByUserName(username).subscribe(request => {
-            const acept = new Friend();
-            acept.id = request.id;
-            this.friendsService.acceptRequest(acept).subscribe(() => {
-                this.translate.get('PADRAO.SOLICITACAO_ACEITA').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                    this.getUser();
-                });
-            });
+        // TODO verificar se o status é pending
+        this.getFriendshipRequestByUsernameUseCase.execute(username).pipe(
+            switchMap((friendship) => this.acceptFriendshipUseCase.execute(friendship.id)),
+            switchMap(() => this.translate.get('PADRAO.SOLICITACAO_ACEITA')),
+        ).subscribe(message => {
+            Util.showSuccessDialog(message);
+            this.getUser();
         });
     }
 
     deleteFriend(idProfile: string) {
-        this.friendsService.deleteFriend(+idProfile).subscribe(() => {
+        this.deleteFriendshipUseCase.execute(idProfile).subscribe(() => {
             this.getUser();
-        },
-            error => {
-                console.log(error);
-            });
+        }, error => {
+            console.log(error);
+        });
     }
 
 }

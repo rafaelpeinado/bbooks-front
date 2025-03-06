@@ -76,7 +76,7 @@ export class PublicProfileComponent implements OnInit {
                 const user: User = this.getCachedUserUseCase.execute();
                 this.isFollower = false;
                 result.followers.forEach(f => {
-                    if (f.id === +user.profile.id) {
+                    if (f.id === user.profile.id) {
                         this.isFollower = true;
                     }
                 });

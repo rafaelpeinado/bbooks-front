@@ -18,11 +18,11 @@
     </button>
     <div *ngIf="isLogged">
         <button mat-flat-button color="primary">
-            <mat-icon [matBadge]="requests?.length || invitesGroup?.length ? verifyRequests() : ''" matBadgeColor="warn"
+            <mat-icon [matBadge]="friendships?.length || invitesGroup?.length ? verifyRequests() : ''" matBadgeColor="warn"
                 [matMenuTriggerFor]="menuNofify">add_alert</mat-icon>
         </button>
         <mat-menu #menuNofify="matMenu">
-            <div *ngIf="requests?.length === 0 && invitesGroup?.length === 0 && recommendations?.length === 0">
+            <div *ngIf="friendships?.length === 0 && invitesGroup?.length === 0 && recommendations?.length === 0">
                 <app-empty-content-message
                     message="{{'NAV.NOT_NOTITIFCATION' | translate}}"></app-empty-content-message>
             </div>
@@ -79,32 +79,32 @@
                     <mat-divider></mat-divider>
                 </div>
             </div>
-            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="requestsReceived()?.length > 0">
+            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="receivedFriendships?.length > 0">
                 <p><b>{{'PADRAO.SOLICITACOES_RECEBIDAS' | translate}}</b></p>
             </div>
-            <div *ngFor="let request of requestsReceived()">
+            <div *ngFor="let request of receivedFriendships">
                 <div mat-menu-item style="height: 120px" *ngIf="request.profileTO.id">
                     <div fxLayout="row" [routerLink]="['', request?.profileTO.username]">
                         <img class="imagem-perfil"
                             [src]="request?.profileTO?.profileImage ? request.profileTO.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
                             alt="imagem de perfil" />
 
-                        <span> {{this.request.profileTO?.name}} {{this.request.profileTO?.lastName}}</span>
+                        <span> {{request?.name}} {{request?.lastName}}</span>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="5px">
                         <button mat-flat-button color="warn" (click)="deleteRequest(request)">
                             <mat-icon>clear</mat-icon>
                         </button>
-                        <button mat-flat-button color="accent" (click)="aceptRequest(request)">
+                        <button mat-flat-button color="accent" (click)="acceptRequest(request)">
                             <mat-icon>done</mat-icon>
                         </button>
                     </div>
                 </div>
             </div>
-            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="requestsSent()?.length > 0">
+            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="sentFriendships.length > 0">
                 <p><b>{{'PADRAO.SOLICITACOES_ENVIADAS' | translate}}</b></p>
             </div>
-            <div *ngFor="let request of requestsSent()">
+            <div *ngFor="let request of sentFriendships">
                 <div mat-menu-item style="height: 120px" *ngIf="request.profileTO.id">
 
                     <div fxLayout="row" [routerLink]="['', request?.profileTO.username]">
@@ -112,7 +112,7 @@
                             [src]="request?.profileTO?.profileImage ? request.profileTO.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
                             alt="imagem de perfil" />
 
-                        <span> {{this.request.profileTO?.name}} {{this.request.profileTO?.lastName}}</span>
+                        <span> {{request?.name}} {{request?.lastName}}</span>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="5px">
                         <button mat-flat-button color="warn" (click)="deleteRequest(request)">

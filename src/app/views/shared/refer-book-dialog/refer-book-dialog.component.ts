@@ -4,17 +4,20 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Book } from 'src/app/models/book.model';
 import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
-import { Profile } from 'src/app/models/profileTO.model';
 import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
 import { GroupInviteTO } from '../../../models/GroupInviteTO.model';
 import { GroupMemberService } from '../../../services/group-member.service';
-import { take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { Util } from '../utils/util';
-import { Friendship } from '../../../models/Friendship.model';
-import { FriendsService } from '../../../services/friends.service';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
-import { UserTO } from 'src/app/infrastructure/dtos/user.dto';
+import { FriendshipStatusEnum } from 'src/app/core/domain/enums/friendship-status.enum';
+import { FriendshipTO } from 'src/app/infrastructure/dtos/friendship.dto';
+import { forkJoin } from 'rxjs';
+import { GetFriendshipsByUsernameUseCase } from 'src/app/core/use-cases/friendship/get-friendships-by-username.use-case';
+import { GetProfileByIdUseCase } from 'src/app/core/use-cases/profile/get-profile-by-id.use-case';
+import { Friendship } from 'src/app/core/domain/entities/friendship.entity';
+import { ProfileMapper } from 'src/app/infrastructure/mappers/profile.mapper';
 
 @Component({
     selector: 'app-refer-book-dialog',
@@ -25,12 +28,12 @@ export class ReferBookDialogComponent implements OnInit {
 
 
     pesquisarUsuarios;
-    filterUsers: UserTO[];
-    public Profile: Profile;
     public bookRecommendationTO = new BookRecommendationTO();
     public Book: Book;
     public formRecommendation: FormGroup;
-    friendShip: Friendship;
+    public friendships: Friendship[] = [];
+    public friendshipTO: FriendshipTO[] = [];
+    public filteredFriendshipTO: FriendshipTO[] = [];
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: { book: Book, indicateMember: boolean, groupInviteTO: GroupInviteTO },
@@ -39,8 +42,9 @@ export class ReferBookDialogComponent implements OnInit {
         private bookRecommendationService: BookRecommendationService,
         public translate: TranslateService,
         public groupMemberService: GroupMemberService,
-        private friendsService: FriendsService,
         private getCachedUserUseCase: GetCachedUserUseCase,
+        private getFriendshipsByUsernameUseCase: GetFriendshipsByUsernameUseCase,
+        private getProfileByIdUseCase: GetProfileByIdUseCase,
     ) {
         this.pesquisarUsuarios = this.fb.group({
             user: ['']
@@ -60,9 +64,16 @@ export class ReferBookDialogComponent implements OnInit {
     }
 
     pesquisar(nome): void {
-        this.filterUsers = this.friendShip.friends.filter(user =>
-            user?.profile?.name.concat(user?.profile?.lastName).toLocaleLowerCase().replace(' ', '')
-                .includes(nome.value.toLocaleLowerCase().replace(' ', '')));
+        if (nome) {
+            nome = nome.toLowerCase();
+            this.filteredFriendshipTO = this.friendshipTO?.filter(friendship =>
+                friendship.profileTO.name.concat(friendship.profileTO.lastName).toLocaleLowerCase().replace(' ', '')
+                    .includes(nome.toLocaleLowerCase().replace(' ', '')) ||
+                friendship.profileTO.username.toLowerCase().includes(nome),
+            );
+            return;
+        }
+        this.filteredFriendshipTO = this.friendshipTO;
     }
 
     referBook(profileReceivedId: number): void {
@@ -123,8 +134,24 @@ export class ReferBookDialogComponent implements OnInit {
 
     getFriends(): void {
         const user: User = this.getCachedUserUseCase.execute();
-        this.friendsService.getFriendsByUserName(user.profile.username).subscribe(friendShip => {
-            this.friendShip = friendShip;
-        });
+        this.getFriendshipsByUsernameUseCase.execute(user.profile.username).pipe(
+            switchMap((friendships) => {
+                this.friendships = friendships;
+                return forkJoin(friendships.map((friendship) => this.getProfileByIdUseCase.execute(friendship.friendProfileId)))
+            })
+        ).subscribe((users) => {
+            users.forEach((user) => {
+                const friendshipTO: FriendshipTO = {
+                    status: FriendshipStatusEnum.ADDED,
+                    addDate: null,
+                    id: null,
+                    profileId: this.friendships[0].profileId,
+                    profileTO: ProfileMapper.toDTO(user),
+                };
+                this.friendshipTO.push(friendshipTO);
+            })
+            this.filteredFriendshipTO = this.friendshipTO;
+        })
+
     }
 }

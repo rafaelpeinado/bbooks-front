@@ -1,9 +1,9 @@
-import {Profile} from './profileTO.model';
+import { ProfileTO } from "../infrastructure/dtos/user.dto";
 
 export class FriendRequest {
-    id: number;
+    id: string;
     status: string;
     addDate: Date;
-    profileTO: Profile;
+    profileTO: ProfileTO;
 }
 

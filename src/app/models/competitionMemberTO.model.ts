@@ -1,5 +1,4 @@
 import { Role } from './enums/Role.enum';
-import { Profile } from './profileTO.model';
 import { CompetitionTO } from './competitionTO.model';
 import { Observable } from 'rxjs';
 import { LiteraryMemberStatus } from './enums/LiteraryMemberStatus.enum';
@@ -10,7 +9,7 @@ export class CompetitionMemberTO {
     title: string;
     story: string;
     profile: ProfileTO;
-    profileAsinc: Observable<Profile>;
+    profileAsinc: Observable<ProfileTO>;
     profileId: string;
     role: Role;
     status: LiteraryMemberStatus;

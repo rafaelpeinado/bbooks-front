@@ -1,5 +1,5 @@
-import {Observable} from 'rxjs';
-import {Profile} from './profileTO.model';
+import { Observable } from 'rxjs';
+import { ProfileTO } from '../infrastructure/dtos/user.dto';
 
 export class ReviewTO {
     id: string;
@@ -9,5 +9,5 @@ export class ReviewTO {
     idGoogleBook: string;
     profileId: number;
     creationDate: Date;
-    profileTO: Observable<Profile>;
+    profileTO: Observable<ProfileTO>;
 }
