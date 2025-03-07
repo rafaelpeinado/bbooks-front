@@ -26,7 +26,7 @@ const perfilRouter = [
                 path: 'bookcase', component: BookcaseComponent,
                 resolve: { data: BookcaseResolve }
             },
-            { path: '', redirectTo: 'feed', pathMatch: 'full' },
+            { path: '', redirectTo: 'bookcase', pathMatch: 'full' },
         ]
 
     },
