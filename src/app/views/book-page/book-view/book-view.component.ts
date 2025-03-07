@@ -18,7 +18,6 @@ import { ReviewTO } from '../../../models/ReviewTO.model';
 import { ReviewDialogComponent } from '../review-dialog/review-dialog.component';
 import { ReviewService } from '../../../services/review.service';
 import { TranslateService } from '@ngx-translate/core';
-import { ReferBookDialogComponent } from '../../shared/refer-book-dialog/refer-book-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
 import { ReviewsPagination } from '../../../models/pagination/reviews.pagination';
 import { Util } from '../../shared/utils/util';
@@ -203,19 +202,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
             if (result) {
                 this.getAllReviews();
             }
-        });
-    }
-
-    openDialogReferBook(book: Book) {
-        const dialogRef = this.dialog.open(ReferBookDialogComponent, {
-            height: '580px',
-            width: '680px',
-            data: {
-                book
-            }
-        });
-        dialogRef.afterClosed().subscribe(() => {
-            this.getBook();
         });
     }
 

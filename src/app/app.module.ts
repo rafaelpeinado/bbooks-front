@@ -33,7 +33,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { PerfilPageModule } from './views/perfil-page/perfil-page.module';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { SharedModule } from './views/shared/shared.module';
-import { FeedPageModule } from './views/feed-page/feed-page.module';
 import { BnNgIdleService } from 'bn-ng-idle';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -94,7 +93,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         MatFormFieldModule,
         MatInputModule,
         SocialLoginModule,
-        FeedPageModule,
         BookModule,
         PerfilPageModule,
         SharedModule,

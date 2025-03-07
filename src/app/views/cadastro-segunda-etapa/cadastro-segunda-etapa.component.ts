@@ -220,7 +220,7 @@ export class CadastroSegundaEtapaComponent implements OnInit {
         this.loginByTokenUseCase.execute(login)
             .pipe(finalize(() => Util.stopLoading()))
             .subscribe(
-                () => this.router.navigate(['/feed']),
+                () => this.router.navigate(['/']),
                 (err) => {
                     Util.showErrorDialog(err.error.message);
                     this.clearCacheUseCase.execute();

@@ -11,16 +11,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NumbersOnlyInputDirective } from './directive/numbers-only-input.directive';
 import { LoaderComponent } from '../../loader/loader.component';
-import { ReferBookDialogComponent } from './refer-book-dialog/refer-book-dialog.component';
-import { PostDialogComponent } from './post-dialog/post-dialog.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import { ReactionsComponent } from './reactions/reactions.component';
-import { PostCreateComponent } from './post-create/post-create.component';
 import { TextareaAutoresizeDirective } from './directive/textarea-autoresize.directive';
 import { SearchBookComponent } from './search-book/search-book.component';
 import { BarCodeScannerComponent } from './bar-code-scanner/bar-code-scanner.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
-import { ViewAllReactionsComponent } from './view-all-reactions/view-all-reactions.component';
 import { EmptyContentMessageComponent } from './empty-content-message/empty-content-message.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -34,14 +29,9 @@ export function HttpLoaderFactory(http: HttpClient) {
         BookAddDialogComponent,
         NumbersOnlyInputDirective,
         LoaderComponent,
-        ReferBookDialogComponent,
-        PostDialogComponent,
-        ReactionsComponent,
-        PostCreateComponent,
         TextareaAutoresizeDirective,
         SearchBookComponent,
         BarCodeScannerComponent,
-        ViewAllReactionsComponent,
         EmptyContentMessageComponent
     ],
     imports: [
@@ -68,14 +58,9 @@ export function HttpLoaderFactory(http: HttpClient) {
         NumbersOnlyInputDirective,
         LoaderComponent,
         BookAddDialogComponent,
-        ReferBookDialogComponent,
-        PostDialogComponent,
-        ReactionsComponent,
-        PostCreateComponent,
         TextareaAutoresizeDirective,
         SearchBookComponent,
         BarCodeScannerComponent,
-        ViewAllReactionsComponent,
         EmptyContentMessageComponent
     ],
     providers: []

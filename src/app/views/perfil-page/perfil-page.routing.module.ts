@@ -1,37 +1,30 @@
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
-import {MainPageComponent} from './main-page/main-page.component';
-import {FriendComponent} from './friend/friend.component';
-import {FeedComponent} from './feed/feed.component';
-import {BookcaseComponent} from './bookcase/bookcase.component';
-import {MainResolve} from './guards/main.resolve';
-import {MainGuard} from './guards/main.guard';
-import {FeedResolve} from './guards/feed.resolve';
-import {BookcaseResolve} from './guards/bookcase.resolve';
-import {PerfilComponent} from './perfil/perfil.component';
-import {AuthGuard} from '../../guards/auth-guard';
-import {FriendResolve} from './guards/friend.resolve';
-import {PostDialogComponent} from '../shared/post-dialog/post-dialog.component';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { MainPageComponent } from './main-page/main-page.component';
+import { FriendComponent } from './friend/friend.component';
+import { BookcaseComponent } from './bookcase/bookcase.component';
+import { MainResolve } from './guards/main.resolve';
+import { MainGuard } from './guards/main.guard';
+import { BookcaseResolve } from './guards/bookcase.resolve';
+import { PerfilComponent } from './perfil/perfil.component';
+import { AuthGuard } from '../../guards/auth-guard';
+import { FriendResolve } from './guards/friend.resolve';
 
 
 const perfilRouter = [
     {
         path: ':username', component: MainPageComponent,
         canActivate: [MainGuard],
-        resolve: {user: MainResolve},
+        resolve: { user: MainResolve },
         children: [
             {
                 path: 'friends', component: FriendComponent,
-                resolve: {user: FriendResolve}
+                resolve: { user: FriendResolve }
 
             },
             {
-                path: 'feed', component: FeedComponent,
-                resolve: {user: FeedResolve}
-            },
-            {
                 path: 'bookcase', component: BookcaseComponent,
-                resolve: {data: BookcaseResolve}
+                resolve: { data: BookcaseResolve }
             },
             { path: '', redirectTo: 'feed', pathMatch: 'full' },
         ]
@@ -39,10 +32,6 @@ const perfilRouter = [
     },
     {
         path: ':username/settings', component: PerfilComponent,
-        canActivate: [AuthGuard]
-    },
-    {
-        path: ':username/create-post', component: PostDialogComponent,
         canActivate: [AuthGuard]
     },
 ];

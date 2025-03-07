@@ -1,14 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
 import { FriendRequest } from '../../models/friendRequest.model';
 import { Friend } from '../../models/friend.model';
-import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
-import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
 import { Util } from '../../views/shared/utils/util';
-import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
-import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { LogoutUseCase } from 'src/app/core/use-cases/auth/logout.use-case';
@@ -44,14 +40,11 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
     menuPerfil;
     public friendships: Friendship[];
-    recommendations: BookRecommendationTO[];
     publicProfileId = '';
     timer;
     constructor(
-        private getBookByIdUseCase: GetBookByIdUseCase,
         private router: Router,
         public translate: TranslateService,
-        private bookRecommendation: BookRecommendationService,
         private getCachedUserUseCase: GetCachedUserUseCase,
         private logoutUseCase: LogoutUseCase,
         private getIsLoggedUseCase: GetIsLoggedUseCase,
@@ -80,7 +73,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
                 this.getuser();
             });
         this.refreshRequest();
-        this.getRecommendations();
     }
 
     refreshRequest() {
@@ -195,38 +187,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
                 return throwError(() => error);
             })
         ).subscribe(message => Util.showSuccessDialog(message));
-    }
-
-    getRecommendations(): void {
-        const user: User = this.getCachedUserUseCase.execute();
-        this.bookRecommendation.getRecommentionsReceived(+user.profile.id)
-            .pipe(
-                map((recommendations: BookRecommendationTO[]) => {
-                    return recommendations.map(r => {
-                        // TODO
-                        // TODO refatorar essa parte
-                        // r.profileTO = this.getProfileByIdUseCase.execute(r.profileSubmitter);
-
-                        let apiType: ApiType;
-                        let id;
-
-                        if (r.idBook) {
-                            id = r.idBook;
-                            apiType = ApiType.BBOOKS;
-                        } else {
-                            id = r.idBookGoogle;
-                            apiType = ApiType.GOOGLE;
-                        }
-                        r.book = this.getBookByIdUseCase.execute(id, apiType);
-                        return r;
-                    });
-                })
-            )
-            .subscribe(recommendations => {
-                this.recommendations = recommendations;
-            }, error => {
-                console.log('Erro getRecommendation ', error);
-            });
     }
 
     routerRecommendation(idGoogleBook: string): any {

@@ -5,10 +5,8 @@ import { PerfilPageRoutingModule } from './perfil-page.routing.module';
 import { MaterialModule } from '../../material/material.module';
 import { FlexLayoutModule, FlexModule } from '@angular/flex-layout';
 import { FriendComponent } from './friend/friend.component';
-import { FeedComponent } from './feed/feed.component';
 import { BookcaseComponent } from './bookcase/bookcase.component';
 import { MainResolve } from './guards/main.resolve';
-import { FeedResolve } from './guards/feed.resolve';
 import { BookcaseResolve } from './guards/bookcase.resolve';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
@@ -18,14 +16,11 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FriendResolve } from './guards/friend.resolve';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { StoreModule } from '@ngrx/store';
-import { reducer } from './store/reducers/feed.reducer';
 
 @NgModule({
     declarations: [
         MainPageComponent,
         FriendComponent,
-        FeedComponent,
         BookcaseComponent,
         PerfilComponent
     ],
@@ -39,7 +34,6 @@ import { reducer } from './store/reducers/feed.reducer';
         FormsModule,
         ReactiveFormsModule,
         InfiniteScrollModule,
-        StoreModule.forFeature('feedProfile', reducer),
         TranslateModule.forChild({
             loader: {
                 provide: TranslateLoader,
@@ -51,7 +45,6 @@ import { reducer } from './store/reducers/feed.reducer';
     ],
     providers: [
         MainResolve,
-        FeedResolve,
         BookcaseResolve,
         FriendResolve
     ]

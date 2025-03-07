@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 (user) => {
                     if (user?.id) {
-                        this.router.navigateByUrl('/feed');
+                        this.router.navigateByUrl('/');
                     } else {
                         const setCache: SetCache<User> = { value: user, storageItem: StorageItem.REGISTERING_USER };
                         this.SetCacheUseCase.execute(setCache, StorageType.LOCAL_STORAGE);

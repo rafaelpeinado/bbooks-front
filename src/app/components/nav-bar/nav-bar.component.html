@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" style="padding: 0 8px;">
-    <span routerLink="{{isLogged ? '/feed' : ''}}">
+    <span routerLink="{{isLogged ? '/' : ''}}">
         <img class="iconbbooks" src="assets/images/logobboks.png">
     </span>
     <span class="example-spacer"></span>
@@ -15,32 +15,9 @@
                 [matMenuTriggerFor]="menuNofify">add_alert</mat-icon>
         </button>
         <mat-menu #menuNofify="matMenu">
-            <div *ngIf="friendships?.length === 0 && recommendations?.length === 0">
+            <div *ngIf="friendships?.length === 0">
                 <app-empty-content-message
                     message="{{'NAV.NOT_NOTITIFCATION' | translate}}"></app-empty-content-message>
-            </div>
-            <div class="container-lista-amigos">
-                <div class="titulo-notificacao" *ngIf="recommendations?.length > 0">
-                    <span><b>{{'NAV.RECOMENDACOES' | translate}}</b></span>
-                </div>
-                <!--começa card-->
-                <div class="container-amigo" *ngFor="let r of recommendations">
-                    <div class="container-imagem" [routerLink]="['/books/', (r?.book | async)?.id]"
-                        [queryParams]="routerRecommendation(r?.idBookGoogle)">
-                        <div>
-                            <img class="imagem-perfil-notificacao"
-                                [src]="(r?.profileTO | async)?.profileImage ? (r?.profileTO | async)?.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
-                                alt="imagem de perfil" />
-                        </div>
-                        <div class="informacoes">
-                            <!--                             <div><span><a class="nome-usuario" [routerLink]="['', user.userName]">{{user?.profile?.name}} {{user?.profile?.lastName}}</a></span></div>
-                            <div><span>Rafael Peinado</span></div> -->
-                            <p>{{(r?.profileTO | async)?.name}} {{(r?.profileTO | async)?.lastName}} {{'NAV.INDICOU' |
-                                translate}} {{(r?.book | async)?.title}}</p>
-                        </div>
-                    </div>
-                    <mat-divider></mat-divider>
-                </div>
             </div>
             <div fxLayout="row" fxLayoutAlign="center center" *ngIf="receivedFriendships?.length > 0">
                 <p><b>{{'PADRAO.SOLICITACOES_RECEBIDAS' | translate}}</b></p>
