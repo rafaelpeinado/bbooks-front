@@ -8,7 +8,6 @@ import { Profile } from 'src/app/models/profileTO.model';
 import { UserTO } from 'src/app/models/userTO.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
-import { GroupInviteTO } from '../../../models/GroupInviteTO.model';
 import { take } from 'rxjs/operators';
 import { Util } from '../Utils/util';
 import { Friendship } from '../../../models/Friendship.model';
@@ -31,7 +30,7 @@ export class ReferBookDialogComponent implements OnInit {
     friendShip: Friendship;
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: { book: Book, indicateMember: boolean, groupInviteTO: GroupInviteTO },
+        @Inject(MAT_DIALOG_DATA) public data: { book: Book, indicateMember: boolean },
         public dialogRef: MatDialogRef<ReferBookDialogComponent>,
         private fb: FormBuilder,
         private bookRecommendationService: BookRecommendationService,

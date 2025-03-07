@@ -13,7 +13,6 @@ import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model'
 import { ProfileService } from 'src/app/services/profile.service';
 import { BookService } from 'src/app/services/book.service';
 import { GoogleBooksService } from 'src/app/services/google-books.service';
-import { GroupInviteTO } from '../../models/GroupInviteTO.model';
 import { Util } from '../../views/shared/Utils/util';
 
 @Component({
@@ -27,7 +26,6 @@ export class NavBarComponent implements OnInit {
     menuPerfil;
     requests: FriendRequest[];
     recommendations: BookRecommendationTO[];
-    invitesGroup: GroupInviteTO[];
     publicProfileId = '';
     timer;
     constructor(
@@ -83,8 +81,8 @@ export class NavBarComponent implements OnInit {
 
     verifyRequests() {
         const result = this.requests?.filter(request => request.status === 'received');
-        if (result?.length > 0 || this.invitesGroup?.length > 0) {
-            return result.length + this.invitesGroup.length;
+        if (result?.length > 0) {
+            return result.length;
         } else {
             return '';
         }

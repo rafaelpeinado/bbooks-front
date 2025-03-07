@@ -1,4 +1,3 @@
-import { ReadingTargetTO } from './../../../models/readingTargetTO.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Book } from '../../../models/book.model';
 import { Observable, Subscription } from 'rxjs';
@@ -58,9 +57,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
     reviewPagination: ReviewsPagination;
 
     pageEvent: PageEvent = new PageEvent();
-
-    public readingTargetTO = new ReadingTargetTO();
-    readingTargets: Observable<ReadingTargetTO[]>;
 
     hasReadingTarget: boolean;
 

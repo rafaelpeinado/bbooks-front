@@ -1,10 +1,9 @@
-import {TypePost} from './enums/TypePost.enum';
-import {PostPrivacy} from './enums/PostPrivacy.enum';
-import {UserTO} from './userTO.model';
-import {postsMock} from '../mocks/post.model.mock';
-import {GroupTO} from './GroupTO.model';
-import {ReactionsTO} from './ReactionsTO';
-import {SurveyTO} from './surveyTO.model';
+import { TypePost } from './enums/TypePost.enum';
+import { PostPrivacy } from './enums/PostPrivacy.enum';
+import { UserTO } from './userTO.model';
+import { postsMock } from '../mocks/post.model.mock';
+import { ReactionsTO } from './ReactionsTO';
+import { SurveyTO } from './surveyTO.model';
 
 export class PostTO {
     id: string;
@@ -18,7 +17,6 @@ export class PostTO {
     user: UserTO;
     editMode: boolean;
     groupId: string;
-    group: GroupTO;
     reactions: ReactionsTO;
     pageId: string;
     survey: SurveyTO;
