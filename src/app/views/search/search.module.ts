@@ -8,20 +8,16 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { MainSearchComponent } from './main-search/main-search.component';
-import { GroupsSearchComponent } from './groups-search/groups-search.component';
 import { PesquisarAmigosComponent } from './pesquisar-amigos/pesquisar-amigos.component';
 import { BooksSearchComponent } from './books-search/books-search.component';
 import { HttpLoaderFactory, SharedModule } from '../shared/shared.module';
-import { CompetitionSearchComponent } from './competition-search/competition-search.component';
 
 
 @NgModule({
     declarations: [
         MainSearchComponent,
-        GroupsSearchComponent,
         PesquisarAmigosComponent,
         BooksSearchComponent,
-        CompetitionSearchComponent
     ],
     imports: [
         CommonModule,

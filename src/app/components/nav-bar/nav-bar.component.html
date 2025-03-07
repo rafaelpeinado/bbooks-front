@@ -6,13 +6,6 @@
     <button *ngIf="isLogged" mat-flat-button color="primary" style="width: 5vw;" routerLink="/book">
         <mat-icon>menu_book</mat-icon>
     </button>
-    <button *ngIf="isLogged" mat-flat-button color="primary" style="width: 5vw;"
-        [routerLink]="['/literary-competition']">
-        <mat-icon>emoji_events</mat-icon>
-    </button>
-    <button *ngIf="isLogged" mat-flat-button color="primary" style="width: 5vw;" [routerLink]="['/exchange']">
-        <mat-icon>compare_arrows</mat-icon>
-    </button>
     <button *ngIf="!isLogged" mat-flat-button color="primary" style="width: 5vw;" [routerLink]="['/login']">
         {{'PADRAO.ENTRAR' | translate}}
     </button>
@@ -43,14 +36,6 @@
                             <p>{{(r?.inviterUser | async)?.profile?.name}} {{(r?.inviterUser |
                                 async)?.profile?.lastName}} {{'NAV.CONVITE_GRUPO' | translate}}: {{r.group.name}}</p>
                         </div>
-                    </div>
-                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
-                        <button mat-flat-button color="warn" (click)="refuseInviteGroup(r.id)">
-                            <mat-icon>clear</mat-icon>
-                        </button>
-                        <button mat-flat-button color="accent" (click)="acceptInviteGroup(r.id)">
-                            <mat-icon>done</mat-icon>
-                        </button>
                     </div>
                     <br>
                     <mat-divider></mat-divider>
@@ -143,25 +128,10 @@
                     <span> {{user?.profile?.username}}</span>
                 </div>
             </div>
-
-            <div mat-menu-item [routerLink]="['/groups-search/your-groups']">
-                <mat-icon>groups</mat-icon>
-                <span>{{'PADRAO.GRUPOS_LEITURA' | translate}}</span>
-            </div>
-
             <div mat-menu-item [routerLink]="['/andamento-meta-leitura']">
                 <mat-icon>donut_large</mat-icon>
                 <span>{{'PADRAO.ANDAMENTO_META' | translate}}</span>
             </div>
-            <div mat-menu-item [routerLink]="['/perfil-publico/' + publicProfileId]">
-                <mat-icon>verified</mat-icon>
-                <span>{{'PERFIL_PUBLICO.PERFIL_PUBLICO' | translate}}</span>
-            </div>
-            <div mat-menu-item [routerLink]="['/time-line']">
-                <mat-icon>timeline</mat-icon>
-                <span>{{'PADRAO.TIME_LINE' | translate}}</span>
-            </div>
-
             <div mat-menu-item [matMenuTriggerFor]="languages">
                 <mat-icon>language</mat-icon>
                 <span>{{'PADRAO.IDIOMA' | translate}}</span>

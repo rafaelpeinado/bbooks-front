@@ -33,20 +33,13 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { PerfilPageModule } from './views/perfil-page/perfil-page.module';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { SharedModule } from './views/shared/shared.module';
-import { ReadingTargetProgressComponent } from './views/reading-target-progress/reading-target-progress.component';
-import { PreviousGoalsComponent } from './views/previous-goals/previous-goals.component';
 import { FeedPageModule } from './views/feed-page/feed-page.module';
-import { GroupsModule } from './views/groups/groups.module';
-import { ExchangeModule } from './views/exchange/exchange.module';
 import { BnNgIdleService } from 'bn-ng-idle';
-import { PublicProfilePageModule } from './views/public-profile-page/public-profile-page.module';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SearchModule } from './views/search/search.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { LiteraryCompetitionModule } from './views/literary-competition-page/literary-competition.module';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
-import { TimeLineComponent } from './views/time-line/time-line.component';
 import { MglTimelineModule } from 'angular-mgl-timeline';
 import { BookRepository } from './core/repositories/book.repository';
 import { BookServiceFactory } from './infrastructure/adapters/factories/book-service.factory';
@@ -86,9 +79,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         PageNotFoundComponent,
         PageNotFoundComponent,
         UploadComponent,
-        ReadingTargetProgressComponent,
-        PreviousGoalsComponent,
-        TimeLineComponent
     ],
     imports: [
         BrowserModule,
@@ -106,11 +96,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         SocialLoginModule,
         FeedPageModule,
         BookModule,
-        ExchangeModule,
-        LiteraryCompetitionModule,
         PerfilPageModule,
         SharedModule,
-        PublicProfilePageModule,
         BrowserAnimationsModule,
         MglTimelineModule,
         StoreModule.forRoot({}),
@@ -118,7 +105,6 @@ export function HttpLoaderFactory(http: HttpClient) {
             maxAge: 25, // Retains last 25 states
             logOnly: environment.production, // Restrict extension to log-only mode
         }),
-        GroupsModule,
         SearchModule,
         TranslateModule.forRoot({
             loader: {

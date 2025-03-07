@@ -1,15 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { catchError, finalize, map, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { FriendRequest } from '../../models/friendRequest.model';
 import { Friend } from '../../models/friend.model';
 import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
 import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
-import { GroupMemberService } from '../../services/group-member.service';
 import { GroupInviteTO } from '../../models/GroupInviteTO.model';
 import { Util } from '../../views/shared/utils/util';
-import { PublicProfileService } from '../../services/public-profile.service';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
@@ -56,8 +54,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
         private router: Router,
         public translate: TranslateService,
         private bookRecommendation: BookRecommendationService,
-        private groupMembersService: GroupMemberService,
-        private publicProfileService: PublicProfileService,
         private getCachedUserUseCase: GetCachedUserUseCase,
         private logoutUseCase: LogoutUseCase,
         private getIsLoggedUseCase: GetIsLoggedUseCase,
@@ -87,8 +83,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
             });
         this.refreshRequest();
         this.getRecommendations();
-        this.getInvitesGroup();
-        this.getPublicProfileByUser();
     }
 
     refreshRequest() {
@@ -240,76 +234,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
     routerRecommendation(idGoogleBook: string): any {
         return idGoogleBook ? { api: 'google' } : {};
     }
-
-    getInvitesGroup(): void {
-        const user: User = this.getCachedUserUseCase.execute();
-        this.groupMembersService.getInvites(user.id)
-            .pipe(
-                take(1),
-                map(invites => {
-                    return invites.map(i => {
-                        i.inviterUser = this.getUserByIdUseCase.execute(user.id);
-                        return i;
-                    });
-                })
-            ).subscribe(result => {
-                this.invitesGroup = result;
-            });
-
-    }
-
-    acceptInviteGroup(id: string): void {
-        Util.loadingScreen();
-        this.groupMembersService.acceptInvite(id)
-            .pipe(take(1))
-            .subscribe(() => {
-                Util.stopLoading();
-                this.translate.get('NAV.CONVITE_ACEITO').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-                this.invitesGroup = this.invitesGroup.filter(i => i.id !== id);
-            }, error => {
-                Util.stopLoading();
-                this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
-                    Util.showErrorDialog(message);
-                });
-                console.log('error accpet invite group', error);
-            });
-    }
-
-    refuseInviteGroup(id: string): void {
-        Util.loadingScreen();
-        this.groupMembersService.refuseInvite(id)
-            .pipe(take(1))
-            .subscribe(() => {
-                Util.stopLoading();
-                this.translate.get('NAV.CONVITE_RECUSADO').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-                this.invitesGroup = this.invitesGroup.filter(i => i.id !== id);
-            }, error => {
-                Util.stopLoading();
-                this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
-                    Util.showErrorDialog(message);
-                });
-                console.log('error refuse invite group', error);
-            });
-    }
-
-    getPublicProfileByUser() {
-        this.publicProfileId = '';
-        const user: User = this.getCachedUserUseCase.execute();
-        this.publicProfileService.getByUserId(user.id)
-            .pipe(take(1))
-            .subscribe(result => {
-                if (result) {
-                    this.publicProfileId = result.id;
-                } else {
-                    this.publicProfileId = '';
-                }
-            });
-    }
-
 
     private handleError(error: any) {
         this.translate.get('PADRAO.OCORREU_UM_ERRO').pipe(

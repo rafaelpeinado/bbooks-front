@@ -7,8 +7,6 @@ import { PostService } from '../../../services/post.service';
 import { TypePostControler } from '../../../models/enums/TypePost.enum';
 import { FeedPerfilManageService } from '../../perfil-page/store/feed-perfil-manage.service';
 import { FeedMainManagerService } from '../../feed-page/store/feed-main-manager.service';
-import { FeedGroupManagerService } from '../../groups/store/feed-group-manager.service';
-import { FeedPublicProfilePageManagerService } from '../../public-profile-page/store/feed-public-profile-manager.service';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { UserTO } from 'src/app/infrastructure/dtos/user.dto';
@@ -30,8 +28,6 @@ export class PostCreateComponent implements OnInit {
         public postService: PostService,
         private feedPerfilManageService: FeedPerfilManageService,
         public feedMainManagerService: FeedMainManagerService,
-        public feedGroupManagerService: FeedGroupManagerService,
-        public feedPublicProfilePageManagerService: FeedPublicProfilePageManagerService,
         private getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
@@ -68,12 +64,6 @@ export class PostCreateComponent implements OnInit {
                 return;
             case TypePostControler.feedPerfil:
                 this.feedPerfilManageService.savePostOnRedux(postTo);
-                return;
-            case TypePostControler.group:
-                this.feedGroupManagerService.savePostOnRedux(postTo);
-                return;
-            case TypePostControler.feedPublicProfile:
-                this.feedPublicProfilePageManagerService.savePostOnRedux(postTo);
                 return;
         }
     }

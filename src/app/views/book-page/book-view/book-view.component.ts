@@ -1,4 +1,3 @@
-import { ReadingTargetService } from './../../../services/reading-target.service';
 import { ReadingTargetTO } from './../../../models/readingTargetTO.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { combineLatest, Observable, Subscription } from 'rxjs';
@@ -72,7 +71,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
         public dialog: MatDialog,
         private trackingService: TrackingService,
         private reviewService: ReviewService,
-        private readingTargetService: ReadingTargetService,
         private translate: TranslateService,
         private getBookByIdUseCase: GetBookByIdUseCase,
         private getGeneralStatusBooksUseCase: GetGeneralStatusBooksUseCase,
@@ -112,9 +110,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
             Util.stopLoading();
             this.generalStatus = value[1];
             this.book = value[0];
-            if (userbookResult) {
-                this.verifyReadingTarget();
-            }
         });
     }
 
@@ -226,56 +221,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(() => {
             this.getBook();
         });
-    }
-
-    addToReadingTarget(): void {
-        Util.loadingScreen();
-        this.readingTargetService.addTarget(+this.user.profile.id, +this.userBook.id).subscribe(
-            () => {
-                Util.stopLoading();
-                this.translate.get('BOOK.BOOK_ADDED_TARGET').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-                this.verifyReadingTarget();
-            },
-            error => {
-                this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {
-                    Util.showErrorDialog(msg);
-                });
-                console.log('ReadingTarget Error', error);
-            }
-        );
-    }
-
-    removeFromReadingTarget(): void {
-        Util.loadingScreen();
-        this.readingTargetService.removeTarget(+this.user.profile.id, +this.userBook.id).subscribe(
-            () => {
-                Util.stopLoading();
-                this.translate.get('BOOK.BOOK_REMOVED_TARGET').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-                this.verifyReadingTarget();
-            },
-            error => {
-                Util.stopLoading();
-                this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {
-                    Util.showErrorDialog(msg);
-                });
-                console.log('ReadingTarget Error', error);
-            }
-        );
-    }
-
-    verifyReadingTarget(): void {
-        this.readingTargetService.getByUserBookId(+this.user.profile.id, +this.userBook.id).subscribe(
-            (res) => {
-                res?.id ? this.hasReadingTarget = true : this.hasReadingTarget = false;
-            },
-            error => {
-                console.log('ReadingTarget Error', error);
-            }
-        );
     }
 
     public calculateDays(): string {

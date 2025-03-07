@@ -6,8 +6,7 @@ import { Book } from 'src/app/models/book.model';
 import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
 import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
 import { GroupInviteTO } from '../../../models/GroupInviteTO.model';
-import { GroupMemberService } from '../../../services/group-member.service';
-import { switchMap, take } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Util } from '../utils/util';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
@@ -41,7 +40,6 @@ export class ReferBookDialogComponent implements OnInit {
         private fb: FormBuilder,
         private bookRecommendationService: BookRecommendationService,
         public translate: TranslateService,
-        public groupMemberService: GroupMemberService,
         private getCachedUserUseCase: GetCachedUserUseCase,
         private getFriendshipsByUsernameUseCase: GetFriendshipsByUsernameUseCase,
         private getProfileByIdUseCase: GetProfileByIdUseCase,
@@ -95,24 +93,6 @@ export class ReferBookDialogComponent implements OnInit {
                 console.log('BookRecommendation Error', error);
             }
         );
-    }
-
-    inviteToGroup(iduser: string): void {
-        const sentRequest = this.data.groupInviteTO;
-        sentRequest.userId = iduser;
-        Util.loadingScreen();
-        this.groupMemberService.invite(sentRequest)
-            .pipe(take(1))
-            .subscribe(r => {
-                Util.stopLoading();
-                this.translate.get('GRUPO_LEITURA.CONVITE_ENVIADO').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                    this.dialogRef.close();
-                });
-            }, error => {
-                Util.stopLoading();
-                this.verifyError(error, 'error inviter user group');
-            });
     }
 
     verifyError(error: any, locationError: string): void {
