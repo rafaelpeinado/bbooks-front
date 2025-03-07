@@ -1,30 +1,25 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
-import {AuthService} from '../../../services/auth.service';
-import {PostService} from '../../../services/post.service';
-import {TranslateService} from '@ngx-translate/core';
-import {UserTO} from '../../../models/userTO.model';
-import {PostTO} from '../../../models/PostTO.model';
-import {PostDialogComponent} from '../post-dialog/post-dialog.component';
-import {Util} from '../Utils/util';
-import {take} from 'rxjs/operators';
-import {FeedPerfilManageService} from '../../perfil-page/store/feed-perfil-manage.service';
-import {TypePostControler} from '../../../models/enums/TypePost.enum';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {FeedMainManagerService} from '../../feed-page/store/feed-main-manager.service';
-import {FeedGenericService} from '../../../services/feed-generic.service';
-import {FeedGroupManagerService} from '../../groups/store/feed-group-manager.service';
-import {GroupService} from '../../../services/group.service';
-import {GroupTO} from '../../../models/GroupTO.model';
-import {ReactionType} from '../../../models/enums/ReactionType.enum';
-import {ReactTO} from '../../../models/ReactTO.model';
-import {ViewAllReactionsComponent} from '../view-all-reactions/view-all-reactions.component';
-import {PostReactionTO} from '../../../models/PostReactionTO.model';
-import {ActorAction} from '../../../models/ReactionsTO';
-import {
-    FeedPublicProfilePageManagerService
-} from '../../public-profile-page/store/feed-public-profile-manager.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { PostService } from '../../../services/post.service';
+import { TranslateService } from '@ngx-translate/core';
+import { UserTO } from '../../../models/userTO.model';
+import { PostTO } from '../../../models/PostTO.model';
+import { PostDialogComponent } from '../post-dialog/post-dialog.component';
+import { Util } from '../Utils/util';
+import { take } from 'rxjs/operators';
+import { FeedPerfilManageService } from '../../perfil-page/store/feed-perfil-manage.service';
+import { TypePostControler } from '../../../models/enums/TypePost.enum';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FeedMainManagerService } from '../../feed-page/store/feed-main-manager.service';
+import { FeedGenericService } from '../../../services/feed-generic.service';
+import { GroupTO } from '../../../models/GroupTO.model';
+import { ReactionType } from '../../../models/enums/ReactionType.enum';
+import { ReactTO } from '../../../models/ReactTO.model';
+import { ViewAllReactionsComponent } from '../view-all-reactions/view-all-reactions.component';
+import { PostReactionTO } from '../../../models/PostReactionTO.model';
+import { ActorAction } from '../../../models/ReactionsTO';
 
 @Component({
     selector: 'app-reactions',
@@ -43,13 +38,13 @@ export class ReactionsComponent implements OnInit {
     icon = 'fa-thumbs-up';
     reactionsType = ReactionType;
     listReactions = [
-        {reaction: 'Aaarg', icon: 'fa-angry', type: ReactionType.hated},
-        {reaction: 'Triste', icon: 'fa-sad-tear', type: ReactionType.sad},
-        {reaction: 'Surpreso', icon: 'fa-surprise', type: ReactionType.surprised},
-        {reaction: 'Hilário', icon: 'fa-laugh-squint', type: ReactionType.hilarius},
-        {reaction: 'Amei', icon: 'fa-heart', type: ReactionType.loved},
-        {reaction: 'Não Gostei', icon: 'fa-thumbs-down', type: ReactionType.dislike},
-        {reaction: 'Gostei', icon: 'fa-thumbs-up', type: ReactionType.like}
+        { reaction: 'Aaarg', icon: 'fa-angry', type: ReactionType.hated },
+        { reaction: 'Triste', icon: 'fa-sad-tear', type: ReactionType.sad },
+        { reaction: 'Surpreso', icon: 'fa-surprise', type: ReactionType.surprised },
+        { reaction: 'Hilário', icon: 'fa-laugh-squint', type: ReactionType.hilarius },
+        { reaction: 'Amei', icon: 'fa-heart', type: ReactionType.loved },
+        { reaction: 'Não Gostei', icon: 'fa-thumbs-down', type: ReactionType.dislike },
+        { reaction: 'Gostei', icon: 'fa-thumbs-up', type: ReactionType.like }
     ];
 
     public formComment: FormGroup;
@@ -70,14 +65,10 @@ export class ReactionsComponent implements OnInit {
         private formBuilder: FormBuilder,
         public feedMainManagerService: FeedMainManagerService,
         public feedGenerec: FeedGenericService,
-        public feedGroupManagerService: FeedGroupManagerService,
-        public feedPublicProfilePageManagerService: FeedPublicProfilePageManagerService,
-        public groupService: GroupService
     ) {
     }
 
     ngOnInit(): void {
-        this.getGroup();
         this.createForm();
         this.comments = this.post?.comments?.map(c => this.feedGenerec.convertToNewPost(c));
         if (this.post?.reactions?.actorAction?.reactionType) {
@@ -180,13 +171,13 @@ export class ReactionsComponent implements OnInit {
         });
         dialogRef.afterClosed()
             .pipe().subscribe((post) => {
-            if (post) {
-                if (p) {
-                    post.comments = p.comments;
-                    this.updateReduxOfTypePost(this.typePostControler, post);
+                if (post) {
+                    if (p) {
+                        post.comments = p.comments;
+                        this.updateReduxOfTypePost(this.typePostControler, post);
+                    }
                 }
-            }
-        });
+            });
     }
 
     delete(p: PostTO): void {
@@ -227,12 +218,6 @@ export class ReactionsComponent implements OnInit {
             case TypePostControler.feedPerfil:
                 this.feedPerfilManageService.updatePost(postTo);
                 return;
-            case TypePostControler.group:
-                this.feedGroupManagerService.updatePost(postTo);
-                return;
-            case TypePostControler.feedPublicProfile:
-                this.feedPublicProfilePageManagerService.updatePost(postTo);
-                return;
         }
     }
 
@@ -243,12 +228,6 @@ export class ReactionsComponent implements OnInit {
                 return;
             case TypePostControler.feedPerfil:
                 this.feedPerfilManageService.deletePost(postTo);
-                return;
-            case TypePostControler.group:
-                this.feedGroupManagerService.deletePost(postTo);
-                return;
-            case TypePostControler.feedPublicProfile:
-                this.feedPublicProfilePageManagerService.deletePost(postTo);
                 return;
         }
     }
@@ -261,12 +240,6 @@ export class ReactionsComponent implements OnInit {
             case TypePostControler.feedPerfil:
                 this.feedPerfilManageService.deleteComment(postTo, comment);
                 return;
-            case TypePostControler.group:
-                this.feedGroupManagerService.deleteComment(postTo, comment);
-                return;
-            case TypePostControler.feedPublicProfile:
-                this.feedPublicProfilePageManagerService.deleteComment(postTo, comment);
-                return;
         }
     }
 
@@ -277,12 +250,6 @@ export class ReactionsComponent implements OnInit {
                 return;
             case TypePostControler.feedPerfil:
                 this.feedPerfilManageService.addComment(postTo, comment);
-                return;
-            case TypePostControler.group:
-                this.feedGroupManagerService.addComment(postTo, comment);
-                return;
-            case TypePostControler.feedPublicProfile:
-                this.feedPublicProfilePageManagerService.addComment(postTo, comment);
                 return;
         }
     }
@@ -295,12 +262,6 @@ export class ReactionsComponent implements OnInit {
             case TypePostControler.feedPerfil:
                 this.feedPerfilManageService.updateComment(postTo, comment);
                 return;
-            case TypePostControler.group:
-                this.feedGroupManagerService.updateComment(postTo, comment);
-                return;
-            case TypePostControler.feedPublicProfile:
-                this.feedPublicProfilePageManagerService.updateComment(postTo, comment);
-                return;
         }
     }
 
@@ -312,28 +273,22 @@ export class ReactionsComponent implements OnInit {
             case TypePostControler.feedPerfil:
                 this.feedPerfilManageService.updateReactions(postTo, postReactionTO);
                 return;
-            case TypePostControler.group:
-                this.feedGroupManagerService.updateReactions(postTo, postReactionTO);
-                return;
-            case TypePostControler.feedPublicProfile:
-                this.feedPublicProfilePageManagerService.updateReactions(postTo, postReactionTO);
-                return;
         }
     }
 
     redirectRouterPost(post?: PostTO) {
         switch (this.typePostControler) {
             case TypePostControler.feed:
-                this.router.navigate(['feed/create-post'], {state: {post}});
+                this.router.navigate(['feed/create-post'], { state: { post } });
                 return;
             case TypePostControler.feedPerfil:
-                this.router.navigate([this.user.userName + '/create-post'], {state: {post}});
+                this.router.navigate([this.user.userName + '/create-post'], { state: { post } });
                 return;
             case TypePostControler.group:
-                this.router.navigate(['groups/create-post'], {state: {post}});
+                this.router.navigate(['groups/create-post'], { state: { post } });
                 return;
             case TypePostControler.feedPublicProfile:
-                this.router.navigate(['public-profile/create-post'], {state: {post}});
+                this.router.navigate(['public-profile/create-post'], { state: { post } });
                 return;
         }
     }
@@ -344,10 +299,10 @@ export class ReactionsComponent implements OnInit {
             this.postService.save(this.formComment.value)
                 .pipe(take(1))
                 .subscribe(comment => {
-                        comment.user = this.authService.getUser();
-                        Util.stopLoading();
-                        this.addCommentReduxOfTypePost(this.typePostControler, this.post, comment);
-                    },
+                    comment.user = this.authService.getUser();
+                    Util.stopLoading();
+                    this.addCommentReduxOfTypePost(this.typePostControler, this.post, comment);
+                },
                     error => {
                         Util.stopLoading();
                         console.log('Error save comment', error);
@@ -357,10 +312,10 @@ export class ReactionsComponent implements OnInit {
             this.postService.update(this.editForm.value)
                 .pipe(take(1))
                 .subscribe(comment => {
-                        comment.user = this.authService.getUser();
-                        Util.stopLoading();
-                        this.updateCommentReduxOfTypePost(this.typePostControler, this.post, comment);
-                    },
+                    comment.user = this.authService.getUser();
+                    Util.stopLoading();
+                    this.updateCommentReduxOfTypePost(this.typePostControler, this.post, comment);
+                },
                     error => {
                         this.showErrorDialog();
                         console.log('Error post-dialog', error);
@@ -381,16 +336,6 @@ export class ReactionsComponent implements OnInit {
             });
     }
 
-    getGroup(): void {
-        if (this.post.groupId) {
-            this.groupService.getById(this.post.groupId)
-                .pipe(take(1))
-                .subscribe(r => {
-                    this.group = r;
-                });
-        }
-    }
-
     isGroupRouter(): boolean {
         return this.router.url.includes('group');
     }
@@ -405,6 +350,6 @@ export class ReactionsComponent implements OnInit {
         dialogRef.afterClosed()
             .pipe().subscribe(() => {
 
-        });
+            });
     }
 }

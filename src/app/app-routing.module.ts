@@ -1,5 +1,3 @@
-import { PreviousGoalsComponent } from './views/previous-goals/previous-goals.component';
-import { ReadingTargetProgressComponent } from './views/reading-target-progress/reading-target-progress.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainPageComponent } from './views/main-page/main-page.component';
@@ -9,10 +7,9 @@ import { CadastroSegundaEtapaComponent } from './views/cadastro-segunda-etapa/ca
 import { RecuperarSenhaComponent } from './views/recuperar-senha/recuperar-senha.component';
 import { NovaSenhaComponent } from './views/nova-senha/nova-senha.component';
 import { LoginComponent } from './modals/login/login.component';
-import {AuthGuard} from './guards/auth-guard';
-import {AuthVerifyLogin} from './guards/auth-verify-login';
-import {PageNotFoundComponent} from './views/page-not-found/page-not-found.component';
-import {TimeLineComponent} from './views/time-line/time-line.component';
+import { AuthGuard } from './guards/auth-guard';
+import { AuthVerifyLogin } from './guards/auth-verify-login';
+import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 
 const routes: Routes = [
     {
@@ -39,48 +36,16 @@ const routes: Routes = [
         path: 'nova-senha/:token', component: NovaSenhaComponent,
     },
     {
-        path: 'andamento-meta-leitura', component: ReadingTargetProgressComponent,
-        canActivate: [AuthGuard],
-    },
-    {
-        path: 'time-line', component: TimeLineComponent,
-        canActivate: [AuthGuard],
-    },
-    {
-        path: 'metas-anteriores', component: PreviousGoalsComponent,
-        canActivate: [AuthGuard],
-    },
-    {
         path: 'pagenotfound',
         component: PageNotFoundComponent
     },
     {
-        path: '',
-        loadChildren: () => import('./views/exchange/exchange.module').then(m => m.ExchangeModule),
-        canActivate: [AuthGuard],
-    },
-    {
-        path: 'feed' ,
+        path: 'feed',
         canActivate: [AuthGuard],
         loadChildren: () => import('./views/feed-page/feed-page.module').then(m => m.FeedPageModule)
     },
     {
-        path: '' ,
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./views/groups/groups.module').then(m => m.GroupsModule)
-    },
-    {
-        path: 'literary-competition' ,
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./views/literary-competition-page/literary-competition.module').then(m => m.LiteraryCompetitionModule)
-    },
-    {
-        path: '' ,
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./views/public-profile-page/public-profile-page.module').then(m => m.PublicProfilePageModule)
-    },
-    {
-        path: '' ,
+        path: '',
         canActivate: [AuthGuard],
         loadChildren: () => import('./views/search/search.module').then(m => m.SearchModule)
     },

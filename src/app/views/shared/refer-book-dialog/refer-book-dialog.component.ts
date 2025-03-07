@@ -1,19 +1,18 @@
-import {TranslateService} from '@ngx-translate/core';
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Book} from 'src/app/models/book.model';
-import {BookRecommendationTO} from 'src/app/models/bookRecommendationTO.model';
-import {Profile} from 'src/app/models/profileTO.model';
-import {UserTO} from 'src/app/models/userTO.model';
-import {AuthService} from 'src/app/services/auth.service';
-import {BookRecommendationService} from 'src/app/services/book-recommendation.service';
-import {GroupInviteTO} from '../../../models/GroupInviteTO.model';
-import {GroupMemberService} from '../../../services/group-member.service';
-import {take} from 'rxjs/operators';
-import {Util} from '../Utils/util';
-import {Friendship} from '../../../models/Friendship.model';
-import {FriendsService} from '../../../services/friends.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Book } from 'src/app/models/book.model';
+import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
+import { Profile } from 'src/app/models/profileTO.model';
+import { UserTO } from 'src/app/models/userTO.model';
+import { AuthService } from 'src/app/services/auth.service';
+import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
+import { GroupInviteTO } from '../../../models/GroupInviteTO.model';
+import { take } from 'rxjs/operators';
+import { Util } from '../Utils/util';
+import { Friendship } from '../../../models/Friendship.model';
+import { FriendsService } from '../../../services/friends.service';
 
 @Component({
     selector: 'app-refer-book-dialog',
@@ -38,7 +37,6 @@ export class ReferBookDialogComponent implements OnInit {
         private bookRecommendationService: BookRecommendationService,
         private authService: AuthService,
         public translate: TranslateService,
-        public groupMemberService: GroupMemberService,
         private friendsService: FriendsService
     ) {
         this.pesquisarUsuarios = this.fb.group({
@@ -82,24 +80,6 @@ export class ReferBookDialogComponent implements OnInit {
                 console.log('BookRecommendation Error', error);
             }
         );
-    }
-
-    inviteToGroup(iduser: string): void {
-        const sentRequest = this.data.groupInviteTO;
-        sentRequest.userId = iduser;
-        Util.loadingScreen();
-        this.groupMemberService.invite(sentRequest)
-            .pipe(take(1))
-            .subscribe(r => {
-                Util.stopLoading();
-                this.translate.get('GRUPO_LEITURA.CONVITE_ENVIADO').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                    this.dialogRef.close();
-                });
-            }, error => {
-                Util.stopLoading();
-                this.verifyError(error, 'error inviter user group');
-            });
     }
 
     verifyError(error: any, locationError: string): void {

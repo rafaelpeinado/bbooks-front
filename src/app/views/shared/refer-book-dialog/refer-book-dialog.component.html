@@ -39,10 +39,6 @@
                 (click)="referBook(user?.profile?.id)">
                     {{'ESTANTE.BOTAO_INDICAR' | translate}}
                 </button>
-                <button type="button" mat-flat-button color="accent" *ngIf="data.indicateMember"
-                        (click)="inviteToGroup(user?.id)">
-                    {{'GRUPO_LEITURA.CONVIDAR' | translate}}
-                </button>
            </div>
         </div>
         <mat-divider></mat-divider>

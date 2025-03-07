@@ -1,37 +1,36 @@
-import {ReadingTargetService} from './../../../services/reading-target.service';
-import {ReadingTargetTO} from './../../../models/readingTargetTO.model';
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Book} from '../../../models/book.model';
-import {Observable, Subscription} from 'rxjs';
-import {ActivatedRoute} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
-import {map, switchMap, take} from 'rxjs/operators';
-import {ReadingTrackingTO} from '../../../models/ReadingTrackingTO.model';
-import {TrackingDialogComponent} from '../tracking-dialog/tracking-dialog.component';
-import {ReadingTrackingService} from '../../../services/reading-tracking.service';
+import { ReadingTargetTO } from './../../../models/readingTargetTO.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Book } from '../../../models/book.model';
+import { Observable, Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { map, switchMap, take } from 'rxjs/operators';
+import { ReadingTrackingTO } from '../../../models/ReadingTrackingTO.model';
+import { TrackingDialogComponent } from '../tracking-dialog/tracking-dialog.component';
+import { ReadingTrackingService } from '../../../services/reading-tracking.service';
 import {
     BookStatus,
     BookStatusEnglish,
     mapBookStatusEnglish
 } from '../../../models/enums/BookStatus.enum';
-import {BookAddDialogComponent} from '../../shared/book-add-dialog/book-add-dialog.component';
-import {GoogleBooksService} from '../../../services/google-books.service';
-import {BookService} from '../../../services/book.service';
-import {TrackingViewComponent} from '../tracking-view/tracking-view.component';
-import {TrackingTO} from '../../../models/TrackingTO.model';
-import {TrackingService} from '../../../services/tracking.service';
-import {ReviewTO} from '../../../models/ReviewTO.model';
-import {AuthService} from '../../../services/auth.service';
-import {ReviewDialogComponent} from '../review-dialog/review-dialog.component';
-import {ReviewService} from '../../../services/review.service';
-import {ProfileService} from '../../../services/profile.service';
-import {TranslateService} from '@ngx-translate/core';
-import {ReferBookDialogComponent} from '../../shared/refer-book-dialog/refer-book-dialog.component';
-import {PageEvent} from '@angular/material/paginator';
-import {ReviewsPagination} from '../../../models/pagination/reviews.pagination';
-import {UserbookService} from '../../../services/userbook.service';
-import {UserBooksDataStatusTO} from '../../../models/UserBooksDataStatusTO.model';
-import {Util} from '../../shared/Utils/util';
+import { BookAddDialogComponent } from '../../shared/book-add-dialog/book-add-dialog.component';
+import { GoogleBooksService } from '../../../services/google-books.service';
+import { BookService } from '../../../services/book.service';
+import { TrackingViewComponent } from '../tracking-view/tracking-view.component';
+import { TrackingTO } from '../../../models/TrackingTO.model';
+import { TrackingService } from '../../../services/tracking.service';
+import { ReviewTO } from '../../../models/ReviewTO.model';
+import { AuthService } from '../../../services/auth.service';
+import { ReviewDialogComponent } from '../review-dialog/review-dialog.component';
+import { ReviewService } from '../../../services/review.service';
+import { ProfileService } from '../../../services/profile.service';
+import { TranslateService } from '@ngx-translate/core';
+import { ReferBookDialogComponent } from '../../shared/refer-book-dialog/refer-book-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
+import { ReviewsPagination } from '../../../models/pagination/reviews.pagination';
+import { UserbookService } from '../../../services/userbook.service';
+import { UserBooksDataStatusTO } from '../../../models/UserBooksDataStatusTO.model';
+import { Util } from '../../shared/Utils/util';
 
 @Component({
     selector: 'app-book-view',
@@ -74,7 +73,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
         private trackingService: TrackingService,
         public authService: AuthService,
         private reviewService: ReviewService,
-        private readingTargetService: ReadingTargetService,
         private profileService: ProfileService,
         private translate: TranslateService,
         private userBookService: UserbookService
@@ -102,9 +100,9 @@ export class BookViewComponent implements OnInit, OnDestroy {
         this.userBookService.getDataStatusByBooksGoogleBook(this.book.id)
             .pipe(take(1))
             .subscribe(result => {
-                    Util.stopLoading();
-                    this.userBooksDataStatusTO = result;
-                },
+                Util.stopLoading();
+                this.userBooksDataStatusTO = result;
+            },
                 error => {
                     console.log('Error: getDataStatusByBooksGoogleBook', error);
                 });
@@ -115,9 +113,9 @@ export class BookViewComponent implements OnInit, OnDestroy {
         this.userBookService.getDataStatusByBooksBookId(this.book.id)
             .pipe(take(1))
             .subscribe(result => {
-                    Util.stopLoading();
-                    this.userBooksDataStatusTO = result;
-                },
+                Util.stopLoading();
+                this.userBooksDataStatusTO = result;
+            },
                 error => {
                     console.log('Error: getDataStatusByBooksGoogleBook', error);
                 });
@@ -135,7 +133,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
                     book.finishDate = userbookResult.finishDate;
                     this.book = book;
                     this.getDataStatusByGoogleBook();
-                    this.verifyReadingTarget();
                 } else {
                     this.bookService.getAllUserBooks().subscribe((userbooks) => {
                         userbooks.books.forEach(userbook => {
@@ -148,7 +145,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
                         Util.stopLoading();
                         this.book = book;
                         this.getDataStatusByGoogleBook();
-                        this.verifyReadingTarget();
                     });
                 }
             });
@@ -162,7 +158,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
                     b.finishDate = userbookResult.finishDate;
                     this.book = b;
                     this.getDataStatusByGoogleBook();
-                    this.verifyReadingTarget();
                 } else {
                     this.bookService.getAllUserBooks().subscribe((userbooks) => {
                         userbooks.books.forEach(userbook => {
@@ -174,7 +169,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
                         });
                         this.book = b;
                         this.getDataStatusByBookId();
-                        this.verifyReadingTarget();
                     });
                 }
             });
@@ -185,11 +179,11 @@ export class BookViewComponent implements OnInit, OnDestroy {
         if (this.book?.idUserBook) {
             Util.loadingScreen();
             this.trackingService.getAllByUserBook(this.book.idUserBook).pipe(take(1)).subscribe(trackings => {
-                    this.trackings = trackings
-                        .slice()
-                        .sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime());
-                    Util.stopLoading();
-                },
+                this.trackings = trackings
+                    .slice()
+                    .sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime());
+                Util.stopLoading();
+            },
                 error => {
                     console.log('error tracking all by idbook', error);
                 });
@@ -198,8 +192,8 @@ export class BookViewComponent implements OnInit, OnDestroy {
 
     getByIdTrackingSpeed(id: string, tracking: TrackingTO) {
         this.trackingService.getById(id).pipe(take(1)).subscribe(result => {
-                this.trackings[this.trackings.indexOf(tracking)].velocidadeLeitura = result.velocidadeLeitura;
-            },
+            this.trackings[this.trackings.indexOf(tracking)].velocidadeLeitura = result.velocidadeLeitura;
+        },
             error => {
                 console.log('error tracking all by idbook', error);
             });
@@ -294,56 +288,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(() => {
             this.getBook();
         });
-    }
-
-    addToReadingTarget(): void {
-        Util.loadingScreen();
-        this.readingTargetService.addTarget(this.authService.getUser().profile.id, this.book.idUserBook).subscribe(
-            () => {
-                Util.stopLoading();
-                this.translate.get('BOOK.BOOK_ADDED_TARGET').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-                this.verifyReadingTarget();
-            },
-            error => {
-                this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {
-                    Util.showErrorDialog(msg);
-                });
-                console.log('ReadingTarget Error', error);
-            }
-        );
-    }
-
-    removeFromReadingTarget(): void {
-        Util.loadingScreen();
-        this.readingTargetService.removeTarget(this.authService.getUser().profile.id, this.book.idUserBook).subscribe(
-            () => {
-                Util.stopLoading();
-                this.translate.get('BOOK.BOOK_REMOVED_TARGET').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-                this.verifyReadingTarget();
-            },
-            error => {
-                Util.stopLoading();
-                this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {
-                    Util.showErrorDialog(msg);
-                });
-                console.log('ReadingTarget Error', error);
-            }
-        );
-    }
-
-    verifyReadingTarget(): void {
-        this.readingTargetService.getByUserBookId(this.authService.getUser().profile.id, this.book.idUserBook).subscribe(
-            (res) => {
-                res?.id ? this.hasReadingTarget = true : this.hasReadingTarget = false;
-            },
-            error => {
-                console.log('ReadingTarget Error', error);
-            }
-        );
     }
 
     public calculateDays(): string {
@@ -442,12 +386,12 @@ export class BookViewComponent implements OnInit, OnDestroy {
     delete(id: string): void {
         Util.loadingScreen();
         this.trackingService.delete(id).pipe(take(1)).subscribe(() => {
-                Util.stopLoading();
-                this.translate.get('ACOMP_LEITURA.TRACKING_REMOVED').subscribe(msg => {
-                    Util.showErrorDialog(msg);
-                });
-                this.getAllTracking();
-            },
+            Util.stopLoading();
+            this.translate.get('ACOMP_LEITURA.TRACKING_REMOVED').subscribe(msg => {
+                Util.showErrorDialog(msg);
+            });
+            this.getAllTracking();
+        },
             error => {
                 Util.stopLoading();
                 this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {

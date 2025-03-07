@@ -1,22 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {TranslateService} from '@ngx-translate/core';
-import {UserTO} from '../../models/userTO.model';
-import {UserService} from '../../services/user.service';
-import {map, take} from 'rxjs/operators';
-import {FriendsService} from '../../services/friends.service';
-import {FriendRequest} from '../../models/friendRequest.model';
-import {Friend} from '../../models/friend.model';
-import {BookRecommendationService} from 'src/app/services/book-recommendation.service';
-import {BookRecommendationTO} from 'src/app/models/bookRecommendationTO.model';
-import {ProfileService} from 'src/app/services/profile.service';
-import {BookService} from 'src/app/services/book.service';
-import {GoogleBooksService} from 'src/app/services/google-books.service';
-import {GroupMemberService} from '../../services/group-member.service';
-import {GroupInviteTO} from '../../models/GroupInviteTO.model';
-import {Util} from '../../views/shared/Utils/util';
-import {PublicProfileService} from '../../services/public-profile.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { TranslateService } from '@ngx-translate/core';
+import { UserTO } from '../../models/userTO.model';
+import { UserService } from '../../services/user.service';
+import { map, take } from 'rxjs/operators';
+import { FriendsService } from '../../services/friends.service';
+import { FriendRequest } from '../../models/friendRequest.model';
+import { Friend } from '../../models/friend.model';
+import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
+import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
+import { ProfileService } from 'src/app/services/profile.service';
+import { BookService } from 'src/app/services/book.service';
+import { GoogleBooksService } from 'src/app/services/google-books.service';
+import { GroupInviteTO } from '../../models/GroupInviteTO.model';
+import { Util } from '../../views/shared/Utils/util';
 
 @Component({
     selector: 'app-nav-bar',
@@ -42,8 +40,6 @@ export class NavBarComponent implements OnInit {
         private profileService: ProfileService,
         private bookService: BookService,
         private gBookService: GoogleBooksService,
-        public groupMembersService: GroupMemberService,
-        private publicProfileService: PublicProfileService
     ) {
         translate.addLangs(['pt-BR', 'en']);
         translate.setDefaultLang('pt-BR');
@@ -60,8 +56,6 @@ export class NavBarComponent implements OnInit {
         this.getuser();
         this.refreshRequest();
         this.getRecommendations();
-        this.getInvitesGroup();
-        this.getPublicProfileByUser();
     }
 
     refreshRequest() {
@@ -73,8 +67,8 @@ export class NavBarComponent implements OnInit {
     getRequests() {
         if (this.isLogged) {
             this.friendService.getRequests().subscribe(requests => {
-                    this.requests = requests;
-                },
+                this.requests = requests;
+            },
                 error => {
                     this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
                         Util.showErrorDialog(message);
@@ -180,73 +174,6 @@ export class NavBarComponent implements OnInit {
     }
 
     routerRecommendation(idGoogleBook: string): any {
-        return idGoogleBook ? {api: 'google'} : {};
-    }
-
-    getInvitesGroup(): void {
-        this.groupMembersService.getInvites(this.auth.getUser().id)
-            .pipe(
-                take(1),
-                map(invites => {
-                    return invites.map(i => {
-                        i.inviterUser = this.userService.getById(i.inviter);
-                        return i;
-                    });
-                })
-            ).subscribe(result => {
-                this.invitesGroup = result;
-        });
-
-    }
-
-    acceptInviteGroup(id: string): void {
-        Util.loadingScreen();
-        this.groupMembersService.acceptInvite(id)
-            .pipe(take(1))
-            .subscribe(() => {
-                Util.stopLoading();
-                this.translate.get('NAV.CONVITE_ACEITO').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-                this.invitesGroup = this.invitesGroup.filter(i => i.id !== id);
-            }, error => {
-                Util.stopLoading();
-                this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
-                    Util.showErrorDialog(message);
-                });
-                console.log('error accpet invite group', error);
-            });
-    }
-
-    refuseInviteGroup(id: string): void {
-        Util.loadingScreen();
-        this.groupMembersService.refuseInvite(id)
-            .pipe(take(1))
-            .subscribe(() => {
-                Util.stopLoading();
-                this.translate.get('NAV.CONVITE_RECUSADO').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-                this.invitesGroup = this.invitesGroup.filter(i => i.id !== id);
-            }, error => {
-                Util.stopLoading();
-                this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
-                    Util.showErrorDialog(message);
-                });
-                console.log('error refuse invite group', error);
-            });
-    }
-
-    getPublicProfileByUser() {
-        this.publicProfileId = '';
-        this.publicProfileService.getByUserId(this.auth.getUser().id)
-            .pipe(take(1))
-            .subscribe(result => {
-                if (result) {
-                    this.publicProfileId = result.id;
-                } else {
-                    this.publicProfileId = '';
-                }
-            });
+        return idGoogleBook ? { api: 'google' } : {};
     }
 }
