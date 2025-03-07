@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Book } from '../../../models/book.model';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { Author } from '../../../models/author.model';
-import { AuthorService } from '../../../services/author.service';
+import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { CDNService } from '../../../services/cdn.service';
 import { UploadComponent } from '../../upload/upload.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,6 +11,8 @@ import { Util } from '../../shared/utils/util';
 import { Router } from '@angular/router';
 import { BarCodeScannerComponent } from '../../shared/bar-code-scanner/bar-code-scanner.component';
 import { AddBookUseCase } from 'src/app/core/use-cases/book/add-book.use-case';
+import { Author } from 'src/app/core/domain/entities/author.entity';
+import { GetAllAuthorsUseCase } from 'src/app/core/use-cases/author/get-all-authors.use-case';
 
 
 @Component({
@@ -33,13 +33,13 @@ export class BookFormComponent implements OnInit {
     image;
 
     constructor(
-        private formBuilder: FormBuilder,
-        private addBookUseCase: AddBookUseCase,
-        private authorService: AuthorService,
-        private cdnService: CDNService,
+        private readonly formBuilder: FormBuilder,
+        private readonly addBookUseCase: AddBookUseCase,
+        private readonly cdnService: CDNService,
         public dialog: MatDialog,
         public translate: TranslateService,
         public router: Router,
+        private readonly getAllAuthorsUseCase: GetAllAuthorsUseCase,
     ) {
         this.book.authors = [];
     }
@@ -67,7 +67,7 @@ export class BookFormComponent implements OnInit {
         });
     }
 
-    private createAuthorsForm(id: number, name: string): FormGroup {
+    private createAuthorsForm(id: string, name: string): FormGroup {
         return new FormGroup({
             id: new FormControl(id),
             name: new FormControl(name, Validators.required),
@@ -112,11 +112,12 @@ export class BookFormComponent implements OnInit {
     }
 
     getAuthors(index: number) {
-        this.authorService.getAll().subscribe(authors => {
+        this.getAllAuthorsUseCase.execute().subscribe(authors => {
             this.options = authors;
             this.filteredOptions[index] = this.authors.at(index).get('name').valueChanges
                 .pipe(
                     startWith(''),
+                    distinctUntilChanged(),
                     map((value) => {
                         if (this._filterAuthors(value).length <= 0) {
                             this.authors.at(index).get('id').setValue('');

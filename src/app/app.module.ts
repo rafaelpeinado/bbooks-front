@@ -65,6 +65,8 @@ import { ProfileRepository } from './core/repositories/profile.repository';
 import { ProfileApiService } from './infrastructure/adapters/profile.service';
 import { FriendshipRepository } from './core/repositories/friendship.repository';
 import { FriendshipApiService } from './infrastructure/adapters/friendship.service';
+import { AuthorRepository } from './core/repositories/author.repository';
+import { AuthorApiService } from './infrastructure/adapters/author.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -141,6 +143,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         { provide: UserBookRepository, useClass: UserBookApiService },
         { provide: ProfileRepository, useClass: ProfileApiService },
         { provide: FriendshipRepository, useClass: FriendshipApiService },
+        { provide: AuthorRepository, useClass: AuthorApiService },
         { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
         {
             provide: ErrorStateMatcher,
