@@ -6,7 +6,6 @@ import { FriendRequest } from '../../models/friendRequest.model';
 import { Friend } from '../../models/friend.model';
 import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
 import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
-import { GroupInviteTO } from '../../models/GroupInviteTO.model';
 import { Util } from '../../views/shared/utils/util';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { ApiType } from 'src/app/core/domain/enums/api-type.enum';
@@ -46,7 +45,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
     menuPerfil;
     public friendships: Friendship[];
     recommendations: BookRecommendationTO[];
-    invitesGroup: GroupInviteTO[];
     publicProfileId = '';
     timer;
     constructor(
@@ -122,8 +120,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
     verifyRequests() {
         const result = this.friendships?.filter(friendship => friendship.friendshipStatus === 'received');
-        if (result?.length > 0 || this.invitesGroup?.length > 0) {
-            return result?.length + this.invitesGroup?.length;
+        if (result?.length > 0) {
+            return result?.length
         } else {
             return '';
         }

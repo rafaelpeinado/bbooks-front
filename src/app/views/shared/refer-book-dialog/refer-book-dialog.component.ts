@@ -5,7 +5,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Book } from 'src/app/models/book.model';
 import { BookRecommendationTO } from 'src/app/models/bookRecommendationTO.model';
 import { BookRecommendationService } from 'src/app/services/book-recommendation.service';
-import { GroupInviteTO } from '../../../models/GroupInviteTO.model';
 import { switchMap } from 'rxjs/operators';
 import { Util } from '../utils/util';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
@@ -35,7 +34,7 @@ export class ReferBookDialogComponent implements OnInit {
     public filteredFriendshipTO: FriendshipTO[] = [];
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: { book: Book, indicateMember: boolean, groupInviteTO: GroupInviteTO },
+        @Inject(MAT_DIALOG_DATA) public data: { book: Book, indicateMember: boolean },
         public dialogRef: MatDialogRef<ReferBookDialogComponent>,
         private fb: FormBuilder,
         private bookRecommendationService: BookRecommendationService,

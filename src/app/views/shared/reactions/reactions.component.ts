@@ -12,7 +12,6 @@ import { TypePostControler } from '../../../models/enums/TypePost.enum';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FeedMainManagerService } from '../../feed-page/store/feed-main-manager.service';
 import { FeedGenericService } from '../../../services/feed-generic.service';
-import { GroupTO } from '../../../models/GroupTO.model';
 import { ReactionType } from '../../../models/enums/ReactionType.enum';
 import { ReactTO } from '../../../models/ReactTO.model';
 import { ViewAllReactionsComponent } from '../view-all-reactions/view-all-reactions.component';
@@ -52,8 +51,6 @@ export class ReactionsComponent implements OnInit {
 
     public editForm: FormGroup;
     public cachedUser: User;
-
-    group: GroupTO;
 
     comments: PostTO[] = [];
 
