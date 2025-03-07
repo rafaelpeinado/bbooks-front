@@ -40,11 +40,6 @@ const routes: Routes = [
         component: PageNotFoundComponent
     },
     {
-        path: 'feed',
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./views/feed-page/feed-page.module').then(m => m.FeedPageModule)
-    },
-    {
         path: '',
         canActivate: [AuthGuard],
         loadChildren: () => import('./views/search/search.module').then(m => m.SearchModule)

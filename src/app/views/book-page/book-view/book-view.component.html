@@ -30,12 +30,6 @@
                             {{'ESTANTE.EDITAR_LIVRO' | translate}}
                         </button>
                     </div>
-                    <div>
-                        <button type="button" *ngIf="book.idUserBook" mat-flat-button color="accent"
-                                (click)="openDialogReferBook(book)">
-                            {{'ESTANTE.INDICAR_LIVRO' | translate}}
-                        </button>
-                    </div>
                     <div *ngIf="book.idUserBook">
                         <p style="text-align: right;">{{'ESTANTE.ENCERRAR_META_LEITURA' | translate}} {{calculateDays()}} {{'ESTANTE.DIAS_ENCERRAR_META' | translate}}</p>
                     </div>

@@ -1,32 +1,28 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {MainPageComponent} from './main-page/main-page.component';
-import {PerfilPageRoutingModule} from './perfil-page.routing.module';
-import {MaterialModule} from '../../material/material.module';
-import {FlexLayoutModule, FlexModule} from '@angular/flex-layout';
-import {FriendComponent} from './friend/friend.component';
-import {FeedComponent} from './feed/feed.component';
-import {BookcaseComponent} from './bookcase/bookcase.component';
-import {UserService} from '../../services/user.service';
-import {MainResolve} from './guards/main.resolve';
-import {FeedResolve} from './guards/feed.resolve';
-import {BookcaseResolve} from './guards/bookcase.resolve';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {HttpClient} from '@angular/common/http';
-import {BookModule, HttpLoaderFactory} from '../book-page/book.module';
-import {SharedModule} from '../shared/shared.module';
-import {PerfilComponent} from './perfil/perfil.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {FriendResolve} from './guards/friend.resolve';
-import {InfiniteScrollModule} from 'ngx-infinite-scroll';
-import {StoreModule} from '@ngrx/store';
-import {reducer} from './store/reducers/feed.reducer';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MainPageComponent } from './main-page/main-page.component';
+import { PerfilPageRoutingModule } from './perfil-page.routing.module';
+import { MaterialModule } from '../../material/material.module';
+import { FlexLayoutModule, FlexModule } from '@angular/flex-layout';
+import { FriendComponent } from './friend/friend.component';
+import { BookcaseComponent } from './bookcase/bookcase.component';
+import { UserService } from '../../services/user.service';
+import { MainResolve } from './guards/main.resolve';
+import { BookcaseResolve } from './guards/bookcase.resolve';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { BookModule, HttpLoaderFactory } from '../book-page/book.module';
+import { SharedModule } from '../shared/shared.module';
+import { PerfilComponent } from './perfil/perfil.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FriendResolve } from './guards/friend.resolve';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
     declarations: [
         MainPageComponent,
         FriendComponent,
-        FeedComponent,
         BookcaseComponent,
         PerfilComponent
     ],
@@ -40,7 +36,6 @@ import {reducer} from './store/reducers/feed.reducer';
         FormsModule,
         ReactiveFormsModule,
         InfiniteScrollModule,
-        StoreModule.forFeature('feedProfile', reducer),
         TranslateModule.forChild({
             loader: {
                 provide: TranslateLoader,
@@ -53,7 +48,6 @@ import {reducer} from './store/reducers/feed.reducer';
     providers: [
         UserService,
         MainResolve,
-        FeedResolve,
         BookcaseResolve,
         FriendResolve
     ]

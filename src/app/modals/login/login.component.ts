@@ -88,7 +88,7 @@ export class LoginComponent implements OnInit {
         this.authService.login(userLogin).subscribe(res => {
                 Util.stopLoading();
                 this.authService.authenticate(res, this.loginControl.value.keepLogin);
-                this.router.navigateByUrl('/feed');
+                this.router.navigateByUrl('/');
             },
             (err) => {
                 if (err.error.message) {
@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
         this.authService.loginToken(userLogin).subscribe(res => {
                 Util.stopLoading();
                 this.authService.authenticate(res, this.loginControl.value.keepLogin);
-                this.router.navigateByUrl('/feed');
+                this.router.navigateByUrl('/');
             },
             (err) => {
                 Util.stopLoading();

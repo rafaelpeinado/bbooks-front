@@ -209,7 +209,7 @@ export class CadastroSegundaEtapaComponent implements OnInit {
                 Util.stopLoading();
                 localStorage.clear();
                 this.auth.authenticate(res, true);
-                this.router.navigate(['/feed']);
+                this.router.navigate(['/']);
             },
             (err) => {
                 Util.stopLoading();
