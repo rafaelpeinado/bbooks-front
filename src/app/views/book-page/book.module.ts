@@ -22,10 +22,6 @@ import { BooksResolve } from './guards/books.resolve';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpLoaderFactory, SharedModule } from '../shared/shared.module';
 import { TagDialogComponent } from './tag-dialog/tag-dialog.component';
-import { TrackingDialogComponent } from './tracking-dialog/tracking-dialog.component';
-import { TrackingViewComponent } from './tracking-view/tracking-view.component';
-import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
-
 
 @NgModule({
     imports: [
@@ -58,9 +54,6 @@ import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
         RatingComponent,
         BooksComponent,
         TagDialogComponent,
-        TrackingDialogComponent,
-        TrackingViewComponent,
-        ReviewDialogComponent
     ],
     entryComponents: [
         // BookcaseModalComponent
