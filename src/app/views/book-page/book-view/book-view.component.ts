@@ -4,9 +4,6 @@ import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { map, switchMap, take } from 'rxjs/operators';
-import { ReadingTrackingTO } from '../../../models/ReadingTrackingTO.model';
-import { TrackingDialogComponent } from '../tracking-dialog/tracking-dialog.component';
-import { ReadingTrackingService } from '../../../services/reading-tracking.service';
 import {
     BookStatus,
     BookStatusEnglish,
@@ -15,17 +12,10 @@ import {
 import { BookAddDialogComponent } from '../../shared/book-add-dialog/book-add-dialog.component';
 import { GoogleBooksService } from '../../../services/google-books.service';
 import { BookService } from '../../../services/book.service';
-import { TrackingViewComponent } from '../tracking-view/tracking-view.component';
-import { TrackingTO } from '../../../models/TrackingTO.model';
-import { TrackingService } from '../../../services/tracking.service';
-import { ReviewTO } from '../../../models/ReviewTO.model';
 import { AuthService } from '../../../services/auth.service';
-import { ReviewDialogComponent } from '../review-dialog/review-dialog.component';
-import { ReviewService } from '../../../services/review.service';
 import { ProfileService } from '../../../services/profile.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PageEvent } from '@angular/material/paginator';
-import { ReviewsPagination } from '../../../models/pagination/reviews.pagination';
 import { UserbookService } from '../../../services/userbook.service';
 import { UserBooksDataStatusTO } from '../../../models/UserBooksDataStatusTO.model';
 import { Util } from '../../shared/Utils/util';
@@ -43,17 +33,12 @@ export class BookViewComponent implements OnInit, OnDestroy {
     stars: number[] = [1, 2, 3, 4, 5];
     rating = 1;
     stringAuthors: string[];
-    readingTracking: ReadingTrackingTO[] = [];
-    trackings: TrackingTO[] = [];
 
     status = BookStatus;
     mapEnglish = mapBookStatusEnglish;
     statusEnglish = BookStatusEnglish;
     panelOpenState = true;
     percentage: number;
-
-    reviews: Observable<ReviewTO[]>;
-    reviewPagination: ReviewsPagination;
 
     pageEvent: PageEvent = new PageEvent();
 
@@ -62,12 +47,9 @@ export class BookViewComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         public dialog: MatDialog,
-        private readingTrackingService: ReadingTrackingService,
         private gBookService: GoogleBooksService,
         private bookService: BookService,
-        private trackingService: TrackingService,
         public authService: AuthService,
-        private reviewService: ReviewService,
         private profileService: ProfileService,
         private translate: TranslateService,
         private userBookService: UserbookService
@@ -77,9 +59,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
             Util.stopLoading();
             this.book = data.book;
             this.stringAuthors = this.convertAuthorsToString();
-            if (this.book?.idUserBook > 0) {
-                this.getAllTracking();
-            }
         });
         this.pageEvent.pageSize = 10;
         this.pageEvent.pageIndex = 0;
@@ -87,7 +66,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getBook();
-        this.getAllReviews();
     }
 
     getDataStatusByGoogleBook(): void {
@@ -170,45 +148,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
         }
     }
 
-    getAllTracking() {
-        if (this.book?.idUserBook) {
-            Util.loadingScreen();
-            this.trackingService.getAllByUserBook(this.book.idUserBook).pipe(take(1)).subscribe(trackings => {
-                this.trackings = trackings
-                    .slice()
-                    .sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime());
-                Util.stopLoading();
-            },
-                error => {
-                    console.log('error tracking all by idbook', error);
-                });
-        }
-    }
-
-    getByIdTrackingSpeed(id: string, tracking: TrackingTO) {
-        this.trackingService.getById(id).pipe(take(1)).subscribe(result => {
-            this.trackings[this.trackings.indexOf(tracking)].velocidadeLeitura = result.velocidadeLeitura;
-        },
-            error => {
-                console.log('error tracking all by idbook', error);
-            });
-    }
-
-    orderByDate(readingTracking: ReadingTrackingTO[]) {
-        if (readingTracking) {
-            return readingTracking
-                .slice()
-                .sort((a, b) =>
-                    new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
-                );
-        }
-        return [];
-    }
-
-    getPercentTotal(readingTrackings: ReadingTrackingTO[]): number {
-        readingTrackings = this.orderByDate(readingTrackings);
-        return readingTrackings[0]?.percentage ? readingTrackings[0].percentage : 0;
-    }
 
     verifystatusBook(): boolean {
         return this.book.status === this.status.EMPRESTADO || !this.book.idUserBook;
@@ -216,7 +155,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.inscricao.unsubscribe();
-        this.reviewPagination = new ReviewsPagination();
     }
 
     verifyPercentageIsLess100() {
@@ -241,37 +179,6 @@ export class BookViewComponent implements OnInit, OnDestroy {
         });
     }
 
-    openDialogReview(r: ReviewTO): void {
-        const review = new ReviewTO();
-        if (r) {
-            review.id = r.id;
-            review.title = r.title;
-            review.body = r.body;
-            review.profileTO = r.profileTO;
-        } else {
-            review.profileId = this.authService.getUser().profile.id;
-        }
-        if (this.book.api) {
-            review.idGoogleBook = this.book.id;
-        } else {
-            // tslint:disable-next-line:radix
-            review.bookId = Number.parseInt(this.book.id);
-        }
-        const dialogRef = this.dialog.open(ReviewDialogComponent, {
-            height: '450px',
-            width: '500px',
-            data: {
-                review,
-                book: this.book
-            }
-        });
-        dialogRef.afterClosed().pipe(take(1)).subscribe((result) => {
-            if (result) {
-                this.getAllReviews();
-            }
-        });
-    }
-
     public calculateDays(): string {
         const currentDate = new Date();
         const lastDayOfYear = new Date('12/31/' + currentDate.getFullYear());
@@ -279,159 +186,4 @@ export class BookViewComponent implements OnInit, OnDestroy {
         const differenceInDays = Math.ceil(diffenceOfDates / (1000 * 3600 * 24));
         return differenceInDays.toString();
     }
-
-    openDialogReadingTracking(track: TrackingTO, tracking: ReadingTrackingTO, editPag: boolean, trackingUpId: string) {
-        const dialogRef = this.dialog.open(TrackingDialogComponent, {
-            height: '300px',
-            width: '400px',
-            data: {
-                tracking,
-                idUserbook: this.book.idUserBook,
-                canEditPag: editPag,
-                trackingUpId
-            }
-        });
-        dialogRef.afterClosed().pipe(switchMap(async res => {
-            return await res;
-
-        })).subscribe((result) => {
-            if (result) {
-                if (result === 'delete') {
-                    track.finishedDate = null;
-                    track.trackings.splice(track.trackings.indexOf(tracking), 1);
-                }
-                if (tracking) {
-                    tracking = result;
-                    this.getByIdTrackingSpeed(track.id, track);
-                } else {
-                    track.trackings.push(result);
-                    this.getByIdTrackingSpeed(track.id, track);
-                }
-            }
-            this.getBook();
-        });
-    }
-
-    openDialogTrackingView(tracking: TrackingTO) {
-
-        const dialogRef = this.dialog.open(TrackingViewComponent, {
-            height: '300px',
-            width: '400px',
-            data: {
-                tracking,
-                idUserbook: this.book.idUserBook,
-            }
-        });
-        dialogRef.afterClosed().pipe(switchMap(async res => {
-            return await res;
-        })).subscribe((res) => {
-            this.getBook();
-            if (tracking) {
-                tracking = res;
-            } else {
-                if (res) {
-                    this.getAllTracking();
-                }
-            }
-        });
-    }
-
-    getStatus(readingTrackings: ReadingTrackingTO[]): string {
-        if (readingTrackings?.length > 0) {
-            readingTrackings = this.orderByDate(readingTrackings);
-            return readingTrackings[0].percentage.toString() === '100' ? 'concluido' : 'pending';
-        } else {
-            return 'pending';
-
-        }
-    }
-
-    getConcluidos(status: string): number {
-        let response = 0;
-        this.trackings.forEach(tracking => {
-            if (status === this.getStatus(tracking.trackings)) {
-                response++;
-            }
-        });
-        return response;
-    }
-
-    getStatusTranslate(readings: ReadingTrackingTO[]): string {
-        const resp = this.getStatus(readings);
-        if (resp === 'concluido') {
-            return 'PADRAO.CONCLUIDO';
-        } else {
-            return 'PADRAO.PENDENTE';
-        }
-    }
-
-    delete(id: string): void {
-        Util.loadingScreen();
-        this.trackingService.delete(id).pipe(take(1)).subscribe(() => {
-            Util.stopLoading();
-            this.translate.get('ACOMP_LEITURA.TRACKING_REMOVED').subscribe(msg => {
-                Util.showErrorDialog(msg);
-            });
-            this.getAllTracking();
-        },
-            error => {
-                Util.stopLoading();
-                this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {
-                    Util.showErrorDialog(msg);
-                });
-                console.log(error);
-            });
-    }
-
-    getAllReviews(): void {
-        if (this.book.api === 'google') {
-            this.getAllByGoogleBook();
-        } else {
-            this.getAllByBook();
-        }
-    }
-
-    deleteReview(r: ReviewTO): void {
-        Util.loadingScreen();
-        this.reviewService.delete(r.id)
-            .pipe(take(1))
-            .subscribe(() => {
-                Util.stopLoading();
-                this.reviews = this.reviews.pipe(take(1));
-                this.translate.get('RESENHA.APAGAR_RENHA').subscribe(message => {
-                    Util.showSuccessDialog(message);
-                });
-            });
-    }
-
-    changePage(event: PageEvent) {
-        this.pageEvent = event;
-        this.getAllReviews();
-    }
-
-    getAllByGoogleBook(): void {
-        this.reviewService.getAllByGoogleBook(
-            this.book.id,
-            this.pageEvent.pageSize,
-            this.pageEvent.pageIndex
-        )
-            .pipe(take(1))
-            .subscribe(reviewsPagination => {
-                this.reviewPagination = reviewsPagination;
-            });
-    }
-
-    getAllByBook(): void {
-        this.reviewService.getAllByBook(
-            // tslint:disable-next-line:radix
-            Number.parseInt(this.book.id),
-            this.pageEvent.pageSize,
-            this.pageEvent.pageIndex
-        )
-            .pipe(take(1))
-            .subscribe(reviewsPagination => {
-                this.reviewPagination = reviewsPagination;
-            });
-    }
-
 }
