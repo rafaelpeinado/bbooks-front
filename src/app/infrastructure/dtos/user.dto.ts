@@ -31,10 +31,21 @@ export interface PublicProfile {
     followers: any[];
 }
 
-export interface User {
+interface User {
     id: string;
     userName: string;
     profile: ProfileTO;
+}
+
+export interface RegisterTO {
+    name: string
+    lastName: string
+    email: string
+    userName: string
+    password: string
+    confirmPassword: string
+    idSocial: string
+    profileImage: string
 }
 
 

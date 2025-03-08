@@ -15,9 +15,13 @@ import { SocialUserMapper } from '../mappers/social-user.mapper';
 export class AuthSocialService implements AuthRepository {
 
     constructor(
-        private authServiceSocial: SocialAuthService,
-        private userService: UserService,
+        private readonly authServiceSocial: SocialAuthService,
+        private readonly userService: UserService,
     ) { }
+    
+    authConfirm(login: Login): Observable<User> {
+        throw new Error('Method not implemented.');
+    }
 
     loginByGoogle(user: User): Observable<User> {
         throw new Error('Method not implemented.');

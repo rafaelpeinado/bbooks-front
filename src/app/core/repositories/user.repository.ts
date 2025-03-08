@@ -10,4 +10,5 @@ export abstract class UserRepository {
     abstract getUsersByName(input: string): Observable<User[]>;
     abstract getUsersByUsername(input: string): Observable<User[]>;
     abstract getUserByUsername(username: string, userToken: string): Observable<User>;
+    abstract registerUser(user: User): Observable<User>;
 }

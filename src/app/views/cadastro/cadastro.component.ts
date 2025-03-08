@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CadastroService } from '../../services/cadastro-service.service';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { take } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { SocialUser } from 'angularx-social-login';
@@ -15,8 +14,11 @@ import { LoginBuilder } from 'src/app/core/domain/builders/login.builder';
 import { Login } from 'src/app/core/domain/entities/login.entity';
 import { SetCacheUserUseCase } from 'src/app/core/use-cases/user/set-cache-user.use-case';
 import { RemoveCacheUseCase } from 'src/app/core/use-cases/cache/remove-cache.use-case';
-import { UserTO } from 'src/app/infrastructure/dtos/user.dto';
+import { RegisterTO } from 'src/app/infrastructure/dtos/user.dto';
 import { Util } from '../shared/utils/util';
+import { UserBuilder } from 'src/app/core/domain/builders/user.builder';
+import { ProfileBuilder } from 'src/app/core/domain/builders/profile.builder';
+import { RegisterUserUseCase } from 'src/app/core/use-cases/user/register-user.use-case';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -42,14 +44,14 @@ export class CadastroComponent implements OnInit {
     matcher = new MyErrorStateMatcher();
 
     constructor(
-        private fb: FormBuilder,
-        private router: Router,
-        private cadastroService: CadastroService,
-        private translate: TranslateService,
-        private getCacheUseCase: GetCacheUseCase,
-        private removeCacheUseCase: RemoveCacheUseCase,
-        private loginByTokenUseCase: LoginByTokenUseCase,
-        private setCacheUserUseCase: SetCacheUserUseCase,
+        private readonly fb: FormBuilder,
+        private readonly router: Router,
+        private readonly translate: TranslateService,
+        private readonly getCacheUseCase: GetCacheUseCase,
+        private readonly removeCacheUseCase: RemoveCacheUseCase,
+        private readonly loginByTokenUseCase: LoginByTokenUseCase,
+        private readonly setCacheUserUseCase: SetCacheUserUseCase,
+        private readonly registerUserUseCase: RegisterUserUseCase,
     ) {
     }
 
@@ -93,53 +95,55 @@ export class CadastroComponent implements OnInit {
     }
 
     cadastrar() {
+        Util.loadingScreen();
         const username = this.cadastroControl.get('userName').value;
         this.cadastroControl.get('userName').setValue(username.toLowerCase());
-        Util.loadingScreen();
-        this.cadastroService.cadastrar(this.cadastroControl.value).pipe(take(1)).subscribe((res: UserTO) => {
-            const userLogin = {
-                email: res.email,
-                token: res.token
-            };
-            Util.stopLoading();
-            Util.loadingScreen();
-
-            const login: Login = LoginBuilder.builder()
-                .setEmail(userLogin.email)
-                .setToken(userLogin.token)
-                .build();
-            this.loginByTokenUseCase.execute(login).subscribe(
+        const registerTO: RegisterTO = this.cadastroControl.value;
+        const user: User = UserBuilder.builder()
+            .setName(registerTO.name)
+            .setLastName(registerTO.lastName)
+            .setEmail(registerTO.email)
+            .setPassword(registerTO.password)
+            .setIdSocial(registerTO.idSocial)
+            .setProfile(ProfileBuilder.builder().setProfileImage(registerTO.profileImage).setUsername(registerTO.userName).build())
+            .build();
+        this.registerUserUseCase.execute(user)
+            .pipe(
+                finalize(() => Util.stopLoading()),
+                switchMap((response: User) => {
+                    const login: Login = LoginBuilder.builder()
+                        .setEmail(response.email)
+                        .setToken(response.token)
+                        .build();
+                    return this.loginByTokenUseCase.execute(login);
+                })
+            )
+            .subscribe(
                 (user) => {
-                    Util.stopLoading();
                     this.setCacheUserUseCase.execute(user);
                     this.removeCacheUseCase.execute(StorageItem.REGISTERING_USER, StorageType.LOCAL_STORAGE);
                     this.router.navigateByUrl('continuar-cadastro');
                 }, (error) => {
-                    console.log('error login', error);
+                    let codMessage = '';
+                    // email
+                    if (error.error.message.includes('US002')) {
+                        codMessage = 'US002';
+                    }
+                    // username
+                    if (error.error.message.includes('US005')) {
+                        codMessage = 'US005';
+                    }
+                    if (codMessage) {
+                        this.translate.get('MESSAGE_ERROR.' + codMessage).subscribe(message => {
+                            Util.showErrorDialog(message);
+                        });
+                    } else {
+                        this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
+                            Util.showErrorDialog(message);
+                        });
+                        console.log(error);
+                    }
                 });
-        },
-            (err) => {
-                Util.stopLoading();
-                let codMessage = '';
-                // email
-                if (err.error.message.includes('US002')) {
-                    codMessage = 'US002';
-                }
-                // username
-                if (err.error.message.includes('US005')) {
-                    codMessage = 'US005';
-                }
-                if (codMessage) {
-                    this.translate.get('MESSAGE_ERROR.' + codMessage).subscribe(message => {
-                        Util.showErrorDialog(message);
-                    });
-                } else {
-                    this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
-                        Util.showErrorDialog(message);
-                    });
-                    console.log(err);
-                }
-            }
-        );
     }
 }
+

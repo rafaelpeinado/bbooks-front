@@ -2,8 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
-import { FriendRequest } from '../../models/friendRequest.model';
-import { Friend } from '../../models/friend.model';
 import { Util } from '../../views/shared/utils/util';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
@@ -148,8 +146,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }
 
     acceptRequest(friendshipTO: FriendshipTO) {
-        const accept = new Friend();
-        accept.id = +friendshipTO.id;
         Util.loadingScreen();
         this.acceptFriendshipUseCase.execute(friendshipTO.id).pipe(
             finalize(() => Util.stopLoading())
@@ -170,7 +166,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         })
     }
 
-    deleteRequest(friendship: FriendRequest) {
+    deleteRequest(friendship: FriendshipTO) {
         Util.stopLoading();
 
         this.deleteFriendshipRequestUseCase.execute(friendship.id).pipe(

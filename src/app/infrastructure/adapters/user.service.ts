@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { UserRepository } from 'src/app/core/repositories/user.repository';
 import { environment } from 'src/environments/environment';
-import { UserTO } from '../dtos/user.dto';
+import { RegisterTO, UserTO } from '../dtos/user.dto';
 import { BaseApiService } from './base-service.service';
 import { UserMapper } from '../mappers/user.mapper';
 import { first, map } from 'rxjs/operators';
@@ -19,8 +19,22 @@ export class UserService extends BaseApiService<User, UserTO> implements UserRep
     private apiGoogle: string = this.api + 'google/';
     private apiUsername: string = this.api + 'username/';
 
-    constructor(protected http: HttpClient) {
+    constructor(protected readonly http: HttpClient) {
         super(http);
+    }
+    registerUser(user: User): Observable<User> {
+        const registerTO: RegisterTO = {
+            name: user.name,
+            lastName: user.lastName,
+            email: user.email,
+            password: user.password,
+            confirmPassword: user.password,
+            idSocial: user.idSocial,
+            profileImage: user.profile.profileImage,
+            userName: user.profile.username,
+        };
+        const service = this.http.post<UserTO>(this.api, registerTO)
+        return this.handleRequestDTOToEntity(service, UserMapper.toEntity);
     }
 
     getUserByUsername(username: string, userToken: string): Observable<User> {

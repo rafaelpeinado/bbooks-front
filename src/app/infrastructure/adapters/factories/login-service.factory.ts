@@ -11,8 +11,8 @@ import { LoginType } from 'src/app/core/domain/enums/login-type.enum';
 export class LoginServiceFactory extends FactoryApi<AuthRepository> {
 
     constructor(
-        private authService: AuthApiService,
-        private authSocialService: AuthSocialService,
+        private readonly authService: AuthApiService,
+        private readonly authSocialService: AuthSocialService,
     ) {
         super();
     }

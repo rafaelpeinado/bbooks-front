@@ -1,4 +1,4 @@
-import {UserBookTO} from './userBookTO';
+import { UserBookTO } from "../infrastructure/dtos/user-book.dto";
 
 export class Tag {
     id: number;

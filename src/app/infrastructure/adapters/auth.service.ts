@@ -23,9 +23,15 @@ export class AuthApiService extends BaseApiService<User, UserTO> implements Auth
     private apiLoginGoogle = this.apiLogin + 'google/';
     private apiToken = this.apiLogin + 'token';
     private apiResetPass = this.api + 'reset-pass/';
+    private apiConfirm = this.api + 'confirm/';
 
-    constructor(protected http: HttpClient) {
+    constructor(protected readonly http: HttpClient) {
         super(http);
+    }
+
+    authConfirm(login: Login): Observable<User> {
+        const service = this.http.post<UserTO>(this.apiConfirm, login);
+        return this.handleRequestDTOToEntity(service, UserMapper.toEntity);
     }
 
     changePassword(login: Login): Observable<User> {

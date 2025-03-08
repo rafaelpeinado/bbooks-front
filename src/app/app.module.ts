@@ -59,6 +59,10 @@ import { FriendshipRepository } from './core/repositories/friendship.repository'
 import { FriendshipApiService } from './infrastructure/adapters/friendship.service';
 import { AuthorRepository } from './core/repositories/author.repository';
 import { AuthorApiService } from './infrastructure/adapters/author.service';
+import { LocationRepository } from './core/repositories/location.repository';
+import { GeonameApiService } from './infrastructure/adapters/geoname.service';
+import { CDNRepository } from './core/repositories/cdn.repository';
+import { CDNApiService } from './infrastructure/adapters/cdn.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -128,6 +132,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         { provide: ProfileRepository, useClass: ProfileApiService },
         { provide: FriendshipRepository, useClass: FriendshipApiService },
         { provide: AuthorRepository, useClass: AuthorApiService },
+        { provide: LocationRepository, useClass: GeonameApiService },
+        { provide: CDNRepository, useClass: CDNApiService },
         { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
         {
             provide: ErrorStateMatcher,

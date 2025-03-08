@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConsultaCepService } from '../../services/consulta-cep.service';
-import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { finalize, map, startWith } from 'rxjs/operators';
-import { Country } from '../../models/country.model';
-import { State } from '../../models/state.model';
-import { City } from '../../models/city.model';
-import { CDNService } from 'src/app/services/cdn.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadComponent } from '../upload/upload.component';
 import { DateAdapter } from '@angular/material/core';
@@ -24,6 +19,13 @@ import { UpdateProfileUseCase } from 'src/app/core/use-cases/profile/update-prof
 import { ProfileTO } from 'src/app/infrastructure/dtos/user.dto';
 import { GetProfileByIdUseCase } from 'src/app/core/use-cases/profile/get-profile-by-id.use-case';
 import { ProfileMapper } from 'src/app/infrastructure/mappers/profile.mapper';
+import { GetAllCountriesUseCase } from 'src/app/core/use-cases/location/get-all-countries.use-case';
+import { Location } from 'src/app/core/domain/entities/location.entity';
+import { GetStatesByCountryIdUseCase } from 'src/app/core/use-cases/location/get-states-by-country-id.use-case';
+import { GetCitiesByStateIdUseCase } from 'src/app/core/use-cases/location/get-cities-by-state-id.use-case';
+import { CDN } from 'src/app/core/domain/entities/cdn.entity';
+import { CDNFileTpe } from 'src/app/core/domain/enums/cdn-file-type.enum';
+import { UploadFileUseCase } from 'src/app/core/use-cases/cdn/upload-file.use-case';
 
 @Component({
     selector: 'app-cadastro-segunda-etapa',
@@ -32,32 +34,33 @@ import { ProfileMapper } from 'src/app/infrastructure/mappers/profile.mapper';
 })
 export class CadastroSegundaEtapaComponent implements OnInit {
     public formCadastro2: FormGroup;
-    public citys: City[];
-    public countrys: Country[];
-    public states: State[];
+    public cities: Location[];
+    public countries: Location[];
+    public states: Location[];
     public profileTO: ProfileTO;
+    public filteredOptionsCity$ = new BehaviorSubject<Location[]>([]);
     dataAtual = new Date();
     public user: User;
 
     maxSize = 3579139;
     file;
 
-    filteredOptionsCity: Observable<City[]>;
-
     constructor(
         private router: Router,
         private formBuilder: FormBuilder,
-        private consultaCepService: ConsultaCepService,
-        private cdnService: CDNService,
         public dialog: MatDialog,
         private adapter: DateAdapter<any>,
         private translate: TranslateService,
-        private clearCacheUseCase: ClearCacheUseCase,
-        private getCachedUserUseCase: GetCachedUserUseCase,
-        private loginByTokenUseCase: LoginByTokenUseCase,
-        private temporaryService: TemporaryService,
-        private updateProfileUseCase: UpdateProfileUseCase,
-        private getProfileByIdUseCase: GetProfileByIdUseCase,
+        private readonly clearCacheUseCase: ClearCacheUseCase,
+        private readonly getCachedUserUseCase: GetCachedUserUseCase,
+        private readonly loginByTokenUseCase: LoginByTokenUseCase,
+        private readonly temporaryService: TemporaryService,
+        private readonly updateProfileUseCase: UpdateProfileUseCase,
+        private readonly getProfileByIdUseCase: GetProfileByIdUseCase,
+        private readonly getAllCountriesUseCase: GetAllCountriesUseCase,
+        private readonly getStatesByCountryIdUseCase: GetStatesByCountryIdUseCase,
+        private readonly getCitiesByStateIdUseCase: GetCitiesByStateIdUseCase,
+        private readonly uploadFileUseCase: UploadFileUseCase,
     ) {
         const browserLang = this.translate.getBrowserLang().toString();
         this.adapter.setLocale(browserLang);
@@ -69,8 +72,8 @@ export class CadastroSegundaEtapaComponent implements OnInit {
     ngOnInit(): void {
         this.user = this.getCachedUserUseCase.execute();
         this.createForm();
-        this.consultaCepService.getCountry().subscribe(result => {
-            this.countrys = result;
+        this.getAllCountriesUseCase.execute().subscribe(result => {
+            this.countries = result;
         });
     }
 
@@ -85,74 +88,36 @@ export class CadastroSegundaEtapaComponent implements OnInit {
         });
     }
 
-    getStates(country: Country) {
+    getStates(countryId: string) {
         Util.loadingScreen();
-        if (country.id.toString().includes('3469034')) {
-            this.consultaCepService.getStatesBr().subscribe(
-                res => {
-                    this.states = res;
-                    Util.stopLoading();
-                },
-                error => {
-                    console.log('error states', error);
-                    Util.stopLoading();
-                }
-            );
-        } else {
-            this.consultaCepService.getStates(country.id).subscribe(
-                res => {
-                    this.states = res;
-                    Util.stopLoading();
-                },
-                error => {
-                    console.log('error states', error);
-                    Util.stopLoading();
-                }
-            );
-        }
+        this.getStatesByCountryIdUseCase.execute(countryId).pipe(
+            finalize(() => Util.stopLoading())
+        ).subscribe((states) => this.states = states);
     }
 
 
-    getCitys(state: State) {
+
+    getCities(stateId: string) {
         Util.loadingScreen();
-        if (state.sigla) {
-            this.consultaCepService.getCitysBr(state.id).subscribe(
-                res => {
-                    Util.stopLoading();
-                    this.citys = res;
-                    this.filteredOptionsCity = this.formCadastro2.get('city').valueChanges.pipe(
-                        startWith(''),
-                        map(value => this._filterCity(value))
-                    );
-                },
-                error => {
-                    console.log('error get citys', error);
-                    Util.stopLoading();
-                }
-            );
 
-        } else {
-            this.consultaCepService.getCitys(state.id).subscribe(
-                res => {
-                    Util.stopLoading();
-                    this.citys = res;
-                    this.filteredOptionsCity = this.formCadastro2.get('city').valueChanges.pipe(
-                        startWith(''),
-                        map(value => this._filterCity(value))
-                    );
-                },
-                error => {
-                    console.log('error get citys', error);
-                    Util.stopLoading();
-                }
-            );
-        }
-
+        this.getCitiesByStateIdUseCase.execute(stateId).pipe(
+            finalize(() => Util.stopLoading())
+        ).subscribe((cities) => {
+            this.cities = cities;
+            this.setupCityFilter();
+        });
     }
 
-    private _filterCity(value: string): City[] {
-        const filterValue = value.toLowerCase();
-        return this.citys.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+    private setupCityFilter(): void {
+        this.formCadastro2.get('city').valueChanges.pipe(
+            startWith(''),
+            map(value => this._filterCity(value))
+        ).subscribe(filteredCities => this.filteredOptionsCity$.next(filteredCities));
+    }
+
+    private _filterCity(value: string): Location[] {
+        const filterValue = value?.toLowerCase() || '';
+        return this.cities.filter(city => city.name.toLowerCase().includes(filterValue));
     }
 
     updateProfileTo() {
@@ -169,14 +134,16 @@ export class CadastroSegundaEtapaComponent implements OnInit {
         } else {
             if (this.file) {
                 Util.loadingScreen();
-                this.cdnService.upload({
+                const cdn: CDN = {
                     file: this.file,
-                    type: 'image'
-                }, { objectType: 'profile_image' }).subscribe(() => {
-                    this.getByIdToUpdateProfile();
-                },
-                    error => {
-                        Util.stopLoading();
+                    type: CDNFileTpe.IMAGE,
+                    info: { objectType: 'profile_image' },
+                };
+                this.uploadFileUseCase.execute(cdn)
+                    .pipe(finalize(() => Util.stopLoading()))
+                    .subscribe(() => {
+                        this.getByIdToUpdateProfile();
+                    }, error => {
                         console.log('error upload', error);
                         this.clearCacheUseCase.execute();
                     });
@@ -226,17 +193,6 @@ export class CadastroSegundaEtapaComponent implements OnInit {
                     this.clearCacheUseCase.execute();
                 }
             );
-    }
-
-    consultaCep() {
-        const cep = this.formCadastro2.get('cep').value;
-        if (cep != null && cep !== '') {
-            this.consultaCepService.findByCep(cep).subscribe(
-                response => {
-                    this.setData(response);
-                }
-            );
-        }
     }
 
     setData(dados) {

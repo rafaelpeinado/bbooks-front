@@ -11,7 +11,9 @@ export const environment = {
     apicep: '',
     feedApi: 'http://localhost:8081/',
     competitionApi: 'http://localhost:8082/',
-    webFront: 'http://localhost:4200'
+    webFront: 'http://localhost:4200',
+    geonameApi: 'https://secure.geonames.org/',
+    geonameUserName: '',
 };
 
 /*

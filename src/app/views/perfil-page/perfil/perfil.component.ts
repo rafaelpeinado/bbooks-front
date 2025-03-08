@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Country } from 'src/app/models/country.model';
-import { ConsultaCepService } from 'src/app/services/consulta-cep.service';
-import { City } from 'src/app/models/city.model';
-import { State } from 'src/app/models/state.model';
-import { combineLatest, Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { CDNService } from '../../../services/cdn.service';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { finalize, map, startWith } from 'rxjs/operators';
 import { Util } from '../../shared/utils/util';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadComponent } from '../../upload/upload.component';
@@ -17,6 +12,13 @@ import { GetUserByIdUseCase } from 'src/app/core/use-cases/user/get-user-by-id.u
 import { UpdateUserUseCase } from 'src/app/core/use-cases/user/update-user.use-case';
 import { UpdateProfileUseCase } from 'src/app/core/use-cases/profile/update-profile.use-case';
 import { UserBuilder } from 'src/app/core/domain/builders/user.builder';
+import { GetAllCountriesUseCase } from 'src/app/core/use-cases/location/get-all-countries.use-case';
+import { Location } from 'src/app/core/domain/entities/location.entity';
+import { GetStatesByCountryIdUseCase } from 'src/app/core/use-cases/location/get-states-by-country-id.use-case';
+import { GetCitiesByStateIdUseCase } from 'src/app/core/use-cases/location/get-cities-by-state-id.use-case';
+import { UploadFileUseCase } from 'src/app/core/use-cases/cdn/upload-file.use-case';
+import { CDN } from 'src/app/core/domain/entities/cdn.entity';
+import { CDNFileTpe } from 'src/app/core/domain/enums/cdn-file-type.enum';
 
 @Component({
     selector: 'app-perfil',
@@ -28,22 +30,24 @@ export class PerfilComponent implements OnInit {
     modeBasicInfo: boolean;
     basicInfo: FormGroup;
     public user: User;
-    public countries: Country[];
-    public cities: City[];
-    public states: State[];
+    public countries: Location[];
+    public cities: Location[];
+    public states: Location[];
+    public filteredOptionsCity$ = new BehaviorSubject<Location[]>([]);
     image;
-    filteredOptionsCity: Observable<City[]>;
 
     constructor(
         private fb: FormBuilder,
-        private consultaCepService: ConsultaCepService,
-        private cdnService: CDNService,
         private matDialog: MatDialog,
         public translate: TranslateService,
-        private getCachedUserUseCase: GetCachedUserUseCase,
-        private getUserByIdUseCase: GetUserByIdUseCase,
-        private updateUserUseCase: UpdateUserUseCase,
-        private updateProfileUseCase: UpdateProfileUseCase,
+        private readonly getCachedUserUseCase: GetCachedUserUseCase,
+        private readonly getUserByIdUseCase: GetUserByIdUseCase,
+        private readonly updateUserUseCase: UpdateUserUseCase,
+        private readonly updateProfileUseCase: UpdateProfileUseCase,
+        private readonly getAllCountriesUseCase: GetAllCountriesUseCase,
+        private readonly getStatesByCountryIdUseCase: GetStatesByCountryIdUseCase,
+        private readonly getCitiesByStateIdUseCase: GetCitiesByStateIdUseCase,
+        private readonly uploadFileUseCase: UploadFileUseCase,
     ) {
 
     }
@@ -53,14 +57,14 @@ export class PerfilComponent implements OnInit {
         const user: User = this.getCachedUserUseCase.execute();
         combineLatest([
             this.getUserByIdUseCase.execute(user.id),
-            this.consultaCepService.getCountry()
+            this.getAllCountriesUseCase.execute()
         ]).subscribe(
             (value) => {
                 const user: User = value[0];
                 this.user = user;
                 this.countries = value[1];
-                const country: Country = this.countries.find(c => c.name.includes(this.basicInfo.get('country').value));
-                this.getStates(country);
+                const country: Location = this.countries.find(c => c.name.includes(this.basicInfo.get('country').value));
+                this.getStates(country.id);
                 this.createForm();
             }, (error) => {
                 console.log('error', error);
@@ -86,52 +90,37 @@ export class PerfilComponent implements OnInit {
         });
     }
 
-    getStates(country: Country) {
-        if (country.id.toString().includes('3469034')) {
-            this.consultaCepService.getStatesBr().subscribe(
+    getStates(countryId: string) {
+        this.getStatesByCountryIdUseCase.execute(countryId).pipe(
+            finalize(() => Util.stopLoading())
+        )
+            .subscribe(
                 res => this.states = res,
                 error => console.log('error states', error)
             );
-        } else {
-            this.consultaCepService.getStates(country.id).subscribe(
-                res => this.states = res,
-                error => console.log('error states', error)
-            );
-        }
     }
 
-    getCitys(state: State) {
-        this.basicInfo.get('city').setValue('');
-        if (state.sigla) {
-            this.consultaCepService.getCitysBr(state.id).subscribe(
-                res => {
-                    this.cities = res;
-                    this.filteredOptionsCity = this.basicInfo.get('city').valueChanges.pipe(
-                        startWith(''),
-                        map(value => this._filterCity(value))
-                    );
-                },
-                error => console.log('error get cities', error)
-            );
+    getCities(stateId: string) {
+        Util.loadingScreen();
 
-        } else {
-            this.consultaCepService.getCitys(state.id).subscribe(
-                res => {
-                    this.cities = res;
-                    this.filteredOptionsCity = this.basicInfo.get('city').valueChanges.pipe(
-                        startWith(''),
-                        map(value => this._filterCity(value))
-                    );
-                },
-                error => console.log('error get cities', error)
-            );
-        }
-
+        this.getCitiesByStateIdUseCase.execute(stateId).pipe(
+            finalize(() => Util.stopLoading())
+        ).subscribe((cities) => {
+            this.cities = cities;
+            this.setupCityFilter();
+        });
     }
 
-    private _filterCity(value: string): City[] {
-        const filterValue = value.toLowerCase();
-        return this.cities.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+    private setupCityFilter(): void {
+        this.basicInfo.get('city').valueChanges.pipe(
+            startWith(''),
+            map(value => this._filterCity(value))
+        ).subscribe(filteredCities => this.filteredOptionsCity$.next(filteredCities));
+    }
+
+    private _filterCity(value: string): Location[] {
+        const filterValue = value?.toLowerCase() || '';
+        return this.cities.filter(city => city.name.toLowerCase().includes(filterValue));
     }
 
     verificaValidToTouched(campo: string) {
@@ -178,16 +167,20 @@ export class PerfilComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 Util.loadingScreen();
-                this.cdnService.upload({ file: result, type: 'image' }, { objectType: 'profile_image' }).subscribe(() => {
-                    Util.stopLoading();
-                    this.image = result;
-                    const reader = new FileReader();
-                    reader.onload = (e) => this.image = e.target.result;
-                    reader.readAsDataURL(this.image);
-                    this.user.profile.profileImage = this.image;
-                },
-                    error => {
-                        Util.stopLoading();
+                const cdn: CDN = {
+                    file: result,
+                    type: CDNFileTpe.IMAGE,
+                    info: { objectType: 'profile_image' },
+                };
+                this.uploadFileUseCase.execute(cdn)
+                    .pipe(finalize(() => Util.stopLoading()))
+                    .subscribe(() => {
+                        this.image = result;
+                        const reader = new FileReader();
+                        reader.onload = (e) => this.image = e.target.result;
+                        reader.readAsDataURL(this.image);
+                        this.user.profile.profileImage = this.image;
+                    }, error => {
                         this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(msg => {
                             Util.showErrorDialog(msg);
                         });

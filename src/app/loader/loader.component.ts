@@ -1,28 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { LoaderState } from './loader';
-import { LoaderService } from '../services/loader.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-loader',
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss']
 })
-export class LoaderComponent implements OnInit, OnDestroy {
+export class LoaderComponent implements OnInit {
 
-  constructor(private loader: LoaderService) { }
+  constructor() { }
 
-  show = false;
-  private subscription: Subscription;
+  public show = false;
 
   ngOnInit() {
-    this.subscription = this.loader.loaderState.subscribe((state: LoaderState) => setTimeout(() => {
-      this.show = state.show;
-    }, 0));
+    // TODO inserir um loader
   }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
 }

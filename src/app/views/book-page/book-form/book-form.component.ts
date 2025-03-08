@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Book } from '../../../models/book.model';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
-import { CDNService } from '../../../services/cdn.service';
+import { distinctUntilChanged, finalize, map, startWith } from 'rxjs/operators';
 import { UploadComponent } from '../../upload/upload.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,6 +12,9 @@ import { BarCodeScannerComponent } from '../../shared/bar-code-scanner/bar-code-
 import { AddBookUseCase } from 'src/app/core/use-cases/book/add-book.use-case';
 import { Author } from 'src/app/core/domain/entities/author.entity';
 import { GetAllAuthorsUseCase } from 'src/app/core/use-cases/author/get-all-authors.use-case';
+import { UploadFileUseCase } from 'src/app/core/use-cases/cdn/upload-file.use-case';
+import { CDN } from 'src/app/core/domain/entities/cdn.entity';
+import { CDNFileTpe } from 'src/app/core/domain/enums/cdn-file-type.enum';
 
 
 @Component({
@@ -33,13 +35,13 @@ export class BookFormComponent implements OnInit {
     image;
 
     constructor(
-        private readonly formBuilder: FormBuilder,
-        private readonly addBookUseCase: AddBookUseCase,
-        private readonly cdnService: CDNService,
         public dialog: MatDialog,
         public translate: TranslateService,
         public router: Router,
+        private readonly formBuilder: FormBuilder,
+        private readonly addBookUseCase: AddBookUseCase,
         private readonly getAllAuthorsUseCase: GetAllAuthorsUseCase,
+        private readonly uploadFileUseCase: UploadFileUseCase,
     ) {
         this.book.authors = [];
     }
@@ -169,15 +171,16 @@ export class BookFormComponent implements OnInit {
         this.addBookUseCase.execute(this.formBook.value)
             .subscribe(book => {
                 Util.loadingScreen();
-                this.cdnService.upload(
-                    { file: this.file, type: 'image' },
-                    { objectType: 'book_image', bookId: book.id }
-                ).subscribe(() => {
-                    Util.stopLoading();
-                    this.router.navigateByUrl('/book/' + book.id);
-                },
-                    error => {
-                        Util.stopLoading();
+                const cdn: CDN = {
+                    file: this.file,
+                    type: CDNFileTpe.IMAGE,
+                    info: { objectType: 'book_image', bookId: book.id },
+                };
+                this.uploadFileUseCase.execute(cdn)
+                    .pipe(finalize(() => Util.stopLoading()))
+                    .subscribe(() => {
+                        this.router.navigateByUrl('/book/' + book.id);
+                    }, error => {
                         this.translate.get('PADRAO.OCORREU_UM_ERRO').subscribe(message => {
                             Util.showErrorDialog(message);
                         });

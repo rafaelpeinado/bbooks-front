@@ -12,4 +12,5 @@ export abstract class AuthRepository {
     abstract getUserByPasswordToken(token: string): Observable<User>;
     abstract changePassword(login: Login): Observable<User>;
     abstract sendEmailResetPassword(input: { email: string; url: string }): Observable<string>;
+    abstract authConfirm(login: Login): Observable<User>;
 }
