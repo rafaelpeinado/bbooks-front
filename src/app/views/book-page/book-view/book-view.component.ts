@@ -5,11 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { switchMap, take } from 'rxjs/operators';
 import { ReadingTrackingTO } from '../../../models/ReadingTrackingTO.model';
 import { TrackingDialogComponent } from '../tracking-dialog/tracking-dialog.component';
-import {
-    BookStatus,
-    BookStatusEnglish,
-    mapBookStatusEnglish
-} from '../../../models/enums/BookStatus.enum';
 import { BookAddDialogComponent } from '../../shared/book-add-dialog/book-add-dialog.component';
 import { TrackingViewComponent } from '../tracking-view/tracking-view.component';
 import { TrackingTO } from '../../../models/TrackingTO.model';
@@ -29,6 +24,7 @@ import { GetGeneralStatusBooksUseCase } from 'src/app/core/use-cases/user-book/g
 import { GeneralStatus } from 'src/app/core/domain/entities/general-status.entity';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
+import { BookStatus, BookStatusEnglish, mapBookStatusEnglish } from 'src/app/core/domain/enums/book-status.enum';
 
 @Component({
     selector: 'app-book-view',

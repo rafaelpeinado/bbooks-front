@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Book } from '../../../models/book.model';
 import { Observable } from 'rxjs';
 import { SearchBookByNameUseCase } from 'src/app/core/use-cases/book/search-book-by-name.use-case';
 import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
+import { Book } from 'src/app/core/domain/entities/book.entity';
 
 @Injectable()
 export class CarrouselResolve implements Resolve<Book[]> {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Book } from '../../../models/book.model';
 import { Observable } from 'rxjs';
+import { Book } from 'src/app/core/domain/entities/book.entity';
 import { GetBookcaseByProfileIdUseCase } from 'src/app/core/use-cases/bookcase/get-bookcase-by-profile-id.use-case';
 import { GetBookcaseByTagIdUseCase } from 'src/app/core/use-cases/bookcase/get-bookcase-by-tag.use-case';
 

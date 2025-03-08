@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ReviewTO } from '../../../models/ReviewTO.model';
 import { ReviewService } from '../../../services/review.service';
 import { take } from 'rxjs/operators';
-import { Book } from '../../../models/book.model';
+import { Book } from 'src/app/core/domain/entities/book.entity';
 
 @Component({
     selector: 'app-review-dialog',

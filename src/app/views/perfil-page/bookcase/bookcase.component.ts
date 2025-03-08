@@ -2,7 +2,6 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { ActivatedRoute } from '@angular/router';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { Observable, Subscription, zip } from 'rxjs';
-import { BookStatus, getArrayStatus, mapBookStatus } from '../../../models/enums/BookStatus.enum';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -15,6 +14,7 @@ import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-use
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { UserTO } from 'src/app/infrastructure/dtos/user.dto';
 import { UserMapper } from 'src/app/infrastructure/mappers/user.mapper';
+import { BookStatus, getArrayStatus, mapBookStatus } from 'src/app/core/domain/enums/book-status.enum';
 
 @Component({
     selector: 'app-bookcase',

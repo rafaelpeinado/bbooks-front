@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Book } from '../../../models/book.model';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, finalize, map, startWith } from 'rxjs/operators';
 import { UploadComponent } from '../../upload/upload.component';
@@ -15,6 +14,7 @@ import { GetAllAuthorsUseCase } from 'src/app/core/use-cases/author/get-all-auth
 import { UploadFileUseCase } from 'src/app/core/use-cases/cdn/upload-file.use-case';
 import { CDN } from 'src/app/core/domain/entities/cdn.entity';
 import { CDNFileTpe } from 'src/app/core/domain/enums/cdn-file-type.enum';
+import { Book } from 'src/app/core/domain/entities/book.entity';
 
 
 @Component({
@@ -27,7 +27,7 @@ export class BookFormComponent implements OnInit {
     options: any[] = [];
     filteredOptions: Observable<Author[]>[] = [];
     public formBook: FormGroup;
-    public book: Book = new Book();
+    public book: Book;
     filteredOptions2: Observable<string[]>[] = [];
 
     maxSize = 3579139;
@@ -35,9 +35,9 @@ export class BookFormComponent implements OnInit {
     image;
 
     constructor(
-        public dialog: MatDialog,
         public translate: TranslateService,
-        public router: Router,
+        private readonly router: Router,
+        private readonly dialog: MatDialog,
         private readonly formBuilder: FormBuilder,
         private readonly addBookUseCase: AddBookUseCase,
         private readonly getAllAuthorsUseCase: GetAllAuthorsUseCase,

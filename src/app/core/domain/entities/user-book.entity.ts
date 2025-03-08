@@ -4,7 +4,7 @@ import { Tag } from './tag.entity';
 
 export interface UserBook {
     id: string;
-    profileId: number;
+    profileId: string;
     book: Book;
     status: BookStatus;
     addDate: Date;

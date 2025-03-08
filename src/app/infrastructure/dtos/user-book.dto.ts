@@ -10,14 +10,14 @@ export class UserBookTO {
     idBook: string;
     tags: Tag[];
     page: number;
-    profileId: number;
+    profileId: string;
     book: Book;
     finishDate: Date;
 }
 
 
 export interface AllUserBookByProfileIdTO {
-    profileId: number;
+    profileId: string;
     books: UserBookTO[];
 }
 

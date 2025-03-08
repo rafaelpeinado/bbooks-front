@@ -14,7 +14,7 @@ export class UserBookBuilder extends BuilderImpl<UserBook, UserBookBuilder> {
         return this.set('id', id);
     }
 
-    setProfileId(profileId: number): UserBookBuilder {
+    setProfileId(profileId: string): UserBookBuilder {
         return this.set('profileId', profileId);
     }
 

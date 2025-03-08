@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BookStatus } from '../../../models/enums/BookStatus.enum';
 import { Router } from '@angular/router';
 import { BookAddDialogComponent } from '../book-add-dialog/book-add-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,6 +10,7 @@ import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { ChangeStatusUserBookUseCase } from 'src/app/core/use-cases/user-book/change-status-user-book.use-case';
 import { UserBookBuilder } from 'src/app/core/domain/builders/user-book.builder';
 import { TemporaryService } from 'src/app/services/temporary.service';
+import { BookStatus } from 'src/app/core/domain/enums/book-status.enum';
 
 @Component({
     selector: 'app-book-card',
@@ -84,13 +84,11 @@ export class BookCardComponent implements OnInit {
         });
     }
 
-    openDialogAddBook(book: Book) {
+    openDialogAddBook(userBook: UserBook) {
         const dialogRef = this.dialog.open(BookAddDialogComponent, {
             height: '450px',
             width: '400px',
-            data: {
-                book
-            }
+            data: { userBook },
         });
         dialogRef.afterClosed().subscribe(() => {
             this.getBook();

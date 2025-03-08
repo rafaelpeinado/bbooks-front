@@ -5,7 +5,6 @@ import { Observable, Subscription, zip } from 'rxjs';
 import { BookService } from '../../../services/book.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
-import { BookStatus, getArrayStatus, mapBookStatus } from '../../../models/enums/BookStatus.enum';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { map, take } from 'rxjs/operators';
@@ -15,6 +14,7 @@ import { GetAllUserBookByProfileIdUseCase } from 'src/app/core/use-cases/user-bo
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 import { Bookcase } from 'src/app/core/domain/entities/bookcase.entity';
 import { TemporaryService } from 'src/app/services/temporary.service';
+import { BookStatus, getArrayStatus, mapBookStatus } from 'src/app/core/domain/enums/book-status.enum';
 
 
 @Component({

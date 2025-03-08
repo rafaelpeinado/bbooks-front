@@ -1,14 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Book } from '../../../models/book.model';
-import {
-    BookStatus,
-    BookStatusEnglish,
-    getArrayStatus,
-    mapBookStatus,
-    mapBookStatusEnglish
-} from '../../../models/enums/BookStatus.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, zip } from 'rxjs';
 import { Util } from '../utils/util';
@@ -22,6 +14,8 @@ import { GetAllTagsByUserBookIdUseCase } from 'src/app/core/use-cases/tag/get-al
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { TemporaryService } from 'src/app/services/temporary.service';
+import { UserBookBuilder } from 'src/app/core/domain/builders/user-book.builder';
+import { BookStatus, BookStatusEnglish, getArrayStatus, mapBookStatus, mapBookStatusEnglish } from 'src/app/core/domain/enums/book-status.enum';
 
 @Component({
     selector: 'app-book-add-dialog',
@@ -40,33 +34,32 @@ export class BookAddDialogComponent implements OnInit {
     maxDate = new Date();
 
     public formBook: FormGroup;
-    public Book: Book;
+    public userBook: UserBook;
     public title: string;
     public buttonText: string;
-    public userBookTo: any;
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: { book: Book },
-        public dialogRef: MatDialogRef<BookAddDialogComponent>,
-        private formBuilder: FormBuilder,
-        private adapter: DateAdapter<any>,
-        private translate: TranslateService,
-        private createUserBookUseCase: CreateUserBookUseCase,
-        private updateUserBookUseCase: UpdateUserBookUseCase,
-        private getAllTagsByProfileIdTagUseCase: GetAllTagsByProfileIdTagUseCase,
-        private getAllTagsByUserBookIdUseCase: GetAllTagsByUserBookIdUseCase,
-        private getCachedUserUseCase: GetCachedUserUseCase,
-        private temporaryService: TemporaryService,
+        @Inject(MAT_DIALOG_DATA) private readonly data: { book: UserBook },
+        private readonly dialogRef: MatDialogRef<BookAddDialogComponent>,
+        private readonly formBuilder: FormBuilder,
+        private readonly adapter: DateAdapter<any>,
+        private readonly translate: TranslateService,
+        private readonly createUserBookUseCase: CreateUserBookUseCase,
+        private readonly updateUserBookUseCase: UpdateUserBookUseCase,
+        private readonly getAllTagsByProfileIdTagUseCase: GetAllTagsByProfileIdTagUseCase,
+        private readonly getAllTagsByUserBookIdUseCase: GetAllTagsByUserBookIdUseCase,
+        private readonly getCachedUserUseCase: GetCachedUserUseCase,
+        private readonly temporaryService: TemporaryService,
     ) {
-        this.Book = data.book;
+        this.userBook = data.book;
         this.tagsBook = [];
 
-        if (this.Book.idUserBook) {
-            this.getAllTagsByUserBookIdUseCase.execute(this.Book.idUserBook.toString())
-            .subscribe((tags) => {
-                this.tagsBook = tags;
-                this.modeDialog();
-            });
+        if (this.userBook.id) {
+            this.getAllTagsByUserBookIdUseCase.execute(this.userBook.id)
+                .subscribe((tags) => {
+                    this.tagsBook = tags;
+                    this.modeDialog();
+                });
         } else {
             this.modeDialog();
         }
@@ -91,14 +84,14 @@ export class BookAddDialogComponent implements OnInit {
 
     getTags(): void {
         this.getAllTagsByProfileIdTagUseCase.execute()
-        .subscribe((tags) => {
-            this.tags = tags;
-            this.initTags();
-        });
+            .subscribe((tags) => {
+                this.tags = tags;
+                this.initTags();
+            });
     }
 
     modeDialog() {
-        if (this.Book.idUserBook) {
+        if (this.userBook.id) {
             this.translate.get('ESTANTE.EDITAR_LIVRO').subscribe(title => {
                 this.title = title;
             });
@@ -117,11 +110,11 @@ export class BookAddDialogComponent implements OnInit {
 
     private createForm(): void {
         this.formBook = this.formBuilder.group({
-            statusBook: new FormControl(this.Book.status ? this.Book.status : null, Validators.required),
+            statusBook: new FormControl(this.userBook.status ? this.userBook.status : null, Validators.required),
             tags: this.formBuilder.array([]),
-            finishDate: new FormControl(this.Book.finishDate ?
-                this.Book.finishDate.toString() :
-                null, this.Book.finishDate ?
+            finishDate: new FormControl(this.userBook.finishDate ?
+                this.userBook.finishDate.toString() :
+                null, this.userBook.finishDate ?
                 Validators.required :
                 Validators.nullValidator),
         });
@@ -157,32 +150,23 @@ export class BookAddDialogComponent implements OnInit {
 
     saveBook() {
         const user: User = this.getCachedUserUseCase.execute();
-        this.userBookTo = {
-            id: this.Book.idUserBook,
-            profileId: user.profile.id,
-            status: this.getStatusToUserBook(),
-            tags: this.getSelectedTags(),
-            page: this.Book.numberPage,
-            book: this.Book,
-        };
-        if (
-            this.formBook.get('statusBook').value.toUpperCase() === this.status.LIDO ||
-            this.formBook.get('statusBook').value === this.statusEnglish.LIDO
-        ) {
-            this.userBookTo.finishDate = this.formBook.get('finishDate').value;
-        }
 
-        if (this.Book.api === 'google') {
-            this.userBookTo.idBookGoogle = this.Book.id;
-        } else {
-            this.userBookTo.idBook = Number.parseInt(this.Book.id);
+        const userBookBuilder: UserBookBuilder = UserBookBuilder.builder()
+            .copyFrom(this.userBook)
+            .setProfileId(user.profile.id)
+            .setStatus(this.getStatusToUserBook())
+            .setTags(this.getSelectedTags());
+
+        const statusBookValue = this.formBook.get('statusBook').value;
+        if (statusBookValue.toUpperCase() === this.status.LIDO || statusBookValue === this.statusEnglish.LIDO) {
+            userBookBuilder.setFinishDate(this.formBook.get('finishDate').value);
         }
 
         let userBook$: Observable<UserBook>;
-        if (this.tagsBook.length > 0 || this.userBookTo.id) {
-            userBook$ = this.updateUserBookUseCase.execute(this.userBookTo);
+        if (this.tagsBook.length > 0 || this.userBook.id) {
+            userBook$ = this.updateUserBookUseCase.execute(userBookBuilder.build());
         } else {
-            userBook$ = this.createUserBookUseCase.execute(this.userBookTo);
+            userBook$ = this.createUserBookUseCase.execute(userBookBuilder.build());
         }
         Util.loadingScreen();
         userBook$.subscribe(
@@ -206,7 +190,7 @@ export class BookAddDialogComponent implements OnInit {
             this.translate.get('STATUS.EMPRESTADO'),
             this.translate.get('STATUS.RELENDO'),
             this.translate.get('STATUS.INTERROMPIDO'),
-            this.translate.get('STATUS.' + this.Book.status),
+            this.translate.get('STATUS.' + this.userBook.status),
         ).subscribe(res => {
             this.AllStatus[0] = res[0];
             this.AllStatus[1] = res[1];
@@ -214,7 +198,7 @@ export class BookAddDialogComponent implements OnInit {
             this.AllStatus[3] = res[3];
             this.AllStatus[4] = res[4];
             this.AllStatus[5] = res[5];
-            this.Book.status = res[6];
+            this.userBook.status = res[6];
         });
     }
 
@@ -233,12 +217,12 @@ export class BookAddDialogComponent implements OnInit {
     }
 
     getStatusToUserBookClose(): any {
-        const valueFormStatus = this.Book.status.toString() as BookStatusEnglish;
+        const valueFormStatus = this.userBook.status.toString() as BookStatusEnglish;
         const statusEnglish = this.mapStatusEnglish.get(valueFormStatus);
         if (statusEnglish) {
             return statusEnglish.toUpperCase();
         } else {
-            const status = this.Book.status.toString() as BookStatus;
+            const status = this.userBook.status.toString() as BookStatus;
             return mapBookStatus.get(status);
         }
     }
