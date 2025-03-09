@@ -10,7 +10,7 @@ import {BarCodeScannerComponent} from '../../shared/bar-code-scanner/bar-code-sc
     styleUrls: ['./main-search.component.scss']
 })
 export class MainSearchComponent implements OnInit {
-    links = ['people', 'groups', 'books' , 'competition'];
+    links = ['people', 'books'];
     public formSearch: FormGroup;
 
     constructor(
@@ -27,17 +27,11 @@ export class MainSearchComponent implements OnInit {
     redirect(): void {
         const url = this.router.url.toString();
         let subrouter = '';
-        if (url.includes('groups')) {
-            subrouter = 'groups';
-        }
         if (url.includes('people')) {
             subrouter = 'people';
         }
         if (url.includes('books')) {
             subrouter = 'books';
-        }
-        if (url.includes('competition')) {
-            subrouter = 'competition';
         }
         this.router.navigate(['search/' + subrouter], {queryParams: {search: this.formSearch.get('search').value}});
     }

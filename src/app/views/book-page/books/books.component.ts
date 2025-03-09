@@ -15,10 +15,10 @@ export class BooksComponent implements OnInit, OnDestroy {
     inscricao: Subscription;
 
     constructor(
-        private route: ActivatedRoute,
-        private bookService: BookService,
-        private router: Router,
-        private temporaryService: TemporaryService,
+        private readonly route: ActivatedRoute,
+        private readonly bookService: BookService,
+        private readonly router: Router,
+        private readonly temporaryService: TemporaryService,
     ) {
     }
 

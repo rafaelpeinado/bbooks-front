@@ -180,7 +180,7 @@
     "MSG_USERNAME_INT": "Seu nome de usuário pode ter letras, números e pontos finais.",
     "VLD_SENHA": "A senha deve conter, no máximo, 20 caracteres",
     "VLD_SENHA_CARACTERES": "Sua senha deve ter entre 8 e 20 caracteres, os quais devem ser letras(maiúsculo e minúsculo), números e caractere especial.",
-    "SENHA_E": "Senha é,",
+    "SENHA_E": "Senha é ",
     "SENHA_INIT": "Sua senha deve ter entre 8 e 20 caracteres, os quais devem ser letras(maiúsculo e minúsculo), números e caractere especial.",
     "VLD_SENHA_DIFERENTE": "Senhas diferentes"
   },

@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
 import { FlexLayoutModule, FlexModule } from '@angular/flex-layout';
 
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
+import { HttpClientModule } from '@angular/common/http';
 import { BookCardComponent } from './book-card/book-card.component';
 import { BookAddDialogComponent } from './book-add-dialog/book-add-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,12 +16,6 @@ import { TextareaAutoresizeDirective } from './directive/textarea-autoresize.dir
 import { SearchBookComponent } from './search-book/search-book.component';
 import { BarCodeScannerComponent } from './bar-code-scanner/bar-code-scanner.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
-import { EmptyContentMessageComponent } from './empty-content-message/empty-content-message.component';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-export function HttpLoaderFactory(http: HttpClient) {
-    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
 
 @NgModule({
     declarations: [
@@ -32,7 +26,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         TextareaAutoresizeDirective,
         SearchBookComponent,
         BarCodeScannerComponent,
-        EmptyContentMessageComponent
     ],
     imports: [
         CommonModule,
@@ -44,14 +37,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         FlexLayoutModule,
         HttpClientModule,
         SweetAlert2Module,
-        TranslateModule.forChild({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-            },
-        }),
-        ZXingScannerModule
+        TranslateModule.forChild(),
+        ZXingScannerModule,
     ],
     exports: [
         BookCardComponent,
@@ -61,7 +48,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         TextareaAutoresizeDirective,
         SearchBookComponent,
         BarCodeScannerComponent,
-        EmptyContentMessageComponent
     ],
     providers: []
 })

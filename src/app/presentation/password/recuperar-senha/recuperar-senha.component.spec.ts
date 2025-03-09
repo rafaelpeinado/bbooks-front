@@ -3,7 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {RecuperarSenhaComponent} from './recuperar-senha.component';
 import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
-import {MaterialModule} from '../../material/material.module';
+import {MaterialModule} from '../../../material/material.module';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {
     GoogleLoginProvider,

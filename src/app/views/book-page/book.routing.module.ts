@@ -13,7 +13,8 @@ import { BooksResolve } from './guards/books.resolve';
 
 const bookRoutes: Routes = [
     {
-        path: '', component: BookPageComponent, children: [
+        path: '', component: BookPageComponent,
+        children: [
             {
                 path: 'book', component: BooksComponent,
                 resolve: { bookcases: BooksResolve }

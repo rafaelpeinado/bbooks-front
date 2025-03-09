@@ -11,25 +11,25 @@
         <h1 class="nome-usuario">{{user?.name}} {{user?.lastName}}</h1>
         <div class="container-menu-opcoes">
             <div>
-                <a href="{{user?.profile?.username}}/settings#h2-informacoes-usuario">
+                <a href="perfil/{{user?.profile?.username}}/settings#h2-informacoes-usuario">
                     {{'CONFIG_PERFIL.DADOS_USER' | translate}}
                 </a>
             </div>
             <div>
-                <a href="{{user?.profile?.username}}/settings#h2-alterar-senha">
+                <a href="perfil/{{user?.profile?.username}}/settings#h2-alterar-senha">
                     {{'CONFIG_PERFIL.EDITAR_SENHA' | translate}}
                 </a>
             </div>
             <div>
-                <a href="{{user?.profile?.username}}/settings#h2-amigos">
+                <a href="perfil/{{user?.profile?.username}}/settings#h2-amigos">
                     {{'PERFIL.friends' | translate}}
                 </a>
             </div>
             <div>
-                <a href="{{user?.profile?.username}}/settings#h2-estante">{{'ESTANTE.ESTANTE_VIRTUAL' | translate}}</a>
+                <a href="perfil/{{user?.profile?.username}}/settings#h2-estante">{{'ESTANTE.ESTANTE_VIRTUAL' | translate}}</a>
             </div>
             <div>
-                <a href="{{user?.profile?.username}}/settings#h2-estatistica">
+                <a href="perfil/{{user?.profile?.username}}/settings#h2-estatistica">
                     {{'CONFIG_PERFIL.ESTATISTICA' | translate}}
                 </a>
             </div>
@@ -185,7 +185,7 @@
                         </mat-card-subtitle>
                     </mat-card-header>
                     <mat-card-actions>
-                        <a routerLink="/recuperar-senha">
+                        <a [routerLink]="['/senha', 'recuperar-senha']">
                             <button mat-button class="botao-editar">{{'CONFIG_PERFIL.EDITAR_SENHA' |
                                 translate}}</button>
                         </a>

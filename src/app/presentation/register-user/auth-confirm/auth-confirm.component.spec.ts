@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {AuthConfirmComponent} from './auth-confirm.component';
-import {MaterialModule} from '../../material/material.module';
+import {MaterialModule} from '../../../material/material.module';
 import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientTestingModule} from '@angular/common/http/testing';

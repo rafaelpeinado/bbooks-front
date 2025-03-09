@@ -183,7 +183,7 @@
     "MSG_USERNAME_INT": "Your username can have letters, numbers and periods.",
     "VLD_SENHA": "The password must contain a maximum of 20 characters",
     "VLD_SENHA_CARACTERES": "Your password must be between 8 and 20 characters, which must be letters (upper and lower case), numbers and a special character.",
-    "SENHA_E": "Password is",
+    "SENHA_E": "Password is ",
     "SENHA_INIT": "Your password must be between 8 and 20 characters, which must be letters (upper and lower case), numbers and a special character.",
     "VLD_SENHA_DIFERENTE": "Different passwords"
   },

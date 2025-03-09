@@ -1,62 +1,46 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainPageComponent } from './views/main-page/main-page.component';
-import { CadastroComponent } from './views/cadastro/cadastro.component';
-import { AuthConfirmComponent } from './views/auth-confirm/auth-confirm.component';
-import { CadastroSegundaEtapaComponent } from './views/cadastro-segunda-etapa/cadastro-segunda-etapa.component';
-import { RecuperarSenhaComponent } from './views/recuperar-senha/recuperar-senha.component';
-import { NovaSenhaComponent } from './views/nova-senha/nova-senha.component';
-import { LoginComponent } from './modals/login/login.component';
 import { AuthGuard } from './guards/auth-guard';
 import { AuthVerifyLogin } from './guards/auth-verify-login';
-import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 
 const routes: Routes = [
     {
         path: '', component: MainPageComponent,
     },
     {
-        path: 'login', component: LoginComponent,
-        canActivate: [AuthVerifyLogin]
-    },
-    {
-        path: 'cadastro', component: CadastroComponent,
-        canActivate: [AuthVerifyLogin]
-    },
-    {
-        path: 'confirm', component: AuthConfirmComponent
-    },
-    {
-        path: 'continuar-cadastro', component: CadastroSegundaEtapaComponent,
-    },
-    {
-        path: 'recuperar-senha', component: RecuperarSenhaComponent,
-    },
-    {
-        path: 'nova-senha/:token', component: NovaSenhaComponent,
-    },
-    {
-        path: 'pagenotfound',
-        component: PageNotFoundComponent
-    },
-    {
-        path: '',
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./views/search/search.module').then(m => m.SearchModule)
-    },
-    {
-        path: '',
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./views/book-page/book.module').then(m => m.BookModule)
-    },
-    {
-        path: '',
+        path: 'perfil',
         canActivate: [AuthGuard],
         loadChildren: () => import('./views/perfil-page/perfil-page.module').then(m => m.PerfilPageModule)
     },
     {
+        path: 'login',
+        canActivate: [AuthVerifyLogin],
+        loadChildren: () => import('./presentation/login/login.module').then(m => m.LoginModule)
+    },
+    {
+        path: 'registrar',
+        canActivate: [AuthVerifyLogin],
+        loadChildren: () => import('./presentation/register-user/register-user.module').then(m => m.RegisterUserModule)
+    },
+    {
+        path: 'senha',
+        loadChildren: () => import('./presentation/password/password.module').then(m => m.PasswordModule)
+    },
+    {
+        path: 'search',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./views/search/search.module').then(m => m.SearchModule)
+    },
+    {
+        path: 'bookcase',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./views/book-page/book.module').then(m => m.BookModule)
+    },
+    { path: 'nova-senha/:token', redirectTo: 'senha/nova-senha/:token', pathMatch: 'full' },
+    {
         path: '**',
-        component: PageNotFoundComponent
+        loadChildren: () => import('./presentation/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule)
     }
 ];
 

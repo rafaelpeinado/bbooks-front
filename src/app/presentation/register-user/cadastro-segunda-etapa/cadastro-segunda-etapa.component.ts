@@ -4,9 +4,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { BehaviorSubject } from 'rxjs';
 import { finalize, map, startWith } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { UploadComponent } from '../upload/upload.component';
+import { UploadComponent } from '../../../views/upload/upload.component';
 import { DateAdapter } from '@angular/material/core';
-import { Util } from '../shared/utils/util';
+import { Util } from '../../../views/shared/utils/util';
 import { TranslateService } from '@ngx-translate/core';
 import { ClearCacheUseCase } from 'src/app/core/use-cases/auth/clear-cache.use-case';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';

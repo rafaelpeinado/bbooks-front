@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {CadastroSegundaEtapaComponent} from './cadastro-segunda-etapa.component';
-import {MaterialModule} from '../../material/material.module';
+import {MaterialModule} from '../../../material/material.module';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';

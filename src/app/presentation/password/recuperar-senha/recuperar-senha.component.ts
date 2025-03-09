@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { finalize, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { Util } from '../shared/utils/util';
-import { environment } from '../../../environments/environment';
+import { Util } from '../../../views/shared/utils/util';
+import { environment } from '../../../../environments/environment';
 import { SendEmailResetPasswordUseCase } from 'src/app/core/use-cases/auth/send-email-reset-password.use-case';
 
 @Component({
@@ -25,7 +25,7 @@ export class RecuperarSenhaComponent implements OnInit {
 
     ngOnInit(): void {
         this.form = this.fb.group({
-            url: [environment.webFront + '/nova-senha/'],
+            url: [environment.webFront + '/senha/nova-senha/'],
             email: ['', Validators.compose([
                 Validators.required,
                 Validators.email

@@ -5,12 +5,11 @@ import { MaterialModule } from '../../material/material.module';
 import { FlexLayoutModule, FlexModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
 import { MainSearchComponent } from './main-search/main-search.component';
 import { PesquisarAmigosComponent } from './pesquisar-amigos/pesquisar-amigos.component';
 import { BooksSearchComponent } from './books-search/books-search.component';
-import { HttpLoaderFactory, SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -28,13 +27,7 @@ import { HttpLoaderFactory, SharedModule } from '../shared/shared.module';
         FormsModule,
         ReactiveFormsModule,
         InfiniteScrollModule,
-        TranslateModule.forChild({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-            },
-        }),
+        TranslateModule.forChild(),
         SharedModule,
     ]
 })

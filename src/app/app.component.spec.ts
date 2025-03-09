@@ -12,7 +12,7 @@ import {SocialAuthServiceConfigMock} from './mocks/google.provide.mock';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {userMock} from './mocks/user.model.mock';
 import {of} from 'rxjs';
-import {LoginComponent} from './modals/login/login.component';
+import {LoginComponent} from './presentation/login/login.component';
 import {MaterialModule} from './material/material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 

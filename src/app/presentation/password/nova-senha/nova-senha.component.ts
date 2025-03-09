@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MyErrorStateMatcher } from '../cadastro/cadastro.component';
+import { MyErrorStateMatcher } from '../../register-user/cadastro/cadastro.component';
 import { TranslateService } from '@ngx-translate/core';
-import { Util } from '../shared/utils/util';
+import { Util } from '../../../views/shared/utils/util';
 import { GetUserByPasswordTokenUseCase } from 'src/app/core/use-cases/auth/get-user-by-password-token.use-case';
 import { switchMap } from 'rxjs/operators';
 import { User } from 'src/app/core/domain/entities/user.entity';
@@ -41,6 +41,10 @@ export class NovaSenhaComponent implements OnInit {
         ).subscribe((user) => {
             this.user = user;
             this.createForm();
+        }, (error) => {
+            Util.showErrorDialog('Token inválido')
+                .then(() => this.router.navigate(['']));
+
         });
     }
 

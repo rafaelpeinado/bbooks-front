@@ -8,10 +8,9 @@ import { FriendComponent } from './friend/friend.component';
 import { BookcaseComponent } from './bookcase/bookcase.component';
 import { MainResolve } from './guards/main.resolve';
 import { BookcaseResolve } from './guards/bookcase.resolve';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
 import { BookModule } from '../book-page/book.module';
-import { HttpLoaderFactory, SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 import { PerfilComponent } from './perfil/perfil.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FriendResolve } from './guards/friend.resolve';
@@ -34,13 +33,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
         FormsModule,
         ReactiveFormsModule,
         InfiniteScrollModule,
-        TranslateModule.forChild({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-            },
-        }),
+        TranslateModule.forChild(),
         BookModule
     ],
     providers: [

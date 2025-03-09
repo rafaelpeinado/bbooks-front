@@ -7,36 +7,25 @@ import { environment } from '../environments/environment';
 import { MainPageComponent } from './views/main-page/main-page.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { LoginComponent } from './modals/login/login.component';
-import { AuthGuard } from './guards/auth-guard';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { Interceptor } from './guards/interceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
-import { AuthConfirmComponent } from './views/auth-confirm/auth-confirm.component';
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
-import { CadastroComponent } from './views/cadastro/cadastro.component';
-import { CadastroSegundaEtapaComponent } from './views/cadastro-segunda-etapa/cadastro-segunda-etapa.component';
-import { RecuperarSenhaComponent } from './views/recuperar-senha/recuperar-senha.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSliderModule } from '@angular/material/slider';
-import { NovaSenhaComponent } from './views/nova-senha/nova-senha.component';
 import { FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
-import { BookModule } from './views/book-page/book.module';
 import { AuthVerifyLogin } from './guards/auth-verify-login';
 import { UploadComponent } from './views/upload/upload.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { PerfilPageModule } from './views/perfil-page/perfil-page.module';
-import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { SharedModule } from './views/shared/shared.module';
 import { BnNgIdleService } from 'bn-ng-idle';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { SearchModule } from './views/search/search.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { MglTimelineModule } from 'angular-mgl-timeline';
@@ -63,6 +52,7 @@ import { LocationRepository } from './core/repositories/location.repository';
 import { GeonameApiService } from './infrastructure/adapters/geoname.service';
 import { CDNRepository } from './core/repositories/cdn.repository';
 import { CDNApiService } from './infrastructure/adapters/cdn.service';
+import { AuthGuard } from './guards/auth-guard';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -73,14 +63,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         AppComponent,
         MainPageComponent,
         NavBarComponent,
-        LoginComponent,
-        AuthConfirmComponent,
-        CadastroComponent,
-        CadastroSegundaEtapaComponent,
-        RecuperarSenhaComponent,
-        NovaSenhaComponent,
-        PageNotFoundComponent,
-        PageNotFoundComponent,
         UploadComponent,
     ],
     imports: [
@@ -97,8 +79,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         MatFormFieldModule,
         MatInputModule,
         SocialLoginModule,
-        BookModule,
-        PerfilPageModule,
         SharedModule,
         BrowserAnimationsModule,
         MglTimelineModule,
@@ -107,7 +87,6 @@ export function HttpLoaderFactory(http: HttpClient) {
             maxAge: 25, // Retains last 25 states
             logOnly: environment.production, // Restrict extension to log-only mode
         }),
-        SearchModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -116,7 +95,7 @@ export function HttpLoaderFactory(http: HttpClient) {
             },
         }),
         FontAwesomeModule,
-        NgxQRCodeModule
+        NgxQRCodeModule,
     ],
     providers: [
         BnNgIdleService,

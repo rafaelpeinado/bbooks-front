@@ -15,7 +15,7 @@ import { Login } from 'src/app/core/domain/entities/login.entity';
 import { SetCacheUserUseCase } from 'src/app/core/use-cases/user/set-cache-user.use-case';
 import { RemoveCacheUseCase } from 'src/app/core/use-cases/cache/remove-cache.use-case';
 import { RegisterTO } from 'src/app/infrastructure/dtos/user.dto';
-import { Util } from '../shared/utils/util';
+import { Util } from '../../../views/shared/utils/util';
 import { UserBuilder } from 'src/app/core/domain/builders/user.builder';
 import { ProfileBuilder } from 'src/app/core/domain/builders/profile.builder';
 import { RegisterUserUseCase } from 'src/app/core/use-cases/user/register-user.use-case';
@@ -122,7 +122,7 @@ export class CadastroComponent implements OnInit {
                 (user) => {
                     this.setCacheUserUseCase.execute(user);
                     this.removeCacheUseCase.execute(StorageItem.REGISTERING_USER, StorageType.LOCAL_STORAGE);
-                    this.router.navigateByUrl('continuar-cadastro');
+                    this.router.navigate(['/registrar', 'continuar-cadastro']);
                 }, (error) => {
                     let codMessage = '';
                     // email

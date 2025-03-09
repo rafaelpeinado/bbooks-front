@@ -6,7 +6,7 @@ import { BooksSearchComponent } from './books-search/books-search.component';
 
 const searchRouter = [
     {
-        path: 'search',
+        path: '',
         component: MainSearchComponent,
         children: [
             {

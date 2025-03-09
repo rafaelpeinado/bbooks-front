@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BookRoutingModule } from './book.routing.module';
 import { BookMenuComponent } from './book-menu/book-menu.component';
 import { BookFormComponent } from './book-form/book-form.component';
@@ -19,8 +19,8 @@ import { BookViewResolve } from './guards/book-view.resolve';
 import { CarrouselResolve } from './guards/carrousel.resolve';
 import { BooksComponent } from './books/books.component';
 import { BooksResolve } from './guards/books.resolve';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpLoaderFactory, SharedModule } from '../shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from '../shared/shared.module';
 import { TagDialogComponent } from './tag-dialog/tag-dialog.component';
 
 @NgModule({
@@ -36,13 +36,7 @@ import { TagDialogComponent } from './tag-dialog/tag-dialog.component';
         FlexLayoutModule,
         MatInputModule,
         CarouselModule,
-        TranslateModule.forChild({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-            },
-        })
+        TranslateModule.forChild()
     ],
     declarations: [
         BookPageComponent,

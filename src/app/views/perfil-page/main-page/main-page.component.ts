@@ -59,10 +59,10 @@ export class MainPageComponent implements OnInit, OnChanges {
         const result = this.links.find(l => this.router.url.toLowerCase().includes(l.toLowerCase()));
         if (result) {
             this.activeLink = result;
-            this.router.navigate([`${this.user.profile.username}/${result.toString()}`]);
+            this.router.navigate(['/perfil', `${this.user.profile.username}/${result.toString()}`]);
         } else {
             this.activeLink = this.links[0];
-            this.router.navigate([`${this.user.profile.username}/${this.links[0].toString()}`]);
+            this.router.navigate(['/perfil', `${this.user.profile.username}/${this.links[0].toString()}`]);
         }
     }
 

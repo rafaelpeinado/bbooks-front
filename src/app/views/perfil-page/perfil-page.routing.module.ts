@@ -20,7 +20,6 @@ const perfilRouter = [
             {
                 path: 'friends', component: FriendComponent,
                 resolve: { user: FriendResolve }
-
             },
             {
                 path: 'bookcase', component: BookcaseComponent,

@@ -19,7 +19,7 @@ export class MainGuard implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean> | boolean {
-        const username = route.params.username;
+        const username: string = (route.params.username as string).split('/')[0];
         return this.getUserByUsernameUseCase.execute(username).pipe(
             map((res) => {
                 if (res?.profile?.username.includes(username)) {

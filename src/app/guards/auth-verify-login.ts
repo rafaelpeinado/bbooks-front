@@ -9,10 +9,9 @@ import { map } from 'rxjs/operators';
 })
 export class AuthVerifyLogin implements CanActivate {
     constructor(
-        private router: Router,
-        private getIsLoggedUseCase: GetIsLoggedUseCase,
-    ) {
-    }
+        private readonly router: Router,
+        private readonly getIsLoggedUseCase: GetIsLoggedUseCase,
+    ) { }
 
     canActivate(
         route: ActivatedRouteSnapshot,
