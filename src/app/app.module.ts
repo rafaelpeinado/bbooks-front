@@ -80,7 +80,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         MatInputModule,
         SocialLoginModule,
         SharedModule,
-        BrowserAnimationsModule,
         MglTimelineModule,
         StoreModule.forRoot({}),
         StoreDevtoolsModule.instrument({

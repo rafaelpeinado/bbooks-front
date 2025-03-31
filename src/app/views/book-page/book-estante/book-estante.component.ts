@@ -84,9 +84,9 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
         });
 
         if (!this.userBook) {
-            this.routerlink = '/book/';
+            this.routerlink = '/bookcase/book/';
         } else {
-            this.routerlink = '/mybooks/';
+            this.routerlink = '/bookcase/mybooks/';
         }
         this.translate.onLangChange.subscribe(() => {
             this.updateLanguageStatus();
@@ -177,7 +177,7 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
 
     filterStatus(): UserBook[] {
         if (this.filter.length <= 0) {
-            return this.bookcase.userBooks;
+            return this.bookcase?.userBooks;
         }
         const userBooks = [];
         this.bookcase.userBooks.filter((userBook) => {

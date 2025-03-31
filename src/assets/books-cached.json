@@ -1,378 +1,40 @@
 [
     {
-        "id": "EwyvDwAAQBAJ",
-        "isbn10": "8554515730",
-        "isbn13": "9788554515737",
-        "title": "Os sete maridos de Evelyn Hugo",
+        "id": "NsytywEACAAJ",
+        "isbn10": "8594541694",
+        "isbn13": "9788594541697",
+        "title": "Medo imortal",
         "authors": [
             {
-                "name": "Taylor Jenkins Reid"
+                "name": "Romeu Martins"
             }
         ],
-        "numberPage": 360,
-        "language": "pt-BR",
-        "publisher": "Editora Paralela",
-        "publishedDate": "2019-10-21",
-        "image": "https://books.google.com/books/publisher/content?id=EwyvDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "<p> <b>Com todo o esplendor que só a Hollywood do século passado pode oferecer, esta é uma narrativa inesquecível sobre os sacrifícios que fazemos por amor, o perigo dos segredos e o preço da fama. <br> </b> </p> <p>Lendária estrela de Hollywood, Evelyn Hugo sempre esteve sob os holofotes — seja estrelando uma produção vencedora do Oscar, protagonizando algum escândalo ou aparecendo com um novo marido... pela sétima vez. Agora, prestes a completar oitenta anos e reclusa em seu apartamento no Upper East Side, a famigerada atriz decide contar a própria história — ou sua \"verdadeira história\" —, mas com uma condição: que Monique Grant, jornalista iniciante e até então desconhecida, seja a entrevistadora. Ao embarcar nessa misteriosa empreitada, a jovem repórter começa a se dar conta de que nada é por acaso — e que suas trajetórias podem estar profunda e irreversivelmente conectadas.</p> <p>\"Evelyn Hugo faz Elizabeth Taylor parecer sem graça. Você vai rir com ela, chorar, sofrer, e então voltar para a primeira página e fazer tudo de novo.\" — Heather Cocks e Jessica Morgan, autoras de <i>The Royal We</i> </p>",
-        "api": "google"
-    },
-    {
-        "id": "HmUoDwAAQBAJ",
-        "isbn10": "8525435147",
-        "isbn13": "9788525435149",
-        "title": "Uma breve história da literatura",
-        "authors": [
-            {
-                "name": "John Sutherland"
-            }
-        ],
-        "numberPage": 312,
-        "language": "pt-BR",
-        "publisher": "L&PM Editores",
-        "publishedDate": "2017-06-16",
-        "image": "https://books.google.com/books/publisher/content?id=HmUoDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Prepare-se para uma das jornadas mais instigantes que um leitor pode fazer: uma viagem vibrante, conduzida por uma mão amiga e generosa, pela história da literatura. Dos primórdios da humanidade – quando as histórias não eram registradas por escrito, mas transmitidas oralmente de uma geração a outra – até os dias atuais do e-book e da fanfiction. Em \"Uma breve história da literatura\", John Sutherland, escritor e professor britânico, visita os principais autores e as principais obras já escritas da língua inglesa e da literatura mundial. Da Epopeia de Gilgamesh e da Ilíada de Homero aos best-sellers contemporâneos, percorremos de uma ponta à outra a arte que, como diz o autor, enriquece nossa vida como nenhuma outra.",
-        "api": "google"
-    },
-    {
-        "id": "3qdaDwAAQBAJ",
-        "isbn10": "1551119978",
-        "isbn13": "9781551119977",
-        "title": "Nine Medieval Romances of Magic",
-        "authors": [
-            {
-                "name": "Marijane Osborn"
-            }
-        ],
-        "numberPage": 264,
-        "language": "en",
-        "publisher": "Broadview Press",
-        "publishedDate": "2010-03-05",
-        "image": "https://books.google.com/books/publisher/content?id=3qdaDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "<p> In this book, Marijane Osborn translates into modern English nine lively medieval verse romances, in a form that both reflects the original and makes the romances inviting to a modern audience. All nine tales contain elements of magic: shapeshifters, powerful fairies, trees that are portals to another world, and enchanted clothing and armor. Many of the tales also feature powerful women characters, while others include representations of “Saracens.” The tales address issues of enduring interest and concern, and also address sexuality, agency, and identity formation in unexpected ways. </p>",
-        "api": "google"
-    },
-    {
-        "id": "AKJGDwAAQBAJ",
-        "isbn10": "8501113492",
-        "isbn13": "9788501113498",
-        "title": "É assim que acaba",
-        "authors": [
-            {
-                "name": "Colleen Hoover"
-            }
-        ],
-        "numberPage": 368,
-        "language": "pt-BR",
-        "publisher": "Editora Record",
-        "publishedDate": "2018-02-05",
-        "image": "https://books.google.com/books/publisher/content?id=AKJGDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Da autora das séries Slammed e Hopeless. Um romance sobre as escolhas corretas nas situações mais difíceis. As coisas não foram sempre fáceis para Lily, mas isso nunca a impediu de conquistar a vida tão sonhada. Ela percorreu um longo caminho desde a infância, em uma cidadezinha no Maine: se formou em marketing, mudou para Boston e abriu a própria loja. Então, quando se sente atraída por um lindo neurocirurgião chamado Ryle Kincaid, tudo parece perfeito demais para ser verdade. Ryle é confiante, teimoso, talvez até um pouco arrogante e se sente atraído por Lily. Porém, sua grande aversão a relacionamentos é perturbadora. Além de estar sobrecarregada com as questões sobre seu novo relacionamento, Lily não consegue tirar Atlas Corrigan da cabeça — seu primeiro amor e a ligação com o passado que ela deixou para trás. Ele era seu protetor, alguém com quem tinha grande afinidade. Quando Atlas reaparece de repente, tudo que Lily construiu com Ryle fica em risco. Com um livro ousado e extremamente pessoal, Colleen Hoover conta uma história arrasadora, mas também inovadora, que não tem medo de discutir temas como abuso e violência doméstica. Uma narrativa inesquecível sobre um amor que custa caro demais.",
-        "api": "google"
-    },
-    {
-        "id": "b1yOJtOwvWIC",
-        "isbn10": "3825800431",
-        "isbn13": "9783825800437",
-        "title": "Romantic Love",
-        "authors": [
-            {
-                "name": "Yolanda van Ede"
-            }
-        ],
-        "numberPage": 125,
-        "language": "en",
-        "publisher": "LIT Verlag Münster",
-        "publishedDate": "2006",
-        "image": "https://books.google.com/books/content?id=b1yOJtOwvWIC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "api": "google"
-    },
-    {
-        "id": "JRsgEAAAQBAJ",
-        "isbn10": "6556320056",
-        "isbn13": "9786556320052",
-        "title": "Sobre Intertextualidade na Literatura Latina",
-        "authors": [
-            {
-                "name": "Patrícia Prata"
-            },
-            {
-                "name": "Paulo Sérgio de Vasconcellos"
-            }
-        ],
-        "numberPage": 186,
-        "language": "pt-BR",
-        "publisher": "Editora Unifesp",
-        "publishedDate": "2021-02-25",
-        "image": "https://books.google.com/books/publisher/content?id=JRsgEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Esta antologia, preparada por uma equipe de professores e pós-graduandos sob a coordenação de dois classicistas da Universidade Estadual de Campinas (Unicamp), PATRICIA PRATA e PAULO SÉRGIO DE VASCONCELLOS, apresenta aos leitores brasileiros a tradução de alguns textos fundamentais sobre intertextualidade na literatura latina, pela primeira vez publicados em português. São ensaios densos que trazem reflexões aprofundadas sobre o fenômeno que consiste na relação dialógica entre os textos (mas não só, como o leitor verá). Além dos classicistas, os que se interessam pelos aspectos dialógicos da linguagem humana e pela teoria da literatura encontrarão aqui muita matéria para reflexão. Desde o ensaio seminal de Giorgio Pasquali, \"Arte alusiva\", que exerceu papel fundamental por sua vasta influência entre os classicistas, estudiosos do fenômeno têm dado contribuições não apenas para a interpretação dos textos poéticos latinos, mas também para a compreensão das relações entre textos na literatura e na comunicação diária. Nesta antologia, reúnem-se alguns dos estudos mais influentes e brilhantes sobre esse tema complexo e instigante. Ao final da antologia, apresenta-se, de forma inédita, uma bibliografia de estudos intertextuais sobre a literatura latina (em livros, dissertações de mestrado, teses de doutorado e artigos publicados em periódicos especializados) produzidos no Brasil. Pode-se verificar, por esse levantamento, o florescimento desses estudos em nosso país.",
-        "api": "google"
-    },
-    {
-        "id": "we4jl507M4EC",
-        "isbn10": "0745630057",
-        "isbn13": "9780745630052",
-        "title": "Romance Writing",
-        "authors": [
-            {
-                "name": "Lynne Pearce"
-            }
-        ],
-        "numberPage": 214,
-        "language": "en",
-        "publisher": "Polity",
-        "publishedDate": "2007-01-05",
-        "image": "https://books.google.com/books/content?id=we4jl507M4EC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Romance Writing explores the changing nature of both the romance genre and the discourse of romantic love from the seventeenth century to the present day. Indeed, it is one of the first studies to approach romantic love as both genre and discourse in more than sixty years.<br> <br> Faced with the challenge of writing a cultural history for what is commonly understood to be one of lifes most universal, a-historical and cross-cultural phenomena, Lynne Pearce has invoked the concept of the gift to calculate loves added value at different cultural/historical moments. Building upon those philosophical traditions which have argued for the powerfully transformative nature of romantic love, Pearce shows how in the history of literature lovers have utilized its spark to change not only themselves, but also their worlds, through acts of creativity and heroism. The gift of love ranges from the simple gift of a name in the seventeenth century, through notions of immortality, self-sacrifice and selfhood in the nineteenth and twentieth centuries, through to the liberating temporal and spatial dislocations of the postmodern age. The opening chapter, The Alchemy of Love, also undertakes an in-depth engagement of the changing nature, and meaning, of romantic love.<br> <br> Providing a judicious blend of close reading and cultural history, Romance Writing will be essential reading for undergraduate students as well as postgraduates and scholars working in the field, while also offering much of interest to the general reader.",
-        "api": "google"
-    },
-    {
-        "id": "nPwsFO6WXsAC",
-        "isbn10": "1843841622",
-        "isbn13": "9781843841623",
-        "title": "Anglicising Romance",
-        "authors": [
-            {
-                "name": "Rhiannon Purdie"
-            }
-        ],
-        "numberPage": 272,
-        "language": "en",
-        "publisher": "Boydell & Brewer Ltd",
-        "publishedDate": "2008",
-        "image": "https://books.google.com/books/content?id=nPwsFO6WXsAC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "A reappraisal of the tail-rhyme form so strongly associated with medieval English romance, and how it became so appropriated. <p>Tail-rhyme romance unites a French genre with a continental stanza form, so why was it developed only in Middle English literature? For English audiences, tail-rhyme becomes inextricably linked with the romance genre in a way thatno other verse form does. The first examples are recorded near the beginning of the fourteenth century and by the end of it Chaucer's Sir Thopas can rely on it to work as a shorthand for the entire Middle English romance tradition. How and why this came to be is the question that Anglicising Romance sets out to answer. Its five chapters discuss the stanza's origins; the use of tail-rhyme in Anglo-Noman literature; questions of transmission and manuscript layout; the romances of the Auchinleck manuscript; and the geographic spread of tail-rhyme romance. The individual entries in the Appendix present newly reassessed evidence for the provenance and date of each of thethirty-six extant tail-rhyme romances. <p> RHIANNON PURDIE is Senior Lecturer in Mediaeval English at the University of St Andrews.",
-        "api": "google"
-    },
-    {
-        "id": "Qdnp16KpJJYC",
-        "isbn10": "1847691315",
-        "isbn13": "9781847691316",
-        "title": "Third Language Acquisition and Universal Grammar",
-        "authors": [
-            {
-                "name": "Yan-kit Ingrid Leung"
-            }
-        ],
-        "numberPage": 219,
-        "language": "en",
-        "publisher": "Multilingual Matters",
-        "publishedDate": "2009-01-01",
-        "image": "https://books.google.com/books/content?id=Qdnp16KpJJYC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "This volume presents studies which approach the relatively new field of third language (L3) acquisition from the generative linguistic perspective. It aims to bring together researchers who are interested in L3 acquisition and who are at the same time working within the generative framework i.e. Chomsky's Universal Grammar (UG) approach to language acquisition. A total of nine contributions are included, reporting research on L3 involving different combinations of source/target languages and investigating various UG-related properties.",
-        "api": "google"
-    },
-    {
-        "id": "sywtDwAAQBAJ",
-        "isbn10": "9892614429",
-        "isbn13": "9789892614427",
-        "title": "História e Ficção",
-        "authors": [
-            {
-                "name": "Martinho Tomé Martins Soares"
-            }
-        ],
-        "numberPage": 640,
-        "language": "pt-BR",
-        "publisher": "Imprensa da Universidade de Coimbra / Coimbra University Press",
-        "publishedDate": "2017-07-18",
-        "image": "https://books.google.com/books/publisher/content?id=sywtDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "api": "google"
-    },
-    {
-        "id": "P74yEAAAQBAJ",
-        "isbn10": "6559540219",
-        "isbn13": "9786559540211",
-        "title": "Clássicos brasileiros sobre literatura infantil (1943-1986)",
-        "authors": [
-            {
-                "name": "Maria do Rosario Longo Mortatti"
-            },
-            {
-                "name": "Estela Natalina Mantovani Bertoletti"
-            },
-            {
-                "name": "Fernando Rodrigues de Oliveira"
-            },
-            {
-                "name": "Ana Crélia Penha Dias"
-            },
-            {
-                "name": "Norma Sandra de Almeida Ferreira"
-            },
-            {
-                "name": "Marcelo Augusto Totti"
-            },
-            {
-                "name": "Alice Áurea Penteado Martha"
-            },
-            {
-                "name": "Vivianny Bessão de Assis"
-            },
-            {
-                "name": "Thiago Alves Valente"
-            },
-            {
-                "name": "Márcia Cabral da Silva"
-            },
-            {
-                "name": "João Luís Ceccantini"
-            }
-        ],
-        "numberPage": 357,
-        "language": "pt-BR",
-        "publisher": "Editora Oficina Universitária",
-        "publishedDate": "2020-12-03",
-        "image": "https://books.google.com/books/publisher/content?id=P74yEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "<p>“[...] este livro já na apresentação mostra o esforço de pesquisa da Professora Maria do Rosário Longo Mortatti, uma das organizadoras do volume, a qual indica desde a apresentação a gênese deste projeto, qual seja, sua inquietação nascida ainda como professora da educação básica e a consciência da necessidade de tomar parte da formação dos leitores. Esta inquietação desdobrou-se em Mestrado, Doutorado, outros livros publicados e consolidação de um grupo de pesquisa, cujos resultados vêm sendo socializados ao longo dos anos. </p><p>O resultado de uma obra que é pensada a partir de uma questão de pesquisa, planejada para atender aos encaminhamentos e cujas funções distribuídas a diferentes vozes encadeiam-se organicamente, é bem diverso de um volume de artigos em torno de um tema. E este volume ainda acrescenta o fato de parte dos autores de capítulos serem referências na atuação como pesquisadores e docentes da área, representando, como a Professora Mortatti, vozes dissonantes nos estudos literários, no sentido de se ocuparem com as reflexões sobre a formação do leitor. Ou seja, não se trata da reunião de textos sobre literatura infantil, mas de um projeto claramente definido pela organizadora, que resulta num todo coeso e agregador de reflexões inéditas e muito necessárias ao campo.”</p>",
-        "api": "google"
-    },
-    {
-        "id": "aPs0vQEACAAJ",
-        "isbn10": "8594541392",
-        "isbn13": "9788594541390",
-        "title": "Samurai Shirô",
-        "authors": [
-            {
-                "name": "Danilo Beyruth"
-            }
-        ],
-        "numberPage": 188,
+        "numberPage": 456,
         "language": "pt",
-        "publisher": "DarkSide",
-        "publishedDate": "2018",
+        "publisher": "Darkside",
+        "publishedDate": "2019",
         "image": "",
-        "description": "SAMURAI SHIRÔ conta a história de lutas sangrentas pelo poder, honra familiar e do reencontro violento com o passado, vivido no agora por samurais modernos e a yakuza (a máfia japonesa), que usa de cenário o bairro da Liberdade, na cidade de São Paulo. Akemi é uma jovem descendente de japoneses que vê surgir em seu caminho um estranho homem sem memória, com uma katana (tipo de espada japonesa), e passa a ser perseguida pelos yakuzas. Ela vai precisar enfrentá-los, assim como seu próprio passado, para sobreviver.A narrativa de SAMURAI SHIRÔ, em ritmo veloz, é repleta de ação e dialoga com a intensidade e diversidade da principal metrópole do país, para onde migraram milhares de orientais, e considerada a maior comunidade japonesa do mundo fora do Japão. A arte em preto e branco de Danilo Beyruth dialoga com o universo imagético dos filmes de samurai de Akira Kurosawa, como Yojimbo, o Guarda-Costas e Sete Samurais, além dos mangás, como Lobo Solitário. Sem perder sua característica, o traço dinâmico de Beyruth se desafia a contar uma história de luta pelo poder e pela honra dentro da tradição de histórias de ação japonesas, lidando com suas marcas e símbolos como um verdadeiro sensei.Beyruth é um quadrinista bastante premiado pelos seus trabalhos e um nome consolidado nos quadrinhos brasileiros. Desenha para a Marvel Comics e já colaborou com os Guardiões da Galáxia, Ghost Rider e Cable, entre outros. É o criador de Bando de Dois e Necronauta, reformulou o personagem Astronauta de Mauricio de Sousa em uma série de graphic novels e tem trabalhos publicados nos Estados Unidos, Europa e Argentina. Em 2018, Danilo viu seus personagens e conceitos ganharem vida no filme Motorrad, dirigido por Vicente Amorim. E os darksiders colecionadores tiveram contato com ele com as ilustrações horripilantes da reedição de A Noite dos Mortos-Vivos, de John A. Russo, em que Danilo dá um tiro certeiro na cabeça dos zumbis famintos, tiro que atravessa todo o miolo do livro.Agora, Beyruth entrega um de seus quadrinhos autorais mais intensos nas mãos de uma editora que sabe moldar o medo. SAMURAI SHIRÔ, lançamento da DarkSide® Books em seu selo DarkSide® Graphic Novel — inteiramente dedicado ao melhorda arte sequencial —, chega às livrarias em setembro com quase duzentas páginas em capa dura e com um acabamento especial de dar inveja a mafiosos.A DarkSide® Graphic Novel é uma expansão do universo sombrio e fantástico da editora, lar de Charles Burns, autor de Black Hole, e de quadrinistas de renome como Dave McKean, Pablo Auladell, Junji Ito, Jock, Bernie Wrightson, Derf Backderf (Meu Amigo Dahmer), entre outros. Se você é fanático pela arte sequencial, prepare-se para se surpreender novamente com sua velha paixão. E mesmo aqueles que não têm o hábito de ler HQs não vão se arrepender. Quem aposta no escuro com a DarkSide® costuma virar fã.",
         "api": "google"
     },
     {
-        "id": "S-Y7DwAAQBAJ",
-        "isbn10": "8576573903",
-        "isbn13": "9788576573906",
-        "title": "Piquenique na estrada",
+        "id": "o6NTDwAAQBAJ",
+        "isbn10": "8574964107",
+        "isbn13": "9788574964102",
+        "title": "Escritos sobre a nova arte de ensinar de Wolfgang Ratke (1571-1635)",
         "authors": [
             {
-                "name": "Arkádi Strugátski"
+                "name": "Wolfgang Ratke"
             },
             {
-                "name": "Boris Strugátski"
+                "name": "Sandino Hoff"
             }
         ],
-        "numberPage": 320,
+        "numberPage": 234,
         "language": "pt-BR",
-        "publisher": "Aleph",
-        "publishedDate": "2017-11-03",
-        "image": "https://books.google.com/books/publisher/content?id=S-Y7DwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "A cidade de Harmont está mudada. Desde que foi palco de uma das várias invasões alienígenas na Terra, o clima é de incerteza e medo. Os visitantes anônimos não se comunicaram com os terráqueos, e assim deixaram a humanidade com questionamentos aterradores. Nos locais onde eles estiveram, agora zonas proibidas, fenômenos perigosos continuam acontecendo. O trabalho ilegal de Redrick Schuhart, e de todos os outros stalkers, é invadir esse território para coletar e depois comercializar estranhos e misteriosos objetos trazidos de mundos distantes. Publicado pela primeira vez em 1971 na União Soviética, Piquenique na estrada mistura alusões à Guerra Fria e reflexões sobre a insignificância humana. Adaptado para os cinemas no filme Stalker, de Andrei Tarkóvski, é um dos maiores clássicos da ficção científica no leste europeu.",
-        "api": "google"
-    },
-    {
-        "id": "zN3bDwAAQBAJ",
-        "isbn10": "8532665020",
-        "isbn13": "9788532665027",
-        "title": "Que é a literatura?",
-        "authors": [
-            {
-                "name": "Jean-Paul Sartre"
-            }
-        ],
-        "numberPage": 304,
-        "language": "pt-BR",
-        "publisher": "Editora Vozes",
-        "publishedDate": "2020-04-08",
-        "image": "https://books.google.com/books/publisher/content?id=zN3bDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Publicado pela primeira vez em \"Tempos Modernos\", em várias edições da revista, o presente ensaio, com algumas modificações e o importante acréscimo de notas, voltou a ser publicado em 1948. \"Que é a literatura?\" pretendeu ser uma resposta às críticas suscitadas pelo princípio do engajamento, proposto na \"Apresentação de Tempos Modernos\", emitidas por escritores que Sartre, por outro lado, até podia estimar. Uma reflexão aprofundada sobre a condição do escritor se impunha, assim como um reexame do que o diretor da revista entendia por \"engajamento literário\" e a reafirmação de sua urgência.",
-        "api": "google"
-    },
-    {
-        "id": "tF_9DwAAQBAJ",
-        "isbn10": "8550404829",
-        "isbn13": "9788550404820",
-        "title": "Como funciona a ficção",
-        "authors": [
-            {
-                "name": "James Wood"
-            }
-        ],
-        "numberPage": 232,
-        "language": "pt-BR",
-        "publisher": "SESI-SP Editora",
-        "publishedDate": "2017-07-26",
-        "image": "https://books.google.com/books/publisher/content?id=tF_9DwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Notabilizado por seus ensaios na revista The New Yorker e professor de crítica literária na Universidade de Harvard, Wood aborda, numa prosa inteligente e aguçada, os mecanismos, procedimentos e efeitos da construção narrativa. A representação do real na literatura é o eixo central de Wood, que questiona os limites entre artifício e verossimilhança na ficção. Em dez capítulos, elementos fundamentais do texto ficcional são discutidos pelo autor: o personagem, o foco narrativo , o estilo. A partir de vasto e diversificado repertório literário - de Henry James e Flaubert, de Tchékhov e Nabókov a Beatrix Potter e John le Carré -, este livro \"perspicaz e cheio de achados\", nas palavras de Milton Hatoum, traz análises reveladoras e acessíveis mesmo àqueles que desconhecem os rudimentos da crítica literária. Referência fundamental para escritores em formação, professores de literatura, e todos que se interessam pelo mundo das letras.",
-        "api": "google"
-    },
-    {
-        "id": "eVevDwAAQBAJ",
-        "isbn10": "8595086362",
-        "isbn13": "9788595086364",
-        "title": "Box Trilogia O Senhor dos Anéis",
-        "authors": [
-            {
-                "name": "J.R.R. Tolkien"
-            }
-        ],
-        "numberPage": 1568,
-        "language": "pt-BR",
-        "publisher": "HARLEQUIN",
-        "publishedDate": "2019-11-25",
-        "image": "https://books.google.com/books/publisher/content?id=eVevDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "<p> <b>Embarque numa viagem inesquecível para a Terra-média e tenha os três livros de O Senhor dos Anéis, a obra-prima de J.R.R. Tolkien e um dos maiores clássicos da fantasia, em edições de luxo com capa dura neste box de colecionador!</b> </p> <p>Apesar de ter sido publicado em três volumes – A Sociedade do Anel, As Duas Torres e O Retorno do Rei – desde os anos 1950, O Senhor dos Anéis não é exatamente uma trilogia, mas um único grande romance que só pode ser compreendido em seu conjunto, segundo a concepção de seu autor, J.R.R. Tolkien. Com design cuidadosamente pensado para refletir a unidade da obra e com os desenhos originais feitos por Tolkien para as capas de cada volume, este box reúne os três livros da Saga do Anel e oferece aos leitores uma nova oportunidade de mergulhar no notável mundo da Terra-média.</p>",
-        "api": "google"
-    },
-    {
-        "id": "esPLEAAAQBAJ",
-        "isbn10": "0520313720",
-        "isbn13": "9780520313729",
-        "title": "The Ancient Romances",
-        "authors": [
-            {
-                "name": "Ben E. Perry"
-            }
-        ],
-        "numberPage": 426,
-        "language": "en",
-        "publisher": "Univ of California Press",
-        "publishedDate": "2023-07-28",
-        "image": "https://books.google.com/books/publisher/content?id=esPLEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "This title delves into the origins and development of ancient romance literature, expanding upon a series of lectures given by Ben Edwin Perry at the University of California in 1951. This scholarly work examines the romance genre's historical foundations and explores two main branches: the ideal romance of love and adventure and the \"comic\" romance, a form characterized by satire, mockery, and picaresque elements. In Part I, Perry addresses the \"ideal romance,\" a popular form among the masses, centered on idealized narratives of love and adventure. He traces its evolution, emphasizing the genre's widespread appeal and the continuity in its demand throughout the ancient world. By addressing key literary-historical questions, Perry brings to light the genre's foundational aspects, situating it within broader cultural and social contexts.<br><br> Part II shifts focus to \"comic romances,\" distinct for their humorous, satirical tone and their appeal to a more elite, educated audience. Perry explores works by writers like Petronius, Lucian, and Apuleius, analyzing how their unique perspectives and sophisticated storytelling approaches diverge from the more traditional ideal romances. Unlike ideal romances, comic romances are marked by individual authors’ intentions and personal motives, leading to distinctive interpretations and varied narrative styles. By distinguishing between these genres and examining their respective conventions, Perry offers insights into the interplay between narrative forms and cultural expectations, contributing a significant perspective on the evolution of ancient romance literature and its lasting influence on modern narrative structures.<br><br> This title is part of UC Press's Voices Revived program, which commemorates University of California Press’s mission to seek out and cultivate the brightest minds and give them voice, reach, and impact. Drawing on a backlist dating to 1893, Voices Revived makes high-quality, peer-reviewed scholarship accessible once again using print-on-demand technology. This title was originally published in 1967.",
-        "api": "google"
-    },
-    {
-        "id": "47UmEAAAQBAJ",
-        "isbn10": "6586253713",
-        "isbn13": "9786586253719",
-        "title": "A literatura em questão",
-        "authors": [
-            {
-                "name": "Marcos Natali"
-            }
-        ],
-        "numberPage": 280,
-        "language": "pt-BR",
-        "publisher": "Editora da Unicamp",
-        "publishedDate": "2020-01-01",
-        "image": "https://books.google.com/books/publisher/content?id=47UmEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Os nove capítulos de A literatura em questão são compostos por reflexões a respeito da relação entre literatura e ética. A preocupação de fundo do livro é com a “responsabilidade literária”, isto é, com o modo como a instituição literária responde, ou se recusa a responder, a inquirições sobre as relações entre a literatura e os direitos humanos, a sala de aula, as discursividades indígenas, o luto, o racismo, a loucura e a violência. Nesse exercício, o interesse pela literatura advém da percepção de que ela é um território privilegiado para a dramatização de fantasias associadas à democracia, em particular a crença na possibilidade infinita de inclusão da alteridade e de sua assimilação sem atrito.",
-        "api": "google"
-    },
-    {
-        "id": "-l4uEAAAQBAJ",
-        "isbn10": "6556321052",
-        "isbn13": "9786556321059",
-        "title": "NO LIMIAR DA HISTÓRIA E DA LITERATURA",
-        "authors": [
-            {
-                "name": "MARIA LÚCIA DIAS MENDES"
-            }
-        ],
-        "numberPage": 320,
-        "language": "pt-BR",
-        "publisher": "Editora Unifesp",
-        "publishedDate": "2021-01-22",
-        "image": "https://books.google.com/books/publisher/content?id=-l4uEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Este livro aborda uma face original e pouco explorada de Alexandre Dumas Pai, autor, entre outros, de Os Três Mosqueteiros: a de memorialista. Recorrendo às teorias da escrita de si, ao conceito de memória, à historiografia e à literatura francesa, a autora desenvolve um profícuo debate sobre as relações entre memorialismo, literatura e história, centrado nas memórias de Dumas, desnudando os alicerces da construção singular por ele desenvolvida. Revela-se um memorialista peculiar, capaz de escrever de si e do mundo que o rodeia, além de pôr em questão os limites entre ficção e história. Expõe como Dumas, ao relatar suas versões dos fatos históricos em suas memórias – no que ele revela e no que omite –, busca eternizar as memórias da França de seu tempo, na qual também acaba por ganhar espaço como personagem célebre.",
+        "publisher": "Autores Associados",
+        "publishedDate": "2018-03-01",
+        "image": "https://books.google.com/books/publisher/content?id=o6NTDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Corifeu dos didáticos\" foi o título que Comênio deu a Wolfgang Ratke. O pedagogo alemão professou o luteranismo com ardor e convicção. Viveu em meio à Guerra dos Trinta Anos. Conversou com Bacon em Londres, antes das publicações do empirista inglês, tendo com ele em comum o método intuitivo e os aforismos. Permaneceu durante nove anos em Amsterdã, onde lecionou e estudou. Foi convidado pelo rei Adolfo e por Oxentierna a introduzir o método na Suécia, mas sua morte interrompeu o projeto. Ratke tinha profundos conhecimentos do latim, grego, hebreu, caldeu, árabe, holandês, espanhol, italiano e francês. Utilizando a língua materna, sua arte de ensinar partia da observação e das experiências. Instituiu um método educativo concreto e simples, a partir do Allunterweisung (o ensino de tudo), dividido em partes organizadas para a prática pedagógica. \"Nenhuma criança sem escola\" e \"aprender é fácil\" foram seus dois lemas.",
         "api": "google"
     },
     {
@@ -394,39 +56,37 @@
         "api": "google"
     },
     {
-        "id": "NsytywEACAAJ",
-        "isbn10": "8594541694",
-        "isbn13": "9788594541697",
-        "title": "Medo imortal",
+        "id": "Gs5c2QneeWQC",
+        "isbn10": "8525044636",
+        "isbn13": "9788525044631",
+        "title": "Clássicos do mundo corporativo",
         "authors": [
             {
-                "name": "Romeu Martins"
+                "name": "Max Gehringer"
             }
         ],
-        "numberPage": 456,
-        "language": "pt",
-        "publisher": "Darkside",
-        "publishedDate": "2019",
-        "image": "",
-        "description": "O ano é 1897. Estamos nas vésperas da celebração dos oitenta anos de publicação da primeiríssima edição de Frankenstein, ou o Prometeu Moderno, escrito por Mary Shelley. Naquele mesmo ano, outro inglês, H.G. Wells, lança em forma de livro O Homem Invisível e publica os capítulos iniciais de A Guerra dos Mundos em revistas da Inglaterra e dos EUA. Já o irlandês chamado Bram Stoker coloca nas livrarias o livro que viria a mudar sua vida e a história da literatura: Drácula. Do outro lado do oceano, nos Estados Unidos, um garoto de apenas sete anos acabou de escrever seu primeiro conto, que levou o nome de “The Noble Eavesdropper”. H.P. Lovecraft é este escritor americano precoce. Mais ao sul do continente americano, no Brasil, naquele marcante ano de 1897, quarenta intelectuais se reúnem para fundar a Academia Brasileira de Letras (abl), inspirados em um modelo de agremiação de escritores já existente na França desde 1635. Cada um daqueles fundadores escolhe um patrono para nomear a cadeira que vai ocupar, e eles passam a chamar a si mesmos de imortais. A antologia Medo Imortal, mais nova integrante da coleção Medo Clássico da Darkside® Books, vem a público para mostrar que existe mais em comum entre os fatos dos dois parágrafos anteriores do que pode aparentar à primeira vista. Liderados por nosso maior escritor, Machado de Assis, aqueles intelectuais brasileiros são pessoas de seu tempo, conectados com o que estava sendo produzido nos grandes centros culturais do mundo em sua época. Nas páginas de Medo Imortal estão reunidos, além de poesias, 32 exemplares da prosa de escritores diretamente ligados à nossa principal instituição dedicada à literatura. São contos que evocam o sobrenatural, apresentam monstros, descrevem atos de psicopatas, dão o testemunho de todo tipo imaginável de atrocidades concebidas pela mente humana. Produzidos entre a segunda metade do século xix e a primeira metade do século xx, tais textos representam o que de melhor se escreveu nos primeiros cem anos de produção do terror em nosso país. Organizado pelo jornalista Romeu Martins, com ilustrações de Lula Palomanes, a lista de autores para o livro contou com a colaboração de estudos realizados pelos maiores pesquisadores do terror e do insólito das principais universidades brasileiras. São ao todo treze autores, escolhidos entre os patronos, os fundadores e os primeiros eleitos para ocupar os salões da Academia Brasileira de Letras. Entre eles, a Darkside® Books aproveitou a oportunidade de reparar uma injustiça histórica cometida naquele ano de 1897 e traz também contos da escritora Júlia Lopes de Almeida, importante nome de nossa literatura que participou das reuniões para a fundação da Academia mas que na última hora acabou sendo barrada por ser mulher em uma instituição que em seus primeiros oitenta anos só aceitou a presença de homens.",
+        "numberPage": 171,
+        "language": "pt-BR",
+        "publisher": "Globo Livros",
+        "publishedDate": "2008-01-01",
+        "image": "https://books.google.com/books/content?id=Gs5c2QneeWQC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "'Clássicos do mundo corporativo' é uma seleção com 66 comentários que mais agradaram os ouvintes do programa de Max Gehringer na rádio CBN sobre diversos temas relacionados ao mundo corporativo. O autor faz, por exemplo, uma comparação entre a importância de ter um diploma lá pelos anos 1960, metade dos 1970 e os dias de hoje entre outras.",
         "api": "google"
     },
     {
-        "id": "LRsgEAAAQBAJ",
-        "isbn10": "6556320498",
-        "isbn13": "9786556320496",
-        "title": "A ficção na pós-ditadura",
+        "id": "9wFyDwAAQBAJ",
+        "title": "A Face Oculta Da Galáxia",
         "authors": [
             {
-                "name": "Milena Mulatti Magri"
+                "name": "Miguel Carqueija"
             }
         ],
-        "numberPage": 248,
+        "numberPage": 186,
         "language": "pt-BR",
-        "publisher": "Editora Unifesp",
-        "publishedDate": "2021-02-25",
-        "image": "https://books.google.com/books/publisher/content?id=LRsgEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Olhar para nosso passado recente, marcado por uma experiência profundamente autoritária e violenta, e estabelecer pontos de conexão desse passado com nosso presente parece ser uma das grandes contribuições dos romances analisados em A Ficção na Pós-Ditadura. Os acontecimentos mais recentes envolvendo o cenário político brasileiro, sobretudo após a interrupção do governo de Dilma Rousseff, reforçam a necessidade de compreendermos de que maneira as diferentes estruturas autoritárias sobrevivem na sociedade brasileira – tarefa que parece receber uma importante contribuição da narrativa brasileira contemporânea. Conhecer os traumas que caracterizaram o período da ditadura – tanto em suas consequências políticas, com a imposição de um governo ilegítimo após a interrupção forçada de um governo eleito democraticamente, quanto em suas consequências humanas, com a perseguição, prisão, assassinatos e desaparecimentos de pessoas que se opunham ao governo militar – revela-se cada vez mais uma agenda imprescindível para que tais eventos não se repitam.",
+        "publisher": "Clube de Autores",
+        "publishedDate": "2015-12-31",
+        "image": "https://books.google.com/books/publisher/content?id=9wFyDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Joana Pimentel leva uma vida dupla, como uma mulher profissional comum e com família, mas sumindo às vezes para cumprir missões secretar da Cosmopol, onde é conhecida como Vésper. Isso porém lhe custou um alto preço e, após perder o marido tragicamente, ela abandonou o mercenarismo.   Alguns anos deppis, porém, é chamada para uma nova missão e aceita por conta de difícil situação financeira. Mas a consciência a incomoda, por todas as violências que já praticou. Esta aventura, porém, será crucial para Vésper...",
         "api": "google"
     },
     {
@@ -447,66 +107,50 @@
         "api": "google"
     },
     {
-        "id": "0e3RJm1JfmgC",
-        "title": "Library of Congress Subject Headings",
+        "id": "7Wn5zwEACAAJ",
+        "isbn10": "6525016541",
+        "isbn13": "9786525016542",
+        "title": "A Ciência que nos Rodeia",
         "authors": [
             {
-                "name": "Library of Congress. Cataloging Policy and Support Office"
+                "name": "Ises de Almeida Abrahamsohn"
             }
         ],
-        "numberPage": 1172,
-        "language": "en",
-        "publisher": "Library of Congress, Cataloging Distribution Service",
-        "publishedDate": "1999",
-        "image": "https://books.google.com/books/content?id=0e3RJm1JfmgC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "numberPage": 77,
+        "language": "pt",
+        "publisher": "Artêra Editorial",
+        "publishedDate": "2021-11-22",
+        "image": "",
+        "description": "A ciência que nos rodeia: contos sobre ciência e tecnologia para jovens curiosos é um livro de contos para jovens de todas as idades. São 12 histórias curtas contadas de maneira leve e divertida , as quais fazem referência a algum aspecto científico ou de tecnologia. Ao final de cada conto, há indicação de sites ou de textos para quem quiser pesquisar mais sobre o assunto. Você já pensou como seria bom acabar com a poluição de plásticos e pesticidas na natureza? Ou na possibilidade de computadores mil vezes mais rápidos que os atuais? Ou se seria possível melhorar o gosto de verduras ou legumes? Esses são alguns dos assuntos dos contos deste livro. Em geral, não paramos para pensar o quanto a ciência contribui para o nosso bem-estar, saúde, conhecimento e alimentação. Mas é preciso ser curioso e perguntar, sempre perguntar! E ler, ler sobre os mais diversos assuntos para estar a par do que acontece no mundo e compreender as mudanças que se anunciam. Os avanços da ciência e da tecnologia resolveram problemas antes considerados insolúveis e, o tempo todo, cientistas se adiantam para resolver problemas que virão a acontecer no futuro. Este livro tem histórias que se referem a conquistas da ciência e apontam sua importância e aplicação, atuais e futuras.",
         "api": "google"
     },
     {
-        "id": "NTEnAAAAQBAJ",
-        "isbn10": "8578791185",
-        "isbn13": "9788578791186",
-        "title": "Deuses em poéticas",
-        "authors": [
-            {
-                "name": "Salma Ferraz"
-            },
-            {
-                "name": "Antonio Magalhães"
-            },
-            {
-                "name": "Douglas Conceição"
-            },
-            {
-                "name": "Eli Brandão"
-            },
-            {
-                "name": "Waldecy Tenório"
-            }
-        ],
-        "numberPage": 364,
+        "id": "_TnTCbxNhnEC",
+        "isbn10": "8521311931",
+        "isbn13": "9788521311935",
+        "title": "Clássicos: Ferrari – Quatro Rodas",
+        "numberPage": 68,
         "language": "pt-BR",
-        "publisher": "SciELO - EDUEPB",
-        "publishedDate": "2008-01-01",
-        "image": "https://books.google.com/books/publisher/content?id=NTEnAAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Reunião de 19 artigos produzidos durante o Simpósio de teologia e literatura, realizado durante o \"XI Congresso Internacional da Abralic\", em julho de 2008. Os autores, pesquisadores na área de estudos comparados, apresentam uma reflexão sobre as relações entre literatura e teologia, e uma abordagem atual para os estudos de literatura.",
+        "publisher": "NBL Editora",
+        "image": "https://books.google.com/books/content?id=_TnTCbxNhnEC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
         "api": "google"
     },
     {
-        "id": "Go_LEAAAQBAJ",
-        "isbn10": "857657599X",
-        "isbn13": "9788576575993",
-        "title": "O cair da noite",
+        "id": "eIUEEAAAQBAJ",
+        "isbn10": "6556920703",
+        "isbn13": "9786556920702",
+        "title": "Os supridores",
         "authors": [
             {
-                "name": "Isaac Asimov"
+                "name": "José Falero"
             }
         ],
-        "numberPage": 144,
+        "numberPage": 304,
         "language": "pt-BR",
-        "publisher": "Editora Aleph",
-        "publishedDate": "2023-08-20",
-        "image": "https://books.google.com/books/publisher/content?id=Go_LEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "O planeta Lagash está às vésperas da primeira noite de sua história recente. Um grupo de cientistas está convicto: o que por muitos séculos acreditou-se ser a mitologia fantasiosa de um culto é, no fundo, verdade. Em menos de 24 horas tudo o que esse mundo conhece vai mudar. A expectativa de que a escuridão traga com ela o caos acirra os ânimos e as expectativas de como será aquele mundo sem a luz do dia. Nesta história, Isaac Asimov – um dos maiores nomes da ficção científica do século 20 – parte daquilo que é desconhecido para explorar dilemas fundamentalmente humanos.",
+        "publisher": "Todavia",
+        "publishedDate": "2020-11-09",
+        "image": "https://books.google.com/books/publisher/content?id=eIUEEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Com este seu primeiro romance, <b>José Falero</b> já se apresenta como um dos nomes mais relevantes da nova literatura brasileira. Ao criar um narrador culto e perspicaz — que contrasta com o dialeto a um só tempo urbano e filosófico da periferia —, o autor mostra seu talento incomum, fazendo uma verdadeira arqueologia da pobreza. Falero nos leva direto ao supermercado Fênix, na região central de Porto Alegre. É ali que trabalham Pedro e Marques, dupla que aos poucos veste a carapuça de um Dom Quixote e de um Sancho Pança amotinados. Moradores de \"vila\" (a favela no Sul), eles invertem o jogo mesmo que as consequências sejam graves. \" <i>Preciso dar um jeito de experimentar as coisa que faz a existência valer a pena, e não vai ser trabalhando que eu vou conseguir isso.</i>\" Os dois conhecem pessoas que traficam na periferia onde moram, por isso insistem em se manter na legalidade. Mas, diante de uma \"seca\" de maconha devido ao desinteresse dos traficantes em comercializá-la, e já cansados da exploração do trabalho, os dois amigos decidem entrar para o tráfico. É a única opção para melhorar de vida. E também uma recusa à desumanização do trabalho assalariado. Uma recusa a todo o processo de exploração.",
         "api": "google"
     },
     {
@@ -525,42 +169,6 @@
         "publishedDate": "2017-08-25",
         "image": "https://books.google.com/books/publisher/content?id=INoyDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
         "description": "Nos quinhentos anos da Reforma protestante, Vida Nova tem a satisfação de presentear seu público com a série Clássicos da Reforma, que reúne em cada volume escritos significativos de cada um dos principais reformadores. Cada volume traz uma introdução escrita por um professor brasileiro. A série vem disponibilizar aos interessados na teologia protestante uma seleção representativa de textos dos principais expoentes da Reforma do século 16. Lutero, Melâncton, Calvino e Zuínglio são apenas alguns dos pensadores cujos escritos, na maioria inéditos em português, serão contemplados. Neste volume, traduzimos diretamente dos originais franceses, seis obras importantíssimas não apenas na Reforma protestante do século 16, mas na história do pensamento cristão. São elas: • Epístola ao cristianíssimo Francisco, primeiro desse nome, rei de França: na qual se demonstram as causas dos problemas que ocorrem hoje na igreja (1535) • João Calvino ao Cardeal Jacó Sadoleto: resposta à Epístola do cardeal Jacó Sadoleto enviada ao Senado e ao povo de Genebra: pela qual ele trata de sujeitá-los ao poder do bispo de Roma (1539) • Pequeno tratado da santa ceia de nosso Senhor Jesus Cristo: no qual se demonstram sua verdadeira instituição, seu proveito e sua utilidade, com a razão por que vários autores modernos parecem ter escrito diferentemente (1540) • Tratado das relíquias (1543) • Desculpas de João Calvino aos senhores nicodemitas, que se queixam de seu excessivo rigor (1544) • Sobre os escândalos que hoje impedem muitos de alcançar a pura doutrina do evangelho e desviam outros (1550) Compre junto",
-        "api": "google"
-    },
-    {
-        "id": "aMTTDgAAQBAJ",
-        "isbn10": "8525435813",
-        "isbn13": "9788525435811",
-        "title": "A arte da ficção",
-        "authors": [
-            {
-                "name": "David Lodge"
-            }
-        ],
-        "numberPage": 256,
-        "language": "pt-BR",
-        "publisher": "L&PM Pocket",
-        "publishedDate": "2010-05-03",
-        "image": "https://books.google.com/books/publisher/content?id=aMTTDgAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "O aclamado romancista e acadêmico britânico David Lodge presenteia com este livro todos aqueles que têm interesse em saber como funciona a arte da ficção. Em cinquenta artigos curtos, escritos em linguagem coloquial, cheios de verve e humor, são abordados aspectos do fazer literário como a construção do começo e do final dos romances, a manipulação temporal, o uso do suspense, a escolha do ponto de vista, do nome dos personagens, do título e da estrutura narrativa. Lançando mão de suas habilidades como professor de literatura e escritor, Lodge usa como exemplos trechos tirados de obras-primas de grandes autores e conduz o leitor por um incrível passeio pelo universo da ficção.",
-        "api": "google"
-    },
-    {
-        "id": "raoyvQEACAAJ",
-        "isbn10": "8575411748",
-        "isbn13": "9788575411742",
-        "title": "Clássicos em Doença de Chagas",
-        "authors": [
-            {
-                "name": "José da Rocha Carvalheiro"
-            }
-        ],
-        "numberPage": 555,
-        "language": "pt-BR",
-        "publisher": "Editora Fiocruz",
-        "publishedDate": "2009",
-        "image": "https://books.google.com/books/content?id=raoyvQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Este admirável volume reuniu especialistas de diversos campos do conhecimento para comentar a importância de 15 artigos clássicos associados à descoberta científica de Carlos Chagas, que completou cem anos em 2009. A obra indica novas diretrizes e os desafios que ainda cercam a doença na atualidade. Organizado por pesquisadoras do Instituto Oswaldo Cruz (IOC/Fiocruz) e da Casa de Oswaldo Cruz (COC/Fiocruz), pela coordenadora de eventos da Fiocruz e por um ex-vice-presidente de pesquisa da instituição, que juntos formaram uma rede para definir quais seriam os principais artigos clássicos que demarcaram o avanço das pesquisas sobre doença de Chagas, o livro contextualiza-os em relação ao centenário e “...assim surge..., coletivo, histórico e atual”, nas palavras de uma das organizadoras.",
         "api": "google"
     },
     {
@@ -606,75 +214,75 @@
         "api": "google"
     },
     {
-        "id": "tdIoDwAAQBAJ",
-        "isbn10": "8574554421",
-        "isbn13": "9788574554426",
-        "title": "Literatura, homoerotismo e expressões homoculturais",
+        "id": "XG5VDgAAQBAJ",
+        "isbn10": "8520013252",
+        "isbn13": "9788520013250",
+        "title": "A tradução literária",
         "authors": [
             {
-                "name": "André Luis Mitidieri"
+                "name": "Paulo Henriques Britto"
+            }
+        ],
+        "numberPage": 158,
+        "language": "pt-BR",
+        "publisher": "Editora José Olympio",
+        "publishedDate": "2017-03-10",
+        "image": "https://books.google.com/books/publisher/content?id=XG5VDgAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Conhecido por sua ampla experiência como tradutor do inglês para o português, Paulo Henriques Britto reflete acerca dessa complexa tarefa nesta obra. Sem temer assumir atitudes polêmicas em relação a alguns dos teóricos em voga na atualidade, o poeta e tradutor desenvolve suas próprias ideias com objetividade e argúcia. Um livro precioso tanto para iniciantes no assunto quanto para especialistas em teoria e prática da tradução, os quais frequentemente se deparam com dificuldades comuns a quem quer que lide com o assunto.",
+        "api": "google"
+    },
+    {
+        "id": "jP9GEAAAQBAJ",
+        "isbn10": "6555602716",
+        "isbn13": "9786555602715",
+        "title": "Forward",
+        "authors": [
+            {
+                "name": "Blake Crouch"
             },
             {
-                "name": "Flávio Pereira Camargo"
+                "name": "N. K. Jemisin"
+            },
+            {
+                "name": "Veronica Roth"
+            },
+            {
+                "name": "Amor Towles"
+            },
+            {
+                "name": "Paul Tremblay"
+            },
+            {
+                "name": "Andy Weir"
             }
         ],
-        "numberPage": 301,
+        "numberPage": 304,
         "language": "pt-BR",
-        "publisher": "SciELO - Editus - Editora da UESC",
-        "publishedDate": "2015-01-01",
-        "image": "https://books.google.com/books/publisher/content?id=tdIoDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Os textos trazem à tona um universo homoerótico ambientado na literatura, na música e nas discussões teóricas mostrando que, atualmente, essas manifestações recebem outro olhar. Além disso, discutem as antigas bases de gênero e os novos modos de interpretação de sujeitos culturais, ressaltando a dificuldade em falar de questões homoafetivas em uma sociedade ainda machista e homofóbica. Eles mostram o distanciamento que algumas pessoas ainda têm a respeito do homoerotismo, por isso buscam desconstruir os estereótipos de gênero através da literatura, mostrando ao leitor que as expressões homoculturais vão além de um padrão pré-estabelecido pela sociedade e suas respectivas culturas.",
+        "publisher": "Editora Intrinseca",
+        "publishedDate": "2021-11-16",
+        "image": "https://books.google.com/books/publisher/content?id=jP9GEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "<p><b>Em coletânea inédita de contos de ficção científica, grandes nomes da literatura mostram até onde somos capazes de ir para mudar o mundo</b></p><p>Para alguns, a tecnologia é o prenúncio do fim do mundo. Para outros, é apenas o começo de uma nova era. Renomado escritor de ficção científica, autor dos best-sellers <i>Matéria escura</i> e <i>Recursão</i>, Blake Crouch convidou grandes nomes da literatura contemporânea para traçar histórias audaciosas que mergulham nos desdobramentos que os avanços tecnológicos acarretam à humanidade.</p><p>Em “Summer Frost”, Crouch traz uma trama marcante que desafia nossa noção de humanidade enquanto assistimos à obsessão de uma programadora de videogames por uma de suas personagens. “Pele de emergência”, de N. K. Jemisin, explora a missão de um soldado em visita a uma Terra abandonada. Uma viagem potencialmente sem volta, mas pelos motivos mais inesperados. Em “Arca”, Veronica Roth mostra o poder das lembranças, que, quando coletadas e reunidas, são capazes de revelar o passado e também ajudam a construir o futuro. Amor Towles surpreende em “Você chegou ao seu destino” ao mergulhar na manipulação genética quando um casal se vê diante da possibilidade de decidir a trajetória de seu futuro bebê. “A última conversa”, de Paul Tremblay, é uma narrativa repleta de suspense que nos faz questionar os limites da consciência e de nossa identidade. Já “Randomizando”, de Andy Weir, fecha a obra com uma história eletrizante envolvendo cassinos, hackers e computação quântica.</p><p>De potência criativa memorável, os contos desta coletânea se pautam em temas diversos, como inteligência artificial, colonização de outros planetas, engenharia genética e programação, para nos fazer encarar o que há de mais brutal e profundamente humano em nós e em nossa sociedade. Imersos em tamanhos medos, paixões, sonhos e ambições, vem à tona a complexidade de se estabelecer limites e de realizar escolhas diante da busca pelo futuro que desejamos.</p>",
         "api": "google"
     },
     {
-        "id": "TXMOAQAAIAAJ",
-        "title": "Classicos brasileiros",
+        "id": "S-Y7DwAAQBAJ",
+        "isbn10": "8576573903",
+        "isbn13": "9788576573906",
+        "title": "Piquenique na estrada",
         "authors": [
             {
-                "name": "Laudelino Freire"
-            }
-        ],
-        "numberPage": 262,
-        "language": "pt-BR",
-        "publisher": "Revista de Lingua Portuguesa",
-        "publishedDate": "1923",
-        "image": "https://books.google.com/books/content?id=TXMOAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "api": "google"
-    },
-    {
-        "id": "Gs5c2QneeWQC",
-        "isbn10": "8525044636",
-        "isbn13": "9788525044631",
-        "title": "Clássicos do mundo corporativo",
-        "authors": [
+                "name": "Arkádi Strugátski"
+            },
             {
-                "name": "Max Gehringer"
+                "name": "Boris Strugátski"
             }
         ],
-        "numberPage": 171,
+        "numberPage": 320,
         "language": "pt-BR",
-        "publisher": "Globo Livros",
-        "publishedDate": "2008-01-01",
-        "image": "https://books.google.com/books/content?id=Gs5c2QneeWQC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "'Clássicos do mundo corporativo' é uma seleção com 66 comentários que mais agradaram os ouvintes do programa de Max Gehringer na rádio CBN sobre diversos temas relacionados ao mundo corporativo. O autor faz, por exemplo, uma comparação entre a importância de ter um diploma lá pelos anos 1960, metade dos 1970 e os dias de hoje entre outras.",
-        "api": "google"
-    },
-    {
-        "id": "zILcuD4FRHkC",
-        "isbn10": "8571394326",
-        "isbn13": "9788571394322",
-        "title": "Psicologia e literatura",
-        "authors": [
-            {
-                "name": "Dante Moreira Leite"
-            }
-        ],
-        "numberPage": 384,
-        "language": "pt-BR",
-        "publisher": "UNESP",
-        "publishedDate": "2003-03-19",
-        "image": "https://books.google.com/books/content?id=zILcuD4FRHkC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "É bem conhecida a afirmação de Dostoiévski sobre os poderes relativos da literatura e da psicologia. Para ele, um psicólogo jamais alcançaria a eficácia do escritor: é na literatura que encontramos um retrato acurado da mente. Mas mesmo para aqueles que reivindicam superioridade para um desses dois polos uma coisa é certa: psicologia e literatura partilham uma ampla fronteira e guardam inter-relações significativas. Essa convivência ao mesmo tempo conflituosa e complementar é estudada por Dante Moreira Leite em vários de seus ângulos. Neste conhecido e influente ensaio, ênfase particular é dada à questão da criatividade, à avaliação de vertentes psicologistas (junguiana, psicanalítica etc.) da análise literária e aos processos psicológicos associados à leitura e ao autor.",
+        "publisher": "Aleph",
+        "publishedDate": "2017-11-03",
+        "image": "https://books.google.com/books/publisher/content?id=S-Y7DwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "A cidade de Harmont está mudada. Desde que foi palco de uma das várias invasões alienígenas na Terra, o clima é de incerteza e medo. Os visitantes anônimos não se comunicaram com os terráqueos, e assim deixaram a humanidade com questionamentos aterradores. Nos locais onde eles estiveram, agora zonas proibidas, fenômenos perigosos continuam acontecendo. O trabalho ilegal de Redrick Schuhart, e de todos os outros stalkers, é invadir esse território para coletar e depois comercializar estranhos e misteriosos objetos trazidos de mundos distantes. Publicado pela primeira vez em 1971 na União Soviética, Piquenique na estrada mistura alusões à Guerra Fria e reflexões sobre a insignificância humana. Adaptado para os cinemas no filme Stalker, de Andrei Tarkóvski, é um dos maiores clássicos da ficção científica no leste europeu.",
         "api": "google"
     },
     {
@@ -692,6 +300,245 @@
         "publisher": "Editora UFMG",
         "publishedDate": "2003",
         "image": "https://books.google.com/books/content?id=hW_2c5wWbh8C&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "api": "google"
+    },
+    {
+        "id": "LRsgEAAAQBAJ",
+        "isbn10": "6556320498",
+        "isbn13": "9786556320496",
+        "title": "A ficção na pós-ditadura",
+        "authors": [
+            {
+                "name": "Milena Mulatti Magri"
+            }
+        ],
+        "numberPage": 248,
+        "language": "pt-BR",
+        "publisher": "Editora Unifesp",
+        "publishedDate": "2021-02-25",
+        "image": "https://books.google.com/books/publisher/content?id=LRsgEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Olhar para nosso passado recente, marcado por uma experiência profundamente autoritária e violenta, e estabelecer pontos de conexão desse passado com nosso presente parece ser uma das grandes contribuições dos romances analisados em A Ficção na Pós-Ditadura. Os acontecimentos mais recentes envolvendo o cenário político brasileiro, sobretudo após a interrupção do governo de Dilma Rousseff, reforçam a necessidade de compreendermos de que maneira as diferentes estruturas autoritárias sobrevivem na sociedade brasileira – tarefa que parece receber uma importante contribuição da narrativa brasileira contemporânea. Conhecer os traumas que caracterizaram o período da ditadura – tanto em suas consequências políticas, com a imposição de um governo ilegítimo após a interrupção forçada de um governo eleito democraticamente, quanto em suas consequências humanas, com a perseguição, prisão, assassinatos e desaparecimentos de pessoas que se opunham ao governo militar – revela-se cada vez mais uma agenda imprescindível para que tais eventos não se repitam.",
+        "api": "google"
+    },
+    {
+        "id": "raoyvQEACAAJ",
+        "isbn10": "8575411748",
+        "isbn13": "9788575411742",
+        "title": "Clássicos em Doença de Chagas",
+        "authors": [
+            {
+                "name": "José da Rocha Carvalheiro"
+            }
+        ],
+        "numberPage": 555,
+        "language": "pt-BR",
+        "publisher": "Editora Fiocruz",
+        "publishedDate": "2009",
+        "image": "https://books.google.com/books/content?id=raoyvQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Este admirável volume reuniu especialistas de diversos campos do conhecimento para comentar a importância de 15 artigos clássicos associados à descoberta científica de Carlos Chagas, que completou cem anos em 2009. A obra indica novas diretrizes e os desafios que ainda cercam a doença na atualidade. Organizado por pesquisadoras do Instituto Oswaldo Cruz (IOC/Fiocruz) e da Casa de Oswaldo Cruz (COC/Fiocruz), pela coordenadora de eventos da Fiocruz e por um ex-vice-presidente de pesquisa da instituição, que juntos formaram uma rede para definir quais seriam os principais artigos clássicos que demarcaram o avanço das pesquisas sobre doença de Chagas, o livro contextualiza-os em relação ao centenário e “...assim surge..., coletivo, histórico e atual”, nas palavras de uma das organizadoras.",
+        "api": "google"
+    },
+    {
+        "id": "esPLEAAAQBAJ",
+        "isbn10": "0520313720",
+        "isbn13": "9780520313729",
+        "title": "The Ancient Romances",
+        "authors": [
+            {
+                "name": "Ben E. Perry"
+            }
+        ],
+        "numberPage": 426,
+        "language": "en",
+        "publisher": "Univ of California Press",
+        "publishedDate": "2023-07-28",
+        "image": "https://books.google.com/books/publisher/content?id=esPLEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "This title delves into the origins and development of ancient romance literature, expanding upon a series of lectures given by Ben Edwin Perry at the University of California in 1951. This scholarly work examines the romance genre's historical foundations and explores two main branches: the ideal romance of love and adventure and the \"comic\" romance, a form characterized by satire, mockery, and picaresque elements. In Part I, Perry addresses the \"ideal romance,\" a popular form among the masses, centered on idealized narratives of love and adventure. He traces its evolution, emphasizing the genre's widespread appeal and the continuity in its demand throughout the ancient world. By addressing key literary-historical questions, Perry brings to light the genre's foundational aspects, situating it within broader cultural and social contexts.<br><br> Part II shifts focus to \"comic romances,\" distinct for their humorous, satirical tone and their appeal to a more elite, educated audience. Perry explores works by writers like Petronius, Lucian, and Apuleius, analyzing how their unique perspectives and sophisticated storytelling approaches diverge from the more traditional ideal romances. Unlike ideal romances, comic romances are marked by individual authors’ intentions and personal motives, leading to distinctive interpretations and varied narrative styles. By distinguishing between these genres and examining their respective conventions, Perry offers insights into the interplay between narrative forms and cultural expectations, contributing a significant perspective on the evolution of ancient romance literature and its lasting influence on modern narrative structures.<br><br> This title is part of UC Press's Voices Revived program, which commemorates University of California Press’s mission to seek out and cultivate the brightest minds and give them voice, reach, and impact. Drawing on a backlist dating to 1893, Voices Revived makes high-quality, peer-reviewed scholarship accessible once again using print-on-demand technology. This title was originally published in 1967.",
+        "api": "google"
+    },
+    {
+        "id": "EwyvDwAAQBAJ",
+        "isbn10": "8554515730",
+        "isbn13": "9788554515737",
+        "title": "Os sete maridos de Evelyn Hugo",
+        "authors": [
+            {
+                "name": "Taylor Jenkins Reid"
+            }
+        ],
+        "numberPage": 360,
+        "language": "pt-BR",
+        "publisher": "Editora Paralela",
+        "publishedDate": "2019-10-21",
+        "image": "https://books.google.com/books/publisher/content?id=EwyvDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "<p> <b>Com todo o esplendor que só a Hollywood do século passado pode oferecer, esta é uma narrativa inesquecível sobre os sacrifícios que fazemos por amor, o perigo dos segredos e o preço da fama. <br> </b> </p> <p>Lendária estrela de Hollywood, Evelyn Hugo sempre esteve sob os holofotes — seja estrelando uma produção vencedora do Oscar, protagonizando algum escândalo ou aparecendo com um novo marido... pela sétima vez. Agora, prestes a completar oitenta anos e reclusa em seu apartamento no Upper East Side, a famigerada atriz decide contar a própria história — ou sua \"verdadeira história\" —, mas com uma condição: que Monique Grant, jornalista iniciante e até então desconhecida, seja a entrevistadora. Ao embarcar nessa misteriosa empreitada, a jovem repórter começa a se dar conta de que nada é por acaso — e que suas trajetórias podem estar profunda e irreversivelmente conectadas.</p> <p>\"Evelyn Hugo faz Elizabeth Taylor parecer sem graça. Você vai rir com ela, chorar, sofrer, e então voltar para a primeira página e fazer tudo de novo.\" — Heather Cocks e Jessica Morgan, autoras de <i>The Royal We</i> </p>",
+        "api": "google"
+    },
+    {
+        "id": "KX4wEAAAQBAJ",
+        "isbn10": "6559810135",
+        "isbn13": "9786559810130",
+        "title": "Box O povo do ar",
+        "authors": [
+            {
+                "name": "Holly Black"
+            }
+        ],
+        "numberPage": 1268,
+        "language": "pt-BR",
+        "publisher": "Editora Record",
+        "publishedDate": "2021-07-05",
+        "image": "https://books.google.com/books/publisher/content?id=KX4wEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "<p>Os três volumes da série <i>O povo do ar </i>e o spin-off reunidos pela primeira vez em um box com conteúdos especiais. O conto inédito <i> \"</i>As irmãs perdidas\", o mapa de Elfhame atualizado no verso das capas, uma capa nova para <i>O canto mais escuro da floresta</i>, e brindes como uma cinta em formato de coroa de papel, marcadores, pôster exclusivo com uma <i>fan art</i> da Arda Arts e uma flâmula.</p> <p>Na série <i>O povo do ar</i>, a autora best-seller Holly Black transporta os leitores para Reino das Fadas. Não aquelas dos contos clássicos, fadas que podem ser cruéis e mortais, especialmente se motivadas pelo poder. Uma aventura que mistura magia, intrigas palacianas e romance.</p> <p> <b>O canto mais escuro da floresta</b> </p> <p>Hazel e seu irmão, Ben, moram em uma cidade onde humanos e fadas convivem. A magia aparentemente inofensiva desses seres atrai turistas de todas as partes, que querem ver de perto as maravilhas do lugar e, principalmente, o garoto de chifres e orelhas pontudas que descansa em um caixão de vidro. Hazel e Ben eram fascinados pelo garoto quando crianças. Mas, eles sabem que o garoto de chifres nunca acordará... Até que um dia ele acorda. Agora, os irmãos precisam se tornar os heróis que fingiam ser e desvendar os mistérios que envolvem aquele príncipe com chifres.</p> <p> <b>O príncipe cruel </b> </p> <p>Jude tinha 7 anos quando seus pais foram assassinados e foi forçada a viver no Reino das Fadas. Dez anos depois, tudo o que ela quer é ser como eles – lindos e imortais – e realmente pertencer ao Reino das Fadas, apesar de sua mortalidade. Para ganhar um lugar na Alta Corte, ela deve desafiar o Príncipe Cardan, o filho mais bonito e mais cruel do Grande Rei... e enfrentar as consequências.</p> <p> <b>O rei perverso </b> </p> <p>Jude achou que, depois de enganar Cardan para que ele jurasse obedecê-la por um ano e um dia, sua vida se tornaria mais fácil. Mas ter qualquer influência sobre o Grande Rei de Elfhame parece uma tarefa impossível, principalmente quando ele faz de tudo em seu poder para humilhá-la e prejudicá-la, mesmo que seu fascínio pela garota humana permaneça intacto.</p> <p> <b>A rainha do nada </b> </p> <p>Jude carrega o outrora impensável título de Grande Rainha de Elfhame, mas as condições são longe de ser ideais. Exilada por Cardan no mundo mortal, Jude se encontra impotente e frustrada enquanto planeja reivindicar tudo que Cardan tomou dela.</p>",
+        "api": "google"
+    },
+    {
+        "id": "we4jl507M4EC",
+        "isbn10": "0745630057",
+        "isbn13": "9780745630052",
+        "title": "Romance Writing",
+        "authors": [
+            {
+                "name": "Lynne Pearce"
+            }
+        ],
+        "numberPage": 214,
+        "language": "en",
+        "publisher": "Polity",
+        "publishedDate": "2007-01-05",
+        "image": "https://books.google.com/books/content?id=we4jl507M4EC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Romance Writing explores the changing nature of both the romance genre and the discourse of romantic love from the seventeenth century to the present day. Indeed, it is one of the first studies to approach romantic love as both genre and discourse in more than sixty years.<br> <br> Faced with the challenge of writing a cultural history for what is commonly understood to be one of lifes most universal, a-historical and cross-cultural phenomena, Lynne Pearce has invoked the concept of the gift to calculate loves added value at different cultural/historical moments. Building upon those philosophical traditions which have argued for the powerfully transformative nature of romantic love, Pearce shows how in the history of literature lovers have utilized its spark to change not only themselves, but also their worlds, through acts of creativity and heroism. The gift of love ranges from the simple gift of a name in the seventeenth century, through notions of immortality, self-sacrifice and selfhood in the nineteenth and twentieth centuries, through to the liberating temporal and spatial dislocations of the postmodern age. The opening chapter, The Alchemy of Love, also undertakes an in-depth engagement of the changing nature, and meaning, of romantic love.<br> <br> Providing a judicious blend of close reading and cultural history, Romance Writing will be essential reading for undergraduate students as well as postgraduates and scholars working in the field, while also offering much of interest to the general reader.",
+        "api": "google"
+    },
+    {
+        "id": "nPwsFO6WXsAC",
+        "isbn10": "1843841622",
+        "isbn13": "9781843841623",
+        "title": "Anglicising Romance",
+        "authors": [
+            {
+                "name": "Rhiannon Purdie"
+            }
+        ],
+        "numberPage": 272,
+        "language": "en",
+        "publisher": "Boydell & Brewer Ltd",
+        "publishedDate": "2008",
+        "image": "https://books.google.com/books/content?id=nPwsFO6WXsAC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "A reappraisal of the tail-rhyme form so strongly associated with medieval English romance, and how it became so appropriated. <p>Tail-rhyme romance unites a French genre with a continental stanza form, so why was it developed only in Middle English literature? For English audiences, tail-rhyme becomes inextricably linked with the romance genre in a way thatno other verse form does. The first examples are recorded near the beginning of the fourteenth century and by the end of it Chaucer's Sir Thopas can rely on it to work as a shorthand for the entire Middle English romance tradition. How and why this came to be is the question that Anglicising Romance sets out to answer. Its five chapters discuss the stanza's origins; the use of tail-rhyme in Anglo-Noman literature; questions of transmission and manuscript layout; the romances of the Auchinleck manuscript; and the geographic spread of tail-rhyme romance. The individual entries in the Appendix present newly reassessed evidence for the provenance and date of each of thethirty-six extant tail-rhyme romances. <p> RHIANNON PURDIE is Senior Lecturer in Mediaeval English at the University of St Andrews.",
+        "api": "google"
+    },
+    {
+        "id": "85UdyQEACAAJ",
+        "isbn10": "168690195X",
+        "isbn13": "9781686901959",
+        "title": "Seduzida",
+        "authors": [
+            {
+                "name": "D. A. Lemoyne"
+            }
+        ],
+        "numberPage": 260,
+        "language": "pt",
+        "publisher": "Independently Published",
+        "publishedDate": "2019-08-17",
+        "image": "https://books.google.com/books/content?id=85UdyQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Quem nunca sonhou em apaixonar-se loucamente? E se um dia, em um encontro inesperado, tudo o que você desejou encontrar em alguém estivesse ao alcance das mãos?E se esse alguém o convidasse para uma jornada de sensualidade e entrega, você diria não? Samantha decidiu assumir o risco.Vem comigo que eu conto a história completa.Aos vintes e três anos, Samantha decide que chegou a hora de enfrentar o passado traumatizante. E que melhor maneira de se pôr à prova do que ficar frente à frente com o protagonista de seu maior pesadelo?Nunca poderia imaginar que cairia de amor por um homem mais experiente, lindo e avesso a compromissos.Quando Gabriel concordou em ceder sua fazenda a pedido de dois de seus parceiros de noitadas, achou que tudo não passaria de um fim de semana aborrecido, com pessoas com as quais não fazia questão de estar.Vamos lá, ele estava certo de que era o dono do mundo, que possuía tudo o que um cara pode desejar: um monte de dinheiro, relacionamentos aleatórios e carros velozes.Até que uma deusa de olhar inocente e corpo matador invade seu quarto. O encontro inesperado rapidamente se transforma em uma atração incontrolável, em que seus mundos começam e terminam um no outro. Para Samantha, ceder novamente ao domínio de um homem é dar um salto de fé.Para Gabriel, confiar pela primeira vez em uma mulher pode ser impossível.Será que o medo de arriscar os impedirá de mergulhar nessa paixão?",
+        "api": "google"
+    },
+    {
+        "id": "AKJGDwAAQBAJ",
+        "isbn10": "8501113492",
+        "isbn13": "9788501113498",
+        "title": "É assim que acaba",
+        "authors": [
+            {
+                "name": "Colleen Hoover"
+            }
+        ],
+        "numberPage": 368,
+        "language": "pt-BR",
+        "publisher": "Editora Record",
+        "publishedDate": "2018-02-05",
+        "image": "https://books.google.com/books/publisher/content?id=AKJGDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Da autora das séries Slammed e Hopeless. Um romance sobre as escolhas corretas nas situações mais difíceis. As coisas não foram sempre fáceis para Lily, mas isso nunca a impediu de conquistar a vida tão sonhada. Ela percorreu um longo caminho desde a infância, em uma cidadezinha no Maine: se formou em marketing, mudou para Boston e abriu a própria loja. Então, quando se sente atraída por um lindo neurocirurgião chamado Ryle Kincaid, tudo parece perfeito demais para ser verdade. Ryle é confiante, teimoso, talvez até um pouco arrogante e se sente atraído por Lily. Porém, sua grande aversão a relacionamentos é perturbadora. Além de estar sobrecarregada com as questões sobre seu novo relacionamento, Lily não consegue tirar Atlas Corrigan da cabeça — seu primeiro amor e a ligação com o passado que ela deixou para trás. Ele era seu protetor, alguém com quem tinha grande afinidade. Quando Atlas reaparece de repente, tudo que Lily construiu com Ryle fica em risco. Com um livro ousado e extremamente pessoal, Colleen Hoover conta uma história arrasadora, mas também inovadora, que não tem medo de discutir temas como abuso e violência doméstica. Uma narrativa inesquecível sobre um amor que custa caro demais.",
+        "api": "google"
+    },
+    {
+        "id": "lexHDwAAQBAJ",
+        "isbn10": "8501114162",
+        "isbn13": "9788501114167",
+        "title": "Em outra vida, talvez?",
+        "authors": [
+            {
+                "name": "Taylor Jenkins Reid"
+            }
+        ],
+        "numberPage": 322,
+        "language": "pt-BR",
+        "publisher": "Editora Record",
+        "publishedDate": "2018-02-05",
+        "image": "https://books.google.com/books/publisher/content?id=lexHDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "E se tudo o que é possível acontecesse? Hannah está perdida. Aos 29 anos, ainda não decidiu que rumo dar à sua vida. Depois de uma decepção amorosa, ela volta para Los Angeles, sua cidade natal, pois acha que, com o apoio de Gabby, sua melhor amiga, finalmente vai conseguir colocar a vida nos trilhos. Para comemorar a mudança, nada melhor do que reunir velhos amigos num bar. E lá Hannah reencontra Ethan, seu ex-namorado da adolescência. No fim da noite, tanto ele quanto Gabby lhe oferecem carona. Será que é melhor ir embora com a amiga? Ou ficar até mais tarde com Ethan e aproveitar o restante da noite? Em realidades alternativas, Hannah vive as duas decisões. E, no desenrolar desses universos paralelos, sua vida segue rumos completamente diferentes. Será que tudo o que vivemos está predestinado a acontecer? O quanto disso é apenas sorte? E, o mais importante: será que almas gêmeas realmente existem? Hannah acredita que sim. E, nos dois mundos, ela acha que encontrou a sua.",
+        "api": "google"
+    },
+    {
+        "id": "0e3RJm1JfmgC",
+        "title": "Library of Congress Subject Headings",
+        "authors": [
+            {
+                "name": "Library of Congress. Cataloging Policy and Support Office"
+            }
+        ],
+        "numberPage": 1172,
+        "language": "en",
+        "publisher": "Library of Congress, Cataloging Distribution Service",
+        "publishedDate": "1999",
+        "image": "https://books.google.com/books/content?id=0e3RJm1JfmgC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "api": "google"
+    },
+    {
+        "id": "a24Y0QEACAAJ",
+        "isbn10": "8575114867",
+        "isbn13": "9788575114865",
+        "title": "Literatura brasileira em foco VIII",
+        "authors": [
+            {
+                "name": "Andréa Sirihal Werkema"
+            },
+            {
+                "name": "Fátima Cristina Dias Rocha"
+            },
+            {
+                "name": "Leonardo Davino de Oliveira"
+            }
+        ],
+        "numberPage": 191,
+        "language": "pt",
+        "publisher": "EdUERJ",
+        "publishedDate": "2018",
+        "image": "",
+        "api": "google"
+    },
+    {
+        "id": "8nCODwAAQBAJ",
+        "isbn10": "8575114972",
+        "isbn13": "9788575114971",
+        "title": "Literatura, leitura e educação",
+        "authors": [
+            {
+                "name": "Márcia Cabral da Silva"
+            },
+            {
+                "name": "Estela Natalina Mantovani Bertoletti"
+            }
+        ],
+        "numberPage": 288,
+        "language": "pt-BR",
+        "publisher": "SciELO - EDUERJ",
+        "publishedDate": "2017-01-01",
+        "image": "https://books.google.com/books/publisher/content?id=8nCODwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Reúne ensaios sobre a literatura destinada à infância e ao jovem e sobre as práticas de leitura no âmbito da escola e da vida social. Os autores transitam por diversos recortes temporais da relação entre leitura e educação, oferecendo também análise das reflexões de Cecília Meirelles e de Leonardo Arroyo acerca do tema. Os capítulos contribuem para o debate sobre a função da leitura literária na escola e a formação dos professores na condição de mediadores fundamentais do processo educativo.",
         "api": "google"
     },
     {
@@ -722,6 +569,138 @@
         "api": "google"
     },
     {
+        "id": "JRsgEAAAQBAJ",
+        "isbn10": "6556320056",
+        "isbn13": "9786556320052",
+        "title": "Sobre Intertextualidade na Literatura Latina",
+        "authors": [
+            {
+                "name": "Patrícia Prata"
+            },
+            {
+                "name": "Paulo Sérgio de Vasconcellos"
+            }
+        ],
+        "numberPage": 186,
+        "language": "pt-BR",
+        "publisher": "Editora Unifesp",
+        "publishedDate": "2021-02-25",
+        "image": "https://books.google.com/books/publisher/content?id=JRsgEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Esta antologia, preparada por uma equipe de professores e pós-graduandos sob a coordenação de dois classicistas da Universidade Estadual de Campinas (Unicamp), PATRICIA PRATA e PAULO SÉRGIO DE VASCONCELLOS, apresenta aos leitores brasileiros a tradução de alguns textos fundamentais sobre intertextualidade na literatura latina, pela primeira vez publicados em português. São ensaios densos que trazem reflexões aprofundadas sobre o fenômeno que consiste na relação dialógica entre os textos (mas não só, como o leitor verá). Além dos classicistas, os que se interessam pelos aspectos dialógicos da linguagem humana e pela teoria da literatura encontrarão aqui muita matéria para reflexão. Desde o ensaio seminal de Giorgio Pasquali, \"Arte alusiva\", que exerceu papel fundamental por sua vasta influência entre os classicistas, estudiosos do fenômeno têm dado contribuições não apenas para a interpretação dos textos poéticos latinos, mas também para a compreensão das relações entre textos na literatura e na comunicação diária. Nesta antologia, reúnem-se alguns dos estudos mais influentes e brilhantes sobre esse tema complexo e instigante. Ao final da antologia, apresenta-se, de forma inédita, uma bibliografia de estudos intertextuais sobre a literatura latina (em livros, dissertações de mestrado, teses de doutorado e artigos publicados em periódicos especializados) produzidos no Brasil. Pode-se verificar, por esse levantamento, o florescimento desses estudos em nosso país.",
+        "api": "google"
+    },
+    {
+        "id": "-l4uEAAAQBAJ",
+        "isbn10": "6556321052",
+        "isbn13": "9786556321059",
+        "title": "NO LIMIAR DA HISTÓRIA E DA LITERATURA",
+        "authors": [
+            {
+                "name": "MARIA LÚCIA DIAS MENDES"
+            }
+        ],
+        "numberPage": 320,
+        "language": "pt-BR",
+        "publisher": "Editora Unifesp",
+        "publishedDate": "2021-01-22",
+        "image": "https://books.google.com/books/publisher/content?id=-l4uEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Este livro aborda uma face original e pouco explorada de Alexandre Dumas Pai, autor, entre outros, de Os Três Mosqueteiros: a de memorialista. Recorrendo às teorias da escrita de si, ao conceito de memória, à historiografia e à literatura francesa, a autora desenvolve um profícuo debate sobre as relações entre memorialismo, literatura e história, centrado nas memórias de Dumas, desnudando os alicerces da construção singular por ele desenvolvida. Revela-se um memorialista peculiar, capaz de escrever de si e do mundo que o rodeia, além de pôr em questão os limites entre ficção e história. Expõe como Dumas, ao relatar suas versões dos fatos históricos em suas memórias – no que ele revela e no que omite –, busca eternizar as memórias da França de seu tempo, na qual também acaba por ganhar espaço como personagem célebre.",
+        "api": "google"
+    },
+    {
+        "id": "TE0FEAAAQBAJ",
+        "isbn10": "6586279127",
+        "isbn13": "9786586279122",
+        "title": "Escrever sem escrever",
+        "authors": [
+            {
+                "name": "Leonardo Villa-Forte"
+            }
+        ],
+        "numberPage": 224,
+        "language": "pt-BR",
+        "publisher": "Relicário",
+        "publishedDate": "2020-10-05",
+        "image": "https://books.google.com/books/publisher/content?id=TE0FEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Quando falamos em música falamos em remix e DJ. Quando falamos em audiovisual, falamos em montagem e mash-up. Para a arte contemporânea, o crítico Nicolas Bourriaud forjou o termo “pós-produção”, que aponta a tendência atual de obras que não são criações originais mas reciclagens ou reproposições de obras anteriores ou objetos pré-existentes. Em comum a esses campos e situações, os gestos de apropriação e deslocamento, consagrados pelos ready-mades de Marcel Duchamp e por outros artistas da vanguarda. Entretanto, no ambiente tecnológico contemporâneo, com seus estímulos e ferramentas específicos, a apropriação e o deslocamento adquirem novas facetas. A pergunta da qual esse livro parte é: de que maneira a escrita e a literatura se inserem e participam desse novo contexto? Copiar e colar. Seleção e edição. Gravação e transcrição. Cut-up, apagamento, supressão. Pirataria. Buscas no Google. Plágio, cópia, imitação. Como o ato da citação e a cultura remix dialogam? Em que medida o escritor contemporâneo pode ser pensado como um artista conceitual ou um curador de textos alheios? Quais são as consequências para as práticas de leitura e para a ideia de autoria? A partir das noções de “escrita não-criativa”, de Kenneth Goldsmith, “gênio não-original”, de Marjorie Perloff, e do “Manifesto da literatura sampler”, de Fred Coelho e Mauro Gaspar, Leonardo Villa-Forte estuda obras recentes de escritores, artistas e poetas brasileiros e estrangeiros, para pensar a escrita diante, ou melhor, dentro desse ambiente em transformação.",
+        "api": "google"
+    },
+    {
+        "id": "zILcuD4FRHkC",
+        "isbn10": "8571394326",
+        "isbn13": "9788571394322",
+        "title": "Psicologia e literatura",
+        "authors": [
+            {
+                "name": "Dante Moreira Leite"
+            }
+        ],
+        "numberPage": 384,
+        "language": "pt-BR",
+        "publisher": "UNESP",
+        "publishedDate": "2003-03-19",
+        "image": "https://books.google.com/books/content?id=zILcuD4FRHkC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "É bem conhecida a afirmação de Dostoiévski sobre os poderes relativos da literatura e da psicologia. Para ele, um psicólogo jamais alcançaria a eficácia do escritor: é na literatura que encontramos um retrato acurado da mente. Mas mesmo para aqueles que reivindicam superioridade para um desses dois polos uma coisa é certa: psicologia e literatura partilham uma ampla fronteira e guardam inter-relações significativas. Essa convivência ao mesmo tempo conflituosa e complementar é estudada por Dante Moreira Leite em vários de seus ângulos. Neste conhecido e influente ensaio, ênfase particular é dada à questão da criatividade, à avaliação de vertentes psicologistas (junguiana, psicanalítica etc.) da análise literária e aos processos psicológicos associados à leitura e ao autor.",
+        "api": "google"
+    },
+    {
+        "id": "47UmEAAAQBAJ",
+        "isbn10": "6586253713",
+        "isbn13": "9786586253719",
+        "title": "A literatura em questão",
+        "authors": [
+            {
+                "name": "Marcos Natali"
+            }
+        ],
+        "numberPage": 280,
+        "language": "pt-BR",
+        "publisher": "Editora da Unicamp",
+        "publishedDate": "2020-01-01",
+        "image": "https://books.google.com/books/publisher/content?id=47UmEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Os nove capítulos de A literatura em questão são compostos por reflexões a respeito da relação entre literatura e ética. A preocupação de fundo do livro é com a “responsabilidade literária”, isto é, com o modo como a instituição literária responde, ou se recusa a responder, a inquirições sobre as relações entre a literatura e os direitos humanos, a sala de aula, as discursividades indígenas, o luto, o racismo, a loucura e a violência. Nesse exercício, o interesse pela literatura advém da percepção de que ela é um território privilegiado para a dramatização de fantasias associadas à democracia, em particular a crença na possibilidade infinita de inclusão da alteridade e de sua assimilação sem atrito.",
+        "api": "google"
+    },
+    {
+        "id": "aMTTDgAAQBAJ",
+        "isbn10": "8525435813",
+        "isbn13": "9788525435811",
+        "title": "A arte da ficção",
+        "authors": [
+            {
+                "name": "David Lodge"
+            }
+        ],
+        "numberPage": 256,
+        "language": "pt-BR",
+        "publisher": "L&PM Pocket",
+        "publishedDate": "2010-05-03",
+        "image": "https://books.google.com/books/publisher/content?id=aMTTDgAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "O aclamado romancista e acadêmico britânico David Lodge presenteia com este livro todos aqueles que têm interesse em saber como funciona a arte da ficção. Em cinquenta artigos curtos, escritos em linguagem coloquial, cheios de verve e humor, são abordados aspectos do fazer literário como a construção do começo e do final dos romances, a manipulação temporal, o uso do suspense, a escolha do ponto de vista, do nome dos personagens, do título e da estrutura narrativa. Lançando mão de suas habilidades como professor de literatura e escritor, Lodge usa como exemplos trechos tirados de obras-primas de grandes autores e conduz o leitor por um incrível passeio pelo universo da ficção.",
+        "api": "google"
+    },
+    {
+        "id": "tdIoDwAAQBAJ",
+        "isbn10": "8574554421",
+        "isbn13": "9788574554426",
+        "title": "Literatura, homoerotismo e expressões homoculturais",
+        "authors": [
+            {
+                "name": "André Luis Mitidieri"
+            },
+            {
+                "name": "Flávio Pereira Camargo"
+            }
+        ],
+        "numberPage": 301,
+        "language": "pt-BR",
+        "publisher": "SciELO - Editus - Editora da UESC",
+        "publishedDate": "2015-01-01",
+        "image": "https://books.google.com/books/publisher/content?id=tdIoDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Os textos trazem à tona um universo homoerótico ambientado na literatura, na música e nas discussões teóricas mostrando que, atualmente, essas manifestações recebem outro olhar. Além disso, discutem as antigas bases de gênero e os novos modos de interpretação de sujeitos culturais, ressaltando a dificuldade em falar de questões homoafetivas em uma sociedade ainda machista e homofóbica. Eles mostram o distanciamento que algumas pessoas ainda têm a respeito do homoerotismo, por isso buscam desconstruir os estereótipos de gênero através da literatura, mostrando ao leitor que as expressões homoculturais vão além de um padrão pré-estabelecido pela sociedade e suas respectivas culturas.",
+        "api": "google"
+    },
+    {
         "id": "lOKvDgAAQBAJ",
         "isbn10": "8575114425",
         "isbn13": "9788575114421",
@@ -740,114 +719,57 @@
         "api": "google"
     },
     {
-        "id": "jmqICgAAQBAJ",
-        "isbn10": "9722058258",
-        "isbn13": "9789722058254",
-        "title": "Porquê Ler os Clássicos?",
+        "id": "TXMOAQAAIAAJ",
+        "title": "Classicos brasileiros",
         "authors": [
             {
-                "name": "Italo Calvino"
+                "name": "Laudelino Freire"
             }
         ],
-        "numberPage": 253,
+        "numberPage": 262,
         "language": "pt-BR",
-        "publisher": "D. QUIXOTE",
-        "publishedDate": "2015-08-20",
-        "image": "https://books.google.com/books/publisher/content?id=jmqICgAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Os classicos s?o livros de que se costuma ouvir dizer: e nunca: Um classico e um livro que nunca acabou de dizer o que tem a dizer. Os classicos s?o livros que quanto mais se julga conhece-los por ouvir falar, mais se descobrem como novos, inesperados e ineditos ao le-los de facto. Chama se classico um livro que se configura como equivalente do universo, tal como os antigos talism?s. O nosso classico e o que n?o pode ser-nos indiferente e que nos serve para nos definirmos a nos mesmos em relac?o e se calhar ate em contraste com ele. A partir destas e de outras definic?es de classicos que nos oferece no primeiro capitulo, Calvino vai dar resposta a pergunta que da o titulo a este livro, numa serie de brilhantissimos ensaios que percorrem alguns dos pontos mais altos da literatura e do pensamento mundiais. A Odisseia, Xenofonte, Ovidio, Plinio, o Velho, Tirant lo Blanc, Ariosto, Galileu, Robinson Crusoe, Candido, Diderot, Stendhal, Balzac, Dickens, Flaubert, Tolstoi, Henry James, Robert Louis Stevenson, Conrad, Hemingway, Borges e muitos outros autores e obras definitivamente classicos.",
+        "publisher": "Revista de Lingua Portuguesa",
+        "publishedDate": "1923",
+        "image": "https://books.google.com/books/content?id=TXMOAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
         "api": "google"
     },
     {
-        "id": "lexHDwAAQBAJ",
-        "isbn10": "8501114162",
-        "isbn13": "9788501114167",
-        "title": "Em outra vida, talvez?",
+        "id": "3qdaDwAAQBAJ",
+        "isbn10": "1551119978",
+        "isbn13": "9781551119977",
+        "title": "Nine Medieval Romances of Magic",
         "authors": [
             {
-                "name": "Taylor Jenkins Reid"
+                "name": "Marijane Osborn"
             }
         ],
-        "numberPage": 322,
-        "language": "pt-BR",
-        "publisher": "Editora Record",
-        "publishedDate": "2018-02-05",
-        "image": "https://books.google.com/books/publisher/content?id=lexHDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "E se tudo o que é possível acontecesse? Hannah está perdida. Aos 29 anos, ainda não decidiu que rumo dar à sua vida. Depois de uma decepção amorosa, ela volta para Los Angeles, sua cidade natal, pois acha que, com o apoio de Gabby, sua melhor amiga, finalmente vai conseguir colocar a vida nos trilhos. Para comemorar a mudança, nada melhor do que reunir velhos amigos num bar. E lá Hannah reencontra Ethan, seu ex-namorado da adolescência. No fim da noite, tanto ele quanto Gabby lhe oferecem carona. Será que é melhor ir embora com a amiga? Ou ficar até mais tarde com Ethan e aproveitar o restante da noite? Em realidades alternativas, Hannah vive as duas decisões. E, no desenrolar desses universos paralelos, sua vida segue rumos completamente diferentes. Será que tudo o que vivemos está predestinado a acontecer? O quanto disso é apenas sorte? E, o mais importante: será que almas gêmeas realmente existem? Hannah acredita que sim. E, nos dois mundos, ela acha que encontrou a sua.",
-        "api": "google"
-    },
-    {
-        "id": "o6NTDwAAQBAJ",
-        "isbn10": "8574964107",
-        "isbn13": "9788574964102",
-        "title": "Escritos sobre a nova arte de ensinar de Wolfgang Ratke (1571-1635)",
-        "authors": [
-            {
-                "name": "Wolfgang Ratke"
-            },
-            {
-                "name": "Sandino Hoff"
-            }
-        ],
-        "numberPage": 234,
-        "language": "pt-BR",
-        "publisher": "Autores Associados",
-        "publishedDate": "2018-03-01",
-        "image": "https://books.google.com/books/publisher/content?id=o6NTDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Corifeu dos didáticos\" foi o título que Comênio deu a Wolfgang Ratke. O pedagogo alemão professou o luteranismo com ardor e convicção. Viveu em meio à Guerra dos Trinta Anos. Conversou com Bacon em Londres, antes das publicações do empirista inglês, tendo com ele em comum o método intuitivo e os aforismos. Permaneceu durante nove anos em Amsterdã, onde lecionou e estudou. Foi convidado pelo rei Adolfo e por Oxentierna a introduzir o método na Suécia, mas sua morte interrompeu o projeto. Ratke tinha profundos conhecimentos do latim, grego, hebreu, caldeu, árabe, holandês, espanhol, italiano e francês. Utilizando a língua materna, sua arte de ensinar partia da observação e das experiências. Instituiu um método educativo concreto e simples, a partir do Allunterweisung (o ensino de tudo), dividido em partes organizadas para a prática pedagógica. \"Nenhuma criança sem escola\" e \"aprender é fácil\" foram seus dois lemas.",
-        "api": "google"
-    },
-    {
-        "id": "DWW7AAAAQBAJ",
-        "isbn10": "1460401492",
-        "isbn13": "9781460401491",
-        "title": "Novel Definitions",
-        "authors": [
-            {
-                "name": "Cheryl L. Nixon"
-            }
-        ],
-        "numberPage": 438,
+        "numberPage": 264,
         "language": "en",
         "publisher": "Broadview Press",
-        "publishedDate": "2008-12-30",
-        "image": "https://books.google.com/books/publisher/content?id=DWW7AAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "<p> Novel Definitions captures the lively critical debate surrounding the invention of the English novel, showing how the rise of the novel was accompanied by a rise in popular literary criticism. The anthology collects over 135 primary sources that chart the long eighteenth century’s interpretation of the novel. These sources—many newly-discovered—include essays, prefaces, reviews, and sermons written by authors ranging from Aphra Behn to Walter Scott. Novel Definitions brings together authors’ prefatory analyses of their work; essayists’ debates concerning the novel’s formal qualities; commentators’ questions concerning the novel’s cultural position, including whether or not women and children should read novels; reviewers’ definitions of the qualities that make a novel successful; and literary historians’ first attempts to write the history of the novel. </p>",
+        "publishedDate": "2010-03-05",
+        "image": "https://books.google.com/books/publisher/content?id=3qdaDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "<p> In this book, Marijane Osborn translates into modern English nine lively medieval verse romances, in a form that both reflects the original and makes the romances inviting to a modern audience. All nine tales contain elements of magic: shapeshifters, powerful fairies, trees that are portals to another world, and enchanted clothing and armor. Many of the tales also feature powerful women characters, while others include representations of “Saracens.” The tales address issues of enduring interest and concern, and also address sexuality, agency, and identity formation in unexpected ways. </p>",
         "api": "google"
     },
     {
-        "id": "eIUEEAAAQBAJ",
-        "isbn10": "6556920703",
-        "isbn13": "9786556920702",
-        "title": "Os supridores",
+        "id": "Elc-EAAAQBAJ",
+        "isbn10": "655530250X",
+        "isbn13": "9786555302509",
+        "title": "Turma da Mônica Grandes Clássicos - Pinóquio",
         "authors": [
             {
-                "name": "José Falero"
-            }
-        ],
-        "numberPage": 304,
-        "language": "pt-BR",
-        "publisher": "Todavia",
-        "publishedDate": "2020-11-09",
-        "image": "https://books.google.com/books/publisher/content?id=eIUEEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Com este seu primeiro romance, <b>José Falero</b> já se apresenta como um dos nomes mais relevantes da nova literatura brasileira. Ao criar um narrador culto e perspicaz — que contrasta com o dialeto a um só tempo urbano e filosófico da periferia —, o autor mostra seu talento incomum, fazendo uma verdadeira arqueologia da pobreza. Falero nos leva direto ao supermercado Fênix, na região central de Porto Alegre. É ali que trabalham Pedro e Marques, dupla que aos poucos veste a carapuça de um Dom Quixote e de um Sancho Pança amotinados. Moradores de \"vila\" (a favela no Sul), eles invertem o jogo mesmo que as consequências sejam graves. \" <i>Preciso dar um jeito de experimentar as coisa que faz a existência valer a pena, e não vai ser trabalhando que eu vou conseguir isso.</i>\" Os dois conhecem pessoas que traficam na periferia onde moram, por isso insistem em se manter na legalidade. Mas, diante de uma \"seca\" de maconha devido ao desinteresse dos traficantes em comercializá-la, e já cansados da exploração do trabalho, os dois amigos decidem entrar para o tráfico. É a única opção para melhorar de vida. E também uma recusa à desumanização do trabalho assalariado. Uma recusa a todo o processo de exploração.",
-        "api": "google"
-    },
-    {
-        "id": "HiPyiu-AzBMC",
-        "isbn10": "857139699X",
-        "isbn13": "9788571396999",
-        "title": "Cultura letrada",
-        "authors": [
+                "name": "Mauricio de Sousa"
+            },
             {
-                "name": "Márcia Abreu"
+                "name": "Paula Furtado"
             }
         ],
-        "numberPage": 125,
+        "numberPage": 48,
         "language": "pt-BR",
-        "publisher": "UNESP",
-        "publishedDate": "2004",
-        "image": "https://books.google.com/books/content?id=HiPyiu-AzBMC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "Quando se trata de leitura de textos literários, o assunto parece envolver uma insolúvel polêmica. As listas de melhores livros, por exemplo, refletem a média dos gostos particulares de algumas pessoas e sempre estão desafiando outros padrões e outros gostos, excluídos de parâmetros supostamente corretos de avaliar a literatura. O livro aborda, corajosamente, algumas questoes polêmicas: como definir literatura? Há bons livros em si? Todos devem apreciar o mesmo tipo de texto? Há uma maneira correta de ler literatura? Defende-se a ideia de que se abra mão empregando um único critério e se passe a compreender cada obra dentro do sistema de valores em que foi criada. Assim, na escola haveria lugar, ao lado a literatura erudita, também para ler e discutir os livros preferidos pelos alunos, considerando os objetivos com que foram produzidos, os gêneros a que pertencem, seu funcionamento textual.",
+        "publisher": "Girassol",
+        "publishedDate": "2021-09-02",
+        "image": "https://books.google.com/books/publisher/content?id=Elc-EAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Chico Bento dá vida à Pinóquio, enquanto o divertido Zé Lelé encarna o Grilo Falante. Os aprendizados da Fada Azul não poderiam ser transmitidos por outra pessoa que não fosse a sábia professora Marocas. E ninguém mais especial que o próprio Mauricio de Sousa para interpretar Gepeto e transmitir tanto amor a uma de suas criações. A coleção Grandes Clássicos – que reúne renomadas obras da literatura infantil universal, sempre com os amados personagens de Mauricio de Sousa – vai encantar ainda mais os leitores, que poderão colecionar os mais belos livros da turminha.",
         "api": "google"
     }
 ]

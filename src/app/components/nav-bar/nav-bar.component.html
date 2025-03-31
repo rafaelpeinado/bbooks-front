@@ -3,7 +3,7 @@
         <img class="iconbbooks" src="assets/images/logobboks.png">
     </span>
     <span class="example-spacer"></span>
-    <button *ngIf="isLogged" mat-flat-button color="primary" style="width: 5vw;" routerLink="/book">
+    <button *ngIf="isLogged" mat-flat-button color="primary" style="width: 5vw;" routerLink="/bookcase">
         <mat-icon>menu_book</mat-icon>
     </button>
     <button *ngIf="!isLogged" mat-flat-button color="primary" style="width: 5vw;" [routerLink]="['/login']">
@@ -75,7 +75,7 @@
         </button>
         <mat-menu #menuPerfil="matMenu">
             <div mat-menu-item>
-                <div fxLayout="row" [routerLink]="['', user?.profile?.username]">
+                <div fxLayout="row" [routerLink]="['/perfil', user?.profile?.username]">
                     <img class="imagem-perfil"
                         [src]="user?.profile?.profileImage ? user.profile.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
                         alt="imagem de perfil" />

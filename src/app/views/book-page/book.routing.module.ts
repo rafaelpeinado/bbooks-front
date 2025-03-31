@@ -46,6 +46,7 @@ const bookRoutes: Routes = [
                 path: 'mybooks/:tag/:id', component: BookViewComponent,
                 resolve: { book: BookViewResolve }
             },
+            { path: '', redirectTo: 'book', pathMatch: 'full' }
         ]
     },
 
