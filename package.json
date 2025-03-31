@@ -12,7 +12,8 @@
     "test": "jest --coverage",
     "test-sumary": "jest --collectCoverage --coverageReporters=\"text-summary\"",
     "test-unit": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "sonar": "sonar-scanner"
   },
   "engines": {
     "node": "10.13.0",
@@ -96,6 +97,7 @@
     "jest": "^26.4.0",
     "protractor": "^5.4.4",
     "protractor-cucumber-framework": "^6.2.1",
+    "sonar-scanner": "^3.1.0",
     "ts-node": "~8.3.0",
     "tslint": "~5.18.0",
     "typescript": "~3.7.5"

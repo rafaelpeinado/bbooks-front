@@ -5,10 +5,8 @@ import { PerfilPageRoutingModule } from './perfil-page.routing.module';
 import { MaterialModule } from '../../material/material.module';
 import { FlexLayoutModule, FlexModule } from '@angular/flex-layout';
 import { FriendComponent } from './friend/friend.component';
-import { BookcaseComponent } from './bookcase/bookcase.component';
 import { UserService } from '../../services/user.service';
 import { MainResolve } from './guards/main.resolve';
-import { BookcaseResolve } from './guards/bookcase.resolve';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { BookModule, HttpLoaderFactory } from '../book-page/book.module';
@@ -23,7 +21,6 @@ import { StoreModule } from '@ngrx/store';
     declarations: [
         MainPageComponent,
         FriendComponent,
-        BookcaseComponent,
         PerfilComponent
     ],
     imports: [
@@ -48,7 +45,6 @@ import { StoreModule } from '@ngrx/store';
     providers: [
         UserService,
         MainResolve,
-        BookcaseResolve,
         FriendResolve
     ]
 })

@@ -1,0 +1,6 @@
+projectKey=sem-refatorar
+serverUrl=http://localhost:9000
+serverVersion=25.1.0.102122
+dashboardUrl=http://localhost:9000/dashboard?id=sem-refatorar
+ceTaskId=f8d4f530-e1dc-46ca-af36-905eb19afc1f
+ceTaskUrl=http://localhost:9000/api/ce/task?id=f8d4f530-e1dc-46ca-af36-905eb19afc1f
