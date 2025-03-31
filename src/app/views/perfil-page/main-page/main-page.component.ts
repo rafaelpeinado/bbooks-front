@@ -21,7 +21,7 @@ export class MainPageComponent implements OnInit, OnChanges {
     public user: User;
     public userCached: User;
     public friendshipStatus = null;
-    links = ['bookcase', 'friends'];
+    links = ['friends'];
     activeLink = this.links[0];
 
     constructor(

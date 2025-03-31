@@ -5,9 +5,7 @@ import { PerfilPageRoutingModule } from './perfil-page.routing.module';
 import { MaterialModule } from '../../material/material.module';
 import { FlexLayoutModule, FlexModule } from '@angular/flex-layout';
 import { FriendComponent } from './friend/friend.component';
-import { BookcaseComponent } from './bookcase/bookcase.component';
 import { MainResolve } from './guards/main.resolve';
-import { BookcaseResolve } from './guards/bookcase.resolve';
 import { TranslateModule } from '@ngx-translate/core';
 import { BookModule } from '../book-page/book.module';
 import { SharedModule } from '../shared/shared.module';
@@ -20,7 +18,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     declarations: [
         MainPageComponent,
         FriendComponent,
-        BookcaseComponent,
         PerfilComponent
     ],
     imports: [
@@ -38,7 +35,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ],
     providers: [
         MainResolve,
-        BookcaseResolve,
         FriendResolve
     ]
 })
