@@ -6,7 +6,7 @@
                     <img class="cardImage" src="{{book.image}}">
                     <h2 class="titulo-competicao">{{book.title}}</h2>
                     <div *ngIf="book.averageRating">
-                        <app-rating *ngFor="let star  of stars;" [idStar]="star"
+                        <app-rating *ngFor="let star  of stars" [idStar]="star"
                             [rating]="this.book.averageRating"></app-rating>
                     </div>
                     <div class="textColor" *ngIf="book.isbn13">
@@ -22,11 +22,11 @@
                 <div fxLayout="column" fxLayoutGap="2px">
                     <div>
                         <button type="button" *ngIf="userBook?.id ? false : true" mat-flat-button color="accent"
-                            (click)="openDialogAddBook(book)">
+                            (click)="openDialogAddBook(userBook, book)">
                             {{'ESTANTE.ADICIONAR_LIVRO' | translate}}
                         </button>
                         <button type="button" *ngIf="userBook?.id" mat-flat-button color="accent"
-                            (click)="openDialogAddBook(book)">
+                            (click)="openDialogAddBook(userBook, book)">
                             {{'ESTANTE.EDITAR_LIVRO' | translate}}
                         </button>
                     </div>

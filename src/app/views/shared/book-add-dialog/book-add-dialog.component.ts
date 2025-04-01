@@ -16,6 +16,7 @@ import { User } from 'src/app/core/domain/entities/user.entity';
 import { TemporaryService } from 'src/app/services/temporary.service';
 import { UserBookBuilder } from 'src/app/core/domain/builders/user-book.builder';
 import { BookStatus, BookStatusEnglish, getArrayStatus, mapBookStatus, mapBookStatusEnglish } from 'src/app/core/domain/enums/book-status.enum';
+import { Book } from 'src/app/core/domain/entities/book.entity';
 
 @Component({
     selector: 'app-book-add-dialog',
@@ -35,11 +36,12 @@ export class BookAddDialogComponent implements OnInit {
 
     public formBook: FormGroup;
     public userBook: UserBook;
+    public book: Book;
     public title: string;
     public buttonText: string;
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) private readonly data: { book: UserBook },
+        @Inject(MAT_DIALOG_DATA) private readonly data: { userBook: UserBook, book: Book },
         private readonly dialogRef: MatDialogRef<BookAddDialogComponent>,
         private readonly formBuilder: FormBuilder,
         private readonly adapter: DateAdapter<any>,
@@ -51,10 +53,11 @@ export class BookAddDialogComponent implements OnInit {
         private readonly getCachedUserUseCase: GetCachedUserUseCase,
         private readonly temporaryService: TemporaryService,
     ) {
-        this.userBook = data.book;
+        this.userBook = data.userBook;
+        this.book = data.book;
         this.tagsBook = [];
 
-        if (this.userBook.id) {
+        if (this.userBook?.id) {
             this.getAllTagsByUserBookIdUseCase.execute(this.userBook.id)
                 .subscribe((tags) => {
                     this.tagsBook = tags;
@@ -65,7 +68,7 @@ export class BookAddDialogComponent implements OnInit {
         }
         this.updateLanguageStatus();
         dialogRef.beforeClosed().subscribe(() => {
-            this.data.book.status = this.getStatusToUserBookClose();
+            this.data.userBook = UserBookBuilder.builder().setStatus(this.getStatusToUserBookClose()).setBook(this.book).build();
         });
 
         const browserLang = this.translate.getBrowserLang().toString();
@@ -91,7 +94,7 @@ export class BookAddDialogComponent implements OnInit {
     }
 
     modeDialog() {
-        if (this.userBook.id) {
+        if (this.userBook?.id) {
             this.translate.get('ESTANTE.EDITAR_LIVRO').subscribe(title => {
                 this.title = title;
             });
@@ -110,11 +113,11 @@ export class BookAddDialogComponent implements OnInit {
 
     private createForm(): void {
         this.formBook = this.formBuilder.group({
-            statusBook: new FormControl(this.userBook.status ? this.userBook.status : null, Validators.required),
+            statusBook: new FormControl(this.userBook?.status ? this.userBook.status : null, Validators.required),
             tags: this.formBuilder.array([]),
-            finishDate: new FormControl(this.userBook.finishDate ?
+            finishDate: new FormControl(this.userBook?.finishDate ?
                 this.userBook.finishDate.toString() :
-                null, this.userBook.finishDate ?
+                null, this.userBook?.finishDate ?
                 Validators.required :
                 Validators.nullValidator),
         });
@@ -155,6 +158,7 @@ export class BookAddDialogComponent implements OnInit {
             .copyFrom(this.userBook)
             .setProfileId(user.profile.id)
             .setStatus(this.getStatusToUserBook())
+            .setBook(this.book)
             .setTags(this.getSelectedTags());
 
         const statusBookValue = this.formBook.get('statusBook').value;
@@ -190,7 +194,7 @@ export class BookAddDialogComponent implements OnInit {
             this.translate.get('STATUS.EMPRESTADO'),
             this.translate.get('STATUS.RELENDO'),
             this.translate.get('STATUS.INTERROMPIDO'),
-            this.translate.get('STATUS.' + this.userBook.status),
+            this.translate.get('STATUS.' + this.userBook?.status),
         ).subscribe(res => {
             this.AllStatus[0] = res[0];
             this.AllStatus[1] = res[1];
@@ -198,7 +202,7 @@ export class BookAddDialogComponent implements OnInit {
             this.AllStatus[3] = res[3];
             this.AllStatus[4] = res[4];
             this.AllStatus[5] = res[5];
-            this.userBook.status = res[6];
+            this.userBook = UserBookBuilder.builder().setStatus(res[6]).build();
         });
     }
 

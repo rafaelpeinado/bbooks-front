@@ -2,9 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { combineLatest, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { BookAddDialogComponent } from '../../shared/book-add-dialog/book-add-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
-import { Util } from '../../shared/utils/util';
 import { GetBookByIdUseCase } from 'src/app/core/use-cases/book/get-book-by-id.use-case';
 import { Book } from 'src/app/core/domain/entities/book.entity';
 import { UserBookDetails } from 'src/app/core/domain/interfaces/user-book-details.interface';
@@ -14,6 +12,9 @@ import { GeneralStatus } from 'src/app/core/domain/entities/general-status.entit
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { BookStatus, BookStatusEnglish, mapBookStatusEnglish } from 'src/app/core/domain/enums/book-status.enum';
+import { Util } from 'src/app/views/shared/utils/util';
+import { BookAddDialogComponent } from 'src/app/views/shared/book-add-dialog/book-add-dialog.component';
+import { UserBookBuilder } from 'src/app/core/domain/builders/user-book.builder';
 
 @Component({
     selector: 'app-book-view',
@@ -52,7 +53,7 @@ export class BookViewComponent implements OnInit, OnDestroy {
         Util.loadingScreen();
         this.inscricao = this.route.data.subscribe((data: { userBookDetails: UserBookDetails }) => {
             Util.stopLoading();
-            this.userBook = data.userBookDetails.userBook;
+            this.userBook = UserBookBuilder.builder().copyFrom(data.userBookDetails.userBook).setBook(data.userBookDetails.book).build();
             this.book = data.userBookDetails.book;
             this.stringAuthors = this.convertAuthorsToString();
         });
@@ -94,11 +95,12 @@ export class BookViewComponent implements OnInit, OnDestroy {
         return namesAuthors;
     }
 
-    openDialogAddBook(book: Book) {
+    openDialogAddBook(userBook: UserBook, book: Book) {
         const dialogRef = this.dialog.open(BookAddDialogComponent, {
             height: '450px',
             width: '400px',
             data: {
+                userBook,
                 book
             }
         });

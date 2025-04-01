@@ -35,7 +35,7 @@ const routes: Routes = [
     {
         path: 'bookcase',
         canActivate: [AuthGuard],
-        loadChildren: () => import('./views/book-page/book.module').then(m => m.BookModule)
+        loadChildren: () => import('./presentation/book-page/book.module').then(m => m.BookModule)
     },
     { path: 'nova-senha/:token', redirectTo: 'senha/nova-senha/:token', pathMatch: 'full' },
     {

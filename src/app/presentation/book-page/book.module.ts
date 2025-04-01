@@ -7,9 +7,7 @@ import { BookMenuComponent } from './book-menu/book-menu.component';
 import { BookFormComponent } from './book-form/book-form.component';
 import { BookEstanteComponent } from './book-estante/book-estante.component';
 import { BookPageComponent } from './book-page.component';
-import { MaterialModule } from '../../material/material.module';
 import { FlexLayoutModule, FlexModule } from '@angular/flex-layout';
-import { MatInputModule } from '@angular/material/input';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { CarrouselComponent } from './carrousel/carrousel.component';
 import { BookViewComponent } from './book-view/book-view.component';
@@ -20,23 +18,49 @@ import { CarrouselResolve } from './guards/carrousel.resolve';
 import { BooksComponent } from './books/books.component';
 import { BooksResolve } from './guards/books.resolve';
 import { TranslateModule } from '@ngx-translate/core';
-import { SharedModule } from '../shared/shared.module';
 import { TagDialogComponent } from './tag-dialog/tag-dialog.component';
+import { SharedModule } from 'src/app/views/shared/shared.module';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatOptionModule } from '@angular/material/core';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
     imports: [
-        SharedModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
         BookRoutingModule,
-        MaterialModule,
         FlexModule,
         FlexLayoutModule,
-        MatInputModule,
         CarouselModule,
-        TranslateModule.forChild()
+        TranslateModule.forChild(),
+        SharedModule,
+
+        // Material
+        MatInputModule,
+        MatCardModule,
+        MatIconModule,
+        MatAutocompleteModule,
+        MatOptionModule,
+        MatChipsModule,
+        MatMenuModule,
+        MatListModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatDialogModule,
+        MatSidenavModule,
     ],
     declarations: [
         BookPageComponent,

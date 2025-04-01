@@ -2,12 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, finalize, map, startWith } from 'rxjs/operators';
-import { UploadComponent } from '../../upload/upload.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { Util } from '../../shared/utils/util';
 import { Router } from '@angular/router';
-import { BarCodeScannerComponent } from '../../shared/bar-code-scanner/bar-code-scanner.component';
 import { AddBookUseCase } from 'src/app/core/use-cases/book/add-book.use-case';
 import { Author } from 'src/app/core/domain/entities/author.entity';
 import { GetAllAuthorsUseCase } from 'src/app/core/use-cases/author/get-all-authors.use-case';
@@ -15,6 +12,9 @@ import { UploadFileUseCase } from 'src/app/core/use-cases/cdn/upload-file.use-ca
 import { CDN } from 'src/app/core/domain/entities/cdn.entity';
 import { CDNFileTpe } from 'src/app/core/domain/enums/cdn-file-type.enum';
 import { Book } from 'src/app/core/domain/entities/book.entity';
+import { UploadComponent } from 'src/app/views/upload/upload.component';
+import { Util } from 'src/app/views/shared/utils/util';
+import { BarCodeScannerComponent } from 'src/app/views/shared/bar-code-scanner/bar-code-scanner.component';
 
 
 @Component({

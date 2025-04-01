@@ -25,8 +25,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatOptionModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
     declarations: [
@@ -64,6 +66,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
         MatDialogModule,
         MatOptionModule,
         MatDatepickerModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatNativeDateModule,
     ],
     exports: [
         BookCardComponent,
