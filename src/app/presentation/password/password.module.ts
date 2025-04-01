@@ -23,7 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     PasswordRoutingModule,
     ReactiveFormsModule,
     TranslateModule.forChild(),
-    
+
     // Material
     MatFormFieldModule,
     MatInputModule,

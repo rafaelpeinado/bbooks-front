@@ -22,14 +22,14 @@ import { MatCardModule } from '@angular/material/card';
     FormsModule,
     ReactiveFormsModule,
     TranslateModule.forChild(),
-    
+
     // Material Modules
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
-    MatCardModule,   
+    MatCardModule,
   ],
 })
 export class LoginModule { }

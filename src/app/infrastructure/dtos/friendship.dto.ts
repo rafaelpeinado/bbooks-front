@@ -1,4 +1,4 @@
-import { ProfileTO, UserTO } from "./user.dto";
+import { ProfileTO, UserTO } from './user.dto';
 
 export interface FriendshipTO {
     id: string;

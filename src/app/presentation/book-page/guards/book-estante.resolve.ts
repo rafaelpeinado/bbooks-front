@@ -41,7 +41,7 @@ export class BookEstanteResolve implements Resolve<Book[]> {
                 const userBooks: UserBook[] = [];
                 books.forEach((book) => {
                     userBooks.push(UserBookBuilder.builder().setBook(book).build());
-                })
+                });
                 return new Bookcase(tag, tag, userBooks);
             }));
     }

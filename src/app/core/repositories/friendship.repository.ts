@@ -1,5 +1,5 @@
-import { Observable } from "rxjs";
-import { Friendship } from "../domain/entities/friendship.entity";
+import { Observable } from 'rxjs';
+import { Friendship } from '../domain/entities/friendship.entity';
 
 export abstract class FriendshipRepository {
     abstract createFriendship(friendProfileId: string): Observable<string>;

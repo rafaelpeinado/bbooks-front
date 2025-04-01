@@ -111,7 +111,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     verifyRequests() {
         const result = this.friendships?.filter(friendship => friendship.friendshipStatus === 'received');
         if (result?.length > 0) {
-            return result?.length
+            return result?.length;
         } else {
             return '';
         }
@@ -152,18 +152,18 @@ export class NavBarComponent implements OnInit, OnDestroy {
         ).subscribe(() => {
             if (this.setSentFriendships.has(friendshipTO.id)) {
                 this.setSentFriendships.delete(friendshipTO.id);
-                this.sentFriendships = this.sentFriendships.filter((sentFriendship) => sentFriendship.id !== friendshipTO.id)
+                this.sentFriendships = this.sentFriendships.filter((sentFriendship) => sentFriendship.id !== friendshipTO.id);
             }
 
             if (this.setReceivedFriendships.has(friendshipTO.id)) {
                 this.setReceivedFriendships.delete(friendshipTO.id);
-                this.receivedFriendships = this.receivedFriendships.filter((sentFriendship) => sentFriendship.id !== friendshipTO.id)
+                this.receivedFriendships = this.receivedFriendships.filter((sentFriendship) => sentFriendship.id !== friendshipTO.id);
             }
 
             this.translate.get('PADRAO.SOLICITACAO_ACEITA').subscribe(message => {
                 Util.showSuccessDialog(message);
             });
-        })
+        });
     }
 
     deleteRequest(friendship: FriendshipTO) {
@@ -192,7 +192,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     private handleError(error: any) {
         this.translate.get('PADRAO.OCORREU_UM_ERRO').pipe(
             switchMap(message => {
-                clearInterval(this.timer)
+                clearInterval(this.timer);
                 Util.showErrorDialog(message);
                 return this.logoutUseCase.execute();
             }),
@@ -209,14 +209,14 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
     private addSentFriendships(friendshipTO: FriendshipTO): void {
         if (!this.setSentFriendships.has(friendshipTO.id)) {
-            this.setSentFriendships.add(friendshipTO.id)
+            this.setSentFriendships.add(friendshipTO.id);
             this.sentFriendships.push(friendshipTO);
         }
     }
 
     private addReceivedFriendships(friendshipTO: FriendshipTO): void {
         if (!this.setReceivedFriendships.has(friendshipTO.id)) {
-            this.setReceivedFriendships.add(friendshipTO.id)
+            this.setReceivedFriendships.add(friendshipTO.id);
             this.receivedFriendships.push(friendshipTO);
         }
     }

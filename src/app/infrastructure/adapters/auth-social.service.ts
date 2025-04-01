@@ -18,7 +18,7 @@ export class AuthSocialService implements AuthRepository {
         private readonly authServiceSocial: SocialAuthService,
         private readonly userService: UserService,
     ) { }
-    
+
     authConfirm(login: Login): Observable<User> {
         throw new Error('Method not implemented.');
     }

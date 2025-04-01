@@ -68,7 +68,7 @@ export class FriendComponent implements OnInit {
         this.getFriendshipsByUsernameUseCase.execute(this.user.profile.username).pipe(
             switchMap((friendships) => {
                 this.friendships = friendships;
-                return forkJoin(friendships.map((friendship) => this.getProfileByIdUseCase.execute(friendship.friendProfileId)))
+                return forkJoin(friendships.map((friendship) => this.getProfileByIdUseCase.execute(friendship.friendProfileId)));
             })
         ).subscribe((users) => {
             users.forEach((user) => {
@@ -80,9 +80,9 @@ export class FriendComponent implements OnInit {
                     profileTO: ProfileMapper.toDTO(user),
                 };
                 this.friendshipTO.push(friendshipTO);
-            })
+            });
             this.filteredFriendshipTO = this.friendshipTO;
-        })
+        });
     }
 
     getUser() {

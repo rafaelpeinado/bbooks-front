@@ -33,7 +33,7 @@ export class UserService extends BaseApiService<User, UserTO> implements UserRep
             profileImage: user.profile.profileImage,
             userName: user.profile.username,
         };
-        const service = this.http.post<UserTO>(this.api, registerTO)
+        const service = this.http.post<UserTO>(this.api, registerTO);
         return this.handleRequestDTOToEntity(service, UserMapper.toEntity);
     }
 

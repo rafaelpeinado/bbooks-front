@@ -38,14 +38,14 @@ interface User {
 }
 
 export interface RegisterTO {
-    name: string
-    lastName: string
-    email: string
-    userName: string
-    password: string
-    confirmPassword: string
-    idSocial: string
-    profileImage: string
+    name: string;
+    lastName: string;
+    email: string;
+    userName: string;
+    password: string;
+    confirmPassword: string;
+    idSocial: string;
+    profileImage: string;
 }
 
 

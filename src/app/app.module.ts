@@ -11,7 +11,6 @@ import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common
 import { Interceptor } from './guards/interceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './material/material.module';
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -53,6 +52,13 @@ import { GeonameApiService } from './infrastructure/adapters/geoname.service';
 import { CDNRepository } from './core/repositories/cdn.repository';
 import { CDNApiService } from './infrastructure/adapters/cdn.service';
 import { AuthGuard } from './guards/auth-guard';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatBadgeModule } from '@angular/material/badge';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -69,15 +75,11 @@ export function HttpLoaderFactory(http: HttpClient) {
         BrowserModule,
         AppRoutingModule,
         FlexLayoutModule,
-        MaterialModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
         BrowserAnimationsModule,
-        MatSliderModule,
-        MatFormFieldModule,
-        MatInputModule,
         SocialLoginModule,
         SharedModule,
         MglTimelineModule,
@@ -95,6 +97,19 @@ export function HttpLoaderFactory(http: HttpClient) {
         }),
         FontAwesomeModule,
         NgxQRCodeModule,
+
+        // Material
+        MatSliderModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatPaginatorModule,
+        MatFormFieldModule,
+        MatDialogModule,
+        MatToolbarModule,
+        MatMenuModule,
+        MatButtonModule,
+        MatBadgeModule,
     ],
     providers: [
         BnNgIdleService,
