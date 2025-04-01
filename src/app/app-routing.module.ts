@@ -30,7 +30,7 @@ const routes: Routes = [
     {
         path: 'search',
         canActivate: [AuthGuard],
-        loadChildren: () => import('./views/search/search.module').then(m => m.SearchModule)
+        loadChildren: () => import('./presentation/search/search.module').then(m => m.SearchModule)
     },
     {
         path: 'bookcase',

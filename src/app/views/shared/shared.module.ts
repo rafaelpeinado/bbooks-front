@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../../material/material.module';
 import { FlexLayoutModule, FlexModule } from '@angular/flex-layout';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -17,6 +16,17 @@ import { SearchBookComponent } from './search-book/search-book.component';
 import { BarCodeScannerComponent } from './bar-code-scanner/bar-code-scanner.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { EmptyContentMessageComponent } from './empty-content-message/empty-content-message.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
     declarations: [
@@ -31,16 +41,29 @@ import { EmptyContentMessageComponent } from './empty-content-message/empty-cont
     ],
     imports: [
         CommonModule,
-        MaterialModule,
-        FlexModule,
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
+        FlexModule,
         FlexLayoutModule,
         HttpClientModule,
         SweetAlert2Module,
         TranslateModule.forChild(),
         ZXingScannerModule,
+
+        // Material
+        MatFormFieldModule,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDividerModule,
+        MatPaginatorModule,
+        MatCardModule,
+        MatDialogModule,
+        MatOptionModule,
+        MatDatepickerModule,
     ],
     exports: [
         BookCardComponent,

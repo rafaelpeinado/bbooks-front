@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {Router} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
-import {BarCodeScannerComponent} from '../../shared/bar-code-scanner/bar-code-scanner.component';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { BarCodeScannerComponent } from 'src/app/views/shared/bar-code-scanner/bar-code-scanner.component';
 
 @Component({
     selector: 'app-main-search',
@@ -33,7 +33,7 @@ export class MainSearchComponent implements OnInit {
         if (url.includes('books')) {
             subrouter = 'books';
         }
-        this.router.navigate(['search/' + subrouter], {queryParams: {search: this.formSearch.get('search').value}});
+        this.router.navigate(['search/' + subrouter], { queryParams: { search: this.formSearch.get('search').value } });
     }
 
     readCodeBar(): void {
@@ -44,7 +44,7 @@ export class MainSearchComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 this.formSearch.get('search').setValue(result);
-                this.router.navigate(['search/books'], {queryParams: {search: result}});
+                this.router.navigate(['search/books'], { queryParams: { search: result } });
             }
         });
     }

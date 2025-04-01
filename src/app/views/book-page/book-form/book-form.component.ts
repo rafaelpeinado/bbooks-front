@@ -42,9 +42,7 @@ export class BookFormComponent implements OnInit {
         private readonly addBookUseCase: AddBookUseCase,
         private readonly getAllAuthorsUseCase: GetAllAuthorsUseCase,
         private readonly uploadFileUseCase: UploadFileUseCase,
-    ) {
-        this.book.authors = [];
-    }
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
@@ -78,10 +76,10 @@ export class BookFormComponent implements OnInit {
     }
 
     private initAuthors(): void {
-        if (this.book.authors.length === 0) {
+        if (this.book.authors?.length === 0) {
             this.authors.insert(0, this.createAuthorsForm(null, ''));
         }
-        this.book.authors.forEach((author, i) => {
+        this.book.authors?.forEach((author, i) => {
             this.authors.push(this.createAuthorsForm(author.id, author.name));
             this.getAuthors(i);
         });
