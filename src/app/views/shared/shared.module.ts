@@ -9,7 +9,7 @@ import { BookAddDialogComponent } from './book-add-dialog/book-add-dialog.compon
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NumbersOnlyInputDirective } from './directive/numbers-only-input.directive';
-import { LoaderComponent } from '../../loader/loader.component';
+import { LoaderComponent } from '../loader/loader.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { TextareaAutoresizeDirective } from './directive/textarea-autoresize.directive';
 import { SearchBookComponent } from './search-book/search-book.component';

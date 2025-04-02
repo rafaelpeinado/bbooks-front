@@ -11,7 +11,7 @@ import { FlexLayoutModule, FlexModule } from '@angular/flex-layout';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { CarrouselComponent } from './carrousel/carrousel.component';
 import { BookViewComponent } from './book-view/book-view.component';
-import { RatingComponent } from '../../components/rating/rating.component';
+import { RatingComponent } from '../../views/rating/rating.component';
 import { BookEstanteResolve } from './guards/book-estante.resolve';
 import { BookViewResolve } from './guards/book-view.resolve';
 import { CarrouselResolve } from './guards/carrousel.resolve';

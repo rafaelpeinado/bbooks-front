@@ -16,7 +16,7 @@ import { userMock } from 'src/app/mocks/user.model.mock';
 import { SocialAuthServiceConfigMock } from 'src/app/mocks/google.provide.mock';
 import { of } from 'rxjs';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {EmptyContentMessageComponent} from '../../views/shared/empty-content-message/empty-content-message.component';
+import {EmptyContentMessageComponent} from '../shared/empty-content-message/empty-content-message.component';
 
 describe('NavBarComponent', () => {
     let component: NavBarComponent;

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
-import { Util } from '../../views/shared/utils/util';
+import { Util } from '../shared/utils/util';
 import { GetCachedUserUseCase } from 'src/app/core/use-cases/user/get-cached-user.use-case';
 import { User } from 'src/app/core/domain/entities/user.entity';
 import { LogoutUseCase } from 'src/app/core/use-cases/auth/logout.use-case';
