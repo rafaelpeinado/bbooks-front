@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div>
-                    <div><a style="color: black" [routerLink]="['', friend?.profileTO?.username]"><b>@{{friend?.profileTO?.username}}</b></a>
+                    <div><a style="color: black" [routerLink]="['/perfil', friend?.profileTO?.username]"><b>@{{friend?.profileTO?.username}}</b></a>
                     </div>
                 </div>
 
@@ -76,7 +76,7 @@
 
             </div>
             <div>
-                <div><a style="color: black" [routerLink]="['', friend?.profileTO?.username]"><b>{{friend?.profileTO?.name}}
+                <div><a style="color: black" [routerLink]="['/perfil', friend?.profileTO?.username]"><b>{{friend?.profileTO?.name}}
                             {{friend?.profileTO?.lastName}}</b></a>
                 </div>
             </div>

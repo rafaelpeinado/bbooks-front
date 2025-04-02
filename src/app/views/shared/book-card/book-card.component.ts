@@ -54,19 +54,8 @@ export class BookCardComponent implements OnInit {
         }
 
         this.isUserBook = this.router.url.includes('mybooks');
-        if (!this.isUserBook) {
-            if (!this.idTag) {
-                this.routerlink = '/books/';
-            } else {
-                this.routerlink = '/book/' + this.idTag + '/';
-            }
-        } else {
-            if (!this.idTag) {
-                this.routerlink = '/books/';
-            } else {
-                this.routerlink = '/mybooks/' + this.idTag + '/';
-            }
-        }
+        const baseRoute = this.isUserBook ? '/bookcase/mybooks/' : '/bookcase/book/';
+        this.routerlink = this.idTag ? `${baseRoute}${this.idTag}/` : '/bookcase/books/';
     }
 
 

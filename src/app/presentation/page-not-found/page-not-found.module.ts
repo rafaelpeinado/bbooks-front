@@ -6,6 +6,7 @@ import { PageNotFoundComponent } from './page-not-found.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     TranslateModule.forChild(),
     MatButtonModule,
     FlexLayoutModule,
+    MatSnackBarModule,
   ]
 })
 export class PageNotFoundModule { }

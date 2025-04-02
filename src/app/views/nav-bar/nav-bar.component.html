@@ -24,7 +24,7 @@
             </div>
             <div *ngFor="let request of receivedFriendships">
                 <div mat-menu-item style="height: 120px" *ngIf="request.profileTO.id">
-                    <div fxLayout="row" [routerLink]="['', request?.profileTO.username]">
+                    <div fxLayout="row" [routerLink]="['/perfil', request?.profileTO.username]">
                         <img class="imagem-perfil"
                             [src]="request?.profileTO?.profileImage ? request.profileTO.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
                             alt="imagem de perfil" />
@@ -47,7 +47,7 @@
             <div *ngFor="let request of sentFriendships">
                 <div mat-menu-item style="height: 120px" *ngIf="request.profileTO.id">
 
-                    <div fxLayout="row" [routerLink]="['', request?.profileTO.username]">
+                    <div fxLayout="row" [routerLink]="['/perfil', request?.profileTO.username]">
                         <img class="imagem-perfil"
                             [src]="request?.profileTO?.profileImage ? request.profileTO.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
                             alt="imagem de perfil" />
