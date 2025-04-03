@@ -18,11 +18,11 @@ import { mapBookStatus } from 'src/app/core/domain/enums/book-status.enum';
 })
 export class UserBookApiService extends BaseApiService<UserBook, UserBookTO> implements UserBookRepository {
 
-    private api: string = environment.api + 'bookcases/';
-    private apiProfile: string = this.api + 'profile/';
-    private apiStatusData: string = this.api + 'status-data';
+    private readonly api: string = environment.api + 'bookcases/';
+    private readonly apiProfile: string = this.api + 'profile/';
+    private readonly apiStatusData: string = this.api + 'status-data';
 
-    constructor(protected http: HttpClient) {
+    constructor(protected readonly http: HttpClient) {
         super(http);
     }
 

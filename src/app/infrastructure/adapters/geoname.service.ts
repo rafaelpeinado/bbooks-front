@@ -11,11 +11,11 @@ import { Location } from 'src/app/core/domain/entities/location.entity';
     providedIn: 'root'
 })
 export class GeonameApiService implements LocationRepository {
-    private api: string = environment.geonameApi;
-    private countryInfoApi = this.api + 'countryInfoJSON';
-    private childrenApi = this.api + 'childrenJSON';
+    private readonly api: string = environment.geonameApi;
+    private readonly countryInfoApi = this.api + 'countryInfoJSON';
+    private readonly childrenApi = this.api + 'childrenJSON';
 
-    private geonameUsername = environment.geonameUserName;
+    private readonly geonameUsername = environment.geonameUserName;
 
     constructor(private readonly http: HttpClient) { }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SocialUser } from 'angularx-social-login';
@@ -21,7 +21,7 @@ import { StorageType } from 'src/app/core/domain/enums/storage-type.enum';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
     public loginType = LoginType;
     hide = true;
@@ -30,20 +30,17 @@ export class LoginComponent implements OnInit {
     loggedIn: boolean;
 
     constructor(
-        private fb: FormBuilder,
-        private router: Router,
-        private translate: TranslateService,
-        private loginUseCase: LoginUseCase,
-        private SetCacheUseCase: SetCacheUseCase,
+        private readonly fb: FormBuilder,
+        private readonly router: Router,
+        private readonly translate: TranslateService,
+        private readonly loginUseCase: LoginUseCase,
+        private readonly SetCacheUseCase: SetCacheUseCase,
     ) {
         this.loginControl = this.fb.group({
             email: '',
             password: '',
             keepLogin: [false]
         });
-    }
-
-    ngOnInit(): void {
     }
 
     login(loginType: LoginType): void {

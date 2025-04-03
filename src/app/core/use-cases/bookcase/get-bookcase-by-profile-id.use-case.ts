@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 })
 export class GetBookcaseByProfileIdUseCase implements UseCaseInterface {
     constructor(
-        private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
+        private readonly getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
     ) { }
 
     execute(): Observable<Bookcase> {

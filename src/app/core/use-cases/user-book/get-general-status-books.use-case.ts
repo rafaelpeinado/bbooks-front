@@ -9,7 +9,7 @@ import { UserBookRepository } from '../../repositories/user-book.repository';
     providedIn: 'root'
 })
 export class GetGeneralStatusBooksUseCase implements UseCaseApiInterface<ApiType> {
-    constructor(private userBookRepository: UserBookRepository) { }
+    constructor(private readonly userBookRepository: UserBookRepository) { }
 
     execute(id: string, apiType: ApiType): Observable<GeneralStatus> {
         return this.userBookRepository.getGeneralStatusBooks(id, apiType);

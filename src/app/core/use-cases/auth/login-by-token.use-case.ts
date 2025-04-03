@@ -17,10 +17,10 @@ import { StorageType } from '../../domain/enums/storage-type.enum';
 })
 export class LoginByTokenUseCase implements UseCaseApiInterface<LoginType> {
     constructor(
-        private loginServiceFactory: LoginServiceFactory,
-        private createLoginCacheUseCase: CreateLoginCacheUseCase,
-        private setIsLoggedUseCase: SetIsLoggedUseCase,
-        private getCacheUseCase: GetCacheUseCase,
+        private readonly loginServiceFactory: LoginServiceFactory,
+        private readonly createLoginCacheUseCase: CreateLoginCacheUseCase,
+        private readonly setIsLoggedUseCase: SetIsLoggedUseCase,
+        private readonly getCacheUseCase: GetCacheUseCase,
     ) { }
 
     execute(login: Login): Observable<User> {

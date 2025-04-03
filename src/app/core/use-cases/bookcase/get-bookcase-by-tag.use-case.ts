@@ -11,7 +11,7 @@ import { UserBook } from '../../domain/entities/user-book.entity';
 })
 export class GetBookcaseByTagIdUseCase implements UseCaseInterface {
     constructor(
-        private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
+        private readonly getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
     ) { }
 
     execute(tagId: string): Observable<Bookcase> {

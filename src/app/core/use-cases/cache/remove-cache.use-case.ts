@@ -8,7 +8,7 @@ import { CacheRepository } from '../../repositories/cache.repository';
     providedIn: 'root'
 })
 export class RemoveCacheUseCase implements UseCaseApiInterface<StorageType> {
-    constructor(private cacheRepository: CacheRepository) { }
+    constructor(private readonly cacheRepository: CacheRepository) { }
 
     execute(storageItem: StorageItem, storageType: StorageType): void {
         return this.cacheRepository.remove(storageItem, storageType);

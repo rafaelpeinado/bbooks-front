@@ -33,12 +33,12 @@ export class BookCardComponent implements OnInit {
     private isUserBook: boolean;
 
     constructor(
-        private router: Router,
-        public dialog: MatDialog,
-        private getBookByIdUseCase: GetBookByIdUseCase,
-        private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
-        private changeStatusUserBookUseCase: ChangeStatusUserBookUseCase,
-        private temporaryService: TemporaryService,
+        private readonly router: Router,
+        private readonly dialog: MatDialog,
+        private readonly getBookByIdUseCase: GetBookByIdUseCase,
+        private readonly getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
+        private readonly changeStatusUserBookUseCase: ChangeStatusUserBookUseCase,
+        private readonly temporaryService: TemporaryService,
     ) {
     }
 
@@ -95,7 +95,7 @@ export class BookCardComponent implements OnInit {
             const isUserBook: UserBook = userBooks.find((isUserBook) => isUserBook.book.id === book.id);
 
             this.book = book;
-            this.isUserBook = isUserBook.id ? true : false;
+            this.isUserBook = isUserBook?.id !== undefined;
         });
 
     }
@@ -104,5 +104,7 @@ export class BookCardComponent implements OnInit {
         return this.router.url.includes('my');
     }
 
-
+    onKeyDown($event) {
+        console.log($event);
+    }
 }

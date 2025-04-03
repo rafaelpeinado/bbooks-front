@@ -31,33 +31,34 @@ export class NavBarComponent implements OnInit, OnDestroy {
     public user: User;
     public sentFriendships: FriendshipTO[] = [];
     public receivedFriendships: FriendshipTO[] = [];
-    private sentAndReceivedStatus: FriendshipStatusEnum[] = [FriendshipStatusEnum.RECEIVED, FriendshipStatusEnum.SENT];
-    private setSentFriendships: Set<string> = new Set<string>();
-    private setReceivedFriendships: Set<string> = new Set<string>();
     private isLoggedSubscription: Subscription;
+    private readonly setSentFriendships: Set<string> = new Set<string>();
+    private readonly setReceivedFriendships: Set<string> = new Set<string>();
+    private readonly sentAndReceivedStatus: FriendshipStatusEnum[] = [FriendshipStatusEnum.RECEIVED, FriendshipStatusEnum.SENT];
+
 
     menuPerfil;
     public friendships: Friendship[];
     publicProfileId = '';
     timer;
     constructor(
-        private router: Router,
         public translate: TranslateService,
-        private getCachedUserUseCase: GetCachedUserUseCase,
-        private logoutUseCase: LogoutUseCase,
-        private getIsLoggedUseCase: GetIsLoggedUseCase,
-        private updateUserInfoUseCase: UpdateUserInfoUseCase,
-        private temporaryService: TemporaryService,
-        private getUserByIdUseCase: GetUserByIdUseCase,
-        private getAllFriendshipsUseCase: GetAllFriendshipsUseCase,
-        private getProfileByIdUseCase: GetProfileByIdUseCase,
-        private acceptFriendshipUseCase: AcceptFriendshipUseCase,
-        private deleteFriendshipRequestUseCase: DeleteFriendshipRequestUseCase,
+        private readonly router: Router,
+        private readonly getCachedUserUseCase: GetCachedUserUseCase,
+        private readonly logoutUseCase: LogoutUseCase,
+        private readonly getIsLoggedUseCase: GetIsLoggedUseCase,
+        private readonly updateUserInfoUseCase: UpdateUserInfoUseCase,
+        private readonly temporaryService: TemporaryService,
+        private readonly getUserByIdUseCase: GetUserByIdUseCase,
+        private readonly getAllFriendshipsUseCase: GetAllFriendshipsUseCase,
+        private readonly getProfileByIdUseCase: GetProfileByIdUseCase,
+        private readonly acceptFriendshipUseCase: AcceptFriendshipUseCase,
+        private readonly deleteFriendshipRequestUseCase: DeleteFriendshipRequestUseCase,
     ) {
         translate.addLangs(['pt-BR', 'en']);
         translate.setDefaultLang('pt-BR');
         const browserLang = translate.getBrowserLang();
-        translate.use(browserLang.match(/pt-BR|en/) ? browserLang : 'pt-BR');
+        translate.use(/pt-BR|en/.exec(browserLang) ? browserLang : 'pt-BR');
     }
 
     ngOnDestroy(): void {
@@ -219,5 +220,9 @@ export class NavBarComponent implements OnInit, OnDestroy {
             this.setReceivedFriendships.add(friendshipTO.id);
             this.receivedFriendships.push(friendshipTO);
         }
+    }
+
+    onKeyDown($event) {
+        console.log($event);
     }
 }

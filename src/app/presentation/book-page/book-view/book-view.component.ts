@@ -44,11 +44,11 @@ export class BookViewComponent implements OnInit, OnDestroy {
     hasReadingTarget: boolean;
 
     constructor(
-        private route: ActivatedRoute,
-        public dialog: MatDialog,
-        private getBookByIdUseCase: GetBookByIdUseCase,
-        private getGeneralStatusBooksUseCase: GetGeneralStatusBooksUseCase,
-        private getCachedUserUseCase: GetCachedUserUseCase,
+        private readonly route: ActivatedRoute,
+        private readonly dialog: MatDialog,
+        private readonly getBookByIdUseCase: GetBookByIdUseCase,
+        private readonly getGeneralStatusBooksUseCase: GetGeneralStatusBooksUseCase,
+        private readonly getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         Util.loadingScreen();
         this.inscricao = this.route.data.subscribe((data: { userBookDetails: UserBookDetails }) => {

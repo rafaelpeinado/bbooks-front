@@ -16,9 +16,9 @@ export class PesquisarAmigosComponent implements OnInit {
     public filterUsers: User[] = [];
 
     constructor(
-        private route: ActivatedRoute,
-        private getUsersByNameUseCase: GetUsersByNameUseCase,
-        private getUsersByUsernameUseCase: GetUsersByUsernameUseCase,
+        private readonly route: ActivatedRoute,
+        private readonly getUsersByNameUseCase: GetUsersByNameUseCase,
+        private readonly getUsersByUsernameUseCase: GetUsersByUsernameUseCase,
     ) {
     }
 

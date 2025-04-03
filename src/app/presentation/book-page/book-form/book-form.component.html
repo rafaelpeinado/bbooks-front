@@ -7,7 +7,8 @@
         <!-- Form -->
         <form [formGroup]="formBook">
             <div fxLayout="row" fxLayoutAlign="space-around center" fxLayout.xs="column">
-                <img src="{{image ? image : 'https://adriaticaindustriale.it/wp-content/uploads/2020/02/not-found.png'}}" class="image">
+                <img src="{{image ? image : 'https://adriaticaindustriale.it/wp-content/uploads/2020/02/not-found.png'}}"
+                    class="image" alt="foto do livro">
             </div>
             <div fxLayoutAlign="space-around center" fxLayout.xs="column">
                 <mat-form-field appearance="outline" class="inputsLayout" fxLayout.xs="column">
@@ -23,7 +24,8 @@
                 <mat-form-field fxFlex="30" appearance="outline" class="inputsLayout">
                     <mat-label>ISBN</mat-label>
                     <input formControlName="isbn10" matInput placeholder="Ex. 9786555520538">
-                    <button mat-button matSuffix mat-icon-button aria-label="Pesquisar" type="submit" (click)="readCodeBar()">
+                    <button mat-button matSuffix mat-icon-button aria-label="Pesquisar" type="submit"
+                        (click)="readCodeBar()">
                         <i class="fas fa-barcode fa-2x"></i>
                     </button>
                 </mat-form-field>
@@ -44,7 +46,7 @@
                     <mat-form-field appearance="outline" class="inputsLayout">
                         <mat-label>{{'BOOK.PAGINAS' | translate}}</mat-label>
                         <input type="number" formControlName="numberPage" matInput maxlength="5" placeholder="Ex. 500"
-                               appNumbersOnlyInput>
+                            appNumbersOnlyInput>
                     </mat-form-field>
                 </div>
                 <div class="inputsLayout">
@@ -71,23 +73,21 @@
             </div>
             <!--        linha form-->
             <div formArrayName="authors" *ngFor="let item of authors.controls; let i = index;" fxLayout="row"
-                 fxLayout.xs="column"
-                 class="inputsLayout" fxLayoutAlign="center center">
+                fxLayout.xs="column" class="inputsLayout" fxLayoutAlign="center center">
                 <div class="inputsLayout">
                     <mat-form-field [formGroupName]="i" appearance="outline" class="inputsLayout">
                         <input type="text" placeholder="Ex: Monteiro Lobato" matInput formControlName="name"
-                               [matAutocomplete]="auto">
+                            [matAutocomplete]="auto">
                         <mat-autocomplete #auto="matAutocomplete">
                             <mat-option *ngFor="let option of filteredOptions[i] | async" [value]="option.name"
-                                        (onSelectionChange)="selectOption(i,option)">
+                                (onSelectionChange)="selectOption(i,option)">
                                 {{option.name}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
                 </div>
                 <div>
-                    <button mat-mini-fab color="warn" style="margin-bottom: 14px"
-                            (click)="this.removeAuthors(1)">
+                    <button mat-mini-fab color="warn" style="margin-bottom: 14px" (click)="this.removeAuthors(1)">
                         <mat-icon>close</mat-icon>
                     </button>
                 </div>
@@ -97,10 +97,7 @@
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" class="inputsLayout">
                 <mat-form-field fxFlex appearance="outline" class="inputsLayout">
                     <mat-label>{{'PADRAO.DESCRICAO' | translate}}</mat-label>
-                    <textarea
-                      style="height: 150px"
-                      matInput
-                      formControlName="description">
+                    <textarea style="height: 150px" matInput formControlName="description">
                     </textarea>
                 </mat-form-field>
             </div>
@@ -108,9 +105,8 @@
 
         </form>
         <button type="button" mat-raised-button color="accent" (click)="saveBook()" style="width: 100%"
-                [disabled]="formBook.invalid">
+            [disabled]="formBook.invalid">
             {{'PADRAO.CRIAR' | translate}}
         </button>
     </mat-card>
 </div>
-

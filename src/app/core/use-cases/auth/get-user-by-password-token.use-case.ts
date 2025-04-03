@@ -10,7 +10,7 @@ import { User } from '../../domain/entities/user.entity';
 })
 export class GetUserByPasswordTokenUseCase implements UseCaseApiInterface<LoginType> {
     constructor(
-        private loginServiceFactory: LoginServiceFactory,
+        private readonly loginServiceFactory: LoginServiceFactory,
     ) { }
 
     execute(token: string): Observable<User> {

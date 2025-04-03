@@ -12,9 +12,9 @@ import { RemoveTokenUseCase } from './remove-token.use-case';
 
 export class ClearCacheUseCase implements UseCaseInterface {
     constructor(
-        private removeCachedUserUseCase: RemoveCachedUserUseCase,
-        private removeTokenUseCase: RemoveTokenUseCase,
-        private removeCacheUseCase: RemoveCacheUseCase
+        private readonly removeCachedUserUseCase: RemoveCachedUserUseCase,
+        private readonly removeTokenUseCase: RemoveTokenUseCase,
+        private readonly removeCacheUseCase: RemoveCacheUseCase
     ) { }
 
     execute(): void {

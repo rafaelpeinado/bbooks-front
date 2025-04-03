@@ -11,8 +11,8 @@ import { FactoryApi } from './factory.factory';
 export class BookServiceFactory extends FactoryApi<BookRepository> {
 
     constructor(
-        private googleBooksApiService: GoogleBooksApiService,
-        private bookApiService: BookApiService,
+        private readonly googleBooksApiService: GoogleBooksApiService,
+        private readonly bookApiService: BookApiService,
     ) {
         super();
     }

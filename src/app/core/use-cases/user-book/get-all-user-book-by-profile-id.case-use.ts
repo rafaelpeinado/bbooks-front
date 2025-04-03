@@ -11,8 +11,8 @@ import { UserBookRepository } from '../../repositories/user-book.repository';
 })
 export class GetAllUserBookByProfileIdUseCase implements UseCaseInterface {
     constructor(
-        private userBookRepository: UserBookRepository,
-        private getCachedUserUseCase: GetCachedUserUseCase,
+        private readonly userBookRepository: UserBookRepository,
+        private readonly getCachedUserUseCase: GetCachedUserUseCase,
     ) { }
 
     execute(): Observable<UserBook[]> {

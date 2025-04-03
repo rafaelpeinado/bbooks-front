@@ -15,9 +15,9 @@ import { LoginType } from '../../domain/enums/login-type.enum';
 
 export class CreateLoginCacheUseCase implements UseCaseApiInterface<LoginType> {
     constructor(
-        private setCacheUserUseCase: SetCacheUserUseCase,
-        private setTokenUseCase: SetTokenUseCase,
-        private setCacheUseCase: SetCacheUseCase,
+        private readonly setCacheUserUseCase: SetCacheUserUseCase,
+        private readonly setTokenUseCase: SetTokenUseCase,
+        private readonly setCacheUseCase: SetCacheUseCase,
     ) { }
 
     execute(user: User, loginType: LoginType): void {

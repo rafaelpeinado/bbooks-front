@@ -26,10 +26,10 @@ export class BooksSearchComponent implements OnInit, OnDestroy {
     loading = false;
 
     constructor(
-        private searchMergedBookUseCase: SearchMergedBookUseCase,
-        public mediaObserver: MediaObserver,
-        private route: ActivatedRoute,
-        private getCachedUserUseCase: GetCachedUserUseCase,
+        private readonly searchMergedBookUseCase: SearchMergedBookUseCase,
+        private readonly mediaObserver: MediaObserver,
+        private readonly route: ActivatedRoute,
+        private readonly getCachedUserUseCase: GetCachedUserUseCase,
     ) {
         this.pageEvent.pageSize = 10;
         this.pageEvent.pageIndex = 0;
@@ -39,7 +39,7 @@ export class BooksSearchComponent implements OnInit, OnDestroy {
         this.user = this.getCachedUserUseCase.execute();
 
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
-            this.deviceXs = result[0].mqAlias === 'xs' ? true : false;
+            this.deviceXs = result[0].mqAlias === 'xs';
         });
         this.route.queryParams
             .pipe(

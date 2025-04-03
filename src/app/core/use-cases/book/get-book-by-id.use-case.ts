@@ -16,9 +16,9 @@ import { SetCache } from '../../domain/interfaces/set-cache.interface';
 })
 export class GetBookByIdUseCase implements UseCaseApiInterface<ApiType> {
     constructor(
-        private bookServiceFactory: BookServiceFactory,
-        private getCacheUseCase: GetCacheUseCase,
-        private setCacheUseCase: SetCacheUseCase,
+        private readonly bookServiceFactory: BookServiceFactory,
+        private readonly getCacheUseCase: GetCacheUseCase,
+        private readonly setCacheUseCase: SetCacheUseCase,
     ) { }
 
     execute(bookId: string, api: ApiType): Observable<Book> {

@@ -15,8 +15,8 @@ import { getFriendshipStatus } from 'src/app/core/domain/enums/friendship-status
     providedIn: 'root'
 })
 export class FriendshipApiService extends BaseApiService<Friendship, FriendshipTO> implements FriendshipRepository {
-    private api: string = environment.api + 'friends/';
-    private apiRequests = this.api + 'requests/';
+    private readonly api: string = environment.api + 'friends/';
+    private readonly apiRequests = this.api + 'requests/';
 
     constructor(protected readonly http: HttpClient) {
         super(http);

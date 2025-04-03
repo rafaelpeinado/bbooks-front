@@ -10,9 +10,9 @@ import { LogoutUseCase } from '../core/use-cases/auth/logout.use-case';
 })
 export class AuthGuard implements CanActivate {
     constructor(
-        private router: Router,
-        private getIsLoggedUseCase: GetIsLoggedUseCase,
-        private logoutUseCase: LogoutUseCase,
+        private readonly router: Router,
+        private readonly getIsLoggedUseCase: GetIsLoggedUseCase,
+        private readonly logoutUseCase: LogoutUseCase,
     ) {
     }
 

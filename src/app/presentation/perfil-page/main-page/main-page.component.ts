@@ -25,16 +25,16 @@ export class MainPageComponent implements OnInit, OnChanges {
     activeLink = this.links[0];
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
         public translate: TranslateService,
-        private getCachedUserUseCase: GetCachedUserUseCase,
-        private getUserByUsernameUseCase: GetUserByUsernameUseCase,
-        private sendAddFriendUseCase: CreateFriendshipUseCase,
-        private acceptFriendshipUseCase: AcceptFriendshipUseCase,
-        private deleteFriendshipRequestUseCase: DeleteFriendshipRequestUseCase,
-        private getFriendshipRequestByUsernameUseCase: GetFriendshipRequestByUsernameUseCase,
-        private deleteFriendshipUseCase: DeleteFriendshipUseCase,
+        private readonly router: Router,
+        private readonly route: ActivatedRoute,
+        private readonly getCachedUserUseCase: GetCachedUserUseCase,
+        private readonly getUserByUsernameUseCase: GetUserByUsernameUseCase,
+        private readonly sendAddFriendUseCase: CreateFriendshipUseCase,
+        private readonly acceptFriendshipUseCase: AcceptFriendshipUseCase,
+        private readonly deleteFriendshipRequestUseCase: DeleteFriendshipRequestUseCase,
+        private readonly getFriendshipRequestByUsernameUseCase: GetFriendshipRequestByUsernameUseCase,
+        private readonly deleteFriendshipUseCase: DeleteFriendshipUseCase,
     ) {
         this.route.data.subscribe((data: { user: User }) => {
             this.user = data.user;
@@ -120,4 +120,7 @@ export class MainPageComponent implements OnInit, OnChanges {
         });
     }
 
+    onKeyDown($event) {
+        console.log($event);
+    }
 }

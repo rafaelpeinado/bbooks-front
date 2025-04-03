@@ -9,11 +9,7 @@ export abstract class BaseApiService<Entity, DTO> {
         return service.pipe(
             first(),
             map(mapper),
-            // TODO
-            // catchError(error => {
-            //     console.error("Erro na API:", error);
-            //     return throwError(() => new Error("Erro ao processar requisição"));
-            // })
+            // TODO fazer tratativa de erro
         );
     }
 }

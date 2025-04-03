@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
     selector: 'app-rating',
     templateUrl: './rating.component.html',
     styleUrls: ['./rating.component.scss']
 })
-export class RatingComponent implements OnInit {
+export class RatingComponent {
     @Input() rating: number;
     @Input() idStar: number;
 
@@ -13,11 +13,7 @@ export class RatingComponent implements OnInit {
     @Output() starLeave: EventEmitter<number> = new EventEmitter<number>();
     @Output() starClicked: EventEmitter<number> = new EventEmitter<number>();
 
-    constructor() {
-    }
-
-    ngOnInit(): void {
-    }
+    constructor() { }
 
     OnStarEnter() {
         this.starEnter.emit(this.idStar);
@@ -31,4 +27,7 @@ export class RatingComponent implements OnInit {
         this.starClicked.emit(this.idStar);
     }
 
+    onKeyDown($event) {
+        console.log($event);
+    }
 }

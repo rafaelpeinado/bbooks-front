@@ -7,7 +7,7 @@ import { LoginType } from '../../domain/enums/login-type.enum';
     providedIn: 'root'
 })
 export class SetIsLoggedUseCase implements UseCaseInterface {
-    constructor(private loginServiceFactory: LoginServiceFactory) { }
+    constructor(private readonly loginServiceFactory: LoginServiceFactory) { }
 
     execute(isLogged: boolean): void {
         const service = this.loginServiceFactory.create(LoginType.BBOOKS);

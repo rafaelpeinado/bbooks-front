@@ -15,9 +15,9 @@ import { GetBookcaseByTagIdUseCase } from 'src/app/core/use-cases/bookcase/get-b
 export class BookEstanteResolve implements Resolve<Book[]> {
 
     constructor(
-        private searchBookByNameUseCase: SearchBookByNameUseCase,
-        private getBookcaseByProfileIdUseCase: GetBookcaseByProfileIdUseCase,
-        private getBookcaseByTagIdUseCase: GetBookcaseByTagIdUseCase,
+        private readonly searchBookByNameUseCase: SearchBookByNameUseCase,
+        private readonly getBookcaseByProfileIdUseCase: GetBookcaseByProfileIdUseCase,
+        private readonly getBookcaseByTagIdUseCase: GetBookcaseByTagIdUseCase,
     ) {
     }
 

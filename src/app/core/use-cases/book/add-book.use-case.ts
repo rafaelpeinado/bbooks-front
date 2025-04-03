@@ -9,7 +9,7 @@ import { ApiType } from '../../domain/enums/api-type.enum';
     providedIn: 'root'
 })
 export class AddBookUseCase implements UseCaseInterface {
-    constructor(private bookServiceFactory: BookServiceFactory) { }
+    constructor(private readonly bookServiceFactory: BookServiceFactory) { }
 
     execute(book: Book): Observable<Book> {
         const bookRepository = this.bookServiceFactory.create(ApiType.BBOOKS);

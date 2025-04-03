@@ -21,13 +21,13 @@ export class TagDialogComponent implements OnInit {
     public textForm: string;
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public tag: any,
-        private formBuilder: FormBuilder,
-        public dialogRef: MatDialogRef<Tag>,
+        @Inject(MAT_DIALOG_DATA) private readonly tag: any,
         public translate: TranslateService,
-        private createTagUseCase: CreateTagUseCase,
-        private editTagUseCase: EditTagUseCase,
-        private getCachedUserUseCase: GetCachedUserUseCase,
+        private readonly formBuilder: FormBuilder,
+        private readonly dialogRef: MatDialogRef<Tag>,
+        private readonly createTagUseCase: CreateTagUseCase,
+        private readonly editTagUseCase: EditTagUseCase,
+        private readonly getCachedUserUseCase: GetCachedUserUseCase,
     ) {
     }
 

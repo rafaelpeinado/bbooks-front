@@ -37,9 +37,9 @@ export class PerfilComponent implements OnInit {
     image;
 
     constructor(
-        private fb: FormBuilder,
-        private matDialog: MatDialog,
         public translate: TranslateService,
+        private readonly fb: FormBuilder,
+        private readonly matDialog: MatDialog,
         private readonly getCachedUserUseCase: GetCachedUserUseCase,
         private readonly getUserByIdUseCase: GetUserByIdUseCase,
         private readonly updateUserUseCase: UpdateUserUseCase,
@@ -128,7 +128,8 @@ export class PerfilComponent implements OnInit {
     }
 
     changeModeBasicInfo() {
-        return this.modeBasicInfo = !this.modeBasicInfo;
+        this.modeBasicInfo = !this.modeBasicInfo;
+        return this.modeBasicInfo;
     }
 
     save() {

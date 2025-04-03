@@ -12,9 +12,9 @@ import { ClearCacheUseCase } from './clear-cache.use-case';
 })
 export class LogoutUseCase implements UseCaseApiInterface<LoginType> {
     constructor(
-        private loginServiceFactory: LoginServiceFactory,
-        private setIsLoggedUseCase: SetIsLoggedUseCase,
-        private clearCacheUseCase: ClearCacheUseCase,
+        private readonly loginServiceFactory: LoginServiceFactory,
+        private readonly setIsLoggedUseCase: SetIsLoggedUseCase,
+        private readonly clearCacheUseCase: ClearCacheUseCase,
     ) { }
 
     execute(): Observable<void> {

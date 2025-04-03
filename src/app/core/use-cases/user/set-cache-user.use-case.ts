@@ -11,7 +11,7 @@ import { StorageItem } from 'src/app/infrastructure/enums/storage-item.enum';
 })
 
 export class SetCacheUserUseCase implements UseCaseInterface {
-    constructor(private setCacheUseCase: SetCacheUseCase) { }
+    constructor(private readonly setCacheUseCase: SetCacheUseCase) { }
 
     execute(input: User): void {
         const setCache: SetCache<User> = { value: input, storageItem: StorageItem.USER };

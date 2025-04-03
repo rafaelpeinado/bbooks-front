@@ -138,7 +138,7 @@ export class BookFormComponent implements OnInit {
     }
 
     onFileChanged(event) {
-        if (event.target.files && event.target.files[0]) {
+        if (event?.target?.files?.[0]) {
             const file = event.target.files[0];
             console.log(file);
             const formData = new FormData();

@@ -15,9 +15,9 @@ import { GoogleBooksMapper } from '../mappers/google-books.mapper';
 })
 export class GoogleBooksApiService implements BookRepository {
 
-    private api: string = environment.googleBooksApi + 'books/v1/volumes/';
+    private readonly api: string = environment.googleBooksApi + 'books/v1/volumes/';
 
-    constructor(private http: HttpClient) { }
+    constructor(private readonly http: HttpClient) { }
 
     searchBookByNamePagination(filter: FilterSearch): Observable<PaginationInterface<Book>> {
         const params = new HttpParams()

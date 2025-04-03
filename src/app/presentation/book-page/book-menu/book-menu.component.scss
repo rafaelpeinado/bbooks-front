@@ -27,45 +27,41 @@ mat-drawer {
   width: 290px;
   margin-left: 5px;
 }
-.list-item{
-  //color: #9bbccb;
-  //background-color: #415566;
-  //border-bottom: 2px solid #394A59;
-  //padding: 20px;
+
+.list-item {
   transition: all .2s linear;
   border-radius: 10px;
 }
 
 .list-item:hover {
   background-color: rgba(196, 201, 205, 0.3);
-  //color: white;
   cursor: pointer;
 }
-.list-item:hover #iconSubItem{
+
+.list-item:hover #iconSubItem {
   transition: all .2s linear;
   opacity: 1;
 }
-.sidenav{
- // background-color:  white;
+
+.sidenav {
   width: 301px;
   border-radius: 3px;
   box-shadow: 1px 5px 5px rgba(128, 128, 128, 0.39);
 }
-//mat-toolbar{
-//  background-color:  white;
-//
-//}
 
-.activedList{
+.activedList {
   background-color: rgba(65, 85, 102, 0.11);
 }
-.subItemPadding{
-  margin-left:15px;
+
+.subItemPadding {
+  margin-left: 15px;
 }
-.iconSubItem{
+
+.iconSubItem {
   opacity: 0;
-  margin-right:5px;
+  margin-right: 5px;
 }
-.itemPadding{
-  margin-left:15px;
+
+.itemPadding {
+  margin-left: 15px;
 }

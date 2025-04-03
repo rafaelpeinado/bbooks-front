@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { Input } from '@angular/core';
 import { TagDialogComponent } from '../tag-dialog/tag-dialog.component';
 import { DeleteTagUseCase } from 'src/app/core/use-cases/tag/delete-tag.use-case';
 import { Tag } from 'src/app/core/domain/entities/tag.entity';
@@ -22,10 +21,10 @@ export class BookMenuComponent implements OnInit {
     topVal = 0;
 
     constructor(
-        private router: Router,
-        private deleteTagUseCase: DeleteTagUseCase,
-        private getAllTagsByProfileIdTagUseCase: GetAllTagsByProfileIdTagUseCase,
-        public dialog: MatDialog
+        private readonly router: Router,
+        private readonly deleteTagUseCase: DeleteTagUseCase,
+        private readonly getAllTagsByProfileIdTagUseCase: GetAllTagsByProfileIdTagUseCase,
+        private readonly dialog: MatDialog
     ) {
     }
 
@@ -78,4 +77,7 @@ export class BookMenuComponent implements OnInit {
             .subscribe();
     }
 
+    onKeyDown($event) {
+        console.log($event);
+    }
 }

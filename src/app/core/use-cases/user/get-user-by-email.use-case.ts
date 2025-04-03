@@ -9,7 +9,7 @@ import { UseCaseInterface } from "../use-case.interface";
 })
 
 export class GetUserByEmailUseCase implements UseCaseInterface {
-    constructor(private userRepository: UserRepository) { }
+    constructor(private readonly userRepository: UserRepository) { }
 
     execute(email: string): Observable<User> {
         return this.userRepository.getUserByEmail(email);

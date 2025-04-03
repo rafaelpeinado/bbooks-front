@@ -9,7 +9,7 @@ import { UseCaseInterface } from '../use-case.interface';
 })
 
 export class UpdateUserUseCase implements UseCaseInterface {
-    constructor(private userRepository: UserRepository) { }
+    constructor(private readonly userRepository: UserRepository) { }
 
     execute(user: User): Observable<User> {
         return this.userRepository.updateUser(user);

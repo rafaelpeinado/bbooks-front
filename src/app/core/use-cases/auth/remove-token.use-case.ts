@@ -9,7 +9,7 @@ import { StorageType } from '../../domain/enums/storage-type.enum';
 })
 
 export class RemoveTokenUseCase implements UseCaseInterface {
-    constructor(private removeCacheUseCase: RemoveCacheUseCase) { }
+    constructor(private readonly removeCacheUseCase: RemoveCacheUseCase) { }
 
     execute(): void {
         this.removeCacheUseCase.execute(StorageItem.TOKEN, StorageType.LOCAL_STORAGE);

@@ -9,7 +9,7 @@ import { Friendship } from '../../domain/entities/friendship.entity';
 })
 
 export class GetAllFriendshipsUseCase implements UseCaseInterface {
-    constructor(private friendshipRepository: FriendshipRepository) { }
+    constructor(private readonly friendshipRepository: FriendshipRepository) { }
 
     execute(): Observable<Friendship[]> {
         return this.friendshipRepository.getAllFriendships();

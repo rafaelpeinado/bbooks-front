@@ -1,11 +1,6 @@
 .container-conteudo {
   width: 100%;
-  //height: 100%;
   margin: 0px auto 0px;
-  //border: 1px solid #dadce0;
-  //border-right: 1px solid #dadce0;
-  //border-top: 1px solid #dadce0;;
-  //border-left: 1px solid #dadce0;;
   padding: 0px 40px 35px;
   box-sizing: border-box;
 }
@@ -21,7 +16,8 @@
   border-radius: 50%;
   margin: auto;
 }
-.card-main{
+
+.card-main {
   width: 100%;
 }
 
@@ -32,16 +28,20 @@
     margin: auto 0px;
     padding: 0px;
   }
+
   .container-imagem-perfil {
     margin-top: 20px;
   }
+
   .input-edicao {
     width: 100%;
   }
-  .card-main{
+
+  .card-main {
     width: 100%;
   }
 }
+
 .iconTextWhite {
   color: white;
 }

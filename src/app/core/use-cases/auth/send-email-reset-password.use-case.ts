@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class SendEmailResetPasswordUseCase implements UseCaseApiInterface<LoginType> {
     constructor(
-        private loginServiceFactory: LoginServiceFactory,
+        private readonly loginServiceFactory: LoginServiceFactory,
     ) { }
 
     execute(input: { email: string; url: string }): Observable<string> {

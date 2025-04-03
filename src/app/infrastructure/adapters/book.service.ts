@@ -17,9 +17,9 @@ import { GoogleBooksMapper } from '../mappers/google-books.mapper';
 })
 export class BookApiService implements BookRepository {
 
-    private api: string = environment.api + 'books/';
+    private readonly api: string = environment.api + 'books/';
 
-    constructor(private http: HttpClient) { }
+    constructor(private readonly http: HttpClient) { }
 
     updateBook(book: Book): Observable<Book> {
         return this.http.put<Book>(this.api + book.id, book);

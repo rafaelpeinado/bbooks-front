@@ -36,19 +36,19 @@ export class FriendComponent implements OnInit {
     public filteredFriendshipTO: FriendshipTO[] = [];
 
     constructor(
-        private route: ActivatedRoute,
-        private router: Router,
         public translate: TranslateService,
-        private formBuilder: FormBuilder,
-        private getCachedUserUseCase: GetCachedUserUseCase,
-        private getUserByUsernameUseCase: GetUserByUsernameUseCase,
-        private sendAddFriendUseCase: CreateFriendshipUseCase,
-        private getFriendshipsByUsernameUseCase: GetFriendshipsByUsernameUseCase,
-        private getProfileByIdUseCase: GetProfileByIdUseCase,
-        private acceptFriendshipUseCase: AcceptFriendshipUseCase,
-        private deleteFriendshipRequestUseCase: DeleteFriendshipRequestUseCase,
-        private getFriendshipRequestByUsernameUseCase: GetFriendshipRequestByUsernameUseCase,
-        private deleteFriendshipUseCase: DeleteFriendshipUseCase,
+        private readonly route: ActivatedRoute,
+        private readonly router: Router,
+        private readonly formBuilder: FormBuilder,
+        private readonly getCachedUserUseCase: GetCachedUserUseCase,
+        private readonly getUserByUsernameUseCase: GetUserByUsernameUseCase,
+        private readonly sendAddFriendUseCase: CreateFriendshipUseCase,
+        private readonly getFriendshipsByUsernameUseCase: GetFriendshipsByUsernameUseCase,
+        private readonly getProfileByIdUseCase: GetProfileByIdUseCase,
+        private readonly acceptFriendshipUseCase: AcceptFriendshipUseCase,
+        private readonly deleteFriendshipRequestUseCase: DeleteFriendshipRequestUseCase,
+        private readonly getFriendshipRequestByUsernameUseCase: GetFriendshipRequestByUsernameUseCase,
+        private readonly deleteFriendshipUseCase: DeleteFriendshipUseCase,
     ) {
         this.formSearch = this.formBuilder.group({
             search: new FormControl(null)
@@ -167,4 +167,7 @@ export class FriendComponent implements OnInit {
         this.filteredFriendshipTO = this.friendshipTO;
     }
 
+    onKeyDown($event) {
+        console.log($event);
+    }
 }

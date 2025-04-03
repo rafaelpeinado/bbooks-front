@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Util } from '../utils/util';
@@ -12,7 +12,7 @@ import { Book } from 'src/app/core/domain/entities/book.entity';
     templateUrl: './search-book.component.html',
     styleUrls: ['./search-book.component.scss']
 })
-export class SearchBookComponent implements OnInit {
+export class SearchBookComponent {
     formSearch: FormGroup;
     books: Book[] = [];
     totalBooks = 0;
@@ -20,18 +20,15 @@ export class SearchBookComponent implements OnInit {
     pageSize = 10;
 
     constructor(
-        private searchMergedBookUseCase: SearchMergedBookUseCase,
-        public fb: FormBuilder,
-        public dialogRef: MatDialogRef<SearchBookComponent>,
+        private readonly searchMergedBookUseCase: SearchMergedBookUseCase,
+        private readonly fb: FormBuilder,
+        private readonly dialogRef: MatDialogRef<SearchBookComponent>,
     ) {
         this.formSearch = this.fb.group({
             search: ['']
         });
         this.pageEvent.pageSize = 10;
         this.pageEvent.pageIndex = 0;
-    }
-
-    ngOnInit(): void {
     }
 
     searchBooks(): void {
@@ -47,11 +44,6 @@ export class SearchBookComponent implements OnInit {
                 Util.stopLoading();
                 this.totalBooks = response.totalElements;
                 this.books = response.content;
-
-                if (this.books.length < 0) {
-                    this.books = [];
-                    this.totalBooks = 0;
-                }
             }, error => {
                 console.log('error search book', error);
             });
@@ -66,4 +58,7 @@ export class SearchBookComponent implements OnInit {
         this.dialogRef.close(book);
     }
 
+    onKeyDown($event) {
+        console.log($event);
+    }
 }

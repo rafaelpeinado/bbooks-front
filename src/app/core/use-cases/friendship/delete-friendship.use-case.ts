@@ -8,7 +8,7 @@ import { FriendshipRepository } from '../../repositories/friendship.repository';
 })
 
 export class DeleteFriendshipUseCase implements UseCaseInterface {
-    constructor(private friendshipRepository: FriendshipRepository) { }
+    constructor(private readonly friendshipRepository: FriendshipRepository) { }
 
     execute(friendProfileId: string): Observable<string> {
         return this.friendshipRepository.deleteFriendship(friendProfileId);

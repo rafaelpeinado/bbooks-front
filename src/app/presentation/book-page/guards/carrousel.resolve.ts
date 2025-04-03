@@ -9,7 +9,7 @@ import { Book } from 'src/app/core/domain/entities/book.entity';
 export class CarrouselResolve implements Resolve<Book[]> {
 
     constructor(
-        private searchBookByNameUseCase: SearchBookByNameUseCase,
+        private readonly searchBookByNameUseCase: SearchBookByNameUseCase,
     ) {
     }
 
@@ -21,6 +21,7 @@ export class CarrouselResolve implements Resolve<Book[]> {
         const bookcaseDescripton = route.params.bookcase;
         const bookcase = new Bookcase(undefined, undefined, []);
         if (myBook) {
+            // TODO
             // bookcase = this.bookService.getBookCaseByDescription(bookcaseDescripton);
             if (bookcase) {
                 return bookcase;

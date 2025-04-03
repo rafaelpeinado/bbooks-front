@@ -1,8 +1,8 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {BehaviorSubject} from 'rxjs';
-import {BarcodeFormat} from '@zxing/library';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { BarcodeFormat } from '@zxing/library';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export default BarcodeFormat;
 
@@ -44,11 +44,10 @@ export class BarCodeScannerComponent implements OnInit {
     tryHarder = false;
     isExchange = false;
     constructor(
-        private fb: FormBuilder,
-        @Inject(MAT_DIALOG_DATA) public data: { isExchange: boolean },
-
+        @Inject(MAT_DIALOG_DATA) private readonly data: { isExchange: boolean },
+        private readonly fb: FormBuilder,
     ) {
-        this.data?.isExchange ? this.isExchange = true : this.isExchange = false;
+        this.isExchange = this.data?.isExchange;
     }
     ngOnInit(): void {
         this.formSearch = this.fb.group({
@@ -64,7 +63,7 @@ export class BarCodeScannerComponent implements OnInit {
 
     onCamerasFound(devices: MediaDeviceInfo[]): void {
         this.availableDevices = devices;
-        this.hasDevices = Boolean(devices && devices.length);
+        this.hasDevices = Boolean(devices?.length);
     }
 
     onCodeResult(resultString: string) {

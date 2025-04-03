@@ -11,8 +11,8 @@ import { TagRepository } from '../../repositories/tag.repository';
 })
 export class GetAllTagsByProfileIdTagUseCase implements UseCaseInterface {
     constructor(
-        private tagRepository: TagRepository,
-        private getCachedUserUseCase: GetCachedUserUseCase,
+        private readonly tagRepository: TagRepository,
+        private readonly getCachedUserUseCase: GetCachedUserUseCase,
     ) { }
 
     execute(): Observable<Tag[]> {

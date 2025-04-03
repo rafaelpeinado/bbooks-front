@@ -1,17 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-empty-content-message',
   templateUrl: './empty-content-message.component.html',
   styleUrls: ['./empty-content-message.component.scss']
 })
-export class EmptyContentMessageComponent implements OnInit {
+export class EmptyContentMessageComponent {
 
   @Input() message: string;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

@@ -15,9 +15,9 @@ export class PageNotFoundComponent implements OnInit {
     action: string;
 
     constructor(
-        private snackBar: MatSnackBar,
-        private router: Router,
-        private translate: TranslateService
+        private readonly snackBar: MatSnackBar,
+        private readonly router: Router,
+        private readonly translate: TranslateService
     ) {
 
     }

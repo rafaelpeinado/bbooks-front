@@ -8,7 +8,7 @@ import { TagRepository } from '../../repositories/tag.repository';
     providedIn: 'root'
 })
 export class GetAllTagsByUserBookIdUseCase implements UseCaseInterface {
-    constructor(private tagRepository: TagRepository) { }
+    constructor(private readonly tagRepository: TagRepository) { }
 
     execute(bookUserId: string): Observable<Tag[]> {
         return this.tagRepository.getAllTagsByUserBookId(bookUserId);

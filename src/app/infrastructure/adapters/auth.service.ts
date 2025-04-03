@@ -17,13 +17,13 @@ import { first } from 'rxjs/operators';
 })
 export class AuthApiService extends BaseApiService<User, UserTO> implements AuthRepository {
 
-    private isLogged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-    private api = environment.api + 'auth/';
-    private apiLogin = this.api + 'login/';
-    private apiLoginGoogle = this.apiLogin + 'google/';
-    private apiToken = this.apiLogin + 'token';
-    private apiResetPass = this.api + 'reset-pass/';
-    private apiConfirm = this.api + 'confirm/';
+    private readonly isLogged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+    private readonly api = environment.api + 'auth/';
+    private readonly apiLogin = this.api + 'login/';
+    private readonly apiLoginGoogle = this.apiLogin + 'google/';
+    private readonly apiToken = this.apiLogin + 'token';
+    private readonly apiResetPass = this.api + 'reset-pass/';
+    private readonly apiConfirm = this.api + 'confirm/';
 
     constructor(protected readonly http: HttpClient) {
         super(http);

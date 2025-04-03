@@ -12,8 +12,8 @@ import { Book } from 'src/app/core/domain/entities/book.entity';
 export class BookViewResolve implements Resolve<UserBookDetails> {
     userbooks;
     constructor(
-        private getBookByIdUseCase: GetBookByIdUseCase,
-        private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
+        private readonly getBookByIdUseCase: GetBookByIdUseCase,
+        private readonly getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
     ) { }
 
     resolve(

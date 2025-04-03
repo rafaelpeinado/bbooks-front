@@ -8,7 +8,7 @@ import { TagRepository } from '../../repositories/tag.repository';
     providedIn: 'root'
 })
 export class CreateTagUseCase implements UseCaseInterface {
-    constructor(private tagRepository: TagRepository) { }
+    constructor(private readonly tagRepository: TagRepository) { }
 
     execute(tag: Tag): Observable<Tag> {
         return this.tagRepository.addTag(tag);

@@ -3,7 +3,7 @@
         <div class="container-imagem-perfil">
             <img class="imagem-perfil" [src]="this.image? this.image : user?.profile?.profileImage ?
                  user?.profile?.profileImage:
-                 'https://image.flaticon.com/icons/png/512/1361/1361728.png'" />
+                 'https://image.flaticon.com/icons/png/512/1361/1361728.png'" alt="foto de perfil" />
             <button mat-icon-button class="middle" (click)="showDialogUpload()">
                 <mat-icon>create</mat-icon>
             </button>
@@ -59,7 +59,6 @@
                                     <mat-label>{{'PADRAO.NOME' | translate}}</mat-label>
                                     <input matInput type="text" formControlName="name" />
                                 </mat-form-field>
-                                <!--<input type="email" formControlName="email" *ngIf="modeBasicInfo">-->
                             </div>
                             <mat-divider></mat-divider>
                             <div class="container-dados-usuario">
@@ -71,7 +70,6 @@
                                     <mat-label>{{'PADRAO.SOBRENOME' | translate}}</mat-label>
                                     <input matInput type="text" formControlName="lastName" />
                                 </mat-form-field>
-                                <!--<input type="email" formControlName="email" *ngIf="modeBasicInfo">-->
                             </div>
                             <mat-divider></mat-divider>
                             <div class="container-dados-usuario">
@@ -82,7 +80,6 @@
                                     <mat-label>{{'PADRAO.EMAIL' | translate}}</mat-label>
                                     <input matInput type="email" formControlName="email" />
                                 </mat-form-field>
-                                <!--<input type="email" formControlName="email" *ngIf="modeBasicInfo">-->
                             </div>
                             <mat-divider></mat-divider>
                             <div class="container-dados-usuario">
@@ -93,7 +90,6 @@
                                     <mat-label>{{'PADRAO.NOME_USUARIO' | translate}}</mat-label>
                                     <input matInput type="text" formControlName="userName" />
                                 </mat-form-field>
-                                <!--                                <input type="text" formControlName="userName" *ngIf="modeBasicInfo">-->
                             </div>
                             <mat-divider></mat-divider>
                             <div class="container-dados-usuario">
@@ -104,7 +100,6 @@
                                 <mat-form-field *ngIf="modeBasicInfo" appearance="outline">
                                     <input matInput type="date" formControlName="birthDate" />
                                 </mat-form-field>
-                                <!--<input type="date" formControlName="birthDate" *ngIf="modeBasicInfo">-->
                             </div>
                             <mat-divider></mat-divider>
                             <div class="container-dados-usuario">

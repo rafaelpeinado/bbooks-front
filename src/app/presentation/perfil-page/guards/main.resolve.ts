@@ -11,7 +11,7 @@ export class MainResolve implements Resolve<User> {
     isUser: boolean;
 
     constructor(
-        private getUserByUsernameUseCase: GetUserByUsernameUseCase,
+        private readonly getUserByUsernameUseCase: GetUserByUsernameUseCase,
     ) {
     }
 

@@ -46,11 +46,11 @@ export class CadastroSegundaEtapaComponent implements OnInit {
     file;
 
     constructor(
-        private router: Router,
-        private formBuilder: FormBuilder,
-        public dialog: MatDialog,
-        private adapter: DateAdapter<any>,
-        private translate: TranslateService,
+        private readonly router: Router,
+        private readonly formBuilder: FormBuilder,
+        private readonly dialog: MatDialog,
+        private readonly adapter: DateAdapter<any>,
+        private readonly translate: TranslateService,
         private readonly clearCacheUseCase: ClearCacheUseCase,
         private readonly getCachedUserUseCase: GetCachedUserUseCase,
         private readonly loginByTokenUseCase: LoginByTokenUseCase,
@@ -131,26 +131,25 @@ export class CadastroSegundaEtapaComponent implements OnInit {
         this.formCadastro2.get('id').setValue(this.user.profile.id);
         if (this.user.profile.profileImage) {
             this.getByIdToUpdateProfile();
+        } else if (this.file) {
+            Util.loadingScreen();
+            const cdn: CDN = {
+                file: this.file,
+                type: CDNFileTpe.IMAGE,
+                info: { objectType: 'profile_image' },
+            };
+            this.uploadFileUseCase.execute(cdn)
+                .pipe(finalize(() => Util.stopLoading()))
+                .subscribe(() => {
+                    this.getByIdToUpdateProfile();
+                }, error => {
+                    console.log('error upload', error);
+                    this.clearCacheUseCase.execute();
+                });
         } else {
-            if (this.file) {
-                Util.loadingScreen();
-                const cdn: CDN = {
-                    file: this.file,
-                    type: CDNFileTpe.IMAGE,
-                    info: { objectType: 'profile_image' },
-                };
-                this.uploadFileUseCase.execute(cdn)
-                    .pipe(finalize(() => Util.stopLoading()))
-                    .subscribe(() => {
-                        this.getByIdToUpdateProfile();
-                    }, error => {
-                        console.log('error upload', error);
-                        this.clearCacheUseCase.execute();
-                    });
-            } else {
-                this.getByIdToUpdateProfile();
-            }
+            this.getByIdToUpdateProfile();
         }
+
 
     }
 

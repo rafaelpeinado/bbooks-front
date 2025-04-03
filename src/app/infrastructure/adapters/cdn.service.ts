@@ -10,8 +10,8 @@ import { CDN } from 'src/app/core/domain/entities/cdn.entity';
 })
 export class CDNApiService implements CDNRepository {
 
-    private api = environment.api + 'cdn/';
-    private apiUpload = this.api + 'upload';
+    private readonly api = environment.api + 'cdn/';
+    private readonly apiUpload = this.api + 'upload';
 
     constructor(private readonly http: HttpClient) { }
 

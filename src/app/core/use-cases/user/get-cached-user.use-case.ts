@@ -10,7 +10,7 @@ import { GetCacheUseCase } from '../cache/get-cache.use-case';
 })
 
 export class GetCachedUserUseCase implements UseCaseInterface {
-    constructor(private getCacheUseCase: GetCacheUseCase) { }
+    constructor(private readonly getCacheUseCase: GetCacheUseCase) { }
 
     execute(): User {
         return this.getCacheUseCase.execute<User>(StorageItem.USER, StorageType.LOCAL_STORAGE);

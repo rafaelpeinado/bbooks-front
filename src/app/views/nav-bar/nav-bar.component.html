@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" style="padding: 0 8px;">
     <span routerLink="{{isLogged ? '/' : ''}}">
-        <img class="iconbbooks" src="assets/images/logobboks.png">
+        <img class="iconbbooks" src="assets/images/logobboks.png" alt="logo bbooks">
     </span>
     <span class="example-spacer"></span>
     <button *ngIf="isLogged" mat-flat-button color="primary" style="width: 5vw;" routerLink="/bookcase">
@@ -27,7 +27,7 @@
                     <div fxLayout="row" [routerLink]="['/perfil', request?.profileTO.username]">
                         <img class="imagem-perfil"
                             [src]="request?.profileTO?.profileImage ? request.profileTO.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
-                            alt="imagem de perfil" />
+                            alt="foto de perfil" />
 
                         <span> {{request?.name}} {{request?.lastName}}</span>
                     </div>
@@ -50,7 +50,7 @@
                     <div fxLayout="row" [routerLink]="['/perfil', request?.profileTO.username]">
                         <img class="imagem-perfil"
                             [src]="request?.profileTO?.profileImage ? request.profileTO.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
-                            alt="imagem de perfil" />
+                            alt="foto de perfil" />
 
                         <span> {{request?.name}} {{request?.lastName}}</span>
                     </div>
@@ -78,7 +78,7 @@
                 <div fxLayout="row" [routerLink]="['/perfil', user?.profile?.username]">
                     <img class="imagem-perfil"
                         [src]="user?.profile?.profileImage ? user.profile.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
-                        alt="imagem de perfil" />
+                        alt="foto de perfil" />
 
                     <span> {{user?.profile?.username}}</span>
                 </div>
@@ -92,7 +92,7 @@
                 <button mat-menu-item (click)="switchLang('pt-BR')">{{'NAV.PORTUGUES' | translate}}</button>
                 <button mat-menu-item (click)="switchLang('en')">{{'NAV.INGLES' | translate}}</button>
             </mat-menu>
-            <div mat-menu-item (click)="logout()">
+            <div mat-menu-item (click)="logout()" (keydown)="onKeyDown($event)">
                 <mat-icon>login</mat-icon>
                 <span>{{'NAV.SAIR' | translate}}</span>
             </div>

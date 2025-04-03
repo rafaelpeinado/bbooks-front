@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   title = 'bbooks';
 
   constructor(
-    private http: HttpClient,
+    private readonly http: HttpClient,
   ) { }
 
   ngOnInit(): void {

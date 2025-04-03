@@ -3,7 +3,6 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription, zip } from 'rxjs';
 import { BookService } from '../../../services/book.service';
-import { MatDialog } from '@angular/material/dialog';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -44,19 +43,18 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
     @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
     constructor(
-        private route: ActivatedRoute,
-        private bookService: BookService,
-        public dialog: MatDialog,
-        public mediaObserver: MediaObserver,
-        private router: Router,
-        private translate: TranslateService,
-        private temporaryService: TemporaryService,
-        private getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
+        private readonly route: ActivatedRoute,
+        private readonly bookService: BookService,
+        private readonly mediaObserver: MediaObserver,
+        private readonly router: Router,
+        private readonly translate: TranslateService,
+        private readonly temporaryService: TemporaryService,
+        private readonly getAllUserBookByProfileIdUseCase: GetAllUserBookByProfileIdUseCase,
     ) { }
 
     ngOnInit(): void {
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
-            this.deviceXs = result[0].mqAlias === 'xs' ? true : false;
+            this.deviceXs = result[0].mqAlias === 'xs';
         });
         this.userBook = this.verifyrouter();
 
@@ -180,7 +178,7 @@ export class BookEstanteComponent implements OnInit, OnDestroy {
             return this.bookcase?.userBooks;
         }
         const userBooks = [];
-        this.bookcase.userBooks.filter((userBook) => {
+        this.bookcase.userBooks.forEach((userBook) => {
             this.translate.get('STATUS.' + userBook.status).subscribe(statusBook => {
                 for (const status of this.filter) {
                     if (status === statusBook) {

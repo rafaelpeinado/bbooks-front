@@ -7,7 +7,8 @@
   margin: 10px auto 0;
 }
 
-.container-cinza, .container-branco {
+.container-cinza,
+.container-branco {
   width: 100%;
   padding: 30px 20px;
 }
@@ -34,7 +35,8 @@
   padding: 10px;
 }
 
-.foto-membro img, .nome-membro p {
+.foto-membro img,
+.nome-membro p {
   text-align: center;
   margin: 0 auto;
 }
@@ -48,7 +50,8 @@
   font-size: 1rem;
 }
 
-.foto-membro, .nome-membro {
+.foto-membro,
+.nome-membro {
   margin: 0 auto 10px;
   width: 100%;
   text-align: center;
@@ -85,6 +88,7 @@
   .container-membros {
     flex-wrap: wrap;
   }
+
   .membro {
     width: 100%;
   }
@@ -94,6 +98,7 @@
   .container-membros {
     flex-wrap: wrap;
   }
+
   .membro {
     width: 100%;
   }
@@ -102,31 +107,37 @@
 .iconStatusLendo {
   color: darkorange;
 }
-.iconStatusLidos{
+
+.iconStatusLidos {
   color: #36BF7F;
 }
-.iconStatusQueroLer{
+
+.iconStatusQueroLer {
   color: bisque;
 }
-.iconStatusEmprestado{
+
+.iconStatusEmprestado {
   color: #394A59;
 }
-.iconStatusRelendo{
+
+.iconStatusRelendo {
   color: #9bdfbf;
 }
-.iconStatusInterrompido{
+
+.iconStatusInterrompido {
   color: darkred;
 }
 
-.totalStatusCard{
+.totalStatusCard {
   width: 100px;
   padding: 10px;
 
 }
-.otherInfoCard{
+
+.otherInfoCard {
   width: 150px;
 }
-////new layout
+
 .card {
   margin: 0.5em;
   border: 1px solid #dadce0;
@@ -134,23 +145,28 @@
   padding: 30px 40px 35px;
   background-color: white;
 }
-.textColor{
+
+.textColor {
   color: #858585;
   word-break: break-word;
 }
-.totalStatus{
+
+.totalStatus {
   text-align: center;
   font-size: 11px;
 }
+
 .acompanhamento {
   margin: 0.5em;
   width: 600px;
 }
-.button-color{
+
+.button-color {
   color: white;
 }
-.cardImage{
-  border-color:  rgba(0, 0, 0, 0.2);
+
+.cardImage {
+  border-color: rgba(0, 0, 0, 0.2);
   border-width: 1px;
   border-style: solid;
   border-radius: 4px;
@@ -158,20 +174,21 @@
   max-width: 150px;
 
 }
+
 .progresBarTracking {
   height: 20px;
   border-radius: 15px;
 }
 
 
-.description{
+.description {
   text-align: justify;
   margin: auto 15px;
   max-width: 600px;
 }
 
-.cardImageReview{
-  border-color:  rgba(0, 0, 0, 0.2);
+.cardImageReview {
+  border-color: rgba(0, 0, 0, 0.2);
   border-width: 1px;
   border-style: solid;
   border-radius: 4px;
@@ -180,7 +197,8 @@
   max-height: 50px;
 
 }
-.commentReview{
+
+.commentReview {
   border-radius: 4px;
   background-color: white;
   word-break: break-word;
@@ -188,11 +206,12 @@
   width: 600px;
 
 }
-.button-like{
+
+.button-like {
   color: #5f5f5f;
-  //color: #D9BC9A;
 }
-.cardDescription{
+
+.cardDescription {
   border: 1px solid #dadce0;
   border-radius: 5px;
   padding: 30px 40px 35px;
@@ -207,33 +226,41 @@
     margin: auto 1px;
     padding: 0px;
   }
-  .cardDescription{
+
+  .cardDescription {
     border: none;
     width: 100%;
     padding: 0px;
   }
-  .trackings{
+
+  .trackings {
     border: none;
     width: 300px;
   }
-  .acompanhamento{
+
+  .acompanhamento {
     border: none;
     width: 100% !important;
     padding: 0;
   }
-  .mat-card-content{
+
+  .mat-card-content {
     margin: auto 10px;
   }
-  .flex{
+
+  .flex {
     width: 100% !important;
   }
-  .commentReview{
+
+  .commentReview {
     width: 250px;
   }
-  .totalStatusCard{
+
+  .totalStatusCard {
     width: 100%;
   }
-  .otherInfoCard{
+
+  .otherInfoCard {
     width: 100%;
   }
 

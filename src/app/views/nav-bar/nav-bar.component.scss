@@ -1,29 +1,30 @@
 .example-spacer {
     flex: 1 1 auto;
-  }
-.iconbbooks{
-  margin-top: 10px;
-  width: 30px;
-  height: 30px;
-  border: none;
-  outline:none;
-  border : 0;
 }
-.iconbbooks:hover{
-  transition: all .2s linear;
-  cursor: pointer;
+
+.iconbbooks {
+    margin-top: 10px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    outline: none;
+}
+
+.iconbbooks:hover {
+    transition: all .2s linear;
+    cursor: pointer;
 
 }
 
 .imagem-perfil {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  margin: auto 10px auto 0px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin: auto 10px auto 0px;
 }
 
 #search-bt {
-	color: white;
+    color: white;
 }
 
 .container-da-lista {
@@ -36,12 +37,13 @@
 .container-lista-amigos {
     width: 268px;
     height: auto;
-	margin-left: auto !important;
-    margin-right: auto !important;
     margin: 1px solid black;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
-.mat-flat-button{
-  min-width: 56px;
+
+.mat-flat-button {
+    min-width: 56px;
 }
 
 .informacoes {
@@ -79,7 +81,7 @@
     border-radius: 5px;
 }
 
-.adicionar-amigos, 
+.adicionar-amigos,
 .titulo-notificacao {
     width: 100%;
     text-align: center;

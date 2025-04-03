@@ -8,7 +8,7 @@ import { GetUserByUsernameUseCase } from 'src/app/core/use-cases/user/get-user-b
 @Injectable()
 export class FriendResolve implements Resolve<User> {
     constructor(
-        private getUserByUsernameUseCase: GetUserByUsernameUseCase,
+        private readonly getUserByUsernameUseCase: GetUserByUsernameUseCase,
     ) { }
 
     resolve(

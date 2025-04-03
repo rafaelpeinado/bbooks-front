@@ -22,8 +22,8 @@ import { RegisterUserUseCase } from 'src/app/core/use-cases/user/register-user.u
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-        const invalidCtrl = !!(control && control.invalid && control.parent.dirty);
-        const invalidParent = !!(control && control.parent && control.parent.hasError('notSame') && control.parent.dirty);
+        const invalidCtrl = !!(control?.invalid && control.parent.dirty);
+        const invalidParent = !!(control?.parent?.hasError('notSame') && control.parent.dirty);
 
         return (invalidCtrl || invalidParent);
     }
@@ -68,7 +68,7 @@ export class CadastroComponent implements OnInit {
             email: [this.user?.email ? this.user.email : '', Validators.compose([
                 Validators.required,
                 Validators.email,
-                Validators.pattern('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)+(\.[a-z0-9-]+).(\.[a-z]{2,4})$')
+                Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')
             ])],
             userName: ['', Validators.compose([
                 Validators.required,

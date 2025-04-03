@@ -15,8 +15,8 @@ import { UserRepository } from '../../repositories/user.repository';
 
 export class UpdateUserInfoUseCase implements UseCaseInterface {
     constructor(
-        private userRepository: UserRepository,
-        private setCacheUseCase: SetCacheUseCase,
+        private readonly userRepository: UserRepository,
+        private readonly setCacheUseCase: SetCacheUseCase,
     ) { }
 
     execute(): Observable<User> {

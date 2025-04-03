@@ -14,9 +14,9 @@ export class MainSearchComponent implements OnInit {
     public formSearch: FormGroup;
 
     constructor(
-        private formBuilder: FormBuilder,
-        private router: Router,
-        public dialog: MatDialog,
+        private readonly formBuilder: FormBuilder,
+        private readonly router: Router,
+        private readonly dialog: MatDialog,
     ) {
     }
 

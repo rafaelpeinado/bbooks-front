@@ -8,10 +8,12 @@ export class FriendshipMapper {
     static toEntity(friendshipTO: FriendshipTO): Friendship {
         const builder = FriendshipBuilder.builder();
 
-        if (friendshipTO.profileTO && friendshipTO.profileTO.id) { builder.setFriendProfileId(friendshipTO.profileTO.id); }
-        if (friendshipTO.id) { builder.setId(friendshipTO.id); }
-        if (friendshipTO.addDate) { builder.setAddedDate(friendshipTO.addDate); }
-        if (friendshipTO.status) { builder.setFriendshipStatus(getFriendshipStatus(friendshipTO.status)); }
+        if (friendshipTO) {
+            if (friendshipTO.profileTO?.id) { builder.setFriendProfileId(friendshipTO.profileTO.id); }
+            if (friendshipTO.id) { builder.setId(friendshipTO.id); }
+            if (friendshipTO.addDate) { builder.setAddedDate(friendshipTO.addDate); }
+            if (friendshipTO.status) { builder.setFriendshipStatus(getFriendshipStatus(friendshipTO.status)); }
+        }
 
         return builder.build();
     }

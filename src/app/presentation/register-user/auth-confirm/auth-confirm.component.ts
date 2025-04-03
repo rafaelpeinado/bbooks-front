@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthConfirmUseCase } from 'src/app/core/use-cases/auth/auth-confirm.use-case';
@@ -9,7 +9,7 @@ import { Login } from 'src/app/core/domain/entities/login.entity';
   templateUrl: './auth-confirm.component.html',
   styleUrls: ['./auth-confirm.component.scss']
 })
-export class AuthConfirmComponent implements OnInit {
+export class AuthConfirmComponent {
   confirmControl: FormGroup;
 
   constructor(
@@ -22,9 +22,6 @@ export class AuthConfirmComponent implements OnInit {
       password: '',
       keepLogin: [false]
     });
-  }
-
-  ngOnInit(): void {
   }
 
   confirm(): void {

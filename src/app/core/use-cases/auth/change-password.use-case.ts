@@ -14,8 +14,8 @@ import { LoginBuilder } from '../../domain/builders/login.builder';
 })
 export class ChangePasswordUseCase implements UseCaseApiInterface<LoginType> {
     constructor(
-        private loginServiceFactory: LoginServiceFactory,
-        private LoginByTokenUseCase: LoginByTokenUseCase,
+        private readonly loginServiceFactory: LoginServiceFactory,
+        private readonly LoginByTokenUseCase: LoginByTokenUseCase,
     ) { }
 
     execute(login: Login): Observable<User> {

@@ -14,7 +14,6 @@
   transition: .5s ease;
   max-width: 150px;
   backface-visibility: hidden;
-  width:100%;
 }
 
 .middle {
@@ -31,13 +30,15 @@
   top: 0.5%;
   left: 75%;
 }
-.faixa{
+
+.faixa {
   transition: .5s ease;
   opacity: 1;
   position: absolute;
   top: 0%;
   left: 0%;
 }
+
 .container:hover .image {
   opacity: 0.3;
 }
@@ -71,18 +72,23 @@
 .iconStatusLendo {
   color: darkorange;
 }
-.iconStatusLidos{
+
+.iconStatusLidos {
   color: #36BF7F;
 }
-.iconStatusQueroLer{
+
+.iconStatusQueroLer {
   color: bisque;
 }
-.iconStatusEmprestado{
+
+.iconStatusEmprestado {
   color: #394A59;
 }
-.iconStatusRelendo{
+
+.iconStatusRelendo {
   color: #9bdfbf;
 }
-.iconStatusInterrompido{
+
+.iconStatusInterrompido {
   color: darkred;
 }

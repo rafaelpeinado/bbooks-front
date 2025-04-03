@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
 })
 export class SearchBookByNameUseCase implements UseCaseInterface {
-    constructor(private bookServiceFactory: BookServiceFactory) { }
+    constructor(private readonly bookServiceFactory: BookServiceFactory) { }
 
     execute(bookName: string): Observable<Book[]> {
         const bookRepository = this.bookServiceFactory.create(ApiType.GOOGLE);

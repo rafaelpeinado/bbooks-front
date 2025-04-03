@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 })
 export class CacheService implements CacheRepository {
 
-    constructor(private storageServiceFactory: StorageServiceFactory) { }
+    constructor(private readonly storageServiceFactory: StorageServiceFactory) { }
 
     get<T>(storageItem: StorageItem, storageType: StorageType): T | null {
         const storageRepository = this.storageServiceFactory.create(storageType);

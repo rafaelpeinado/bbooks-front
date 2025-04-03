@@ -8,7 +8,7 @@ import { UserBookRepository } from "../../repositories/user-book.repository";
     providedIn: 'root'
 })
 export class GetUserBookByIdUseCase implements UseCaseInterface {
-    constructor(private userBookRepository: UserBookRepository) { }
+    constructor(private readonly userBookRepository: UserBookRepository) { }
 
     execute(userBookId: string): Observable<UserBook> {
         return this.userBookRepository.getUserBookById(userBookId);

@@ -11,7 +11,7 @@ import { UserBookBuilder } from 'src/app/core/domain/builders/user-book.builder'
 @Injectable()
 export class BooksResolve implements Resolve<Bookcase[]> {
     constructor(
-        private searchBookByNameUseCase: SearchBookByNameUseCase,
+        private readonly searchBookByNameUseCase: SearchBookByNameUseCase,
     ) { }
 
     resolve(

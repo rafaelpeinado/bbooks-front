@@ -1,8 +1,8 @@
-
-.inputsLayout{
+.inputsLayout {
   gap: 13px;
   width: 100%;
 }
+
 .image {
   opacity: 1;
   display: block;
@@ -15,8 +15,8 @@
   border-width: 1px;
   border-style: solid;
   border-radius: 4px;
-  max-width: 150px;
 }
+
 @media screen and (max-width: 600px) {
   .card {
     border: none;
@@ -25,7 +25,7 @@
     padding: 0px;
   }
 
-  .inputsLayout{
+  .inputsLayout {
     width: 100%;
     padding: 5px;
   }

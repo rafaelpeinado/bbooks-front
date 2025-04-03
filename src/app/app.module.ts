@@ -15,8 +15,7 @@ import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/materi
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSliderModule } from '@angular/material/slider';
-import { FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
-import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { AuthVerifyLogin } from './guards/auth-verify-login';
 import { UploadComponent } from './views/upload/upload.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';

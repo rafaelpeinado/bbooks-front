@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="container">
                         <img [src]="friend?.profileTO?.profileImage ? friend.profileTO.profileImage : 'https://image.flaticon.com/icons/png/512/1361/1361728.png'"
-                            class="image">
+                            class="image" alt="foto de perfil">
                     </div>
                 </div>
                 <div>
@@ -41,7 +41,7 @@
                     {{'PERFIL.friends' | translate | titlecase}}
                 </button>
                 <mat-menu #menuAmigos="matMenu">
-                    <div mat-menu-item (click)="deleteFriend(friend.profile.id)">
+                    <div mat-menu-item (click)="deleteFriend(friend.profile.id)" (keydown)="onKeyDown($event)">
                         <mat-icon color="warn">indeterminate_check_box</mat-icon>
                         <span>{{'PADRAO.DESFAZER_AMIZADE' | translate}}</span>
                     </div>
@@ -52,7 +52,7 @@
                     {{'PADRAO.SOLICITACAO_ENVIADA' | translate}}
                 </button>
                 <mat-menu #menuSent="matMenu">
-                    <div mat-menu-item (click)="deleteRequest(friend.userName)">
+                    <div mat-menu-item (click)="deleteRequest(friend.userName)" (keydown)="onKeyDown($event)">
                         <mat-icon color="warn">indeterminate_check_box</mat-icon>
                         <span>{{'PADRAO.SOLICITACAO_CANCELAR' | translate}}</span>
                     </div>
@@ -64,11 +64,11 @@
                     {{'PADRAO.SOLICITACAO_RECEBIDA' | translate}}
                 </button>
                 <mat-menu #menuReceive="matMenu">
-                    <div mat-menu-item (click)="acceptRequest(friend.userName)">
+                    <div mat-menu-item (click)="acceptRequest(friend.userName)" (keydown)="onKeyDown($event)">
                         <mat-icon color="accent">done</mat-icon>
                         <span>{{'PADRAO.CONFIRMAR' | translate}}</span>
                     </div>
-                    <div mat-menu-item (click)="deleteRequest(friend.userName)">
+                    <div mat-menu-item (click)="deleteRequest(friend.userName)" (keydown)="onKeyDown($event)">
                         <mat-icon color="warn">indeterminate_check_box</mat-icon>
                         <span>{{'PADRAO.EXCLUIR' | translate}}</span>
                     </div>

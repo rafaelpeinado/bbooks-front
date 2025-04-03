@@ -10,7 +10,7 @@ import {MediaChange, MediaObserver} from '@angular/flex-layout';
 })
 export class BookPageComponent implements OnInit, OnDestroy {
     constructor(
-        public mediaObserver: MediaObserver
+        private readonly mediaObserver: MediaObserver
     ) {
     }
 
@@ -19,7 +19,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
-            this.deviceXs = result[0].mqAlias === 'xs' ? true : false;
+            this.deviceXs = result[0].mqAlias === 'xs';
         });
     }
 

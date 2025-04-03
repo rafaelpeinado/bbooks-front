@@ -28,10 +28,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
     private mediaSub: Subscription;
 
     constructor(
-        private fb: FormBuilder,
-        private searchMergedBookUseCase: SearchMergedBookUseCase,
-        private mediaObserver: MediaObserver,
-        private getIsLoggedUseCase: GetIsLoggedUseCase,
+        private readonly fb: FormBuilder,
+        private readonly searchMergedBookUseCase: SearchMergedBookUseCase,
+        private readonly mediaObserver: MediaObserver,
+        private readonly getIsLoggedUseCase: GetIsLoggedUseCase,
 
     ) {
         this.searchControl = this.fb.group({

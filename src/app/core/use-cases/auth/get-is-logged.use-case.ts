@@ -13,10 +13,10 @@ import { GetTokenUseCase } from './get-token.use-case';
 })
 export class GetIsLoggedUseCase implements UseCaseInterface {
     constructor(
-        private loginServiceFactory: LoginServiceFactory,
-        private getCachedUserUseCase: GetCachedUserUseCase,
-        private setIsLoggedUseCase: SetIsLoggedUseCase,
-        private getTokenUseCase: GetTokenUseCase,
+        private readonly loginServiceFactory: LoginServiceFactory,
+        private readonly getCachedUserUseCase: GetCachedUserUseCase,
+        private readonly setIsLoggedUseCase: SetIsLoggedUseCase,
+        private readonly getTokenUseCase: GetTokenUseCase,
     ) { }
 
     execute(): BehaviorSubject<boolean> {

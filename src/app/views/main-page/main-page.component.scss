@@ -58,12 +58,14 @@ section {
   background-color: #FFF;
 }
 
-section .container-bbooks h1 { /* Configuração do título da section/manchete */
+section .container-bbooks h1 {
+  /* Configuração do título da section/manchete */
   font-size: 40px;
   padding-top: 55px;
 }
 
-section .container-bbooks h2 { /*Configuração do subtítulo da section*/
+section .container-bbooks h2 {
+  /*Configuração do subtítulo da section*/
   font-size: 21px;
   margin-top: 25px;
   color: #7F8C8D;
@@ -108,7 +110,8 @@ section .container-bbooks .banner h2 {
   color: #7F8C8D;
 }
 
-.container-bbooks-descricao, .container-cadastre-se {
+.container-bbooks-descricao,
+.container-cadastre-se {
   padding: 40px;
   height: auto;
 }
@@ -127,19 +130,6 @@ section .container-bbooks .banner h2 {
   margin: 0 auto;
 }
 
-/*.container-livros {
-  flex-direction: row;
-  display: flex;
-  flex-wrap: wrap;
-
-  app-book-card {
-    width: 25%;
-    margin: 0 auto;
-  }
-}*/
-
-
-
 @media screen and (max-width: 800px) {
   .barra-pesquisar {
     width: 100%;
@@ -154,7 +144,8 @@ section .container-bbooks .banner h2 {
   .container-pagina-inicial {
     flex-wrap: wrap;
 
-    .primeiro, .segundo {
+    .primeiro,
+    .segundo {
       width: 100%;
     }
   }

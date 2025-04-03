@@ -25,14 +25,13 @@ export class NovaSenhaComponent implements OnInit {
     user: User;
 
     constructor(
-        private fb: FormBuilder,
-        private route: ActivatedRoute,
-        private router: Router,
-        private translate: TranslateService,
-        private getUserByPasswordTokenUseCase: GetUserByPasswordTokenUseCase,
-        private changePasswordUseCase: ChangePasswordUseCase,
-    ) {
-    }
+        private readonly fb: FormBuilder,
+        private readonly route: ActivatedRoute,
+        private readonly router: Router,
+        private readonly translate: TranslateService,
+        private readonly getUserByPasswordTokenUseCase: GetUserByPasswordTokenUseCase,
+        private readonly changePasswordUseCase: ChangePasswordUseCase,
+    ) { }
 
     ngOnInit(): void {
         this.createForm();

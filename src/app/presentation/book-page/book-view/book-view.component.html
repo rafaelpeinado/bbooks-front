@@ -3,7 +3,7 @@
         <div class="container-conteudo">
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around center" fxLayoutGap="4px">
                 <div>
-                    <img class="cardImage" src="{{book.image}}">
+                    <img class="cardImage" src="{{book.image}}" alt="capa do livro">
                     <h2 class="titulo-competicao">{{book.title}}</h2>
                     <div *ngIf="book.averageRating">
                         <app-rating *ngFor="let star  of stars" [idStar]="star"

@@ -15,9 +15,9 @@ import { first, map } from 'rxjs/operators';
 
 export class UserService extends BaseApiService<User, UserTO> implements UserRepository {
 
-    private api: string = environment.api + 'users/';
-    private apiGoogle: string = this.api + 'google/';
-    private apiUsername: string = this.api + 'username/';
+    private readonly api: string = environment.api + 'users/';
+    private readonly apiGoogle: string = this.api + 'google/';
+    private readonly apiUsername: string = this.api + 'username/';
 
     constructor(protected readonly http: HttpClient) {
         super(http);

@@ -11,7 +11,7 @@ import { first } from 'rxjs/operators';
 })
 export class AuthorApiService implements AuthorRepository {
 
-    private api: string = environment.api + 'authors/';
+    private readonly api: string = environment.api + 'authors/';
 
     constructor(private readonly http: HttpClient) { }
 

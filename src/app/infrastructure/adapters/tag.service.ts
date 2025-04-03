@@ -14,11 +14,11 @@ import { BaseApiService } from './base-service.service';
 })
 export class TagApiService extends BaseApiService<Tag, TagTO> implements TagRepository {
 
-    private api: string = environment.api + 'tags/';
-    private apiProflie: string = this.api + 'profile/';
-    private apiBook: string = this.api + 'book/';
+    private readonly api: string = environment.api + 'tags/';
+    private readonly apiProflie: string = this.api + 'profile/';
+    private readonly apiBook: string = this.api + 'book/';
 
-    constructor(protected http: HttpClient) {
+    constructor(protected readonly http: HttpClient) {
         super(http);
     }
 

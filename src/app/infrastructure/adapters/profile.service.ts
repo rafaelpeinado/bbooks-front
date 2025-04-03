@@ -14,9 +14,9 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
 })
 export class ProfileApiService extends BaseApiService<Profile, ProfileTO> implements ProfileRepository {
-    private api: string = environment.api + 'profiles/';
+    private readonly api: string = environment.api + 'profiles/';
 
-    constructor(protected http: HttpClient) {
+    constructor(protected readonly http: HttpClient) {
         super(http);
     }
 

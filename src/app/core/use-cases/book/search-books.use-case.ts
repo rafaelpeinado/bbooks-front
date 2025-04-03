@@ -11,7 +11,7 @@ import { ApiType } from "../../domain/enums/api-type.enum";
     providedIn: 'root'
 })
 export class SearchBooksUseCase implements UseCaseInterface {
-    constructor(private bookServiceFactory: BookServiceFactory) { }
+    constructor(private readonly bookServiceFactory: BookServiceFactory) { }
 
     execute(filter: FilterSearch): Observable<PaginationInterface<Book>> {
         const bookRepository = this.bookServiceFactory.create(ApiType.BBOOKS);

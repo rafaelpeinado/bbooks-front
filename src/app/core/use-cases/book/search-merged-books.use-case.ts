@@ -12,7 +12,7 @@ import { PaginationInterface } from '../../domain/interfaces/pagination.interfac
 })
 
 export class SearchMergedBookUseCase implements UseCaseInterface {
-    constructor(private bookServiceFactory: BookServiceFactory) { }
+    constructor(private readonly bookServiceFactory: BookServiceFactory) { }
 
     execute(filterSearch: FilterSearch): Observable<PaginationInterface<Book>> {
         const bookRepository = this.bookServiceFactory.create(ApiType.BBOOKS);

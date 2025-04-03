@@ -11,8 +11,8 @@ import { GetTokenUseCase } from '../auth/get-token.use-case';
 
 export class GetUserByUsernameUseCase implements UseCaseInterface {
     constructor(
-        private userRepository: UserRepository,
-        private getTokenUseCase: GetTokenUseCase,
+        private readonly userRepository: UserRepository,
+        private readonly getTokenUseCase: GetTokenUseCase,
     ) { }
 
     execute(username: string): Observable<User> {

@@ -1,46 +1,3 @@
-<!-- 
-<div id="espaco">
-
-</div>
-<form [formGroup]="cadastroControl">
-    <div id="cabecalho-cadastro" class="form-rows">
-        <div>
-            <h1 class="form-group col-md-12">BBooks</h1>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-4">
-            <input type="text" class="form-control" id="inputNome" placeholder="Nome" formControlName="name" >
-          </div>
-          <div class="form-group col-md-8">
-            <input type="text" class="form-control" id="inputSobrenome" placeholder="Sobrenome" formControlName="lastName" >
-          </div>
-      <div class="form-group col-md-12">
-        <input type="email" class="form-control" id="inputEmail" placeholder="Email" formControlName="email">
-        <small id="passwordHelpBlock" class="form-text text-muted">
-            Informe um endereço de e-mail válido, pois você receberá um e-mail de confirmação.
-          </small>
-      </div>
-      <div class="form-group col-md-12">
-        <input type="text" class="form-control" id="inputNomeUsuario" placeholder="Nome de Usuário" formControlName="userName">
-        <small id="nomeUsuarioHelpBlock" class="form-text text-muted">
-            Seu nome de usuário pode ter letras, números e pontos finais.
-          </small>
-      </div>
-      <div class="form-group col-md-6">
-        <input type="password" class="form-control" id="inputSenha" placeholder="Senha" formControlName="password">
-        <small id="passwordHelpBlock" class="form-text text-muted">
-            Sua senha deve ter entre 8 e 20 caracteres, os quais devem ser letras e números.
-          </small>
-      </div>
-      <div class="form-group col-md-6">
-        <input type="password" class="form-control" id="inputConfirmarSenha" placeholder="Confirmar Senha">
-      </div>
-    </div>
-    <button type="submit" class="btn btn-primary" (click)="cadastrar()">Próximo</button>
-  </form> -->
-
-
 <form [formGroup]="cadastroControl">
 
   <div>
@@ -72,9 +29,6 @@
     <mat-form-field class="inputCadastrar" appearance="outline">
       <mat-label>{{'PADRAO.EMAIL' | translate}}</mat-label>
       <input type="email" matInput id="emailCadastrar" formControlName="email">
-      <!-- <mat-error *ngIf="cadastroControl.get('email').hasError('email') && !cadastroControl.get('email').hasError('required')">
-          {{'CADASTRO1.VLD_EMAIL' | translate}}
-        </mat-error> -->
       <mat-error *ngIf="cadastroControl.get('email').hasError('required')">
         {{'CADASTRO1.MSG_EMAIL_E' | translate}} <strong>{{'CADASTRO1.OBRIGATORIO' | translate}}</strong>
       </mat-error>

@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Util} from '../shared/utils/util';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Util } from '../shared/utils/util';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-upload',
@@ -16,8 +16,8 @@ export class UploadComponent implements OnInit {
     file;
 
     constructor(
-        private formBuilder: FormBuilder,
-        private translate: TranslateService
+        private readonly formBuilder: FormBuilder,
+        private readonly translate: TranslateService
     ) {
     }
 
@@ -28,7 +28,7 @@ export class UploadComponent implements OnInit {
     }
 
     inputFileChange(event) {
-        if (event.target.files && event.target.files[0]) {
+        if (event.target.files?.[0]) {
             const image = event.target.files[0];
             if (!this.checkfiles(image.name)) {
                 this.translate.get('MESSAGE_ERROR.NEED_BE_IMAGE').subscribe(message => {

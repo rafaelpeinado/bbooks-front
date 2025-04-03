@@ -9,7 +9,7 @@ import { ProfileRepository } from '../../repositories/profile.repository';
 })
 
 export class GetProfileByIdUseCase implements UseCaseInterface {
-    constructor(private profileRepository: ProfileRepository) { }
+    constructor(private readonly profileRepository: ProfileRepository) { }
 
     execute(profileId: string): Observable<User> {
         return this.profileRepository.getProfileById(profileId);

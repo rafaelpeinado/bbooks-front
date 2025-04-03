@@ -9,8 +9,8 @@ import { GetUserByUsernameUseCase } from 'src/app/core/use-cases/user/get-user-b
 })
 export class MainGuard implements CanActivate {
     constructor(
-        private router: Router,
-        private getUserByUsernameUseCase: GetUserByUsernameUseCase,
+        private readonly router: Router,
+        private readonly getUserByUsernameUseCase: GetUserByUsernameUseCase,
 
     ) {
     }

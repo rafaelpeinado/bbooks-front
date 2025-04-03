@@ -9,7 +9,7 @@ import { StorageItem } from 'src/app/infrastructure/enums/storage-item.enum';
     providedIn: 'root'
 })
 export class SetTokenUseCase implements UseCaseInterface {
-    constructor(private setCacheUseCase: SetCacheUseCase) { }
+    constructor(private readonly setCacheUseCase: SetCacheUseCase) { }
 
     execute(input: string): void {
         const setCache: SetCache<string> = { value: input, storageItem: StorageItem.TOKEN };

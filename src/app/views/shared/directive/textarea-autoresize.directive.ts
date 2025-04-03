@@ -6,7 +6,7 @@ import {Directive, ElementRef, HostListener, OnInit} from '@angular/core';
 export class TextareaAutoresizeDirective implements OnInit  {
 
     constructor(
-        private elementRef: ElementRef
+        private readonly elementRef: ElementRef
     ) {
     }
     @HostListener(':input')

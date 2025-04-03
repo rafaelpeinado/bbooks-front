@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { UserBook } from 'src/app/core/domain/entities/user-book.entity';
 
@@ -49,15 +48,14 @@ export class CarrouselComponent implements OnInit, OnDestroy {
     routerlink: string;
 
     constructor(
-        private router: Router,
-        public dialog: MatDialog,
-        public mediaObserver: MediaObserver,
+        private readonly router: Router,
+        private readonly mediaObserver: MediaObserver,
     ) {
     }
 
     ngOnInit(): void {
         this.mediaSub = this.mediaObserver.asObservable().subscribe((result: MediaChange[]) => {
-            this.deviceXs = result[0].mqAlias === 'xs' ? true : false;
+            this.deviceXs = result[0].mqAlias === 'xs';
         });
         this.isUserBook = this.router.url.includes('mybooks');
         if (!this.isUserBook) {

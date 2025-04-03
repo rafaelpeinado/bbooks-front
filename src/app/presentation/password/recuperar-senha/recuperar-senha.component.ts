@@ -17,9 +17,9 @@ export class RecuperarSenhaComponent implements OnInit {
     showMessage: boolean;
 
     constructor(
-        private fb: FormBuilder,
-        private translate: TranslateService,
-        private sendEmailResetPasswordUseCase: SendEmailResetPasswordUseCase,
+        private readonly fb: FormBuilder,
+        private readonly translate: TranslateService,
+        private readonly sendEmailResetPasswordUseCase: SendEmailResetPasswordUseCase,
     ) {
     }
 

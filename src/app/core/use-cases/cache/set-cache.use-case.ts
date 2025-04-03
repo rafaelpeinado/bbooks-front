@@ -8,7 +8,7 @@ import { CacheRepository } from '../../repositories/cache.repository';
     providedIn: 'root'
 })
 export class SetCacheUseCase implements UseCaseApiInterface<StorageType> {
-    constructor(private cacheRepository: CacheRepository) { }
+    constructor(private readonly cacheRepository: CacheRepository) { }
 
     execute<T>(setCache: SetCache<T>, storageType: StorageType): void {
         return this.cacheRepository.set<T>(setCache, storageType);
