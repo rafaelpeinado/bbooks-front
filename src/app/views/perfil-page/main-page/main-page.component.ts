@@ -15,7 +15,7 @@ import {Util} from '../../shared/Utils/util';
     styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent implements OnInit, OnChanges {
-    links = ['bookcase', 'friends'];
+    links = ['friends'];
     activeLink = this.links[0];
     user: UserTO = new UserTO();
     friendTO: Friend = new Friend();
